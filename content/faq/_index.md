@@ -36,4 +36,4 @@ We plan to add more features to the initial project, stay tuned.
 
 ## Interested?
 
-Sign up for the Alpha on the [Home Page](https://www.resplice.com)
+Sign up for the Beta on the [Home Page](https://www.resplice.com)
