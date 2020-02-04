@@ -1,0 +1,80 @@
+{{ define "title"}} {{ .Site.Title}} {{end}}
+{{ define "header"}} {{ partial "header" .}} {{end}}
+{{ define "main"}}
+
+<div id="main">
+  <div id="hero">
+    <h1>{{.Title}}</h1>
+    <p>{{.Description}}</p>
+  </div>
+  <div id="action-buttons">
+    <a class="button primary big" href="https://docs.google.com/forms/d/e/1FAIpQLSdAeyp7qAP6dOvAq0zHEQ8G6U94lwzz7MxYCJF-NEd87JJqEw/viewform">Sign Up for the Alpha</a> <a class="button outline big" href="/faq/">View the FAQ</a>
+    <p>Sign up for the Alpha to be one of the first to use the app!</p>
+  </div>
+  <div class="screenshots">
+    <div class="glide">
+      <div class="glide__track" data-glide-el="track">
+        <ul class="glide__slides">
+          <li class="glide__slide"><img src="img/screenshots/1.png" alt="" class="gallery-image"></li>
+          <li class="glide__slide"><img src="img/screenshots/1.png" alt="" class="gallery-image"></li>
+          <li class="glide__slide"><img src="img/screenshots/1.png" alt="" class="gallery-image"></li>
+          <li class="glide__slide"><img src="img/screenshots/1.png" alt="" class="gallery-image"></li>
+          <li class="glide__slide"><img src="img/screenshots/1.png" alt="" class="gallery-image"></li>
+          <li class="glide__slide"><img src="img/screenshots/1.png" alt="" class="gallery-image"></li>
+          <li class="glide__slide"><img src="img/screenshots/1.png" alt="" class="gallery-image"></li>
+          <li class="glide__slide"><img src="img/screenshots/1.png" alt="" class="gallery-image"></li>
+        </ul>
+      </div>
+
+      <div class="glide__arrows" data-glide-el="controls">
+        <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><</button>
+        <button class="glide__arrow glide__arrow--right" data-glide-dir=">">></button>
+      </div>
+    </div>
+  </div>
+  <div class="message focus" data-component="message"> <span class="close small"></span>
+    <a class="button inverted small " href="https://docs.google.com/forms/d/e/1FAIpQLSdAeyp7qAP6dOvAq0zHEQ8G6U94lwzz7MxYCJF-NEd87JJqEw/viewform" >Resplice </a> from <a href="https://www.capabit.com/">Capabit</a> is an awesome <mark>Contact Sharing App</mark> designed to change the way you share personal and work information !
+  </div>
+  <div id="kube-features">
+    <h1>Features</h1>
+    <div class="row gutters">
+      <div class="col col-4 item">
+        <figure>
+          <img alt="Baseline" height="48" src="{{ "/img/kube/icon-baseline.png" | relURL }}" width="48">
+        </figure>
+        <h3>Build a Profile</h3>
+        <p>Enter any information you would like to share with your friends, family, or co-workers, whether it be your new phone number, address, website, or anything you can imagine.</p>
+      </div>
+      <div class="col col-4 item">
+        <figure>
+          <img alt="Typography" height="48" src="{{ "/img/kube/icon-typo.png" | relURL }}" width="48">
+        </figure>
+        <h3>Live information</h3>
+        <p>As soon as one of your contacts updated their information it is updated immediately on your phone.</p>
+      </div>
+      <div class="col col-4 item">
+        <figure>
+          <img alt="Minimalism" height="48" src="{{ "/img/kube/icon-minimalism.png" | relURL }}" width="48">
+        </figure>
+        <h3>Access from Any Device</h3>
+        <p>Look at your contacts from your web browser, smart phone, &amp; tablet. I mean, heck, you might as well try it on your smart fridge.</p>
+      </div>
+    </div>
+    <div class="row gutters">
+      <div class="col col-4 item">
+        <h4>Share Information</h4>
+        <p>You choose which information from your profile you want the rest of the world to see and revoke access to that information from anyone at anytime.</p>
+      </div>
+      <div class="col col-4 item">
+        <h4>Group Sharing</h4>
+        <p>Share your information with a group or departments in your business</p>
+      </div>
+      <div class="col col-4 item">
+        <h4>Progressive Web App</h4>
+        <p>This allows you to look at your contacts while offline and allows us to give you your info fast while keeping it secure. You don't even have to download the app to use it.</p>
+    </div>
+  </div>
+</div>
+</div>
+{{ end }}
+{{ define "footer"}} {{ partial "footer" .}} {{end}}

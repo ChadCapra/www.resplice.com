@@ -1,0 +1,10 @@
+.screenshots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url('../img/phone-gallery.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  margin-bottom: 25px;
+}

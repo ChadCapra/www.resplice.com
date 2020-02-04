@@ -1,0 +1,21 @@
+baseURL = "https://www.resplice.com"
+languageCode = "en-us"
+title = "Resplice"
+theme = "kube"
+description = "Resplice introduces a new way to contact information, never ask anyone for updated info again."
+Paginate = 4
+[Params]
+  RSSLink = "/index.xml"
+  author = "Capabit Solutions LLC" # add your company name
+  github = "" # add your github profile name
+  twitter = "respliceapp" # add your twitter profile
+  email = "chadcapra@capabit.com"
+
+[[menu.main]]
+    name = "Capabit Solutions"
+    weight = -100
+    url = "https://www.capabit.com"
+[[menu.main]]
+    name = "Faq"
+    weight = -100
+    url = "/faq/"
