@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MarcusVirg/resplice-ui.git"
+    "url": "git+https://github.com/ChadCapra/www.resplice.com.git"
   },
   "author": "marcus@resplice.com",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MarcusVirg/resplice-ui/issues"
+    "url": "https://github.com/ChadCapra/www.resplice.com/issues"
   },
-  "homepage": "https://github.com/MarcusVirg/resplice-ui#readme",
+  "homepage": "https://github.com/ChadCapra/www.resplice.com#readme",
   "workspaces": [
     "packages/common/*"
   ]

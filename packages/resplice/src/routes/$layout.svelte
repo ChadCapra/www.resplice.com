@@ -13,11 +13,11 @@
 </script>
 
 <script>
-  import MockWorker from '$components/common/MockWorker.svelte'
-  import NavItem from '$components/common/NavItem.svelte'
-  import PeopleIcon from '$components/icons/PeopleIcon.svelte'
-  import ChatBubbles from '$components/icons/ChatBubblesIcon.svelte'
-  import NavActions from '$components/common/NavActions.svelte'
+  import MockWorker from '$lib/common/MockWorker.svelte'
+  import NavItem from '$lib/common/NavItem.svelte'
+  import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
+  import ChatBubbles from '$lib/icons/ChatBubblesIcon.svelte'
+  import NavActions from '$lib/common/NavActions.svelte'
   // TODO: Fix when sapper segment equivalent is on Svelte Kit
   export let paths: string[]
   $: isOnContacts = paths && paths[1] === 'contacts'

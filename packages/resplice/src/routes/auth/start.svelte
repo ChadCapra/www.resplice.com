@@ -1,7 +1,7 @@
 <script>
-  import Button from '$components/shared/Button.svelte'
-  import TextField from '$components/shared/TextField.svelte'
-  import RespliceWide from '$components/icons/RespliceWide.svelte'
+  import Button from '$lib/shared/Button.svelte'
+  import TextField from '$lib/shared/TextField.svelte'
+  import RespliceWide from '$lib/icons/RespliceWide.svelte'
 
   let attribute = ''
 </script>

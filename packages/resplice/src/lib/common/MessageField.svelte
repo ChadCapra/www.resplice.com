@@ -1,6 +1,6 @@
 <script>
-  import AddIcon from '$components/icons/AddIcon.svelte'
-  import SendIcon from '$components/icons/SendIcon.svelte'
+  import AddIcon from '$lib/icons/AddIcon.svelte'
+  import SendIcon from '$lib/icons/SendIcon.svelte'
 
   let messageContent: string
   export let label: string

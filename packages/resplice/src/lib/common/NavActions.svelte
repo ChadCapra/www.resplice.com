@@ -1,5 +1,5 @@
 <script>
-  import AddIcon from '$components/icons/AddIcon.svelte'
+  import AddIcon from '$lib/icons/AddIcon.svelte'
 </script>
 
 <div class="absolute -top-7 left-0 w-full flex justify-center items-center">

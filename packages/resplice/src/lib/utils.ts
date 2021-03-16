@@ -1,4 +1,4 @@
-import type { Contact } from '$types/index.type'
+import type { Contact } from '$types'
 
 export function filtersContactsList(
   contacts: Contact[],

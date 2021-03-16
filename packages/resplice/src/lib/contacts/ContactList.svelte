@@ -2,8 +2,8 @@
   import VirtualList from '@sveltejs/svelte-virtual-list/VirtualList.svelte'
   // import { goto } from '.svelte/assets/runtime/app/navigation'
 
-  import ContactItem from '$components/contacts/ContactItem.svelte'
-  import Skeleton from '$components/common/skeleton/Skeleton.svelte'
+  import ContactItem from '$lib/contacts/ContactItem.svelte'
+  import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
   import type { Contact } from '$types/index.type'
 
   export let contactsAsync: Promise<Contact[]>

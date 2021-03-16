@@ -1,8 +1,8 @@
 <script>
   import { writable } from 'svelte/store'
-  import Avatar from '$components/common/Avatar.svelte'
-  import TextField from '$components/common/form/TextField.svelte'
-  import SearchIcon from '$components/icons/SearchIcon.svelte'
+  import Avatar from '$lib/common/Avatar.svelte'
+  import TextField from '$lib/common/form/TextField.svelte'
+  import SearchIcon from '$lib/icons/SearchIcon.svelte'
 
   const searchQuery = writable('')
 </script>

@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte'
   const dispatch = createEventDispatcher()
-  import Button from '$components/common/Button.svelte'
+  import Button from '$lib/common/Button.svelte'
 
   import cx from 'classnames'
   export const tags: string[] = [

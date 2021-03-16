@@ -1,8 +1,8 @@
 <script>
   import type { Contact } from '$types/index.type'
-  import Avatar from '$components/common/Avatar.svelte'
-  import BackIcon from '$components/icons/BackIcon.svelte'
-  import EllipsisHorizontalIcon from '$components/icons/EllipsisHorizontalIcon.svelte'
+  import Avatar from '$lib/common/Avatar.svelte'
+  import BackIcon from '$lib/icons/BackIcon.svelte'
+  import EllipsisHorizontalIcon from '$lib/icons/EllipsisHorizontalIcon.svelte'
 
   export let contact: Contact
 </script>

@@ -1,6 +1,6 @@
 <script>
   import VirtualList from '@sveltejs/svelte-virtual-list/VirtualList.svelte'
-  import ChatMessage from '$components/common/ChatMessage.svelte'
+  import ChatMessage from '$lib/common/ChatMessage.svelte'
   import type { Message } from '$types/index.type'
 
   export let messages: Message[]

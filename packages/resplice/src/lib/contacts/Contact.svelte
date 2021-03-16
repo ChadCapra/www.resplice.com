@@ -1,6 +1,6 @@
 <script>
   import type { Contact } from '$types/index.type'
-  import Avatar from '$components/common/Avatar.svelte'
+  import Avatar from '$lib/common/Avatar.svelte'
   export let contact: Pick<Contact, 'name' | 'tags' | 'uuid'>
 </script>
 

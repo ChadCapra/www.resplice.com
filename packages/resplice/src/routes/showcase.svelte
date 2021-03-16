@@ -1,13 +1,13 @@
 <script>
-  import Avatar from '$components/common/Avatar.svelte'
-  import Button from '$components/common/Button.svelte'
-  import TextField from '$components/common/form/TextField.svelte'
-  import Checkbox from '$components/common/form/Checkbox.svelte'
-  import PeopleIcon from '$components/icons/PeopleIcon.svelte'
-  import Contact from '$components/contacts/Contact.svelte'
-  import Message from '$components/common/Message.svelte'
-  import Status from '$components/common/Status.svelte'
-  import Modal from '$components/common/Modal.svelte'
+  import Avatar from '$lib/common/Avatar.svelte'
+  import Button from '$lib/common/Button.svelte'
+  import TextField from '$lib/common/form/TextField.svelte'
+  import Checkbox from '$lib/common/form/Checkbox.svelte'
+  import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
+  import Contact from '$lib/contacts/Contact.svelte'
+  import ChatMessage from '$lib/common/ChatMessage.svelte'
+  import Status from '$lib/common/Status.svelte'
+  import Modal from '$lib/common/Modal.svelte'
 
   let fullName = ''
   let rememberMe = false
@@ -71,20 +71,20 @@
 
   <div class="mb-4 flex flex-col space-y-4">
     <h1 class="text-xl text-gray-800 font-bold mb-2 text-center">Splice</h1>
-    <Message
+    <ChatMessage
       message={{
         uuid: 'message_1',
-        contact_uuid: 'han_solo',
-        contact_name: 'Han Solo',
+        entity_uuid: 'han_solo',
+        entity_name: 'Han Solo',
         timestamp: '2021-02-22T15:24:00',
         content: "Hey, what's up??"
       }}
     />
-    <Message
+    <ChatMessage
       message={{
         uuid: 'message_2',
-        contact_uuid: 'bastilla_shan',
-        contact_name: 'Bastilla Shan',
+        entity_uuid: 'bastilla_shan',
+        entity_name: 'Bastilla Shan',
         timestamp: '2021-02-22T15:30:00',
         content:
           'I am preparing for my council meeting this afternoon. I will be at the main station in the afternoon, want to grab a drink?'

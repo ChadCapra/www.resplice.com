@@ -1,7 +1,7 @@
 <script>
   import { differenceInDays, format } from 'date-fns'
-  import type { Message } from '$types/index.type'
-  import Avatar from '$components/common/Avatar.svelte'
+  import type { Message } from '$types'
+  import Avatar from '$lib/common/Avatar.svelte'
   export let message: Message
   const ts = new Date(message.timestamp)
   $: timestamp =

@@ -10,11 +10,11 @@
 
 <script>
   import { onMount } from 'svelte'
-  import type { ContactDetail } from '$types/index.type'
-  import ContactHeader from '$components/contacts/ContactHeader.svelte'
-  import ContactAttributes from '$components/contacts/ContactAttributes.svelte'
-  import ContactChat from '$components/contacts/ContactChat.svelte'
-  import MessageField from '$components/common/MessageField.svelte'
+  import type { ContactDetail } from '$types'
+  import ContactHeader from '$lib/contacts/ContactHeader.svelte'
+  import ContactAttributes from '$lib/contacts/ContactAttributes.svelte'
+  import ContactChat from '$lib/contacts/ContactChat.svelte'
+  import MessageField from '$lib/common/MessageField.svelte'
 
   export let uuid: string
   let contactAsync: Promise<ContactDetail> = Promise.resolve(
