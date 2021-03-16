@@ -2,7 +2,7 @@ import { rest } from 'msw'
 import contacts from './contacts'
 import attributes from './attributes'
 import messages from './messages'
-import type { ContactDetail } from '$types/index.type'
+import type { ContactDetail } from '$types'
 
 const BACKEND_URL = 'https://api.resplice.com'
 

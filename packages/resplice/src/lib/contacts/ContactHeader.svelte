@@ -1,5 +1,5 @@
 <script>
-  import type { Contact } from '$types/index.type'
+  import type { Contact } from '$types'
   import Avatar from '$lib/common/Avatar.svelte'
   import BackIcon from '$lib/icons/BackIcon.svelte'
   import EllipsisHorizontalIcon from '$lib/icons/EllipsisHorizontalIcon.svelte'

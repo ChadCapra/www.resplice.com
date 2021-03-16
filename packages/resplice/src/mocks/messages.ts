@@ -1,4 +1,4 @@
-import type { Message } from '$types/index.type'
+import type { Message } from '$types'
 const messages: Message[] = [
   {
     uuid: '123',

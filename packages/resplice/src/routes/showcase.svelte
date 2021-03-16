@@ -4,7 +4,7 @@
   import TextField from '$lib/common/form/TextField.svelte'
   import Checkbox from '$lib/common/form/Checkbox.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
-  import Contact from '$lib/contacts/Contact.svelte'
+  import ContactItem from '$lib/contacts/ContactItem.svelte'
   import ChatMessage from '$lib/common/ChatMessage.svelte'
   import Status from '$lib/common/Status.svelte'
   import Modal from '$lib/common/Modal.svelte'
@@ -60,7 +60,7 @@
 
   <div class="mb-4 flex flex-col items-center space-y-2">
     <h1 class="text-xl text-gray-800 font-bold mb-2">Contacts</h1>
-    <Contact
+    <ContactItem
       contact={{
         uuid: 'darth_revan',
         name: 'Darth Revan',

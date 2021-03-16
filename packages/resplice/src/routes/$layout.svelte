@@ -46,3 +46,9 @@
     <slot />
   {/if}
 </MockWorker>
+
+<style>
+  main {
+    touch-action: none;
+  }
+</style>

@@ -1,4 +1,4 @@
-import type { Contact } from '$types/index.type'
+import type { Contact } from '$types'
 const contacts: Contact[] = [
   {
     uuid: 'darth-vader',

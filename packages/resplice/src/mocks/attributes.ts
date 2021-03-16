@@ -1,4 +1,4 @@
-import type { Attribute } from '$types/index.type'
+import type { Attribute } from '$types'
 const attributes: Attribute[] = [
   {
     uuid: 'mphone',

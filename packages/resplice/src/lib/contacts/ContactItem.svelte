@@ -1,5 +1,5 @@
 <script>
-  import type { Contact } from '$types/index.type'
+  import type { Contact } from '$types'
   import Avatar from '$lib/common/Avatar.svelte'
   export let contact: Pick<Contact, 'name' | 'tags' | 'uuid'>
 </script>
