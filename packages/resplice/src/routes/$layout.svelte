@@ -2,7 +2,6 @@
   // import { waitLocale } from 'svelte-i18n'
   export async function load({ page }) {
     const paths = page.path.split('/')
-    console.log(paths)
     return {
       props: {
         paths
@@ -46,9 +45,3 @@
     <slot />
   {/if}
 </MockWorker>
-
-<style>
-  main {
-    touch-action: none;
-  }
-</style>

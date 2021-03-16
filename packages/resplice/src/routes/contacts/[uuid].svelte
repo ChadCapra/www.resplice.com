@@ -42,8 +42,12 @@
     <div class="flex-none w-full"><ContactHeader {contact} /></div>
     <div class="bg-white rounded-t-3xl flex-1 flex flex-col">
       <div class="flex-none p-4"><ContactAttributes /></div>
-      <div class="flex-1"><ContactChat messages={contact.messages} /></div>
-      <div class="flex-none p-4"><MessageField /></div>
+      <div class="flex-1 overflow-auto">
+        <ContactChat messages={contact.messages} />
+      </div>
+      <div class="flex-none p-4">
+        <MessageField label="Chat with {contact.name}" />
+      </div>
     </div>
   {/await}
 </main>

@@ -1,6 +1,6 @@
 <script>
-  import VirtualList from 'svelte-tiny-virtual-list'
-  // import { goto } from '.svelte/assets/runtime/app/navigation'
+  import VirtualList from '@sveltejs/svelte-virtual-list/VirtualList.svelte'
+  import { goto } from '$app/navigation'
 
   import ContactItem from '$lib/contacts/ContactItem.svelte'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
@@ -18,15 +18,13 @@
       </div>
     {/each}
   {:then contacts}
-    <VirtualList itemSize={64} itemCount={contacts.length} height="100%">
-      <div slot="item" let:index let:style {style}>
-        <ContactItem
-          contact={contacts[index]}
-          on:click={() => {
-            // goto(`/contacts/${item.uuid}`)
-          }}
-        />
-      </div>
+    <VirtualList items={contacts} itemHeight={64} let:item>
+      <ContactItem
+        contact={item}
+        on:click={() => {
+          goto(`/contacts/${item.uuid}`)
+        }}
+      />
     </VirtualList>
   {:catch err}
     Oh no! {err}
