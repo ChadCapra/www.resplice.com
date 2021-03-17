@@ -1,6 +1,6 @@
 <script>
-  import Button from '$lib/shared/Button.svelte'
-  import TextField from '$lib/shared/TextField.svelte'
+  import Button from '$lib/common/Button.svelte'
+  import TextField from '$lib/common/form/TextField.svelte'
   import RespliceWide from '$lib/icons/RespliceWide.svelte'
 
   let attribute = ''
