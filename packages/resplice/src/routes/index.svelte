@@ -1,6 +1,10 @@
 <script context="module">
-  export async function load(page) {
-    // console.log(page.context)
-    // return this.redirect(301, 'contacts')
+  import { goto } from '$app/navigation'
+  /**
+   * @param {import('@sveltejs/kit).LoadOptions} options
+   * @returns {import('@sveltejs/kit').Loaded}
+   */
+  export async function load({ page, fetch, session, context }) {
+    goto('/showcase')
   }
 </script>
