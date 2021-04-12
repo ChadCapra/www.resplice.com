@@ -22,7 +22,7 @@
       <ContactItem
         contact={item}
         on:click={() => {
-          goto(`/contacts/${item.uuid}`)
+          goto(`contacts/${item.uuid}`)
         }}
       />
     </VirtualList>

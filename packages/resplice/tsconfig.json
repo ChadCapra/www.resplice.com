@@ -22,6 +22,7 @@
 		"paths": {
 			"$app/*": [".svelte/dev/runtime/app/*", ".svelte/build/runtime/app/*"],
 			"$lib/*": ["src/lib/*"],
+			"$workers/*": ["src/workers/*"],
 			"$types": ["src/types/index.type.ts"]
 		}
 	},

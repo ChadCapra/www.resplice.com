@@ -1,5 +1,7 @@
 <script>
   import cx from 'classnames'
+  import { AsYouType } from 'libphonenumber-js'
+
   export let name: string
   export let label: string
   export let value: string
@@ -7,6 +9,10 @@
   // TODO: Figure out how to type svelte component prop
   export let Icon: any = null
   let isTouched = !!value
+
+  function onPhoneChange(phone: string) {
+    value = new AsYouType('US').input(phone)
+  }
 </script>
 
 <div class="w-full">
@@ -36,7 +42,8 @@
       class:pl-16={!!Icon}
       class:focus:ring-2={!error}
       {name}
-      bind:value
+      {value}
+      on:input={(e) => onPhoneChange(e.currentTarget.value)}
       on:focus={() => (isTouched = true)}
       on:blur={() => (!!value ? (isTouched = true) : (isTouched = false))}
     />

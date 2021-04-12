@@ -7,12 +7,17 @@
   import ContactItem from '$lib/contacts/ContactItem.svelte'
   import ChatMessage from '$lib/common/ChatMessage.svelte'
   import Status from '$lib/common/Status.svelte'
+  import MessageField from '$lib/common/MessageField.svelte'
   import Modal from '$lib/common/Modal.svelte'
 
   let fullName = ''
   let rememberMe = false
   let showModal = false
 </script>
+
+<svelte:head>
+  <title>Resplice Showcase</title>
+</svelte:head>
 
 <div
   class="w-full h-full p-4 re-scrollbar flex flex-col space-y-4 py-4 overflow-auto"
@@ -100,5 +105,30 @@
         <div class="w-full">Modal content here</div>
       </Modal>
     {/if}
+  </div>
+
+  <div class="mb-4 flex flex-col items-center space-y-2 bg-gray-300 max-h-full">
+    <div>
+      <ChatMessage
+        message={{
+          uuid: 'message_1',
+          entity_uuid: 'han_solo',
+          entity_name: 'Han Solo',
+          timestamp: '2021-02-22T15:24:00',
+          content: "Hey, what's up??"
+        }}
+      />
+      <ChatMessage
+        message={{
+          uuid: 'message_2',
+          entity_uuid: 'bastilla_shan',
+          entity_name: 'Bastilla Shan',
+          timestamp: '2021-02-22T15:30:00',
+          content:
+            'I am preparing for my council meeting this afternoon. I will be at the main station in the afternoon, want to grab a drink?'
+        }}
+      />
+    </div>
+    <MessageField />
   </div>
 </div>

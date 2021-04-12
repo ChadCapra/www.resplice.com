@@ -1,9 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 /* Write your global styles here, in PostCSS syntax */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 
 :root {
   --brand-primary: 27, 188, 155;

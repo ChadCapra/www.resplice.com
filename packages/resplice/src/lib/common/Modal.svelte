@@ -70,7 +70,7 @@
 <svelte:window on:keydown={onKeyDown} />
 
 <div
-  class="fixed top-0 left-0 w-full h-full backdrop"
+  class="fixed top-0 left-0 w-full h-full backdrop z-10"
   style="margin: 0; padding: 0"
 >
   <div

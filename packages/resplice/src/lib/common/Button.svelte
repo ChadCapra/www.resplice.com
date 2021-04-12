@@ -13,7 +13,7 @@
   {type}
   class={cx(
     $$props.class,
-    'text-lg font-semibold rounded-full transform transition duration-75 ease-in-out active:scale-90 shadow-md active:shadow-none focus:ring-4 focus:ring-green-200 focus:outline-none',
+    'text-lg font-semibold rounded-lg transform transition duration-75 ease-in-out active:scale-90 shadow-md active:shadow-none focus:ring-4 focus:ring-green-200 focus:outline-none',
     {
       'bg-brand-primary text-white': color === 'brand',
       'bg-yellow-700 text-white': color === 'warning',
