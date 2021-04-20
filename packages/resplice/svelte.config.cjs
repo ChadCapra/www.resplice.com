@@ -27,6 +27,7 @@ module.exports = {
       },
       resolve: {
         alias: {
+          $api: resolve(__dirname, './src/api'),
           $stores: resolve(__dirname, './src/stores'),
           $workers: resolve(__dirname, './src/workers')
         }

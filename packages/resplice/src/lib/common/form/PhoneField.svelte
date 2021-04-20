@@ -10,8 +10,19 @@
   export let Icon: any = null
   let isTouched = !!value
 
-  function onPhoneChange(phone: string) {
-    value = new AsYouType('US').input(phone)
+  type InputEvent = Event & {
+    currentTarget: EventTarget & HTMLInputElement
+  }
+  function onPhoneChange(e: InputEvent) {
+    const phone = e.currentTarget.value
+    if (/^[a-zA-Z]/.test(phone)) {
+      // TODO: Figure out how to rerender here
+      // Setting value to empty string doesn't rerender component
+      // which allows letters in the phone input
+      value = ''
+    } else {
+      value = new AsYouType('US').input(phone)
+    }
   }
 </script>
 
@@ -43,7 +54,7 @@
       class:focus:ring-2={!error}
       {name}
       {value}
-      on:input={(e) => onPhoneChange(e.currentTarget.value)}
+      on:input|preventDefault={onPhoneChange}
       on:focus={() => (isTouched = true)}
       on:blur={() => (!!value ? (isTouched = true) : (isTouched = false))}
     />

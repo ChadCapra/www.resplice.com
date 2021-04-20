@@ -1,6 +1,3 @@
-// Utility Types
-export type Dictionary<V> = { [key: string]: V }
-
 // Data Types
 export type Attribute = {
   uuid: string
@@ -40,6 +37,6 @@ export type Session = null | {
   user_agent: string
   location: string
   remember_me: boolean
-  public_key: Dictionary<string>
-  private_key: Dictionary<string>
+  public_key: Record<string, string>
+  private_key: Record<string, string>
 }
