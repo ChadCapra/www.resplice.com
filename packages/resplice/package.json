@@ -18,7 +18,7 @@
     "cssnano": "^4.1.10",
     "date-fns": "^2.19.0",
     "libphonenumber-js": "^1.9.16",
-    "msw": "^0.27.2",
+    "msw": "^0.28.1",
     "postcss": "^8.2.7",
     "postcss-load-config": "^3.0.1",
     "svelte": "^3.29.0",

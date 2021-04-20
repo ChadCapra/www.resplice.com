@@ -7,10 +7,24 @@
   import MailIcon from '$lib/icons/MailIcon.svelte'
   import PhoneIcon from '$lib/icons/PhoneIcon.svelte'
 
+  let keys
+
   onMount(() => {
     const cryptoWorker = new CryptoWorker()
-    cryptoWorker.postMessage('Hello there!')
+    cryptoWorker.onmessage = (e) => {
+      const cmd = e.data
+      switch (cmd.type) {
+        case 'GENERATE_KEYS':
+          keys = cmd.data.keys
+          break
+      }
+    }
+    cryptoWorker.postMessage({ type: 'GENERATE_KEYS' })
   })
+
+  $: {
+    console.log(keys)
+  }
 
   let phone = ''
   let email = ''
