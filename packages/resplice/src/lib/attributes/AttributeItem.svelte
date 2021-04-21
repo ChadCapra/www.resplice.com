@@ -1,7 +1,7 @@
 <script>
   import type { Attribute } from '$types'
-  import ChatBubblesIcon from '$components/icons/ChatBubblesIcon.svelte'
-  import Modal from '$components/common/Modal.svelte'
+  import ChatBubblesIcon from '$lib/icons/ChatBubblesIcon.svelte'
+  import Modal from '$lib/common/Modal.svelte'
   export let attribute: Attribute
   let showContextModal = false
 </script>
@@ -10,7 +10,7 @@
   <div class="flex items-center flex-1 overflow-hidden">
     <button
       class="outline-none border-none p-3 bg-brand-primary bg-opacity-20 text-brand-primary rounded-lg focus:outline-none transform transition duration-75 ease-in-out active:scale-90"
-      on:click={() => console.log('action 2')}
+      on:click={() => console.log('action 1')}
     >
       <ChatBubblesIcon width={24} height={24} />
     </button>

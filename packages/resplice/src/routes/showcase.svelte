@@ -1,4 +1,5 @@
 <script>
+  import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import Avatar from '$lib/common/Avatar.svelte'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
@@ -25,6 +26,39 @@
   <h1 class="text-3xl text-gray-800 font-bold text-center mb-4">
     Resplice Component Showcase
   </h1>
+  <div class="mb-4 flex flex-col items-center space-y-2">
+    <h1 class="text-xl text-gray-800 font-bold mb-2">Attributes</h1>
+    <AttributeItem
+      attribute={{
+        uuid: '123',
+        contact_uuid: 'bastillashan',
+        type: 'phone',
+        collection: 'Personal',
+        name: 'Phone',
+        value: '5552345532'
+      }}
+    />
+    <AttributeItem
+      attribute={{
+        uuid: '125',
+        contact_uuid: 'bastillashan',
+        type: 'social',
+        collection: 'Social',
+        name: 'Instagram',
+        value: 'bshan145'
+      }}
+    />
+    <AttributeItem
+      attribute={{
+        uuid: '126',
+        contact_uuid: 'bastillashan',
+        type: 'social',
+        collection: 'Social',
+        name: 'Twitter',
+        value: 'reallylonghandlethatshouldoverflowthecardandshowellipsis'
+      }}
+    />
+  </div>
   <div class="mb-4 flex flex-col items-center space-y-2">
     <h1 class="text-xl text-gray-800 font-bold mb-2">Avatars</h1>
     <div class="flex items-center space-x-2">
