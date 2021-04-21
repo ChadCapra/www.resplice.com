@@ -1,3 +1,4 @@
+// Data Types
 export type Attribute = {
   uuid: string
   contact_uuid: string
@@ -26,4 +27,16 @@ export type Message = {
   entity_name: string
   timestamp: string
   content: string
+}
+
+export type Session = null | {
+  uuid: string
+  access_token: string
+  expiry: string
+  authenticated_at: string
+  user_agent: string
+  location: string
+  remember_me: boolean
+  public_key: Record<string, string>
+  private_key: Record<string, string>
 }

@@ -1,3 +1,15 @@
+<script context="module">
+  // TODO: Setup i18n
+  // import { waitLocale } from 'svelte-i18n'
+
+  // /**
+  //  * @type {import('@sveltejs/kit').Load}
+  //  */
+  // export async function load() {
+  //   return await waitLocale()
+  // }
+</script>
+
 <script>
   import '../global.css'
 </script>

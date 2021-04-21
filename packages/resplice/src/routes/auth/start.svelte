@@ -9,10 +9,8 @@
   <title>Login</title>
 </svelte:head>
 
-<main
-  class="w-full h-full p-8 flex flex-col justify-between items-center m-auto max-w-lg"
->
-  <header>
+<main class="w-full h-full p-8 flex flex-col justify-between m-auto max-w-lg">
+  <header class="flex-none w-full">
     <RespliceWide width="100%" />
     <p class="text-lg font-semibold mt-4">
       Welcome to the world's most up-to-date address book.
