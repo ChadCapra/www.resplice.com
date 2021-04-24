@@ -29,7 +29,7 @@ export type Message = {
   content: string
 }
 
-export type Session = null | {
+export type Session = {
   uuid: string
   access_token: string
   expiry: string
@@ -39,4 +39,10 @@ export type Session = null | {
   remember_me: boolean
   public_key: Record<string, string>
   private_key: Record<string, string>
+}
+
+export type User = {
+  uuid: string
+  name: string
+  avatar: string | null
 }

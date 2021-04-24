@@ -2,6 +2,7 @@ import { rest } from 'msw'
 import contacts from './contacts'
 import attributes from './attributes'
 import messages from './messages'
+import user from './user'
 import type { ContactDetail } from '$types'
 
 const BACKEND_URL = 'https://api.resplice.com'
@@ -21,6 +22,9 @@ const handlers = [
     }
 
     return res(ctx.status(200), ctx.delay(100), ctx.json(contactDetail))
+  }),
+  rest.get(`${BACKEND_URL}/user`, (req, res, ctx) => {
+    return res(ctx.status(200), ctx.delay(100), ctx.json(user))
   })
 ]
 
