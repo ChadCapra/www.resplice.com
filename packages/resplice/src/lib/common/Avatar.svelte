@@ -4,21 +4,23 @@
   export let uuid: string
   export let src = ''
   // export let isEditable = false
-  export let size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' = 'md'
+  export let size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' = 'md'
 
   const avatarWidthMap = {
     xs: '1em',
     sm: '2em',
     md: '3em',
     lg: '4em',
-    xl: '6em'
+    xl: '6em',
+    '2xl': '9em'
   }
   const imageWidthMap = {
     xs: '1.5em',
     sm: '2em',
     md: '3em',
     lg: '4.5em',
-    xl: '7em'
+    xl: '7em',
+    '2xl': '10em'
   }
   const avatarWidth = avatarWidthMap[size]
   const imageWidth = imageWidthMap[size]
@@ -26,7 +28,11 @@
   const svg = avatars.create(uuid)
 </script>
 
-<div class="bg-gray-200 rounded-full active:scale-95" class:p-1={!src} on:click>
+<div
+  class="bg-gray-100 rounded-full active:scale-95 w-max"
+  class:p-1={!src}
+  on:click
+>
   {#if src}
     <img {src} width={imageWidth} alt={uuid} />
   {:else}

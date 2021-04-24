@@ -34,7 +34,8 @@ module.exports = {
         //     return `rgb(var(--brand-primary))`
         //   }
         // },
-        gray: colors.blueGray
+        gray: colors.blueGray,
+        indigo: colors.indigo
       }
     }
   },

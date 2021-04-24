@@ -1,19 +1,20 @@
 <script>
   import type { Attribute } from '$types'
-  import ChatBubblesIcon from '$lib/icons/ChatBubblesIcon.svelte'
+  import AttributeAction from '$lib/attributes/AttributeAction.svelte'
+  import AttributeValue from '$lib/attributes/AttributeValue.svelte'
   import Modal from '$lib/common/Modal.svelte'
+  import attributeTypes from '../../mocks/attributeTypes'
+
   export let attribute: Attribute
+  export let itemType: 'contact' | 'user'
   let showContextModal = false
+
+  const attributeType = attributeTypes[attribute.type]
 </script>
 
 <div class="flex justify-between items-center w-full">
   <div class="flex items-center flex-1 overflow-hidden">
-    <button
-      class="outline-none border-none p-3 bg-brand-primary bg-opacity-20 text-brand-primary rounded-lg focus:outline-none transform transition duration-75 ease-in-out active:scale-90"
-      on:click={() => console.log('action 1')}
-    >
-      <ChatBubblesIcon width={24} height={24} />
-    </button>
+    <AttributeAction {itemType} attributeAction={attributeType.actions[0]} />
     <div
       class="flex flex-col mx-4 flex-1 overflow-hidden no-highlight"
       role="button"
@@ -24,16 +25,12 @@
       >
         {attribute.name}
       </span>
-      <!-- TODO: Format attributes values based on type -->
-      <span class="overflow-hidden overflow-ellipsis">{attribute.value}</span>
+      <AttributeValue {attribute} />
     </div>
   </div>
-  <button
-    class="outline-none border-none p-3 bg-brand-primary bg-opacity-20 text-brand-primary rounded-lg focus:outline-none transform transition duration-75 ease-in-out active:scale-90"
-    on:click={() => console.log('action 2')}
-  >
-    <ChatBubblesIcon width={24} height={24} />
-  </button>
+  {#if itemType === 'contact'}
+    <AttributeAction {itemType} attributeAction={attributeType.actions[1]} />
+  {/if}
 </div>
 
 {#if showContextModal}
@@ -45,8 +42,7 @@
         >
           {attribute.name}
         </span>
-        <!-- TODO: Format attributes values based on type -->
-        <span class="overflow-hidden overflow-ellipsis">{attribute.value}</span>
+        <AttributeValue {attribute} />
       </div>
     </div>
   </Modal>

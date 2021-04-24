@@ -1,4 +1,5 @@
 import type { Message } from '$types'
+
 const messages: Message[] = [
   {
     uuid: '123',

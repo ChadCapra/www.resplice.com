@@ -1,9 +1,11 @@
-import type { User } from "$types"
+import type { User } from '$types'
+import attributes from './attributes'
 
 const user: User = {
   uuid: 'bastillashan',
   name: 'Bastilla Shan',
-  avatar: null
+  avatar: null,
+  attributes
 }
 
 export default user
