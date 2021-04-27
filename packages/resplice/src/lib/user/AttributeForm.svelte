@@ -1,8 +1,8 @@
 <script>
-  import type { Attribute, AttributeTypeConfig } from '$types'
+  import type { Attribute, AttributeType } from '$types'
   import Button from '$lib/common/Button.svelte'
 
-  export let attributeType: AttributeTypeConfig
+  export let attributeType: AttributeType
   export let attribute: Attribute | null = null
 </script>
 

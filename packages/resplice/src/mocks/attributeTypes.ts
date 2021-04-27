@@ -1,50 +1,17 @@
-import type {
-  AttributeAction,
-  AttributeActionType,
-  AttributeType,
-  AttributeTypeConfig
-} from '$types'
+import type { AttributeTypeEnum, AttributeType } from '$types'
 
-const actions: Record<AttributeActionType, AttributeAction> = {
-  calendar: {
-    iconName: 'calendar',
-    action: 'calendar'
-  },
-  call: {
-    iconName: 'call',
-    action: 'call'
-  },
-  copy: {
-    iconName: 'clipboard',
-    action: 'copy'
-  },
-  email: {
-    iconName: 'mail',
-    action: 'email'
-  },
-  link: {
-    iconName: 'link',
-    action: 'link'
-  },
-  locate: {
-    iconName: 'locate',
-    action: 'locate'
-  },
-  map: {
-    iconName: 'map',
-    action: 'map'
-  },
-  navigate: {
-    iconName: 'navigate',
-    action: 'navigate'
-  },
-  sms: {
-    iconName: 'chatbox',
-    action: 'sms'
-  }
+export enum Action {
+  Calendar = 'calendar',
+  Call = 'call',
+  Copy = 'copy',
+  Email = 'email',
+  Link = 'link',
+  Locate = 'locate',
+  Navigate = 'navigate',
+  Sms = 'sms'
 }
 
-const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
+const attributeTypes: Record<AttributeTypeEnum, AttributeType> = {
   phone: {
     type: 'phone',
     name: 'Phone',
@@ -54,7 +21,7 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       number: 2,
       extension: 3
     },
-    actions: [actions.call, actions.sms, actions.copy]
+    actions: [Action.Call, Action.Sms, Action.Copy]
   },
   email: {
     type: 'email',
@@ -63,7 +30,7 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       icon: 0,
       email: 1
     },
-    actions: [actions.email, actions.copy]
+    actions: [Action.Email, Action.Copy]
   },
   address: {
     type: 'address',
@@ -78,7 +45,7 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       country: 6,
       planet: 7
     },
-    actions: [actions.map, actions.navigate, actions.copy]
+    actions: [Action.Navigate, Action.Locate, Action.Copy]
   },
   coordinates: {
     type: 'coordinates',
@@ -88,7 +55,7 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       lon: 1,
       lat: 2
     },
-    actions: [actions.locate, actions.navigate, actions.copy]
+    actions: [Action.Locate, Action.Navigate, Action.Copy]
   },
   location: {
     type: 'location',
@@ -99,7 +66,7 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       lat: 2,
       provider: 3
     },
-    actions: [actions.locate, actions.navigate, actions.copy]
+    actions: [Action.Locate, Action.Navigate, Action.Copy]
   },
   social: {
     type: 'social',
@@ -109,7 +76,7 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       handle: 1,
       provider: 2
     },
-    actions: [actions.link, actions.copy]
+    actions: [Action.Link, Action.Copy]
   }
 }
 

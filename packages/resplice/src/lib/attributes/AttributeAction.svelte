@@ -1,15 +1,49 @@
 <script>
   import type { AttributeAction } from '$types'
   import cx from 'classnames'
+  import {
+    callPhone,
+    copyText,
+    email,
+    goto,
+    locate,
+    openCalendar,
+    openSms
+  } from '$lib/utils'
   import ActionIcon from '$lib/attributes/ActionIcon.svelte'
 
   export let itemType: 'contact' | 'user' | 'disabled'
   export let attributeAction: AttributeAction
+  export let attributeValue: string
 
   function onActionClick() {
     if (itemType === 'disabled') return
-    // TODO: Implement real actions on click
-    console.log(attributeAction.action)
+    switch (attributeAction) {
+      case 'calendar':
+        openCalendar()
+        break
+      case 'call':
+        callPhone(attributeValue)
+        break
+      case 'copy':
+        copyText(attributeValue)
+        break
+      case 'email':
+        email(attributeValue)
+        break
+      case 'link':
+        goto(attributeValue)
+        break
+      case 'locate':
+        locate(attributeValue)
+        break
+      case 'navigate':
+        locate(attributeValue, true)
+        break
+      case 'sms':
+        openSms(attributeValue)
+        break
+    }
   }
 </script>
 
@@ -24,5 +58,5 @@
   )}
   on:click={onActionClick}
 >
-  <ActionIcon iconName={attributeAction.iconName} />
+  <ActionIcon {attributeAction} />
 </button>

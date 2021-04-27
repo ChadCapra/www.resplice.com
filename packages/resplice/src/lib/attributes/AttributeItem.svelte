@@ -14,7 +14,11 @@
 
 <div class="flex justify-between items-center w-full">
   <div class="flex items-center flex-1 overflow-hidden">
-    <AttributeAction {itemType} attributeAction={attributeType.actions[0]} />
+    <AttributeAction
+      {itemType}
+      attributeAction={attributeType.actions[0]}
+      attributeValue={attribute.value}
+    />
     <div
       class="flex flex-col mx-4 flex-1 overflow-hidden no-highlight"
       role="button"
@@ -29,7 +33,11 @@
     </div>
   </div>
   {#if itemType === 'contact'}
-    <AttributeAction {itemType} attributeAction={attributeType.actions[1]} />
+    <AttributeAction
+      {itemType}
+      attributeAction={attributeType.actions[1]}
+      attributeValue={attribute.value}
+    />
   {/if}
 </div>
 

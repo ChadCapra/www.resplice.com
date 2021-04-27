@@ -1,32 +1,25 @@
 // Data Types
 // Attributes
-export type AttributeActionType =
+export type Attribute = {
+  uuid: string
+  contact_uuid: string
+  type: AttributeTypeEnum
+  name: string
+  collection: string
+  value: string
+  sort_order: number
+}
+export type AttributeAction =
   | 'calendar'
   | 'call'
   | 'copy'
   | 'email'
   | 'link'
   | 'locate'
-  | 'map'
   | 'navigate'
   | 'sms'
 
-export type AttributeAction = {
-  iconName: string
-  action: string
-}
-
-export type Attribute = {
-  uuid: string
-  contact_uuid: string
-  type: AttributeType
-  name: string
-  collection: string
-  value: string
-  sort_order: number
-}
-
-export type AttributeType =
+export type AttributeTypeEnum =
   | 'phone'
   | 'email'
   | 'address'
@@ -34,11 +27,15 @@ export type AttributeType =
   | 'location'
   | 'social'
 
-export type AttributeTypeConfig = {
-  type: AttributeType
+export type AttributeType = {
+  type: AttributeTypeEnum
   name: string
   valueMap: Record<string, number>
   actions: AttributeAction[]
+}
+export type Coordinate = {
+  lon: number
+  lat: number
 }
 
 // Contacts
