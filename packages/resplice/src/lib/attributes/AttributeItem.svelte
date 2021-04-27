@@ -5,24 +5,30 @@
   import Modal from '$lib/common/Modal.svelte'
   import attributeTypes from '../../mocks/attributeTypes'
 
-  export let attribute: Attribute
-  export let itemType: 'contact' | 'user'
+  export let itemType: 'contact' | 'user' | 'disabled'
+  export let attribute: Pick<Attribute, 'type' | 'name' | 'value'>
   let showContextModal = false
 
   const attributeType = attributeTypes[attribute.type]
+
+  function onAttributeClick() {
+    if (itemType === 'disabled') return
+
+    showContextModal = true
+  }
 </script>
 
 <div class="flex justify-between items-center w-full">
   <div class="flex items-center flex-1 overflow-hidden">
     <AttributeAction
       {itemType}
+      {attribute}
       attributeAction={attributeType.actions[0]}
-      attributeValue={attribute.value}
     />
     <div
       class="flex flex-col mx-4 flex-1 overflow-hidden no-highlight"
       role="button"
-      on:click={() => (showContextModal = true)}
+      on:click={onAttributeClick}
     >
       <span
         class="font-semibold text-gray-800 overflow-hidden overflow-ellipsis"
@@ -32,11 +38,11 @@
       <AttributeValue {attribute} />
     </div>
   </div>
-  {#if itemType === 'contact'}
+  {#if itemType !== 'user'}
     <AttributeAction
       {itemType}
+      {attribute}
       attributeAction={attributeType.actions[1]}
-      attributeValue={attribute.value}
     />
   {/if}
 </div>

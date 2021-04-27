@@ -1,5 +1,5 @@
 <script>
-  import type { AttributeAction } from '$types'
+  import type { Attribute, AttributeAction } from '$types'
   import cx from 'classnames'
   import {
     callPhone,
@@ -14,7 +14,7 @@
 
   export let itemType: 'contact' | 'user' | 'disabled'
   export let attributeAction: AttributeAction
-  export let attributeValue: string
+  export let attribute: Pick<Attribute, 'value'>
 
   function onActionClick() {
     if (itemType === 'disabled') return
@@ -23,25 +23,25 @@
         openCalendar()
         break
       case 'call':
-        callPhone(attributeValue)
+        callPhone(attribute.value)
         break
       case 'copy':
-        copyText(attributeValue)
+        copyText(attribute.value)
         break
       case 'email':
-        email(attributeValue)
+        email(attribute.value)
         break
       case 'link':
-        goto(attributeValue)
+        goto(attribute.value)
         break
       case 'locate':
-        locate(attributeValue)
+        locate(attribute.value)
         break
       case 'navigate':
-        locate(attributeValue, true)
+        locate(attribute.value, true)
         break
       case 'sms':
-        openSms(attributeValue)
+        openSms(attribute.value)
         break
     }
   }

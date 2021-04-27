@@ -1,7 +1,7 @@
 <script>
   import type { Attribute } from '$types'
 
-  export let attribute: Attribute
+  export let attribute: Pick<Attribute, 'type' | 'value'>
 </script>
 
 <!-- TODO: Format attributes values based on type -->
