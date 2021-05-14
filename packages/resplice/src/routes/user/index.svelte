@@ -1,4 +1,5 @@
 <script>
+  import { onMount } from 'svelte'
   import type { User } from '$types'
   import Header from '$lib/user/Header.svelte'
   import UserAttributeList from '$lib/user/UserAttributeList.svelte'
@@ -14,15 +15,34 @@
     if (!user) return []
     return user.attributes.sort((a, b) => a.sort_order - b.sort_order)
   }
+
+  let scrollEl: HTMLDivElement
+  let showUserOnHeader = false
+  onMount(() => {
+    let observer = new IntersectionObserver((entries) => {
+      const entry = entries[0]
+      showUserOnHeader = !entry.isIntersecting
+    })
+    if (scrollEl) {
+      observer.observe(scrollEl)
+    }
+  })
 </script>
 
 <svelte:head>
   <title>{user.name}</title>
 </svelte:head>
 
-<main>
-  <Header {user} />
-  <UserAvatar {user} />
-  <UserAttributeList {attributes} />
-  <AddAttributeButton />
+<main class="flex flex-col w-full h-full">
+  <Header showUser={showUserOnHeader} {user} />
+  <div class="flex-1 overflow-auto relative">
+    <UserAvatar {user} />
+    <div
+      bind:this={scrollEl}
+      id="scrollIntersection"
+      class="absolute top-1/4"
+    />
+    <UserAttributeList {attributes} />
+    <AddAttributeButton />
+  </div>
 </main>

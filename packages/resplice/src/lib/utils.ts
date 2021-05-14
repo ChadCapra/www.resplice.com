@@ -8,6 +8,10 @@ export function filtersContactsList(
   return contacts
 }
 
+export function capitalize(text: string): string {
+  return text.substring(0, 1).toUpperCase() + text.substring(1)
+}
+
 export function validateEmail(email: string): boolean {
   /* eslint-disable no-control-regex, no-useless-escape */
   // prettier-ignore

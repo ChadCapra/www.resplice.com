@@ -21,7 +21,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: { primary: '#1BBC9B' },
+        brand: { primary: '#1BBC9B', 'primary-dark': '#079275' },
         // Seems to not work with tailwind JIT
         // brand: {
         //   primary: ({ opacityVariable, opacityValue }) => {

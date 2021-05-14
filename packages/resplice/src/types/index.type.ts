@@ -6,7 +6,7 @@ export type Attribute = {
   type: AttributeTypeEnum
   name: string
   collection: string
-  value: string
+  value: any[]
   sort_order: number
 }
 export type AttributeAction =

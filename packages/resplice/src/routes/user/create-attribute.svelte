@@ -1,13 +1,21 @@
 <script>
   import type { AttributeType } from '$types'
   import AttributeTypeItem from '$lib/attributes/AttributeTypeItem.svelte'
-  import BackButton from '$lib/common/BackButton.svelte'
+  import Button from '$lib/common/Button.svelte'
   import attributeTypes from '../../mocks/attributeTypes'
   import AttributeForm from '$lib/attributes/form/AttributeForm.svelte'
 
   $: types = Object.values(attributeTypes)
 
   let activeAttributeType: AttributeType | null = null
+
+  function onCancel() {
+    if (!!activeAttributeType) {
+      activeAttributeType = null
+    } else {
+      window.history.back()
+    }
+  }
 </script>
 
 <main
@@ -29,5 +37,7 @@
     </div>
   {/if}
 
-  <div class="p-4"><BackButton /></div>
+  <div class="p-4">
+    <Button color="danger-light" on:click={onCancel}>Cancel</Button>
+  </div>
 </main>

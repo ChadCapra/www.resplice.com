@@ -8,8 +8,8 @@
 
   const avatarWidthMap = {
     xs: '1em',
-    sm: '2em',
-    md: '3em',
+    sm: '1.5em',
+    md: '2em',
     lg: '4em',
     xl: '6em',
     '2xl': '9em'
@@ -30,7 +30,7 @@
 
 <div
   class="bg-gray-100 rounded-full active:scale-95 w-max"
-  class:p-1={!src}
+  class:p-2={!src}
   on:click
 >
   {#if src}

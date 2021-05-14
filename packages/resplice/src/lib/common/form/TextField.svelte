@@ -10,11 +10,7 @@
 </script>
 
 <div class="w-full">
-  <div
-    class="relative rounded-2xl w-full text-left h-14 flex items-center"
-    class:ring-2={error}
-    class:ring-red-600={error}
-  >
+  <div class="relative rounded-2xl w-full text-left h-14 flex items-center">
     {#if Icon}
       <div class="ml-4 text-gray-700">
         <svelte:component this={Icon} width={32} height={32} />
@@ -32,9 +28,10 @@
     </label>
     <input
       type="text"
-      class="appearance-none absolute top-0 left-0 w-full h-14 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 font-semibold text-lg text-gray-900 ring-2 ring-gray-600 focus:ring-gray-800"
+      class="appearance-none absolute top-0 left-0 w-full h-14 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 font-semibold text-lg text-gray-900 ring-2 focus:ring-gray-800"
       class:pl-16={!!Icon}
-      class:focus:ring-2={!error}
+      class:ring-gray-600={!error}
+      class:ring-red-600={!!error}
       {name}
       bind:value
       on:focus={() => (isTouched = true)}

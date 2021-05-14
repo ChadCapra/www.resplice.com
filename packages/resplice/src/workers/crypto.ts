@@ -52,7 +52,7 @@ async function generateKeys() {
   })
 }
 
-async function encrypt(derivedKey: CryptoKey, data: any) {
+async function encrypt(derivedKey: CryptoKey, data: unknown) {
   if (!data) ctx.postMessage('')
   if (!derivedKey) throw new Error('Key must exist to encrypt data')
   // The IV should change everytime encryption happens?
@@ -69,7 +69,7 @@ async function encrypt(derivedKey: CryptoKey, data: any) {
   return ctx.postMessage({ type: Command.ENCRYPT, data: encryptedData })
 }
 
-async function decrypt(derivedKey: CryptoKey, data: any) {
+async function decrypt(derivedKey: CryptoKey, data: unknown) {
   if (!data) ctx.postMessage('')
   return ctx.postMessage('')
 }

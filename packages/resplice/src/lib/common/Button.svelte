@@ -22,7 +22,7 @@
     'text-lg font-semibold rounded-lg transform transition duration-75 ease-in-out active:scale-90 shadow-md active:shadow-none focus:ring-4 focus:ring-green-200 focus:outline-none',
     {
       'bg-brand-primary text-white': color === 'brand',
-      'bg-brand-primary text-brand-primary bg-opacity-20 shadow-none':
+      'bg-brand-primary text-brand-primary-dark bg-opacity-20 shadow-none':
         color === 'brand-light',
       'bg-yellow-700 text-white': color === 'warning',
       'bg-red-700 text-white': color === 'danger',
