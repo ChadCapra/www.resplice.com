@@ -11,7 +11,7 @@
 >
   <AttributeAction
     itemType="disabled"
-    attribute={{ value: '' }}
+    attribute={{ value: [''] }}
     attributeAction={attributeType.actions[0]}
   />
   <span class="font-semibold text-gray-800 overflow-hidden overflow-ellipsis">

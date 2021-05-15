@@ -30,32 +30,23 @@
     <h1 class="text-xl text-gray-800 font-bold mb-2">Attributes</h1>
     <AttributeItem
       attribute={{
-        uuid: '123',
-        contact_uuid: 'bastillashan',
         type: 'phone',
-        collection: 'Personal',
         name: 'Phone',
-        value: '5552345532'
+        value: ['5552345532']
       }}
     />
     <AttributeItem
       attribute={{
-        uuid: '125',
-        contact_uuid: 'bastillashan',
         type: 'social',
-        collection: 'Social',
         name: 'Instagram',
-        value: 'bshan145'
+        value: ['bshan145']
       }}
     />
     <AttributeItem
       attribute={{
-        uuid: '126',
-        contact_uuid: 'bastillashan',
         type: 'social',
-        collection: 'Social',
         name: 'Twitter',
-        value: 'reallylonghandlethatshouldoverflowthecardandshowellipsis'
+        value: ['reallylonghandlethatshouldoverflowthecardandshowellipsis']
       }}
     />
   </div>

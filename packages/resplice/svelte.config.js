@@ -1,10 +1,9 @@
-const sveltePreprocess = require('svelte-preprocess')
-const node = require('@sveltejs/adapter-node')
-const pkg = require('./package.json')
-const { resolve } = require('path')
+import sveltePreprocess from 'svelte-preprocess'
+import node from '@sveltejs/adapter-node'
+import { resolve } from 'path'
 
 /** @type {import('@sveltejs/kit').Config} */
-module.exports = {
+const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
   // for more information about preprocessors
   preprocess: sveltePreprocess({
@@ -22,16 +21,15 @@ module.exports = {
     target: '#app',
 
     vite: {
-      ssr: {
-        noExternal: Object.keys(pkg.dependencies || {})
-      },
       resolve: {
         alias: {
-          $api: resolve(__dirname, './src/api'),
-          $stores: resolve(__dirname, './src/stores'),
-          $workers: resolve(__dirname, './src/workers')
+          $api: resolve('./src/api'),
+          $stores: resolve('./src/stores'),
+          $workers: resolve('./src/workers')
         }
       }
     }
   }
 }
+
+export default config
