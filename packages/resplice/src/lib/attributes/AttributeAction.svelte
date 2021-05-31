@@ -17,31 +17,32 @@
   export let attribute: Pick<Attribute, 'value'>
 
   function onActionClick() {
+    // TODO: These should be tied to attribute type
     if (itemType === 'disabled') return
     switch (attributeAction) {
       case 'calendar':
         openCalendar()
         break
       case 'call':
-        callPhone(attribute.value)
+        callPhone(attribute.value[1])
         break
       case 'copy':
-        copyText(attribute.value)
+        copyText(attribute.value[0])
         break
       case 'email':
-        email(attribute.value)
+        email(attribute.value[0])
         break
       case 'link':
-        goto(attribute.value)
+        goto(attribute.value[0])
         break
       case 'locate':
-        locate(attribute.value)
+        locate(attribute.value[0])
         break
       case 'navigate':
-        locate(attribute.value, true)
+        locate(attribute.value[0], true)
         break
       case 'sms':
-        openSms(attribute.value)
+        openSms(attribute.value[1])
         break
     }
   }

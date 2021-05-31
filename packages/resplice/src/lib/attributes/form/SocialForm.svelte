@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte'
-  import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
+  import Button from '$lib/common/Button.svelte'
   import { capitalize } from '$lib/utils'
 
   const dispatch = createEventDispatcher()
@@ -51,5 +51,9 @@
   <p class="text-red-600 h-6 w-full" style={'margin-top: 0.25rem'}>
     {errorString}
   </p>
+
+  <Button color="danger-light" on:click={() => window.history.back()}>
+    Cancel
+  </Button>
   <Button on:click={onSave}>Save</Button>
 </form>

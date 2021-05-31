@@ -17,8 +17,8 @@
   }
 </script>
 
-<div class="w-full flex-1 overflow-auto p-4">
-  <div class="w-full shadow-lg rounded-lg p-4 mb-12">
+<div class="w-full h-full flex-1 overflow-auto p-4 flex flex-col">
+  <div class="w-full shadow-lg rounded-lg p-4 mb-12 flex-none">
     <h2 class="text-xl font-semibold mb-4">{attributeType.name}</h2>
     <AttributeItem
       itemType="disabled"
@@ -33,9 +33,9 @@
     <PhoneForm
       bind:name={attributeName}
       bind:countryCallingCode={attributeValue[0]}
-      bind:number={attributeValue[2]}
-      bind:extension={attributeValue[3]}
-      bind:sms={attributeValue[1]}
+      bind:number={attributeValue[1]}
+      bind:extension={attributeValue[2]}
+      bind:sms={attributeValue[3]}
       on:save={saveAttribute}
     />
   {:else if attributeType.type === 'email'}

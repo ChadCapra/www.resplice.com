@@ -1,6 +1,6 @@
 <script>
   import { onMount } from 'svelte'
-  import api from '$api'
+  import api from 'src/api/fetch'
   import CryptoWorker from '$workers/crypto?worker'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'

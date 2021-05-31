@@ -18,8 +18,8 @@
   }
 </script>
 
-<div class="flex justify-between items-center w-full">
-  <div class="flex items-center flex-1 overflow-hidden">
+<div class="flex justify-between items-start w-full">
+  <div class="flex items-start flex-1 overflow-hidden">
     <AttributeAction
       {itemType}
       {attribute}
@@ -31,7 +31,7 @@
       on:click={onAttributeClick}
     >
       <span
-        class="font-semibold text-gray-800 overflow-hidden overflow-ellipsis"
+        class="font-semibold text-gray-800 overflow-hidden overflow-ellipsis h-6"
       >
         {attribute.name}
       </span>
