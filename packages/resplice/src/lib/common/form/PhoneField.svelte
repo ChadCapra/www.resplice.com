@@ -15,14 +15,16 @@
   }
   function onPhoneChange(e: InputEvent) {
     const phone = e.currentTarget.value
-    if (/^[a-zA-Z]/.test(phone)) {
-      // TODO: Figure out how to rerender here
-      // Setting value to empty string doesn't rerender component
-      // which allows letters in the phone input
-      value = ''
-    } else {
-      value = new AsYouType('US').input(phone)
-    }
+    console.log(phone)
+    value = new AsYouType('US').input(phone)
+    // if (/^[a-zA-Z]/.test(phone)) {
+    //   // TODO: Figure out how to rerender here
+    //   // Setting value to empty string doesn't rerender component
+    //   // which allows letters in the phone input
+    //   value = ''
+    // } else {
+
+    // }
   }
 </script>
 

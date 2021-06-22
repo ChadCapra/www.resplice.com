@@ -4,6 +4,8 @@
 
   export let attribute: Pick<Attribute, 'type' | 'value'>
 
+  console.log(attribute.value)
+
   $: phone = attribute.value[1]
     ? parsePhoneNumber(attribute.value[1]).formatNational()
     : ''

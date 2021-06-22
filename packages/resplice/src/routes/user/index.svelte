@@ -35,7 +35,7 @@
 
 <main class="flex flex-col w-full h-full">
   <Header showUser={showUserOnHeader} {user} />
-  <div class="flex-1 overflow-auto relative">
+  <div class="flex-1 overflow-auto relative w-full max-w-xl m-auto">
     <UserAvatar {user} />
     <div
       bind:this={scrollEl}

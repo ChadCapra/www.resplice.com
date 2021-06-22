@@ -10,7 +10,9 @@
 </script>
 
 <div class="w-full">
-  <div class="relative rounded-2xl w-full text-left h-14 flex items-center">
+  <div
+    class="relative rounded-2xl w-full text-left h-14 flex items-center bg-white"
+  >
     {#if Icon}
       <div class="ml-4 text-gray-700">
         <svelte:component this={Icon} width={32} height={32} />

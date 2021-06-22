@@ -1,4 +1,4 @@
-// I export an empty object to satisfy the isolated modules TS requirement.
+// Export an empty object to satisfy the isolated modules TS requirement.
 export {}
 
 enum Command {

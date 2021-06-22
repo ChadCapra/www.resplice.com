@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from 'svelte'
-  import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
+  import FormButtons from '$lib/attributes/form/FormButtons.svelte'
 
   const dispatch = createEventDispatcher()
 
@@ -27,7 +27,7 @@
 </script>
 
 <form class="flex flex-col items-center justify-between my-4 px-2 flex-1">
-  <div class="w-full flex flex-col space-y-6">
+  <div class="w-full flex flex-col space-y-6 mb-4">
     <TextField
       name="attribute-name"
       label="Name"
@@ -80,10 +80,5 @@
     {/each}
   </div>
 
-  <div class="flex flex-col space-y-4 mt-6">
-    <Button color="danger-light" on:click={() => window.history.back()}>
-      Cancel
-    </Button>
-    <Button on:click={onSave}>Save</Button>
-  </div>
+  <FormButtons on:save={onSave} />
 </form>

@@ -7,7 +7,7 @@ const attributes: Attribute[] = [
     type: 'phone',
     name: 'Mobile',
     collection: 'Personal',
-    value: ['2232620950'],
+    value: ['1', '+12232620950', ''],
     sort_order: 1
   },
   {

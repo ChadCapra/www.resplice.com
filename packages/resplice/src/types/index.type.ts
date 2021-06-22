@@ -81,3 +81,18 @@ export type User = {
   avatar: string | null
   attributes: Attribute[]
 }
+
+// Splices
+export type Splice = {
+  uuid: string
+  name: string
+  members: Contact[]
+  latest_message: Message
+  latest_attribute: Attribute
+  missed_messages: number
+}
+
+export type SpliceDetail = Splice & {
+  messages: Message[]
+  attributes: Attribute[]
+}

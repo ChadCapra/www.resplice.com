@@ -61,5 +61,7 @@
       bind:handle={attributeValue[0]}
       on:save={saveAttribute}
     />
+  {:else}
+    <p>Form not yet available</p>
   {/if}
 </div>

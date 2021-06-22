@@ -5,6 +5,7 @@
   "scripts": {
     "build-libs": "npm run --prefix packages/common/components build && npm run --prefix packages/common/utils build",
     "resplice": "npm run --prefix packages/resplice dev",
+    "protoc": "protoc -I=./packages/api-client/proto *.proto --js_out=import_style=commonjs,binary:./packages/api-client/binary --grpc-web_out=import_style=typescript,mode=grpcwebtext:./packages/api-client/web",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

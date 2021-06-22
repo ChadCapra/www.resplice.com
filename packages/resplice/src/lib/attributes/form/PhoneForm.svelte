@@ -1,10 +1,10 @@
 <script>
   import parsePhoneNumber, { isValidPhoneNumber } from 'libphonenumber-js'
   import { createEventDispatcher } from 'svelte'
-  import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
   import Toggle from '$lib/common/form/Toggle.svelte'
+  import FormButtons from '$lib/attributes/form/FormButtons.svelte'
 
   const dispatch = createEventDispatcher()
 
@@ -68,10 +68,5 @@
     {/each}
   </div>
 
-  <div class="flex flex-col space-y-4">
-    <Button color="danger-light" on:click={() => window.history.back()}>
-      Cancel
-    </Button>
-    <Button on:click={onSave}>Save</Button>
-  </div>
+  <FormButtons on:save={onSave} />
 </form>
