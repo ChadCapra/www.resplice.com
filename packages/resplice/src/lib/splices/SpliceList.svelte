@@ -2,27 +2,27 @@
   import VirtualList from '@sveltejs/svelte-virtual-list/VirtualList.svelte'
   import { goto } from '$app/navigation'
 
-  import ContactItem from '$lib/contacts/ContactItem.svelte'
+  import SpliceItem from '$lib/splices/SpliceItem.svelte'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
-  import type { Contact } from '$types'
+  import type { Splice } from '$types'
 
-  export let contactsAsync: Promise<Contact[]>
+  export let splicesAsync: Promise<Splice[]>
 </script>
 
 <!-- TODO: Implement Alphabet slider -->
 <div class="flex-1 overflow-auto">
-  {#await contactsAsync}
+  {#await splicesAsync}
     {#each Array.from(Array(8).keys()) as _}
       <div class="w-full px-4 py-2">
         <Skeleton variant="rect" width="100%" height="48px" />
       </div>
     {/each}
-  {:then contacts}
-    <VirtualList items={contacts} itemHeight={64} let:item>
-      <ContactItem
-        contact={item}
+  {:then splices}
+    <VirtualList items={splices} itemHeight={144} let:item>
+      <SpliceItem
+        splice={item}
         on:click={() => {
-          goto(`contacts/${item.uuid}`)
+          goto(`splices/${item.uuid}`)
         }}
       />
     </VirtualList>

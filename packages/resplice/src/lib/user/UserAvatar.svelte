@@ -7,6 +7,6 @@
 
 <!-- TODO: Implement Avatar upload Modal -->
 <div class="w-full flex flex-col items-center p-4">
-  <Avatar uuid={user.uuid} size="2xl" />
+  <Avatar uuid={user.uuid} size="xl" />
   <h1 class="text-4xl font-bold mt-2">{user.name}</h1>
 </div>

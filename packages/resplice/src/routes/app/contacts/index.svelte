@@ -1,5 +1,5 @@
 <script>
-  import { onMount } from 'svelte'
+  // import { onMount } from 'svelte'
   // import { t } from 'svelte-i18n'
   import type { Contact } from '$types'
   import SearchHeader from '$lib/common/SearchHeader.svelte'
@@ -14,9 +14,9 @@
     return await res.json()
   }
 
-  onMount(() => {
-    contactsAsync = fetchContacts()
-  })
+  // onMount(() => {
+  //   contactsAsync = fetchContacts()
+  // })
 
   const onTagSetChange = (e: CustomEvent<Set<string>>) => {
     selectedTags = e.detail

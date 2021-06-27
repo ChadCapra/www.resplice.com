@@ -20,6 +20,11 @@ const contacts: Contact[] = [
     uuid: 'mace-windu',
     name: 'Mace Windu',
     tags: ['Jedi']
+  },
+  {
+    uuid: 'han-solo',
+    name: 'Han Solo',
+    tags: ['Hero']
   }
 ]
 

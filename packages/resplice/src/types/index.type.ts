@@ -5,7 +5,6 @@ export type Attribute = {
   contact_uuid: string
   type: AttributeTypeEnum
   name: string
-  collection: string
   value: any[]
   sort_order: number
 }
@@ -20,11 +19,12 @@ export type AttributeAction =
   | 'sms'
 
 export type AttributeTypeEnum =
-  | 'phone'
-  | 'email'
   | 'address'
   | 'coordinates'
+  | 'email'
+  | 'event'
   | 'location'
+  | 'phone'
   | 'social'
 
 export type AttributeType = {
@@ -57,8 +57,8 @@ export type Message = {
   uuid: string
   entity_uuid: string
   entity_name: string
-  timestamp: string
   content: string
+  timestamp: string
 }
 
 // Sessions

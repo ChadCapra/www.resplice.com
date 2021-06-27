@@ -6,7 +6,6 @@
   import NavActions from '$lib/common/NavActions.svelte'
   // import MockWorker from '$lib/common/MockWorker.svelte'
 
-  console.log($page)
   const isOnContacts = $page.path === '/app/contacts'
   const isOnSplices = $page.path === '/app/splices'
 </script>

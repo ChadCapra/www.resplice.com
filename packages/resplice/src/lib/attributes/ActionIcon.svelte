@@ -6,7 +6,6 @@
   import MailIcon from '$lib/icons/MailIcon.svelte'
   import LinkIcon from '$lib/icons/LinkIcon.svelte'
   import LocateIcon from '$lib/icons/LocateIcon.svelte'
-  // import MapIcon from '$lib/icons/MapIcon.svelte'
   import NavigateIcon from '$lib/icons/NavigateIcon.svelte'
   import ChatboxIcon from '$lib/icons/ChatboxIcon.svelte'
   export let attributeAction: AttributeAction
