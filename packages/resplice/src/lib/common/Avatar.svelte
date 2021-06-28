@@ -27,11 +27,7 @@
   const svg = createAvatar(style, { seed: uuid, width: avatarWidth })
 </script>
 
-<div
-  class="bg-gray-100 rounded-full active:scale-95 w-max"
-  class:p-2={!src}
-  on:click
->
+<div class="bg-gray-100 rounded-full w-max" class:p-2={!src} on:click>
   {#if src}
     <img {src} width={imageWidth} alt={uuid} />
   {:else}

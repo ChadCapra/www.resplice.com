@@ -37,6 +37,7 @@
   <Header showUser={showUserOnHeader} {user} />
   <div class="flex-1 overflow-auto relative w-full max-w-xl m-auto">
     <UserAvatar {user} />
+    <h1 class="text-4xl font-bold mt-2 text-center mb-4">{user.name}</h1>
     <div
       bind:this={scrollEl}
       id="scrollIntersection"

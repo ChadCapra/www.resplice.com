@@ -10,6 +10,7 @@
     | 'warning'
     | 'danger'
     | 'danger-light'
+    | 'gray'
     | 'none' = 'brand'
   export let isLoading = false
   export let disabled = false
@@ -27,6 +28,7 @@
       'bg-yellow-700 text-white': color === 'warning',
       'bg-red-700 text-white': color === 'danger',
       'bg-red-200 text-red-600 shadow-none': color === 'danger-light',
+      'bg-gray-300 text-gray-600': color === 'gray',
       'py-2 px-4': variant !== 'tertiary',
       'bg-transparent text-gray-800 shadow-none px-2': variant === 'tertiary',
       'opacity-75': disabled || isLoading

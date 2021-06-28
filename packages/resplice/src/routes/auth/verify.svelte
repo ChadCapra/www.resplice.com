@@ -16,5 +16,6 @@
       Verify your phone and email by entering the codes that were sent to you.
     </p>
   </header>
+
   <VerifyForm />
 </main>
