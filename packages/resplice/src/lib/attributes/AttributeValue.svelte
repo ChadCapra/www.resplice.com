@@ -4,6 +4,7 @@
   import PhoneValue from '$lib/attributes/values/PhoneValue.svelte'
   import EmailValue from '$lib/attributes/values/EmailValue.svelte'
   import AddressValue from '$lib/attributes/values/AddressValue.svelte'
+  import EventValue from '$lib/attributes/values/EventValue.svelte'
 
   export let attribute: Pick<Attribute, 'type' | 'value'>
 
@@ -23,6 +24,8 @@
   <EmailValue {attribute} />
 {:else if attribute.type === 'address'}
   <AddressValue {attribute} />
+{:else if attribute.type === 'event'}
+  <EventValue {attribute} />
 {:else}
   <span class="overflow-hidden overflow-ellipsis whitespace-pre-line">
     {formattedValue}

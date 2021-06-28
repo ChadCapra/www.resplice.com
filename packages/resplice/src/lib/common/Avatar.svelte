@@ -9,7 +9,7 @@
   const avatarWidthMap = {
     xs: 18,
     sm: 24,
-    md: 36,
+    md: 32,
     lg: 48,
     xl: 144,
     '2xl': 256

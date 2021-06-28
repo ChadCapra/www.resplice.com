@@ -12,7 +12,7 @@
 <div class="flex text-gray-700">
   <ActionIcon attributeAction={attributeType.actions[0]} />
   <div class="ml-2 text-gray-800 text-sm">
-    <p>{format(parseISO(attribute.value[0]), 'MMM dd, hh:mm a')}</p>
+    <p>{format(parseISO(attribute.value[0]), "MMM dd',' hh:mm a")}</p>
     <p>{attribute.value[1]}</p>
   </div>
 </div>

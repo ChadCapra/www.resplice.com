@@ -4,7 +4,7 @@
   import AddIcon from '$lib/icons/AddIcon.svelte'
 </script>
 
-<div class="w-full flex items-center justify-center mt-4">
+<div class="w-full flex items-center justify-center my-4">
   <Button color="brand-light" on:click={() => goto('/user/create-attribute')}>
     <div class="flex items-center justify-center w-full">
       <AddIcon width={36} height={36} />

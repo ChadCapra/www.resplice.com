@@ -30,6 +30,14 @@ const attributes: Attribute[] = [
       '86566',
       'Coruscant'
     ],
+    sort_order: 3
+  },
+  {
+    uuid: '987sdf2',
+    contact_uuid: 'bastilla-shan',
+    type: 'address',
+    name: 'Apartment',
+    value: ['12 Temple Rd', '', 'Red Light', 'Taropolis', '91231', 'Taris'],
     sort_order: 4
   },
   {
@@ -38,7 +46,7 @@ const attributes: Attribute[] = [
     type: 'email',
     name: 'Email',
     value: ['vader@deathstar.com'],
-    sort_order: 3
+    sort_order: 5
   },
   {
     uuid: 'pevent',
@@ -54,7 +62,7 @@ const attributes: Attribute[] = [
       '55111',
       'United States'
     ],
-    sort_order: 4
+    sort_order: 6
   },
   {
     uuid: 'kjnkj2n342',
@@ -70,7 +78,7 @@ const attributes: Attribute[] = [
       '55411',
       'United States'
     ],
-    sort_order: 5
+    sort_order: 7
   }
 ]
 
