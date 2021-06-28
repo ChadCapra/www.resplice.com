@@ -1,6 +1,5 @@
 <script>
   import { onMount } from 'svelte'
-  import api from 'src/api/fetch'
   import CryptoWorker from '$workers/crypto?worker'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
@@ -8,6 +7,7 @@
   import MailIcon from '$lib/icons/MailIcon.svelte'
   import PhoneIcon from '$lib/icons/PhoneIcon.svelte'
   import { validateEmail } from '$lib/utils'
+  import Toggle from '$lib/common/form/Toggle.svelte'
 
   let keys
 
@@ -30,6 +30,7 @@
 
   let phone = ''
   let email = ''
+  let rememberMe = false
   let formErrs: Record<string, string> = {}
 
   type SubmitEvent = Event & {
@@ -37,10 +38,14 @@
   }
   async function onSubmit(e: SubmitEvent) {
     e.preventDefault()
+    formErrs = {}
     const errs: Record<string, string> = {}
-    if (/^[a-zA-Z]/.test(phone)) errs.phone = 'Invalid Phone'
-    if (validateEmail(email)) errs.email = 'Invalid Email'
-    if (Object.keys(errs).length) return
+    if (!/^[a-zA-Z]/.test(phone)) errs.phone = 'Invalid Phone'
+    if (!validateEmail(email)) errs.email = 'Invalid Email'
+    if (Object.keys(errs).length) {
+      formErrs = errs
+      return
+    }
   }
 </script>
 
@@ -63,7 +68,10 @@
       Icon={MailIcon}
       error={formErrs.email}
     />
+    <Toggle name="remember-me" label="Remember Me" bind:isActive={rememberMe} />
   </div>
 
-  <div class="w-40 flex flex-col"><Button>Continue</Button></div>
+  <div class="w-40 flex flex-col">
+    <Button type="submit">Continue</Button>
+  </div>
 </form>

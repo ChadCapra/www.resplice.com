@@ -4,6 +4,7 @@
   export let label: string
   export let value: string
   export let error: string = ''
+  export let disabled = false
   // TODO: Figure out how to type svelte component prop
   export let Icon: any = null
   let isTouched = !!value
@@ -11,7 +12,9 @@
 
 <div class="w-full">
   <div
-    class="relative rounded-2xl w-full text-left h-14 flex items-center bg-white"
+    class="relative rounded-2xl w-full text-left h-14 flex items-center"
+    class:bg-white={!disabled}
+    class:bg-gray-200={disabled}
   >
     {#if Icon}
       <div class="ml-4 text-gray-700">
@@ -32,9 +35,12 @@
       type="text"
       class="appearance-none absolute top-0 left-0 w-full h-14 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 font-semibold text-lg text-gray-900 ring-2 focus:ring-gray-800"
       class:pl-16={!!Icon}
-      class:ring-gray-600={!error}
-      class:ring-red-600={!!error}
+      class:ring-gray-200={disabled}
+      class:ring-gray-600={!disabled && !error}
+      class:ring-red-600={!disabled && !!error}
+      title={label}
       {name}
+      {disabled}
       bind:value
       on:focus={() => (isTouched = true)}
       on:blur={() => (!!value ? (isTouched = true) : (isTouched = false))}

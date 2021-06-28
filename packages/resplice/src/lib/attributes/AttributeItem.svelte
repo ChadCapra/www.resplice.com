@@ -7,6 +7,7 @@
 
   export let itemType: 'contact' | 'user' | 'disabled'
   export let attribute: Pick<Attribute, 'type' | 'name' | 'value'>
+  export let showSecondAction = true
   let showContextModal = false
 
   const attributeType = attributeTypes[attribute.type]
@@ -38,7 +39,7 @@
       <AttributeValue {attribute} />
     </div>
   </div>
-  {#if itemType !== 'user'}
+  {#if itemType !== 'user' && showSecondAction}
     <AttributeAction
       {itemType}
       {attribute}

@@ -15,7 +15,7 @@
   }
   function onPhoneChange(e: InputEvent) {
     const phone = e.currentTarget.value
-    console.log(phone)
+    // console.log(phone)
     value = new AsYouType('US').input(phone)
     // if (/^[a-zA-Z]/.test(phone)) {
     //   // TODO: Figure out how to rerender here

@@ -61,7 +61,14 @@ export type Message = {
   timestamp: string
 }
 
-// Sessions
+// Auth
+export type Auth = {
+  loginValues: {
+    phone: string[]
+    email: string[]
+  }
+  session: Session
+}
 export type Session = {
   uuid: string
   access_token: string
