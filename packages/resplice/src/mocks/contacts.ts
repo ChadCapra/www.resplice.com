@@ -1,6 +1,9 @@
-import type { Contact } from '$types'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import type { Attribute, Contact } from '$types'
+import attributes from './attributes'
+import { returnPromise } from './utils'
 
-const contacts: Contact[] = [
+export const contacts: Contact[] = [
   {
     uuid: 'darth-vader',
     name: 'Darth Vader',
@@ -28,4 +31,18 @@ const contacts: Contact[] = [
   }
 ]
 
-export default contacts
+const contactsApi = {
+  getContact: (contactUUID: string): Promise<Contact[]> =>
+    returnPromise(contacts.find((c) => c.uuid === contactUUID)),
+  getAllContacts: (): Promise<Contact[]> => returnPromise(contacts),
+  updateContact: (_contactUUID: string, _contact: Contact): Promise<Contact> =>
+    returnPromise(contacts[0]),
+  deleteContact: (_contactUUID: string): void => {
+    return
+  },
+  getAllAttributes: (): Promise<Attribute[]> => returnPromise(attributes),
+  getAttribute: (contactUUID: string): Promise<Attribute[]> =>
+    returnPromise(attributes.filter((a) => a.contact_uuid === contactUUID))
+}
+
+export default contactsApi

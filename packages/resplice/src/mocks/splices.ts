@@ -1,6 +1,6 @@
 import type { Splice } from '$types'
 
-import contacts from './contacts'
+import { contacts } from './contacts'
 import attributes from './attributes'
 import messages from './messages'
 
@@ -10,7 +10,7 @@ const splices: Splice[] = [
     name: 'Vietnam Trip',
     members: contacts,
     latest_message: messages[2],
-    latest_attribute: attributes[4],
+    latest_attribute: attributes[5],
     missed_messages: 1
   }
 ]
