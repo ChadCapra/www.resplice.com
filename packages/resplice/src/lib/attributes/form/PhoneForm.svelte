@@ -12,7 +12,7 @@
   export let countryCallingCode = ''
   export let number = ''
   export let extension = ''
-  export let sms = true
+  export let isSms = true
 
   let formErrs: any = {}
   let phone = ''
@@ -59,7 +59,7 @@
       bind:value={phone}
       error={formErrs.phone}
     />
-    <Toggle name="sms" label="Allow SMS" bind:isActive={sms} />
+    <Toggle name="isSms" label="Allow SMS" bind:isActive={isSms} />
 
     {#each Object.values(formErrs) as err}
       <p class="text-red-600 h-6 w-full" style={'margin-top: 0.25rem'}>

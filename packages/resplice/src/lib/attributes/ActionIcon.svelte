@@ -1,5 +1,5 @@
 <script>
-  import type { AttributeAction } from '$types'
+  import { AttributeAction } from '$types'
   import CalendarIcon from '$lib/icons/CalendarIcon.svelte'
   import CallIcon from '$lib/icons/CallIcon.svelte'
   import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte'
@@ -14,20 +14,20 @@
   const height = 24
 </script>
 
-{#if attributeAction === 'calendar'}
+{#if attributeAction === AttributeAction.Calendar}
   <CalendarIcon {width} {height} />
-{:else if attributeAction === 'call'}
+{:else if attributeAction === AttributeAction.Call}
   <CallIcon {width} {height} />
-{:else if attributeAction === 'copy'}
+{:else if attributeAction === AttributeAction.Copy}
   <ClipboardIcon {width} {height} />
-{:else if attributeAction === 'email'}
+{:else if attributeAction === AttributeAction.Email}
   <MailIcon {width} {height} />
-{:else if attributeAction === 'link'}
+{:else if attributeAction === AttributeAction.Link}
   <LinkIcon {width} {height} />
-{:else if attributeAction === 'locate'}
+{:else if attributeAction === AttributeAction.Locate}
   <LocateIcon {width} {height} />
-{:else if attributeAction === 'navigate'}
+{:else if attributeAction === AttributeAction.Navigate}
   <NavigateIcon {width} {height} />
-{:else if attributeAction === 'sms'}
+{:else if attributeAction === AttributeAction.Sms}
   <ChatboxIcon {width} {height} />
 {/if}

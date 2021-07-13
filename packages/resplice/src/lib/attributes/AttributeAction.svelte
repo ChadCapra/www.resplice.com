@@ -1,5 +1,6 @@
 <script>
-  import type { Attribute, AttributeAction } from '$types'
+  import type { Attribute } from '$types'
+  import { AttributeAction } from '$types'
   import cx from 'classnames'
   import {
     callPhone,
@@ -20,28 +21,28 @@
     // TODO: These should be tied to attribute type
     if (itemType === 'disabled') return
     switch (attributeAction) {
-      case 'calendar':
+      case AttributeAction.Calendar:
         openCalendar()
         break
-      case 'call':
+      case AttributeAction.Call:
         callPhone(attribute.value[1])
         break
-      case 'copy':
+      case AttributeAction.Copy:
         copyText(attribute.value[0])
         break
-      case 'email':
+      case AttributeAction.Email:
         email(attribute.value[0])
         break
-      case 'link':
+      case AttributeAction.Link:
         goto(attribute.value[0])
         break
-      case 'locate':
+      case AttributeAction.Locate:
         locate(attribute.value[0])
         break
-      case 'navigate':
+      case AttributeAction.Navigate:
         locate(attribute.value[0], true)
         break
-      case 'sms':
+      case AttributeAction.Sms:
         openSms(attribute.value[1])
         break
     }

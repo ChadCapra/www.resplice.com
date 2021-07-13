@@ -1,8 +1,8 @@
 <script>
-  import type { AttributeType } from '$types'
+  import type { AttributeTypeConfig } from '$types'
   import AttributeAction from '$lib/attributes/AttributeAction.svelte'
 
-  export let attributeType: AttributeType
+  export let attributeTypeConfig: AttributeTypeConfig
 </script>
 
 <button
@@ -11,10 +11,10 @@
 >
   <AttributeAction
     itemType="disabled"
-    attribute={{ value: [''] }}
-    attributeAction={attributeType.actions[0]}
+    attribute={{ value: {} }}
+    attributeAction={attributeTypeConfig.actions[0]}
   />
   <span class="font-semibold text-gray-800 overflow-hidden overflow-ellipsis">
-    {attributeType.name}
+    {attributeTypeConfig.name}
   </span>
 </button>

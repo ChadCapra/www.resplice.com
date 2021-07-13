@@ -4,7 +4,7 @@
   import Button from '$lib/common/Button.svelte'
   import attributeTypes from '../../../mocks/attributeTypes'
 
-  $: types = Object.values(attributeTypes)
+  $: typeConfigs = Object.entries(attributeTypes)
 </script>
 
 <main
@@ -13,10 +13,10 @@
   <div class="w-full p-4">
     <h2 class="text-xl font-semibold mb-4">Select an Attribute Type</h2>
     <div class="flex flex-col space-y-4">
-      {#each types as type}
+      {#each typeConfigs as [type, config]}
         <AttributeTypeItem
-          attributeType={type}
-          on:click={() => goto(`create-attribute/${type.type}`)}
+          attributeTypeConfig={config}
+          on:click={() => goto(`create-attribute/${type.toLowerCase()}`)}
         />
       {/each}
     </div>

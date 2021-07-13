@@ -4,7 +4,7 @@
 
   export let attribute: Pick<Attribute, 'type' | 'value'>
 
-  $: phone = attribute.value[1]
+  $: phone = attribute.value.phone
     ? parsePhoneNumber(attribute.value[1]).formatNational()
     : ''
 </script>

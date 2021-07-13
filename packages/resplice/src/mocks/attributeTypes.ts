@@ -1,89 +1,62 @@
-import type { AttributeTypeEnum, AttributeType } from '$types'
+import type { AttributeTypeConfig } from '$types'
+import { AttributeType, AttributeAction } from '$types'
 
-export enum Action {
-  Calendar = 'calendar',
-  Call = 'call',
-  Copy = 'copy',
-  Email = 'email',
-  Link = 'link',
-  Locate = 'locate',
-  Navigate = 'navigate',
-  Sms = 'sms'
-}
-
-const attributeTypes: Record<AttributeTypeEnum, AttributeType> = {
-  address: {
-    type: 'address',
+const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
+  [AttributeType.Address]: {
     name: 'Address',
-    valueMap: {
-      addressLineOne: 1,
-      addressLineTwo: 2,
-      city: 3,
-      state: 4,
-      postalCode: 5,
-      country: 6
-    },
-    actions: [Action.Navigate, Action.Locate, Action.Copy]
+    actions: [
+      AttributeAction.Navigate,
+      AttributeAction.Locate,
+      AttributeAction.Copy
+    ]
   },
-  coordinates: {
-    type: 'coordinates',
+  [AttributeType.Coordinates]: {
     name: 'Coordinates',
-    valueMap: {
-      lon: 1,
-      lat: 2
-    },
-    actions: [Action.Locate, Action.Navigate, Action.Copy]
+    actions: [
+      AttributeAction.Locate,
+      AttributeAction.Navigate,
+      AttributeAction.Copy
+    ]
   },
-  email: {
-    type: 'email',
+  [AttributeType.Email]: {
     name: 'Email',
-    valueMap: {
-      email: 1
-    },
-    actions: [Action.Email, Action.Copy]
+    actions: [AttributeAction.Email, AttributeAction.Copy]
   },
-  event: {
-    type: 'event',
-    name: 'Event',
-    valueMap: {
-      datetime: 1,
-      addressLineOne: 2,
-      addressLineTwo: 3,
-      city: 4,
-      state: 5,
-      postalCode: 6,
-      country: 7
-    },
-    actions: [Action.Calendar, Action.Navigate, Action.Copy]
+  [AttributeType.Empty]: {
+    name: 'Empty',
+    actions: [AttributeAction.Copy]
   },
-  location: {
-    type: 'location',
+  [AttributeType.Datetime]: {
+    name: 'Datetime',
+    actions: [
+      AttributeAction.Calendar,
+      AttributeAction.Navigate,
+      AttributeAction.Copy
+    ]
+  },
+  [AttributeType.Link]: {
+    name: 'Link',
+    actions: [AttributeAction.Link, AttributeAction.Copy]
+  },
+  [AttributeType.Location]: {
     name: 'Live Location',
-    valueMap: {
-      lon: 1,
-      lat: 2,
-      provider: 3
-    },
-    actions: [Action.Locate, Action.Navigate, Action.Copy]
+    actions: [
+      AttributeAction.Locate,
+      AttributeAction.Navigate,
+      AttributeAction.Copy
+    ]
   },
-  phone: {
-    type: 'phone',
+  [AttributeType.Phone]: {
     name: 'Phone',
-    valueMap: {
-      countryCallingCode: 1,
-      number: 2,
-      extension: 3
-    },
-    actions: [Action.Call, Action.Sms, Action.Copy]
+    actions: [AttributeAction.Call, AttributeAction.Sms, AttributeAction.Copy]
   },
-  social: {
-    type: 'social',
+  [AttributeType.Social]: {
     name: 'Social',
-    valueMap: {
-      handle: 1,
-      provider: 2
-    },
-    actions: [Action.Link, Action.Copy]
+    actions: [AttributeAction.Link, AttributeAction.Copy]
+  },
+  [AttributeType.Text]: {
+    name: 'Text',
+    actions: [AttributeAction.Copy]
   }
 }
 

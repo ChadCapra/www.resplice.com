@@ -18,7 +18,7 @@
 
   let emailCode = ''
   let emailLoading = false
-  let emailVerified = false
+  let emailVerified = true
 
   let phoneCode = ''
   let phoneLoading = false

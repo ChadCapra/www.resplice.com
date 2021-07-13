@@ -1,84 +1,77 @@
 import type { Attribute } from '$types'
+import { AttributeType } from '$types'
 
 const attributes: Attribute[] = [
   {
-    uuid: 'mphone',
+    uuid: 'cphone',
     contact_uuid: 'darth-vader',
-    type: 'phone',
+    type: AttributeType.Phone,
     name: 'Mobile',
-    value: ['1', '+12232620950', ''],
+    value: {
+      countryCallingCode: '1',
+      number: '2232620950',
+      extension: '',
+      isSms: true
+    },
     sort_order: 1
   },
   {
-    uuid: 'pemail',
+    uuid: 'cemail',
     contact_uuid: 'darth-vader',
-    type: 'email',
+    type: AttributeType.Email,
     name: 'Email',
-    value: ['anakin@naboo.com'],
+    value: {
+      email: 'anakin@naboo.com'
+    },
     sort_order: 2
   },
   {
-    uuid: 'paddress',
+    uuid: 'caddress',
     contact_uuid: 'darth-vader',
-    type: 'address',
+    type: AttributeType.Address,
     name: 'Address',
-    value: [
-      '154 Amidala Ln',
-      'Unit 12',
-      'Inner City',
-      'District 22',
-      '86566',
-      'Coruscant'
-    ],
+    value: {
+      address_1: '154 Amidala Ln',
+      address_2: 'Unit 12',
+      locality: 'District 22',
+      region: 'Inner City',
+      postal_code: '86566',
+      country: 'Eastern Hemisphere',
+      planet: 'Coruscant'
+    },
     sort_order: 3
   },
   {
     uuid: '987sdf2',
     contact_uuid: 'bastilla-shan',
-    type: 'address',
+    type: AttributeType.Address,
     name: 'Apartment',
-    value: ['12 Temple Rd', '', 'Red Light', 'Taropolis', '91231', 'Taris'],
+    value: {
+      address_1: '12 Temple Rd',
+      address_2: '',
+      locality: 'Red Light',
+      region: 'Fief #80',
+      postal_code: '91231',
+      country: 'Taropolis',
+      planet: 'Taris'
+    },
     sort_order: 4
   },
   {
-    uuid: 'pemail',
+    uuid: 'cemail',
     contact_uuid: 'darth-vader',
-    type: 'email',
+    type: AttributeType.Email,
     name: 'Email',
-    value: ['vader@deathstar.com'],
+    value: { email: 'vader@deathstar.com' },
     sort_order: 5
   },
   {
-    uuid: 'pevent',
+    uuid: 'cdatetime',
     contact_uuid: 'darth-vader',
-    type: 'event',
-    name: 'Vietnam Flight',
-    value: [
-      '2021-06-27T21:14:00.000Z',
-      '4300 Glumack Dr',
-      '',
-      'St. Paul',
-      'MN',
-      '55111',
-      'United States'
-    ],
+    type: AttributeType.Datetime,
+    name: 'Mustafar Battle',
+    value: { datetime: '2021-06-27T21:14:00.000Z' },
     sort_order: 6
-  },
-  {
-    uuid: 'kjnkj2n342',
-    contact_uuid: 'han-solo',
-    type: 'event',
-    name: 'Planning Session',
-    value: [
-      '2021-06-23T23:00:00.000Z',
-      '1211 11th Ave N',
-      '',
-      'Minneapolis',
-      'MN',
-      '55411',
-      'United States'
-    ],
-    sort_order: 7
   }
 ]
 

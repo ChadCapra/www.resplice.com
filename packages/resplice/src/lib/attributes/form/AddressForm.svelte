@@ -8,10 +8,11 @@
   export let name = ''
   export let address1 = ''
   export let address2 = ''
-  export let city = ''
-  export let state = ''
+  export let locality = ''
+  export let region = ''
   export let postalCode = ''
   export let country = ''
+  export let planet = ''
 
   let formErrs: any = {}
 
@@ -47,17 +48,17 @@
       error={formErrs.address2}
     />
     <TextField
-      name="city"
+      name="locality"
       label="City"
-      bind:value={city}
-      error={formErrs.city}
+      bind:value={locality}
+      error={formErrs.locality}
     />
     <div class="w-full flex justify-between space-x-4">
       <TextField
-        name="state"
+        name="region"
         label="State"
-        bind:value={state}
-        error={formErrs.state}
+        bind:value={region}
+        error={formErrs.region}
       />
       <TextField
         name="postal-code"
@@ -71,6 +72,12 @@
       label="Country"
       bind:value={country}
       error={formErrs.country}
+    />
+    <TextField
+      name="planet"
+      label="Planet"
+      bind:value={planet}
+      error={formErrs.planet}
     />
 
     {#each Object.values(formErrs) as err}

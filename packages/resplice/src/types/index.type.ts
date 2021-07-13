@@ -1,47 +1,150 @@
 // Data Types
 // Attributes
-export type Attribute = {
+export enum AttributeType {
+  Address = 'ADDRESS',
+  Coordinates = 'COORDINATES',
+  Email = 'EMAIL',
+  Empty = 'EMPTY',
+  Datetime = 'DATETIME',
+  Link = 'LINK',
+  Location = 'LOCATION',
+  Phone = 'PHONE',
+  Social = 'SOCIAL',
+  Text = 'TEXT'
+}
+export type AttributeValue =
+  | AddressValue
+  | CoordinateValue
+  | DatetimeValue
+  | EmailValue
+  | EmptyValue
+  | LinkValue
+  | PhoneValue
+  | SocialValue
+  | TextValue
+export interface BaseAttribute {
   uuid: string
   contact_uuid: string
-  type: AttributeTypeEnum
+  type: AttributeType
   name: string
-  value: any[]
+  value: AttributeValue
   sort_order: number
 }
-export type AttributeAction =
-  | 'calendar'
-  | 'call'
-  | 'copy'
-  | 'email'
-  | 'link'
-  | 'locate'
-  | 'navigate'
-  | 'sms'
 
-export type AttributeTypeEnum =
-  | 'address'
-  | 'coordinates'
-  | 'email'
-  | 'event'
-  | 'location'
-  | 'phone'
-  | 'social'
-
-export type AttributeType = {
-  type: AttributeTypeEnum
-  name: string
-  valueMap: Record<string, number>
-  actions: AttributeAction[]
+export interface Address extends BaseAttribute {
+  type: AttributeType.Address
+  value: AddressValue
 }
-export type Coordinate = {
-  lon: number
+export type AddressValue = {
+  address_1: string
+  address_2?: string
+  locality: string
+  region: string
+  postal_code: string
+  country: string
+  planet?: string
+}
+
+export interface Coordinates extends BaseAttribute {
+  type: AttributeType.Coordinates
+  value: CoordinateValue
+}
+export type CoordinateValue = {
+  lng: number
   lat: number
+}
+
+export interface Datetime extends BaseAttribute {
+  type: AttributeType.Datetime
+  value: DatetimeValue
+}
+export type DatetimeValue = {
+  datetime: string
+}
+
+export interface Email extends BaseAttribute {
+  type: AttributeType.Email
+  value: EmailValue
+}
+export type EmailValue = {
+  email: string
+}
+
+export interface Link extends BaseAttribute {
+  type: AttributeType.Link
+  value: LinkValue
+}
+export type LinkValue = {
+  url: string
+}
+
+export interface Phone extends BaseAttribute {
+  type: AttributeType.Phone
+  value: PhoneValue
+}
+export type PhoneValue = {
+  countryCallingCode: string
+  number: string
+  extension: string
+  isSms: boolean
+}
+
+export interface Social extends BaseAttribute {
+  type: AttributeType.Social
+  value: SocialValue
+}
+export type SocialValue = {
+  provider: string
+  handle: string
+}
+
+export interface Text extends BaseAttribute {
+  type: AttributeType.Text
+  value: TextValue
+}
+export type TextValue = {
+  text: string
+}
+
+export interface Empty extends BaseAttribute {
+  type: AttributeType.Empty
+  value: EmptyValue
+}
+export type EmptyValue = Record<string, never>
+
+export type Attribute =
+  | Address
+  | Coordinates
+  | Datetime
+  | Email
+  | Empty
+  | Link
+  | Phone
+  | Social
+  | Text
+
+export enum AttributeAction {
+  Calendar = 'CALENDAR',
+  Call = 'CALL',
+  Copy = 'COPY',
+  Email = 'EMAIL',
+  Link = 'LINK',
+  Locate = 'LOCATE',
+  Navigate = 'NAVIGATE',
+  Sms = 'SMS'
+}
+
+export type AttributeTypeConfig = {
+  name: string
+  actions: AttributeAction[]
 }
 
 // Contacts
 export type Contact = {
   uuid: string
   name: string
+  nickName?: string
+  description?: string
   tags: string[]
 }
 
@@ -50,6 +153,11 @@ export type ContactDetail = Contact & {
   common_splices: string[]
   messages: Message[]
   pending: boolean
+}
+
+export type Invite = {
+  name: string
+  value: PhoneValue | EmailValue
 }
 
 // Messaging
