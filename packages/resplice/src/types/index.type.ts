@@ -155,9 +155,18 @@ export type ContactDetail = Contact & {
   pending: boolean
 }
 
+// Invites & Shares
 export type Invite = {
   name: string
   value: PhoneValue | EmailValue
+}
+
+export type Share = {
+  uuid: string
+  attribute_uuid: string
+  entity_uuid: string
+  exipry: string
+  sort_order: number
 }
 
 // Messaging

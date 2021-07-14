@@ -3,6 +3,22 @@ import { AttributeType } from '$types'
 
 const attributes: Attribute[] = [
   {
+    uuid: '987sdf2',
+    contact_uuid: 'bastilla-shan',
+    type: AttributeType.Address,
+    name: 'Apartment',
+    value: {
+      address_1: '12 Temple Rd',
+      address_2: '',
+      locality: 'Red Light',
+      region: 'Fief #80',
+      postal_code: '91231',
+      country: 'Taropolis',
+      planet: 'Taris'
+    },
+    sort_order: 4
+  },
+  {
     uuid: 'cphone',
     contact_uuid: 'darth-vader',
     type: AttributeType.Phone,
@@ -40,22 +56,6 @@ const attributes: Attribute[] = [
       planet: 'Coruscant'
     },
     sort_order: 3
-  },
-  {
-    uuid: '987sdf2',
-    contact_uuid: 'bastilla-shan',
-    type: AttributeType.Address,
-    name: 'Apartment',
-    value: {
-      address_1: '12 Temple Rd',
-      address_2: '',
-      locality: 'Red Light',
-      region: 'Fief #80',
-      postal_code: '91231',
-      country: 'Taropolis',
-      planet: 'Taris'
-    },
-    sort_order: 4
   },
   {
     uuid: 'cemail',
