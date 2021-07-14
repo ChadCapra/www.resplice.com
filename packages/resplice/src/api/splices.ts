@@ -22,6 +22,6 @@ export interface SplicesClient {
   getShare: (spliceUUID: string, shareUUID: string) => Promise<any>
   getShares: (spliceUUID: string) => Promise<any>
   getAllShares: () => Promise<any>
-  add_share: (attributeUUID: string) => Promise<any>
-  delete_share: (shareUUID: string) => Promise<void>
+  addShare: (spliceUUID: string, attributeUUID: string) => Promise<any>
+  removeShare: (shareUUID: string) => Promise<any>
 }

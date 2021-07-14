@@ -8,6 +8,12 @@ export interface InvitesClient {
   update: (inviteUUID: string, invite: Pick<Invite, 'name'>) => Promise<Invite>
   accept: (inviteUUID: string, attributeUUIDs: string[]) => Promise<Invite>
   delete: (inviteUUID: string) => Promise<void>
+  addAttribute: (inviteUUID: string, attributeUUID: string) => Promise<Invite>
+  removeAttribute: (
+    inviteUUID: string,
+    attributeUUID: string
+  ) => Promise<Invite>
+  generateQrCode: () => Promise<Invite>
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -22,7 +28,12 @@ function invitesClientFactory(api: any): InvitesClient {
       api.updateInvite(inviteUUID, { name: invite.name }),
     accept: (inviteUUID, attributeUUIDs) =>
       api.acceptInvite(inviteUUID, attributeUUIDs),
-    delete: (inviteUUID) => api.deleteInvite(inviteUUID)
+    delete: (inviteUUID) => api.deleteInvite(inviteUUID),
+    addAttribute: (inviteUUID, attributeUUID) =>
+      api.add_invite_attribute(inviteUUID, attributeUUID),
+    removeAttribute: (inviteUUID, attributeUUID) =>
+      api.remove_invite_attribute(inviteUUID, attributeUUID),
+    generateQrCode: () => api.generate_qr_invite()
   }
 }
 

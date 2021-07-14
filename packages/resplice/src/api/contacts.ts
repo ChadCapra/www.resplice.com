@@ -19,7 +19,7 @@ export interface ContactsClient {
   getShares: (contactUUID: string) => Promise<any>
   getAllShares: () => Promise<any>
   expireShare: (shareUUID: string, expiry: Date) => Promise<void>
-  deleteShare: (shareUUID: string) => Promise<void>
+  removeShare: (shareUUID: string) => Promise<void>
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -45,7 +45,7 @@ function contactsClientFactory(api: any): ContactsClient {
     getAllShares: () => api.getAllContactShares(),
     expireShare: (shareUUID, expiry) =>
       api.expireContactShare(shareUUID, expiry),
-    deleteShare: (shareUUID) => api.deleteContactShare(shareUUID)
+    removeShare: (shareUUID) => api.removeContactShare(shareUUID)
   }
 }
 
