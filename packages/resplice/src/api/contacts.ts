@@ -23,9 +23,14 @@ export interface ContactsClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function contactsClientFactory(api: any): ContactsClient {
+function contactsClientFactory(api: any, cache: any): ContactsClient {
   return {
-    get: (contactUUID) => api.getContact(contactUUID),
+    get: async (contactUUID) => {
+      const getPromise = api.getContact(contactUUID)
+      const cacheHit = cache.contacts[contactUUID]
+      if (cacheHit) return cacheHit
+      cache.contacts[contactUUID] = await getPromise.data
+    },
     getAll: () => api.getAllContacts(),
     update: (contactUUID, contact) =>
       api.updateContact(contactUUID, {

@@ -17,7 +17,7 @@ export interface InvitesClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function invitesClientFactory(api: any): InvitesClient {
+function invitesClientFactory(api: any, cache: any): InvitesClient {
   return {
     create: (attributeUUIDs, invite) =>
       api.createInvite(attributeUUIDs, {

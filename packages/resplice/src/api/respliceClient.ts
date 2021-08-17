@@ -10,10 +10,10 @@ export interface RespliceClient {
 
 // TODO: Add caching later to respliceClient
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-unused-vars
-function respliceClientFactory(api: any, _cache: any): RespliceClient {
-  const contacts = contactsClientFactory(api)
-  const invites = invitesClientFactory(api)
-  const sessions = sessionsClientFactory(api)
+function respliceClientFactory(api: any, cache: any): RespliceClient {
+  const contacts = contactsClientFactory(api, cache)
+  const invites = invitesClientFactory(api, cache)
+  const sessions = sessionsClientFactory(api, cache)
 
   return {
     contacts,

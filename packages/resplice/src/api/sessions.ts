@@ -32,7 +32,7 @@ export interface SessionsClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function sessionsClientFactory(api: any): SessionsClient {
+function sessionsClientFactory(api: any, cache: any): SessionsClient {
   return {
     create: ({ phone, email, rememberMe, aesKey }) =>
       api.createSession(phone, email, rememberMe, aesKey),
