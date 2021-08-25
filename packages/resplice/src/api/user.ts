@@ -1,8 +1,8 @@
 import type { Attribute, Invite, User } from '$types'
 
 type CreateParams = {
-  image: Blob
   name: string
+  avatar: Blob
 }
 
 export interface UserClient {
@@ -18,3 +18,24 @@ export interface UserClient {
   deleteAttribute: (attributeUUID: string) => Promise<void>
   generateQrInvite: () => Promise<Invite>
 }
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+function userClientFactory(api: any, _cache: any): UserClient {
+  return {
+    create: ({ name, avatar }) => api.createUser(name, avatar),
+    get: () => api.getUser(),
+    update: ({ name, avatar }) => api.updateUser(name, avatar),
+    delete: ({ name }) => api.deleteUser(name),
+    addAttribute: (attribute) => api.addAttribute(attribute),
+    getAttribute: (attributeUUID) => api.getAttribute(attributeUUID),
+    updateAttribute: (attribute) => api.updateAttribute(attribute),
+    verifyAttribute: (attributeUUID, code) =>
+      api.verifyAttribute(attributeUUID, code),
+    resendAttributeVerification: (attributeUUID) =>
+      api.resendVerification(attributeUUID),
+    deleteAttribute: (attributeUUID) => api.deleteAttribute(attributeUUID),
+    generateQrInvite: () => api.generateQRInvite()
+  }
+}
+
+export default userClientFactory

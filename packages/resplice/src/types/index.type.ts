@@ -2,26 +2,23 @@
 // Attributes
 export enum AttributeType {
   Address = 'ADDRESS',
-  Coordinates = 'COORDINATES',
+  Credential = 'CREDENTIAL',
+  Date = 'DATE',
   Email = 'EMAIL',
-  Empty = 'EMPTY',
-  Datetime = 'DATETIME',
-  Link = 'LINK',
-  Location = 'LOCATION',
   Phone = 'PHONE',
   Social = 'SOCIAL',
-  Text = 'TEXT'
+  Text = 'TEXT',
+  Unknown = 'UNKNOWN'
 }
 export type AttributeValue =
   | AddressValue
-  | CoordinateValue
-  | DatetimeValue
+  | CredentialValue
+  | DateValue
   | EmailValue
-  | EmptyValue
-  | LinkValue
   | PhoneValue
   | SocialValue
   | TextValue
+  | UnknownValue
 export interface BaseAttribute {
   uuid: string
   contact_uuid: string
@@ -45,21 +42,21 @@ export type AddressValue = {
   planet?: string
 }
 
-export interface Coordinates extends BaseAttribute {
-  type: AttributeType.Coordinates
-  value: CoordinateValue
+export interface Credential extends BaseAttribute {
+  type: AttributeType.Credential
+  value: CredentialValue
 }
-export type CoordinateValue = {
-  lng: number
-  lat: number
+export type CredentialValue = {
+  identity: string
+  passcode: string
 }
 
-export interface Datetime extends BaseAttribute {
-  type: AttributeType.Datetime
-  value: DatetimeValue
+export interface Date extends BaseAttribute {
+  type: AttributeType.Date
+  value: DateValue
 }
-export type DatetimeValue = {
-  datetime: string
+export type DateValue = {
+  date: number
 }
 
 export interface Email extends BaseAttribute {
@@ -68,14 +65,6 @@ export interface Email extends BaseAttribute {
 }
 export type EmailValue = {
   email: string
-}
-
-export interface Link extends BaseAttribute {
-  type: AttributeType.Link
-  value: LinkValue
-}
-export type LinkValue = {
-  url: string
 }
 
 export interface Phone extends BaseAttribute {
@@ -106,19 +95,18 @@ export type TextValue = {
   text: string
 }
 
-export interface Empty extends BaseAttribute {
-  type: AttributeType.Empty
-  value: EmptyValue
+export interface Unknown extends BaseAttribute {
+  type: AttributeType.Unknown
+  value: UnknownValue
 }
-export type EmptyValue = Record<string, never>
+export type UnknownValue = Record<string, never>
 
 export type Attribute =
   | Address
-  | Coordinates
-  | Datetime
+  | Credential
+  | Date
   | Email
-  | Empty
-  | Link
+  | Unknown
   | Phone
   | Social
   | Text
@@ -200,15 +188,14 @@ export type Session = {
 
 // User
 export type User = {
-  uuid: string
   name: string
   avatar: string | null
+  tags: string[]
   attributes: Attribute[]
 }
 
 // Splices
 export type Splice = {
-  uuid: string
   name: string
   members: Contact[]
   latest_message: Message
