@@ -1,5 +1,5 @@
 import type { Attribute as BaseAttribute } from './attribute'
-import type { BaseMessage } from './message.type'
+import type { BaseMessage } from './message'
 
 export type Contact = {
   uuid: string

@@ -1,4 +1,4 @@
-import type { Attribute, Contact } from '$types/contact.type'
+import type { Attribute, Contact } from '$types/contact'
 
 export interface ContactsClient {
   get: (contactUUID: string) => Promise<Contact>

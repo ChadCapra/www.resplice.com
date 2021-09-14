@@ -1,4 +1,4 @@
-import type { Session } from '$types/session.type'
+import type { Session } from '$types/session'
 
 type CreateParams = {
   phone: string

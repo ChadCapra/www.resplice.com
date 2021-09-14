@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store'
-import type { Session } from '$types/session.type'
+import type { Session } from '$types/session'
 
 type Auth = {
   loginValues: {
