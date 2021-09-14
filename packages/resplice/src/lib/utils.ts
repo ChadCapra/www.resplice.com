@@ -1,4 +1,4 @@
-import type { Contact, Coordinate } from '$types'
+import type { Contact } from '$types/contact'
 
 export function filtersContactsList(
   contacts: Contact[],
@@ -45,21 +45,20 @@ export function goto(link: string): void {
   window.open(link, '_blank')
 }
 
-export function locate(location: string | Coordinate, navigate = false): void {
+export function locate(location: string, navigate = false): void {
   const api = navigate ? 'dir' : 'search'
   const googleMapsUrl = `https://www.google.com/maps/${api}/?api=1`
 
-  if (typeof location === 'string') {
-    const locationUrl = location.replace(' ', '+')
-    window.open(`${googleMapsUrl}&query=${locationUrl}`, '_blank')
-  } else {
-    const coordinateString = `${location.lat},${location.lon}`
-    window.open(`${googleMapsUrl}&query=${coordinateString}`, '_blank')
-  }
+  const locationUrl = location.replace(' ', '+')
+  window.open(`${googleMapsUrl}&query=${locationUrl}`, '_blank')
+
+  // For coordinates
+  // const coordinateString = `${location.lat},${location.lon}`
+  // window.open(`${googleMapsUrl}&query=${coordinateString}`, '_blank')
 }
 
 export function openSms(phone: string, text = ''): void {
-  const OS = getMobileOperatingSystem()
+  const OS = getOperatingSystem()
   if (OS === 'iOS') {
     window.open(`sms:${phone}&body=${text}`)
   } else {
@@ -67,13 +66,23 @@ export function openSms(phone: string, text = ''): void {
   }
 }
 
-function getMobileOperatingSystem() {
+function getOperatingSystem() {
+  // Use new userAgentData if possible
+  // TODO: Remove any type when lib.dom is updated
+  if (
+    (navigator as any).userAgentData &&
+    (navigator as any).userAgentData.platform
+  ) {
+    return (navigator as any).userAgentData.platform
+  }
+
+  // Fallback to userAgent parsing
   // This code may be missing some edge cases
   const userAgent = navigator.userAgent || navigator.vendor
 
   // Windows Phone must come first because its UA also contains "Android"
   if (/windows phone/i.test(userAgent)) {
-    return 'Windows Phone'
+    return 'Windows'
   }
 
   if (/android/i.test(userAgent)) {
@@ -81,7 +90,7 @@ function getMobileOperatingSystem() {
   }
 
   // iOS detection from: http://stackoverflow.com/a/9039885/177710
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+  if (/iPad|iPhone|iPod/.test(userAgent)) {
     return 'iOS'
   }
 
