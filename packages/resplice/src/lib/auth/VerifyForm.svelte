@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import LockClosedIcon from '$lib/icons/LockClosedIcon.svelte'

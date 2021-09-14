@@ -6,11 +6,7 @@ import { resolve } from 'path'
 const config = {
   // Consult https://github.com/sveltejs/svelte-preprocess
   // for more information about preprocessors
-  preprocess: sveltePreprocess({
-    defaults: {
-      script: 'typescript'
-    }
-  }),
+  preprocess: sveltePreprocess(),
   kit: {
     // By default, `npm run build` will create a standard Node app.
     // You can create optimized builds for different platforms by
@@ -25,6 +21,7 @@ const config = {
         alias: {
           $api: resolve('./src/api'),
           $stores: resolve('./src/stores'),
+          $types: resolve('./src/types'),
           $workers: resolve('./src/workers')
         }
       }

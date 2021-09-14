@@ -1,5 +1,5 @@
-import type { AttributeTypeConfig } from '$types'
-import { AttributeType, AttributeAction } from '$types'
+import type { AttributeTypeConfig } from '$types/attribute'
+import { AttributeType, AttributeAction } from '$types/attribute'
 
 const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
   [AttributeType.Address]: {
@@ -10,10 +10,14 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       AttributeAction.Copy
     ]
   },
-  [AttributeType.Coordinates]: {
-    name: 'Coordinates',
+  [AttributeType.Credential]: {
+    name: 'Credential',
+    actions: [AttributeAction.Copy]
+  },
+  [AttributeType.Date]: {
+    name: 'Date',
     actions: [
-      AttributeAction.Locate,
+      AttributeAction.Calendar,
       AttributeAction.Navigate,
       AttributeAction.Copy
     ]
@@ -21,30 +25,6 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
   [AttributeType.Email]: {
     name: 'Email',
     actions: [AttributeAction.Email, AttributeAction.Copy]
-  },
-  [AttributeType.Empty]: {
-    name: 'Empty',
-    actions: [AttributeAction.Copy]
-  },
-  [AttributeType.Datetime]: {
-    name: 'Datetime',
-    actions: [
-      AttributeAction.Calendar,
-      AttributeAction.Navigate,
-      AttributeAction.Copy
-    ]
-  },
-  [AttributeType.Link]: {
-    name: 'Link',
-    actions: [AttributeAction.Link, AttributeAction.Copy]
-  },
-  [AttributeType.Location]: {
-    name: 'Live Location',
-    actions: [
-      AttributeAction.Locate,
-      AttributeAction.Navigate,
-      AttributeAction.Copy
-    ]
   },
   [AttributeType.Phone]: {
     name: 'Phone',
@@ -56,6 +36,10 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
   },
   [AttributeType.Text]: {
     name: 'Text',
+    actions: [AttributeAction.Copy]
+  },
+  [AttributeType.Unknown]: {
+    name: 'Unkown',
     actions: [AttributeAction.Copy]
   }
 }

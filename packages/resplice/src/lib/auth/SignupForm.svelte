@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { Contact } from '$types'
   import UserAvatar from '$lib/user/UserAvatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'

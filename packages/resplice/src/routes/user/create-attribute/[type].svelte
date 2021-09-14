@@ -11,7 +11,7 @@
   }
 </script>
 
-<script>
+<script lang="ts">
   import AttributeForm from '$lib/attributes/form/AttributeForm.svelte'
   import type { AttributeTypeEnum } from '$types'
   import attributeTypes from '../../../mocks/attributeTypes'

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { Splice } from '$types'
   import Avatar from '$lib/common/Avatar.svelte'
   import AttributeSummary from '$lib/splices/AttributeSummary.svelte'

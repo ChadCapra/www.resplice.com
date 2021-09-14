@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher, onMount } from 'svelte'
   import { spring } from 'svelte/motion'
   import { clamp } from '@resplice/utils'

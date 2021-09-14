@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { AttributeTypeConfig } from '$types'
   import AttributeAction from '$lib/attributes/AttributeAction.svelte'
 

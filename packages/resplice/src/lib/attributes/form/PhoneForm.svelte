@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import parsePhoneNumber, { isValidPhoneNumber } from 'libphonenumber-js'
   import { createEventDispatcher } from 'svelte'
   import TextField from '$lib/common/form/TextField.svelte'

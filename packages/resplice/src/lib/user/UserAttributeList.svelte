@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { Attribute } from '$types'
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
 

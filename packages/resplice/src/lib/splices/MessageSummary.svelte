@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { Message } from '$types'
   import { formatDistanceToNow, parseISO } from 'date-fns'
 

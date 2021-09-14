@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { AttributeAction } from '$types'
   import CalendarIcon from '$lib/icons/CalendarIcon.svelte'
   import CallIcon from '$lib/icons/CallIcon.svelte'

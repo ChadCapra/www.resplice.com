@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { writable, derived } from 'svelte/store'
   import type { Writable } from 'svelte/store'
   import AddIcon from '$lib/icons/AddIcon.svelte'

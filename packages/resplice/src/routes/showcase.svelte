@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import Avatar from '$lib/common/Avatar.svelte'
   import Button from '$lib/common/Button.svelte'

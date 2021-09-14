@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { writable } from 'svelte/store'
   import Avatar from '$lib/common/Avatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'

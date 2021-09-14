@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { goto } from '$app/navigation'
   import Button from '$lib/common/Button.svelte'
   import AddIcon from '$lib/icons/AddIcon.svelte'

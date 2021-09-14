@@ -1,5 +1,5 @@
 import type { Contact } from './contact.type'
-import type { Attribute as BaseAttribute } from './attribute.type'
+import type { Attribute as BaseAttribute } from './attribute'
 import type { BaseMessage } from './message.type'
 
 export type Splice = {

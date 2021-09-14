@@ -1,6 +1,6 @@
-<script>
-  import type { Attribute } from '$types'
-  import { AttributeAction } from '$types'
+<script lang="ts">
+  import type { Attribute } from '$types/attribute'
+  import { AttributeAction } from '$types/attribute'
   import cx from 'classnames'
   import {
     callPhone,

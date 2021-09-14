@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   // import VirtualList from 'svelte-tiny-virtual-list'
   import ChatMessage from '$lib/common/ChatMessage.svelte'
   import type { Message } from '$types'

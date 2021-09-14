@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { differenceInDays, format } from 'date-fns'
   import type { Message } from '$types'
   import Avatar from '$lib/common/Avatar.svelte'

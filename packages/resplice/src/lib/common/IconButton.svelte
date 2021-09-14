@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   export let Icon: any
   export let disabled: boolean = false
 </script>

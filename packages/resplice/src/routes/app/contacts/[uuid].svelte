@@ -8,7 +8,7 @@
   }
 </script>
 
-<script>
+<script lang="ts">
   import { onMount } from 'svelte'
   import type { ContactDetail } from '$types'
   import ContactHeader from '$lib/contacts/ContactHeader.svelte'

@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { Contact } from '$types'
   import Avatar from '$lib/common/Avatar.svelte'
   export let contact: Pick<Contact, 'name' | 'tags' | 'uuid'>

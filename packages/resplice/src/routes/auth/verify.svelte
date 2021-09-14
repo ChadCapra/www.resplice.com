@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import RespliceWide from '$lib/icons/RespliceWide.svelte'
   import VerifyForm from '$lib/auth/VerifyForm.svelte'
 </script>

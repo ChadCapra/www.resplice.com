@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { page } from '$app/stores'
   import NavItem from '$lib/common/NavItem.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'

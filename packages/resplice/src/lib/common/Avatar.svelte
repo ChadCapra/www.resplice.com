@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { createAvatar } from '@dicebear/avatars'
   import * as style from '@dicebear/avatars-gridy-sprites'
   export let uuid: string

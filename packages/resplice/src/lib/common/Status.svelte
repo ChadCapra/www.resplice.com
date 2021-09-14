@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   export let isActive: boolean = false
   export let top: number = 0
   export let left: number = 0

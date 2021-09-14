@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   export let variant: 'circle' | 'rect'
   export let width: string
   export let height: string = width

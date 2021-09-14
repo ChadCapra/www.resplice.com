@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte'
   import CryptoWorker from '$workers/crypto?worker'
   import Button from '$lib/common/Button.svelte'

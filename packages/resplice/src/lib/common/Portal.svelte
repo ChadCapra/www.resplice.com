@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   // src/components/Portal.svelte
   import { onMount, onDestroy } from 'svelte'
   export let id: string

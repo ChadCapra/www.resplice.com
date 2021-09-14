@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import cx from 'classnames'
   import { AsYouType } from 'libphonenumber-js'
 

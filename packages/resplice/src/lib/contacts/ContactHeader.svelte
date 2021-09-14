@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { Contact } from '$types'
   import Avatar from '$lib/common/Avatar.svelte'
   import BackIcon from '$lib/icons/BackIcon.svelte'

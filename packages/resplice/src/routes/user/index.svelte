@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte'
   import type { User } from '$types'
   import Header from '$lib/user/Header.svelte'

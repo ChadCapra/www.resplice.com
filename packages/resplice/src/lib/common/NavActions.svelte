@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import AddIcon from '$lib/icons/AddIcon.svelte'
 </script>
 

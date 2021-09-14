@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   export let name: string
   export let label: string
   export let isChecked: boolean

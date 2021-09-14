@@ -1,4 +1,4 @@
-import type { EmailValue, PhoneValue } from './attribute.type'
+import type { EmailValue, PhoneValue } from './attribute'
 
 export type Invite = {
   name: string

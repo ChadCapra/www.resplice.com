@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import RespliceWide from '$lib/icons/RespliceWide.svelte'
   import SignupForm from '$lib/auth/SignupForm.svelte'
   import type { Contact } from '$types'

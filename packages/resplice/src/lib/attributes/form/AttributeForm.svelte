@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { Attribute } from '$types'
   import { AttributeType } from '$types'
 

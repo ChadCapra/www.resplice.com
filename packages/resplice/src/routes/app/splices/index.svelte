@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import SearchHeader from '$lib/common/SearchHeader.svelte'
   import SpliceList from '$lib/splices/SpliceList.svelte'
   import type { Splice } from '$types'

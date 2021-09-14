@@ -10,12 +10,12 @@
   // }
 </script>
 
-<script>
+<script lang="ts">
   import '../global.css'
 </script>
 
 <svelte:head>
-  <script>
+  <script lang="ts">
     // Inlining in head to avoid FOUC (Flash of Unstyled Content)
     if (
       localStorage.getItem('theme') === 'dark' ||

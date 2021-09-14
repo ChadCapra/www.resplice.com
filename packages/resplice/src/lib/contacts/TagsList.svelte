@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher } from 'svelte'
   const dispatch = createEventDispatcher()
   import Button from '$lib/common/Button.svelte'
@@ -32,9 +32,8 @@
         class={cx(
           'bg-gray-200 rounded-xl px-4 py-1 text-gray-700 font-semibold cursor-pointer no-highlight transform transition duration-75 ease-in-out active:scale-90',
           {
-            'bg-brand-primary bg-opacity-20 text-brand-primary': selectedTags.has(
-              tag
-            )
+            'bg-brand-primary bg-opacity-20 text-brand-primary':
+              selectedTags.has(tag)
           }
         )}
         on:click={() => onTagSelect(tag)}

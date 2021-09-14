@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { Attribute } from '$types'
 
   export let attribute: Pick<Attribute, 'type' | 'value'>

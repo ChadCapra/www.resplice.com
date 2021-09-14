@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher } from 'svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import FormButtons from '$lib/attributes/form/FormButtons.svelte'

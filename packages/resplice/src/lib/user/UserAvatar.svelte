@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import type { User } from '$types'
   import { createEventDispatcher } from 'svelte'
   import Avatar from '$lib/common/Avatar.svelte'

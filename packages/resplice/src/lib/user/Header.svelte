@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import { fade } from 'svelte/transition'
   import BackIcon from '$lib/icons/BackIcon.svelte'
   import Avatar from '$lib/common/Avatar.svelte'
