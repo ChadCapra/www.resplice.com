@@ -74,8 +74,7 @@ async function decrypt(derivedKey: CryptoKey, data: unknown) {
   return ctx.postMessage('')
 }
 
-ctx.onmessage = (e) => {
-  const cmd = e.data
+ctx.onmessage = ({ data: cmd }) => {
   switch (cmd.type) {
     case Command.GENERATE_KEYS:
       generateKeys()

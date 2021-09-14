@@ -1,4 +1,4 @@
-import type { Invite } from '$types'
+import type { Invite } from '$types/invite.type'
 
 export interface InvitesClient {
   create: (

@@ -1,5 +1,3 @@
-// Data Types
-// Attributes
 export enum AttributeType {
   Address = 'ADDRESS',
   Credential = 'CREDENTIAL',
@@ -19,9 +17,8 @@ export type AttributeValue =
   | SocialValue
   | TextValue
   | UnknownValue
-export interface BaseAttribute {
+interface BaseAttribute {
   uuid: string
-  contact_uuid: string
   type: AttributeType
   name: string
   value: AttributeValue
@@ -99,7 +96,7 @@ export interface Unknown extends BaseAttribute {
   type: AttributeType.Unknown
   value: UnknownValue
 }
-export type UnknownValue = Record<string, never>
+export type UnknownValue = Record<string, unknown>
 
 export type Attribute =
   | Address
@@ -125,85 +122,4 @@ export enum AttributeAction {
 export type AttributeTypeConfig = {
   name: string
   actions: AttributeAction[]
-}
-
-// Contacts
-export type Contact = {
-  uuid: string
-  name: string
-  nickName?: string
-  description?: string
-  tags: string[]
-}
-
-export type ContactDetail = Contact & {
-  attributes: Attribute[]
-  common_splices: string[]
-  messages: Message[]
-  pending: boolean
-}
-
-// Invites & Shares
-export type Invite = {
-  name: string
-  value: PhoneValue | EmailValue
-}
-
-export type Share = {
-  uuid: string
-  attribute_uuid: string
-  entity_uuid: string
-  exipry: string
-  sort_order: number
-}
-
-// Messaging
-export type Message = {
-  uuid: string
-  entity_uuid: string
-  entity_name: string
-  content: string
-  timestamp: string
-}
-
-// Auth
-export type Auth = {
-  loginValues: {
-    phone: string[]
-    email: string[]
-  }
-  session: Session
-}
-export type Session = {
-  uuid: string
-  access_token: string
-  expiry: string
-  authenticated_at: string
-  user_agent: string
-  location: string
-  remember_me: boolean
-  public_key: Record<string, string>
-  private_key: Record<string, string>
-}
-
-// User
-export type User = {
-  name: string
-  avatar: string | null
-  tags: string[]
-  attributes: Attribute[]
-}
-
-// Splices
-export type Splice = {
-  name: string
-  members: Contact[]
-  latest_message: Message
-  latest_attribute: Attribute
-  missed_messages: number
-}
-
-export type SpliceDetail = Splice & {
-  messages: Message[]
-  attributes: Attribute[]
 }

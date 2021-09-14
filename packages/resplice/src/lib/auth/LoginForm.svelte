@@ -13,8 +13,7 @@
 
   onMount(() => {
     const cryptoWorker = new CryptoWorker()
-    cryptoWorker.onmessage = (e) => {
-      const cmd = e.data
+    cryptoWorker.onmessage = ({ data: cmd }) => {
       switch (cmd.type) {
         case 'GENERATE_KEYS':
           keys = cmd.data.keys

@@ -1,4 +1,6 @@
-import type { Contact, Invite, Splice } from '$types'
+import type { Splice } from '$types/splice.type'
+import type { Contact } from '$types/contact.type'
+import type { Invite } from '$types/invite.type'
 
 type CreateParams = {
   name: string

@@ -1,4 +1,4 @@
-import type { Message } from '$types'
+import type { Message } from '$types/user.type'
 
 export interface MessagesClient {
   send: (message: string) => Promise<Message>

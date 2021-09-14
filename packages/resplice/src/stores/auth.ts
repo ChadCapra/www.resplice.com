@@ -1,5 +1,13 @@
 import { writable } from 'svelte/store'
-import type { Auth } from '$types'
+import type { Session } from '$types/session.type'
+
+type Auth = {
+  loginValues: {
+    phone: string[]
+    email: string[]
+  }
+  session: Session
+}
 
 const auth = writable<Auth | null>(null)
 

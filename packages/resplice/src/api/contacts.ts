@@ -1,4 +1,4 @@
-import type { Attribute, Contact } from '$types'
+import type { Attribute, Contact } from '$types/contact.type'
 
 export interface ContactsClient {
   get: (contactUUID: string) => Promise<Contact>
@@ -8,10 +8,6 @@ export interface ContactsClient {
     contact: Pick<Contact, 'nickName' | 'description' | 'tags'>
   ) => Promise<Contact>
   delete: (contactUUID: string) => Promise<void>
-  getAttribute: (
-    contactUUID: string,
-    attributeUUID: string
-  ) => Promise<Attribute>
   getAttributes: (contactUUID: string) => Promise<Attribute[]>
   getAllAttributes: () => Promise<Attribute[]>
   addShare: (attributeUUID: string) => Promise<any>
@@ -23,13 +19,14 @@ export interface ContactsClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function contactsClientFactory(api: any, cache: any): ContactsClient {
+function contactsClientFactory(api: any, _cache: any): ContactsClient {
   return {
     get: async (contactUUID) => {
-      const getPromise = api.getContact(contactUUID)
-      const cacheHit = cache.contacts[contactUUID]
-      if (cacheHit) return cacheHit
-      cache.contacts[contactUUID] = await getPromise.data
+      // return stuff in store
+      // make api request
+      // update store (rerender)
+      const data = await api.getContact(contactUUID)
+      return data
     },
     getAll: () => api.getAllContacts(),
     update: (contactUUID, contact) =>
@@ -39,9 +36,7 @@ function contactsClientFactory(api: any, cache: any): ContactsClient {
         tags: contact.tags
       }),
     delete: (contactUUID) => api.deleteContact(contactUUID),
-    getAttribute: (contactUUID, attributeUUID) =>
-      api.getContactAttribute(contactUUID, attributeUUID),
-    getAllAttributes: () => api.getAllAttributes(),
+    getAllAttributes: () => api.getAttributes(),
     getAttributes: (contactUUID) => api.getAttributes(contactUUID),
     addShare: (attributeUUID) => api.addContactShare(attributeUUID),
     getShare: (contactUUID, shareUUID) =>

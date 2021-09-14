@@ -27,7 +27,7 @@
 			"$app/*": [".svelte/dev/runtime/app/*", ".svelte/build/runtime/app/*"],
 			"$lib/*": ["src/lib/*"],
 			"$stores/*": ["src/stores/*"],
-			"$types": ["src/types/index.type.ts"],
+			"$types/*": ["src/types/*"],
 			"$workers/*": ["src/workers/*"]
 		}
 	},
