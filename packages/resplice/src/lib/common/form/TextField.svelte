@@ -38,7 +38,7 @@
       class:ring-gray-200={disabled}
       class:ring-gray-600={!disabled && !error}
       class:ring-red-600={!disabled && !!error}
-      title={label}
+      title={name}
       {name}
       {disabled}
       bind:value

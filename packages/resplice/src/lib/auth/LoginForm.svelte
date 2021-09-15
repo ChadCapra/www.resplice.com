@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { isValidPhoneNumber } from 'libphonenumber-js'
   import CryptoWorker from '$workers/crypto?worker'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
@@ -36,10 +37,9 @@
     currentTarget: EventTarget & HTMLFormElement
   }
   async function onSubmit(e: SubmitEvent) {
-    e.preventDefault()
     formErrs = {}
     const errs: Record<string, string> = {}
-    if (!/^[a-zA-Z]/.test(phone)) errs.phone = 'Invalid Phone'
+    if (!isValidPhoneNumber(phone, 'US')) errs.phone = 'Invalid Phone'
     if (!validateEmail(email)) errs.email = 'Invalid Email'
     if (Object.keys(errs).length) {
       formErrs = errs
@@ -49,8 +49,8 @@
 </script>
 
 <form
-  class="flex-1 flex flex-col justify-between items-center w-full"
-  on:submit={onSubmit}
+  class="flex-1 flex flex-col justify-between items-center w-full p-2 overflow-auto"
+  on:submit|preventDefault={onSubmit}
 >
   <div class="w-full flex flex-col space-y-6">
     <PhoneField
