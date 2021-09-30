@@ -22,4 +22,6 @@ function respliceClientFactory(api: any, cache: any): RespliceClient {
   }
 }
 
+export const contextKey = { name: 'RespliceClient' }
+
 export default respliceClientFactory

@@ -19,10 +19,10 @@ const config = {
     vite: {
       resolve: {
         alias: {
-          $api: resolve('./src/api'),
+          $services: resolve('./src/services'),
           $stores: resolve('./src/stores'),
           $types: resolve('./src/types'),
-          $workers: resolve('./src/workers')
+          $workers: resolve('./src/services/workers')
         }
       }
     }

@@ -3,7 +3,7 @@
 
   let isMocking = false
   const initMockWorker = async () => {
-    const { worker } = await import('../../mocks/browser')
+    const { worker } = await import('../../services/mocks/browser')
     worker.start()
     isMocking = true
   }

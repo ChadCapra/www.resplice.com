@@ -16,6 +16,15 @@ export interface ContactsClient {
   getAllShares: () => Promise<any>
   expireShare: (shareUUID: string, expiry: Date) => Promise<void>
   removeShare: (shareUUID: string) => Promise<void>
+  createInvite: (attributeUUIDs: string[]) => Promise<Contact>
+  addInviteAttribute: (
+    inviteUUID: string,
+    attributeUUID: string
+  ) => Promise<Contact>
+  removedInviteAttribute: (
+    inviteUUID: string,
+    attributeUUID: string
+  ) => Promise<Contact>
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -45,7 +54,11 @@ function contactsClientFactory(api: any, _cache: any): ContactsClient {
     getAllShares: () => api.getAllContactShares(),
     expireShare: (shareUUID, expiry) =>
       api.expireContactShare(shareUUID, expiry),
-    removeShare: (shareUUID) => api.removeContactShare(shareUUID)
+    removeShare: (shareUUID) => api.removeContactShare(shareUUID),
+    createInvite: (attributeUUID) => api.createInvite(attributeUUID),
+    addInviteAttribute: (inviteUUID, attributeUUID) =>
+      api.addInviteAttribute(inviteUUID, attributeUUID),
+    removedInviteAttribute: (inviteUUID, attributeUUID) => api.removeInviteAttribute(inviteUUID, attributeUUID)
   }
 }
 

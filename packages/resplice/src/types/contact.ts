@@ -1,9 +1,16 @@
 import type { Attribute as BaseAttribute } from './attribute'
 import type { BaseMessage } from './message'
 
+export enum ContactType {
+  CONTACT = 'CONTACT',
+  PENDING = 'PENDING',
+  INVITED = 'INVITED'
+}
 export type Contact = {
   uuid: string
+  type: ContactType
   name: string
+  avatar_url?: string
   nickName?: string
   description?: string
   tags: string[]

@@ -3,7 +3,7 @@
   import SpliceList from '$lib/splices/SpliceList.svelte'
   import type { Splice } from '$types'
   // TODO: Pull from api client
-  import splices from '../../../mocks/splices'
+  import splices from '../../../services/mocks/splices'
 
   let splicesAsync: Promise<Splice[]> = Promise.resolve(splices)
 </script>

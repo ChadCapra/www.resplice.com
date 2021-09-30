@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Contact } from '$types'
+  import type { Contact } from '$types/contact'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
   import ConnectionItem from '$lib/auth/ConnectionItem.svelte'
 

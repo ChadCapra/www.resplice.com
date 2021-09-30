@@ -11,3 +11,5 @@ export type User = {
 export type Attribute = BaseAttribute
 
 export type Message = BaseMessage
+
+export type Invite = string

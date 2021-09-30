@@ -4,7 +4,7 @@
   import type { Contact } from '$types'
 
   // TODO: Replace with cache/network call
-  import contacts from '../../mocks/contacts'
+  import contacts from '../../services/mocks/contacts'
 
   let pendingConnectionsAsync: Promise<Pick<Contact, 'name' | 'uuid'>[]> =
     Promise.resolve(contacts)

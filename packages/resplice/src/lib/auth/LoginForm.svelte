@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { isValidPhoneNumber } from 'libphonenumber-js'
+  import api from '$api'
   import CryptoWorker from '$workers/crypto?worker'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
@@ -45,6 +46,7 @@
       formErrs = errs
       return
     }
+    console.log(phone, email, rememberMe)
   }
 </script>
 

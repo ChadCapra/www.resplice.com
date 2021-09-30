@@ -1,4 +1,4 @@
-import type { Attribute, Invite, User } from '$types'
+import type { Attribute, Invite, User } from '$types/user'
 
 type CreateParams = {
   name: string

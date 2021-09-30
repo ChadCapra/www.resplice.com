@@ -14,7 +14,7 @@
 <script lang="ts">
   import AttributeForm from '$lib/attributes/form/AttributeForm.svelte'
   import type { AttributeTypeEnum } from '$types'
-  import attributeTypes from '../../../mocks/attributeTypes'
+  import attributeTypes from '../../../services/mocks/attributeTypes'
 
   export let typeParam: AttributeTypeEnum
 

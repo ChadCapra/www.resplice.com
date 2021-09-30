@@ -6,7 +6,7 @@
   import UserAvatar from '$lib/user/UserAvatar.svelte'
 
   // TODO: Remove after api request
-  import user from '../../mocks/user'
+  import user from '../../services/mocks/user'
   import AddAttributeButton from '$lib/user/AddAttributeButton.svelte'
 
   $: attributes = sortUserAttributes(user)

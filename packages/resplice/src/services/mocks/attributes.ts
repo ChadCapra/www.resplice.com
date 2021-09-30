@@ -1,10 +1,9 @@
-import type { Attribute } from '$types'
-import { AttributeType } from '$types'
+import type { Attribute } from '$types/attribute'
+import { AttributeType } from '$types/attribute'
 
 const attributes: Attribute[] = [
   {
     uuid: '987sdf2',
-    contact_uuid: 'bastilla-shan',
     type: AttributeType.Address,
     name: 'Apartment',
     value: {
@@ -20,7 +19,6 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'cphone',
-    contact_uuid: 'darth-vader',
     type: AttributeType.Phone,
     name: 'Mobile',
     value: {
@@ -33,7 +31,6 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'cemail',
-    contact_uuid: 'darth-vader',
     type: AttributeType.Email,
     name: 'Email',
     value: {
@@ -43,7 +40,6 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'caddress',
-    contact_uuid: 'darth-vader',
     type: AttributeType.Address,
     name: 'Address',
     value: {
@@ -59,7 +55,6 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'cemail',
-    contact_uuid: 'darth-vader',
     type: AttributeType.Email,
     name: 'Email',
     value: { email: 'vader@deathstar.com' },
@@ -67,10 +62,9 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'cdatetime',
-    contact_uuid: 'darth-vader',
-    type: AttributeType.Datetime,
+    type: AttributeType.Date,
     name: 'Mustafar Battle',
-    value: { datetime: '2021-06-27T21:14:00.000Z' },
+    value: { date: 1624828440000 },
     sort_order: 6
   }
 ]

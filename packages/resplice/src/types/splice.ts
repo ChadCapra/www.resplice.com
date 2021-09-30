@@ -22,3 +22,7 @@ export type Attribute = BaseAttribute & {
 export type Message = BaseMessage & {
   splice_uuid: string
 }
+
+export type Plan = {
+  uuid: string
+}

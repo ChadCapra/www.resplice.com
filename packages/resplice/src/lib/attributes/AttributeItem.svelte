@@ -3,7 +3,7 @@
   import AttributeAction from '$lib/attributes/AttributeAction.svelte'
   import AttributeValue from '$lib/attributes/AttributeValue.svelte'
   import Modal from '$lib/common/Modal.svelte'
-  import attributeTypes from '../../mocks/attributeTypes'
+  import attributeTypes from '../../services/mocks/attributeTypes'
 
   export let itemType: 'contact' | 'user' | 'disabled'
   export let attribute: Pick<Attribute, 'type' | 'name' | 'value'>
