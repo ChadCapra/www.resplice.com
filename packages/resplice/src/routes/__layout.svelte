@@ -16,9 +16,8 @@
   import respliceClientFactory, { contextKey } from '$services/api'
   import api from '$services/mocks/apiClient'
   import cache from '$services/mocks/cache'
-  import stores from '$stores/index'
 
-  const respliceClient = respliceClientFactory(api, cache, stores)
+  const respliceClient = respliceClientFactory(api, cache)
 
   setContext(contextKey, respliceClient)
 </script>

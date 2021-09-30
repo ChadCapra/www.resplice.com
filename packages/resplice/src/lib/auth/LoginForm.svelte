@@ -2,6 +2,8 @@
   import { onMount } from 'svelte'
   import { isValidPhoneNumber } from 'libphonenumber-js'
   import CryptoWorker from '$workers/crypto?worker'
+  import { goto } from '$app/navigation'
+  import authStore from '$stores/auth'
   import useRespliceClient from '$lib/hooks/respliceClient'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
@@ -31,6 +33,12 @@
     console.log(keys)
   }
 
+  $: {
+    if ($authStore?.session) {
+      goto('/auth/verify')
+    }
+  }
+
   let phone = ''
   let email = ''
   let rememberMe = false
@@ -49,8 +57,14 @@
       // TODO: Show errors under fields or in modal
       return
     }
-    const created = await client.sessions.create({ phone, email, rememberMe })
-    console.log(created)
+    const session = await client.sessions.create({ phone, email, rememberMe })
+    authStore.set({
+      loginValues: {
+        phone,
+        email
+      },
+      session: session.session
+    })
   }
 </script>
 

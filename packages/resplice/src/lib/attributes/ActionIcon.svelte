@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AttributeAction } from '$types'
+  import { AttributeAction } from '$types/attribute'
   import CalendarIcon from '$lib/icons/CalendarIcon.svelte'
   import CallIcon from '$lib/icons/CallIcon.svelte'
   import ClipboardIcon from '$lib/icons/ClipboardIcon.svelte'

@@ -25,23 +25,10 @@ export interface SessionsClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function sessionsClientFactory(
-  api: any,
-  cache: any,
-  authStore: AuthStore
-): SessionsClient {
+function sessionsClientFactory(api: any, cache: any): SessionsClient {
   return {
-    create: async ({ phone, email, rememberMe }) => {
-      const session = await api.createSession(phone, email, rememberMe)
-      authStore.set({
-        loginValues: {
-          phone,
-          email
-        },
-        session
-      })
-      return session
-    },
+    create: async ({ phone, email, rememberMe }) =>
+      api.createSession(phone, email, rememberMe),
     get: () => api.getSession(),
     getAll: () => api.getAllSessions(),
     expire: (sessionUUID) => api.expireSession(sessionUUID),
