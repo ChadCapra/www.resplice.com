@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { isValidPhoneNumber } from 'libphonenumber-js'
-  import api from '$api'
   import CryptoWorker from '$workers/crypto?worker'
+  import useRespliceClient from '$lib/hooks/respliceClient'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
@@ -10,6 +10,8 @@
   import PhoneIcon from '$lib/icons/PhoneIcon.svelte'
   import { validateEmail } from '$lib/utils'
   import Toggle from '$lib/common/form/Toggle.svelte'
+
+  const client = useRespliceClient()
 
   let keys
 
@@ -37,16 +39,18 @@
   type SubmitEvent = Event & {
     currentTarget: EventTarget & HTMLFormElement
   }
-  async function onSubmit(e: SubmitEvent) {
+  async function onSubmit(_e: SubmitEvent) {
     formErrs = {}
     const errs: Record<string, string> = {}
     if (!isValidPhoneNumber(phone, 'US')) errs.phone = 'Invalid Phone'
     if (!validateEmail(email)) errs.email = 'Invalid Email'
     if (Object.keys(errs).length) {
       formErrs = errs
+      // TODO: Show errors under fields or in modal
       return
     }
-    console.log(phone, email, rememberMe)
+    const created = await client.sessions.create({ phone, email, rememberMe })
+    console.log(created)
   }
 </script>
 

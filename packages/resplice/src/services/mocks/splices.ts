@@ -1,8 +1,15 @@
-import type { Splice } from '$types'
+import type { Splice, Attribute } from '$types/splice'
 
 import { contacts } from './contacts'
 import attributes from './attributes'
 import messages from './messages'
+
+const spliceAttributes: Attribute[] = [
+  {
+    ...attributes[5],
+    splice_uuid: '678asdad'
+  }
+]
 
 const splices: Splice[] = [
   {
@@ -10,7 +17,7 @@ const splices: Splice[] = [
     name: 'Vietnam Trip',
     members: contacts,
     latest_message: messages[2],
-    latest_attribute: attributes[5],
+    latest_attribute: spliceAttributes[0],
     missed_messages: 1
   }
 ]

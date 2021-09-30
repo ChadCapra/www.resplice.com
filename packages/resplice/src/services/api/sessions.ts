@@ -1,4 +1,5 @@
 import type { Session } from '$types/session'
+import type { AuthStore } from '$stores/auth'
 
 type CreateParams = {
   phone: string
@@ -24,10 +25,23 @@ export interface SessionsClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function sessionsClientFactory(api: any, cache: any): SessionsClient {
+function sessionsClientFactory(
+  api: any,
+  cache: any,
+  authStore: AuthStore
+): SessionsClient {
   return {
-    create: ({ phone, email, rememberMe }) =>
-      api.createSession(phone, email, rememberMe),
+    create: async ({ phone, email, rememberMe }) => {
+      const session = await api.createSession(phone, email, rememberMe)
+      authStore.set({
+        loginValues: {
+          phone,
+          email
+        },
+        session
+      })
+      return session
+    },
     get: () => api.getSession(),
     getAll: () => api.getAllSessions(),
     expire: (sessionUUID) => api.expireSession(sessionUUID),

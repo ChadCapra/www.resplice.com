@@ -86,6 +86,6 @@ ctx.onmessage = ({ data: cmd }) => {
       decrypt(cmd.derived_key, cmd.data)
       break
     default:
-      throw new Error('Invalid command for worker')
+      throw new Error('Invalid command for Crypto worker')
   }
 }

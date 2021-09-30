@@ -3,12 +3,14 @@ import type { Session } from '$types/session'
 
 type Auth = {
   loginValues: {
-    phone: string[]
-    email: string[]
+    phone: string
+    email: string
   }
   session: Session
 }
 
-const auth = writable<Auth | null>(null)
+const authStore = writable<Auth | null>(null)
 
-export default auth
+export type AuthStore = typeof authStore
+
+export default authStore

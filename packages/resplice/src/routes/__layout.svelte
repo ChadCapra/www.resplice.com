@@ -12,10 +12,19 @@
 
 <script lang="ts">
   import '../global.css'
+  import { setContext } from 'svelte'
+  import respliceClientFactory, { contextKey } from '$services/api'
+  import api from '$services/mocks/apiClient'
+  import cache from '$services/mocks/cache'
+  import stores from '$stores/index'
+
+  const respliceClient = respliceClientFactory(api, cache, stores)
+
+  setContext(contextKey, respliceClient)
 </script>
 
 <svelte:head>
-  <script lang="ts">
+  <script>
     // Inlining in head to avoid FOUC (Flash of Unstyled Content)
     if (
       localStorage.getItem('theme') === 'dark' ||

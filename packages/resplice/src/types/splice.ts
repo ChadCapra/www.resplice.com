@@ -3,6 +3,7 @@ import type { Attribute as BaseAttribute } from './attribute'
 import type { BaseMessage } from './message'
 
 export type Splice = {
+  uuid: string
   name: string
   members: Contact[]
   latest_message: Message

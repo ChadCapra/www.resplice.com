@@ -4,7 +4,7 @@ import { ContactType } from '$types/contact'
 import attributes from './attributes'
 import { returnPromise } from './utils'
 
-const contacts: Contact[] = [
+export const contacts: Contact[] = [
   {
     uuid: 'darth-vader',
     type: ContactType.CONTACT,

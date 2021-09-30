@@ -31,9 +31,9 @@ export interface ContactsClient {
 function contactsClientFactory(api: any, _cache: any): ContactsClient {
   return {
     get: async (contactUUID) => {
-      // return stuff in store
       // make api request
       // update store (rerender)
+      // sync cache
       const data = await api.getContact(contactUUID)
       return data
     },
@@ -58,7 +58,8 @@ function contactsClientFactory(api: any, _cache: any): ContactsClient {
     createInvite: (attributeUUID) => api.createInvite(attributeUUID),
     addInviteAttribute: (inviteUUID, attributeUUID) =>
       api.addInviteAttribute(inviteUUID, attributeUUID),
-    removedInviteAttribute: (inviteUUID, attributeUUID) => api.removeInviteAttribute(inviteUUID, attributeUUID)
+    removedInviteAttribute: (inviteUUID, attributeUUID) =>
+      api.removeInviteAttribute(inviteUUID, attributeUUID)
   }
 }
 

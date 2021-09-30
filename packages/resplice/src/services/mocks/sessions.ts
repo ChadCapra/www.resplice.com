@@ -15,11 +15,8 @@ const session: Session = {
 }
 
 const sessionsApi = {
-  createSession: (
-    _phone: string,
-    _email: string,
-    _rememberMe: boolean
-  ): Promise<Session> => returnPromise(session),
+  createSession: (_phone: string, _email: string, _rememberMe: boolean) =>
+    returnPromise({ session, confirmation_hash: 'confirming' }),
   getSession: () => returnPromise(session)
 }
 
