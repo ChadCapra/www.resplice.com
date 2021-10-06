@@ -1,12 +1,12 @@
 export enum AttributeType {
-  Address = 'ADDRESS',
-  Credential = 'CREDENTIAL',
-  Date = 'DATE',
-  Email = 'EMAIL',
-  Phone = 'PHONE',
-  Social = 'SOCIAL',
-  Text = 'TEXT',
-  Unknown = 'UNKNOWN'
+  ADDRESS = 'ADDRESS',
+  CREDENTIAL = 'CREDENTIAL',
+  DATE = 'DATE',
+  EMAIL = 'EMAIL',
+  PHONE = 'PHONE',
+  SOCIAL = 'SOCIAL',
+  TEXT = 'TEXT',
+  UNKNOWN = 'UNKNOWN'
 }
 export type AttributeValue =
   | AddressValue
@@ -26,7 +26,7 @@ interface BaseAttribute {
 }
 
 export interface Address extends BaseAttribute {
-  type: AttributeType.Address
+  type: AttributeType.ADDRESS
   value: AddressValue
 }
 export type AddressValue = {
@@ -40,7 +40,7 @@ export type AddressValue = {
 }
 
 export interface Credential extends BaseAttribute {
-  type: AttributeType.Credential
+  type: AttributeType.CREDENTIAL
   value: CredentialValue
 }
 export type CredentialValue = {
@@ -49,7 +49,7 @@ export type CredentialValue = {
 }
 
 export interface Date extends BaseAttribute {
-  type: AttributeType.Date
+  type: AttributeType.DATE
   value: DateValue
 }
 export type DateValue = {
@@ -57,7 +57,7 @@ export type DateValue = {
 }
 
 export interface Email extends BaseAttribute {
-  type: AttributeType.Email
+  type: AttributeType.EMAIL
   value: EmailValue
 }
 export type EmailValue = {
@@ -65,18 +65,18 @@ export type EmailValue = {
 }
 
 export interface Phone extends BaseAttribute {
-  type: AttributeType.Phone
+  type: AttributeType.PHONE
   value: PhoneValue
 }
 export type PhoneValue = {
   countryCallingCode: string
   number: string
-  extension: string
+  extension?: string
   isSms: boolean
 }
 
 export interface Social extends BaseAttribute {
-  type: AttributeType.Social
+  type: AttributeType.SOCIAL
   value: SocialValue
 }
 export type SocialValue = {
@@ -85,7 +85,7 @@ export type SocialValue = {
 }
 
 export interface Text extends BaseAttribute {
-  type: AttributeType.Text
+  type: AttributeType.TEXT
   value: TextValue
 }
 export type TextValue = {
@@ -93,7 +93,7 @@ export type TextValue = {
 }
 
 export interface Unknown extends BaseAttribute {
-  type: AttributeType.Unknown
+  type: AttributeType.UNKNOWN
   value: UnknownValue
 }
 export type UnknownValue = Record<string, unknown>

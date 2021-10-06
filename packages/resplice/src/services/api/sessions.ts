@@ -1,8 +1,7 @@
 import type { Session } from '$types/session'
-import type { AuthStore } from '$stores/auth'
 
 type CreateParams = {
-  phone: string
+  phone: { value: string; countryCallingCode: string }
   email: string
   rememberMe: boolean
 }

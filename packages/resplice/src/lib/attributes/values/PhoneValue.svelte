@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { Attribute } from '$types'
+  import type { Phone } from '$types/attribute'
   import parsePhoneNumber from 'libphonenumber-js'
 
-  export let attribute: Pick<Attribute, 'type' | 'value'>
+  export let attribute: Phone
 
-  $: phone = attribute.value.phone
-    ? parsePhoneNumber(attribute.value[1]).formatNational()
-    : ''
+  $: phone = parsePhoneNumber(
+    `+${attribute.value.countryCallingCode}${attribute.value.number}${attribute.value.extension}`
+  ).formatNational()
 </script>
 
 <span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">

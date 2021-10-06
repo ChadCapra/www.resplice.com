@@ -39,7 +39,10 @@
     }
   }
 
-  let phone = ''
+  let phone = {
+    value: '',
+    countryCallingCode: ''
+  }
   let email = ''
   let rememberMe = false
   let formErrs: Record<string, string> = {}
@@ -50,7 +53,7 @@
   async function onSubmit(_e: SubmitEvent) {
     formErrs = {}
     const errs: Record<string, string> = {}
-    if (!isValidPhoneNumber(phone, 'US')) errs.phone = 'Invalid Phone'
+    if (!isValidPhoneNumber(phone.value, 'US')) errs.phone = 'Invalid Phone'
     if (!validateEmail(email)) errs.email = 'Invalid Email'
     if (Object.keys(errs).length) {
       formErrs = errs
@@ -76,7 +79,7 @@
     <PhoneField
       name="phone"
       label="Enter Phone"
-      bind:value={phone}
+      bind:phone
       Icon={PhoneIcon}
       error={formErrs.phone}
     />

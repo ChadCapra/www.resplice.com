@@ -1,19 +1,35 @@
 <script lang="ts">
+  import { CountryCode, parsePhoneNumber } from 'libphonenumber-js'
+  import authStore from '$stores/auth'
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import LockClosedIcon from '$lib/icons/LockClosedIcon.svelte'
   import ShieldCheckmarkIcon from '$lib/icons/ShieldCheckmarkIcon.svelte'
   import Spinner from '$lib/common/skeleton/Spinner.svelte'
+  import type { Email, Phone } from '$types/attribute'
+  import { AttributeType } from '$types/attribute'
 
-  const email: any = {
-    type: 'email',
+  const parsedPhone = parsePhoneNumber(
+    $authStore.loginValues.phone.value,
+    $authStore.loginValues.phone.countryCallingCode as CountryCode
+  )
+  const email: Email = {
+    uuid: 'email',
+    type: AttributeType.EMAIL,
     name: 'Email',
-    value: ['marcusvirg345@gmail.com']
+    value: { email: $authStore.loginValues.email },
+    sort_order: 1
   }
-  const phone: any = {
-    type: 'phone',
+  const phone: Phone = {
+    uuid: 'phone',
+    type: AttributeType.PHONE,
     name: 'Phone',
-    value: ['1', '+12185910657', '']
+    value: {
+      countryCallingCode: parsedPhone.countryCallingCode as string,
+      number: parsedPhone.nationalNumber as string,
+      isSms: true
+    },
+    sort_order: 2
   }
 
   let emailCode = ''

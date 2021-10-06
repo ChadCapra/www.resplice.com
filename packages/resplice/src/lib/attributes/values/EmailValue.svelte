@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Attribute } from '$types'
+  import type { Email } from '$types/attribute'
 
-  export let attribute: Pick<Attribute, 'type' | 'value'>
+  export let attribute: Email
 
-  $: email = attribute.value[0] || ''
+  $: email = attribute.value.email
 </script>
 
 <span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">

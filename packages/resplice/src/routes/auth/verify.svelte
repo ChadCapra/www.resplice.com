@@ -1,6 +1,15 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+  import { goto } from '$app/navigation'
+  import authStore from '$stores/auth'
   import RespliceWide from '$lib/icons/RespliceWide.svelte'
   import VerifyForm from '$lib/auth/VerifyForm.svelte'
+
+  onMount(() => {
+    if (!$authStore?.session) goto('/auth/start')
+  })
+
+  $: activeSession = $authStore?.session
 </script>
 
 <svelte:head>
@@ -17,5 +26,7 @@
     </p>
   </header>
 
-  <VerifyForm />
+  {#if activeSession}
+    <VerifyForm />
+  {/if}
 </main>

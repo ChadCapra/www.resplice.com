@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Attribute } from '$types'
+  import type { Attribute } from '$types/attribute'
   import { format, parseISO } from 'date-fns'
 
   export let attribute: Pick<Attribute, 'type' | 'value'>

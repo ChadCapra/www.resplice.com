@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Contact } from '$types'
+  import type { Contact } from '$types/contact'
   import UserAvatar from '$lib/user/UserAvatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'

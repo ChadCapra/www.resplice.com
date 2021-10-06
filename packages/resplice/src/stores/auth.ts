@@ -3,7 +3,10 @@ import type { Session } from '$types/session'
 
 type Auth = {
   loginValues: {
-    phone: string
+    phone: {
+      countryCallingCode: string
+      value: string
+    }
     email: string
   }
   session: Session

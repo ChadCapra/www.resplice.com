@@ -6,7 +6,7 @@
   import attributeTypes from '$services/mocks/attributeTypes'
 
   export let itemType: 'contact' | 'user' | 'disabled'
-  export let attribute: Pick<Attribute, 'type' | 'name' | 'value'>
+  export let attribute: Attribute
   export let showSecondAction = true
   let showContextModal = false
 

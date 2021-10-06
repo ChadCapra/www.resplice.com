@@ -2,7 +2,7 @@ import type { AttributeTypeConfig } from '$types/attribute'
 import { AttributeType, AttributeAction } from '$types/attribute'
 
 const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
-  [AttributeType.Address]: {
+  [AttributeType.ADDRESS]: {
     name: 'Address',
     actions: [
       AttributeAction.Navigate,
@@ -10,11 +10,11 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       AttributeAction.Copy
     ]
   },
-  [AttributeType.Credential]: {
+  [AttributeType.CREDENTIAL]: {
     name: 'Credential',
     actions: [AttributeAction.Copy]
   },
-  [AttributeType.Date]: {
+  [AttributeType.DATE]: {
     name: 'Date',
     actions: [
       AttributeAction.Calendar,
@@ -22,23 +22,23 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       AttributeAction.Copy
     ]
   },
-  [AttributeType.Email]: {
+  [AttributeType.EMAIL]: {
     name: 'Email',
     actions: [AttributeAction.Email, AttributeAction.Copy]
   },
-  [AttributeType.Phone]: {
+  [AttributeType.PHONE]: {
     name: 'Phone',
     actions: [AttributeAction.Call, AttributeAction.Sms, AttributeAction.Copy]
   },
-  [AttributeType.Social]: {
+  [AttributeType.SOCIAL]: {
     name: 'Social',
     actions: [AttributeAction.Link, AttributeAction.Copy]
   },
-  [AttributeType.Text]: {
+  [AttributeType.TEXT]: {
     name: 'Text',
     actions: [AttributeAction.Copy]
   },
-  [AttributeType.Unknown]: {
+  [AttributeType.UNKNOWN]: {
     name: 'Unkown',
     actions: [AttributeAction.Copy]
   }
