@@ -5,7 +5,7 @@ export interface ContactsClient {
   getAll: () => Contact[]
   update: (
     contactUUID: string,
-    contact: Pick<Contact, 'nickName' | 'description' | 'tags'>
+    contact: Pick<Contact, 'alias' | 'description'>
   ) => Promise<Contact>
   delete: (contactUUID: string) => Promise<void>
   getAttributes: (contactUUID: string) => Promise<Attribute[]>
@@ -32,7 +32,6 @@ function contactsClientFactory(api: any, _cache: any): ContactsClient {
   return {
     get: async (contactUUID) => {
       // make api request
-      // update store (rerender)
       // sync cache
       const data = await api.getContact(contactUUID)
       return data
@@ -40,9 +39,8 @@ function contactsClientFactory(api: any, _cache: any): ContactsClient {
     getAll: () => api.getAllContacts(),
     update: (contactUUID, contact) =>
       api.updateContact(contactUUID, {
-        nickName: contact.nickName,
-        description: contact.description,
-        tags: contact.tags
+        alias: contact.alias,
+        description: contact.description
       }),
     delete: (contactUUID) => api.deleteContact(contactUUID),
     getAllAttributes: () => api.getAttributes(),

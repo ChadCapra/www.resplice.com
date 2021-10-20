@@ -3,17 +3,18 @@ import type { BaseMessage } from './message'
 
 export enum ContactType {
   CONTACT = 'CONTACT',
-  PENDING = 'PENDING',
-  INVITED = 'INVITED'
+  PENDING = 'PENDING'
 }
 export type Contact = {
   uuid: string
   type: ContactType
   name: string
   avatar_url?: string
-  nickName?: string
+  handle: string
+  alias: string
   description?: string
-  tags: string[]
+  isFavored: boolean
+  expiry?: Date
 }
 
 export type ContactDetail = Contact & {
