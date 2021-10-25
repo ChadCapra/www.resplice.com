@@ -1,13 +1,6 @@
 <script lang="ts">
   import RespliceWide from '$lib/icons/RespliceWide.svelte'
   import SignupForm from '$lib/auth/SignupForm.svelte'
-  import type { Contact } from '$types/contact'
-
-  // TODO: Replace with cache/network call
-  import contacts from '../../services/mocks/contacts'
-
-  let pendingConnectionsAsync: Promise<Pick<Contact, 'name' | 'uuid'>[]> =
-    Promise.resolve(contacts)
 </script>
 
 <svelte:head>
@@ -21,5 +14,5 @@
     <RespliceWide width="100%" />
   </header>
 
-  <SignupForm {pendingConnectionsAsync} />
+  <SignupForm />
 </main>

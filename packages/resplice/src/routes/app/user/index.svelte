@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import type { User } from '$types/user.type'
+  import type { User } from '$types/user'
   import Header from '$lib/user/Header.svelte'
   import UserAttributeList from '$lib/user/UserAttributeList.svelte'
   import UserAvatar from '$lib/user/UserAvatar.svelte'

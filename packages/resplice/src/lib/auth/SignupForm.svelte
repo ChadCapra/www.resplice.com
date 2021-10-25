@@ -1,12 +1,9 @@
 <script lang="ts">
-  import type { Contact } from '$types/contact'
   import UserAvatar from '$lib/user/UserAvatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
-  import PendingConnections from '$lib/auth/PendingConnections.svelte'
   import Button from '$lib/common/Button.svelte'
 
-  export let pendingConnectionsAsync: Promise<Pick<Contact, 'name' | 'uuid'>[]>
   let fullName = ''
   let formErrs: Record<string, string> = {}
 
@@ -22,19 +19,19 @@
   }
 </script>
 
-<div class="flex-1 space-y-6 flex flex-col overflow-scroll">
-  <UserAvatar user={{ uuid: '', avatar: null }} />
-  <div class="px-2">
-    <TextField
-      name="full-name"
-      label="Full Name"
-      bind:value={fullName}
-      Icon={PeopleIcon}
-      error={formErrs.fullName}
-    />
+<div class="flex-1 space-y-6 flex flex-col justify-between overflow-scroll">
+  <div>
+    <UserAvatar user={{ uuid: '', avatar: null }} />
+    <div class="mt-8 px-2">
+      <TextField
+        name="full-name"
+        label="Full Name"
+        bind:value={fullName}
+        Icon={PeopleIcon}
+        error={formErrs.fullName}
+      />
+    </div>
   </div>
-
-  <PendingConnections {pendingConnectionsAsync} />
 
   <div class="flex-none flex flex-col items-center p-2">
     <a class="text-brand-primary underline mb-2" href="/auth/verify-existing">

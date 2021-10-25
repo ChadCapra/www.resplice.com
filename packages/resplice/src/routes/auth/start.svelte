@@ -1,6 +1,8 @@
 <script lang="ts">
   import RespliceWide from '$lib/icons/RespliceWide.svelte'
   import LoginForm from '$lib/auth/LoginForm.svelte'
+
+  console.log('start')
 </script>
 
 <svelte:head>

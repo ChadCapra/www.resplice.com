@@ -1,5 +1,5 @@
 import type { Attribute as BaseAttribute } from './attribute'
-import type { BaseMessage } from './message'
+import type { Message as BaseMessage } from './message'
 
 export enum ContactType {
   CONTACT = 'CONTACT',

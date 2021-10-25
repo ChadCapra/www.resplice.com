@@ -1,11 +1,12 @@
 export type Session = {
   uuid: string
-  access_token: string
-  expiry: Date
-  authenticated_at: string
-  user_agent: string
-  location: string
+  user_uuid: string | null
   remember_me: boolean
-  public_key: Record<string, string>
-  private_key: Record<string, string>
+  email: string
+  phone: string
+  email_verified_at: Date | null
+  phone_verified_at: Date | null
+  expiry: Date
+  // public_key: Record<string, string>
+  // private_key: Record<string, string>
 }

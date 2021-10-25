@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { User } from '$types'
+  import type { User } from '$types/user'
   import { createEventDispatcher } from 'svelte'
   import Avatar from '$lib/common/Avatar.svelte'
   import UploadIcon from '$lib/icons/UploadIcon.svelte'
@@ -29,34 +29,33 @@
 </div>
 
 {#if showUploadModal}
-  <Modal initialY={56} on:close={() => (showUploadModal = false)}>
-    <div class="w-full h-full p-4 flex flex-col space-y-8 overflow-scroll">
-      <button
-        class="w-full rounded-lg shadow-lg flex flex-col p-8 items-center active:scale-95"
-        on:click={() => dispatch('upload')}
-      >
-        <span class="text-brand-primary">
-          <UploadIcon width={144} height={144} />
-        </span>
-        <h1 class="text-4xl text-gray-800 font-semibold mt-8">
-          Upload Picture
-        </h1>
-      </button>
+  <Modal let:close on:close={() => (showUploadModal = false)}>
+    <div
+      class="w-full p-4 flex flex-col justify-between space-y-8 overflow-scroll"
+    >
+      <div class="flex items-center space-x-4">
+        <button
+          class="w-full rounded-lg shadow-lg flex flex-col p-4 items-center active:scale-95"
+          on:click={() => dispatch('upload')}
+        >
+          <span class="text-brand-primary">
+            <UploadIcon width={32} height={32} />
+          </span>
+          <p class="text-gray-800 font-semibold">Upload Picture</p>
+        </button>
 
-      <button
-        class="w-full rounded-lg shadow-lg flex flex-col p-8 items-center active:scale-95"
-        on:click={() => dispatch('picture')}
-      >
-        <span class="text-brand-primary">
-          <CameraIcon width={144} height={144} />
-        </span>
-        <h1 class="text-4xl text-gray-800 font-semibold mt-8">Take Picture</h1>
-      </button>
-
+        <button
+          class="w-full rounded-lg shadow-lg flex flex-col p-4 items-center active:scale-95"
+          on:click={() => dispatch('picture')}
+        >
+          <span class="text-brand-primary">
+            <CameraIcon width={32} height={32} />
+          </span>
+          <p class="text-gray-800 font-semibold">Take Picture</p>
+        </button>
+      </div>
       <div class="m-auto">
-        <Button color="gray" on:click={() => (showUploadModal = false)}>
-          Cancel
-        </Button>
+        <Button color="gray" on:click={close}>Cancel</Button>
       </div>
     </div>
   </Modal>

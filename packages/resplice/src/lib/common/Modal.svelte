@@ -86,9 +86,10 @@
     on:pointerdown={onPointerDown}
     on:pointermove={onPointerMove}
     on:pointerup={onPointerUp}
+    on:close={() => console.log('close from slot')}
   >
     <div class="bg-gray-700 h-1 w-12 rounded-lg mt-1" />
-    <slot />
+    <slot {close} />
   </div>
 </div>
 

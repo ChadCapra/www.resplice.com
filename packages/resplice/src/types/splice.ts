@@ -1,6 +1,6 @@
 import type { Contact } from './contact'
 import type { Attribute as BaseAttribute } from './attribute'
-import type { BaseMessage } from './message'
+import type { Message as BaseMessage } from './message'
 
 export type Splice = {
   uuid: string

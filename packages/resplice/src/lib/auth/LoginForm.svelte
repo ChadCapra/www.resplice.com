@@ -2,7 +2,6 @@
   import { onMount } from 'svelte'
   import { isValidPhoneNumber } from 'libphonenumber-js'
   import CryptoWorker from '$workers/crypto?worker'
-  import { goto } from '$app/navigation'
   import authStore from '$stores/auth'
   import useRespliceClient from '$lib/hooks/respliceClient'
   import Button from '$lib/common/Button.svelte'
@@ -29,15 +28,9 @@
     // cryptoWorker.postMessage({ type: 'GENERATE_KEYS' })
   })
 
-  $: {
-    console.log(keys)
-  }
-
-  $: {
-    if ($authStore?.session) {
-      goto('/auth/verify')
-    }
-  }
+  // $: {
+  //   console.log(keys)
+  // }
 
   let phone = {
     value: '',
@@ -46,6 +39,8 @@
   let email = ''
   let rememberMe = false
   let formErrs: Record<string, string> = {}
+  let networkErr: Error
+  let isLoading = false
 
   type SubmitEvent = Event & {
     currentTarget: EventTarget & HTMLFormElement
@@ -60,14 +55,22 @@
       // TODO: Show errors under fields or in modal
       return
     }
-    const session = await client.sessions.create({ phone, email, rememberMe })
-    authStore.set({
-      loginValues: {
-        phone,
-        email
-      },
-      session: session.session
-    })
+    try {
+      isLoading = true
+      const session = await client.sessions.create({ phone, email, rememberMe })
+      authStore.set({
+        loginValues: {
+          phone,
+          email
+        },
+        session: session.session,
+        public_key: {},
+        private_key: {}
+      })
+    } catch (err) {
+      networkErr = err
+      isLoading = false
+    }
   }
 </script>
 
@@ -94,6 +97,9 @@
   </div>
 
   <div class="w-40 flex flex-col">
-    <Button type="submit">Continue</Button>
+    <Button type="submit" {isLoading}>Continue</Button>
+    {#if networkErr}
+      <p>{networkErr.message}</p>
+    {/if}
   </div>
 </form>

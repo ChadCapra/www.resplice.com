@@ -8,31 +8,32 @@ type CreateParams = {
 type VerifyParams = {
   code: string
 }
+type SinceParams = {
+  since: Date
+}
 
 export interface SessionsClient {
   create: (params: CreateParams) => Promise<{
     session: Session
     confirmation_hash: string
   }>
-  get: () => Promise<Session>
-  getAll: () => Promise<
-    Pick<Session, 'authenticated_at' | 'user_agent' | 'location'>[]
-  >
+  getActive: () => Promise<Session | null>
+  getAll: (since: SinceParams) => Promise<Session[]>
   expire: (sessionUUID: string) => Promise<void>
   verifyEmail: (params: VerifyParams) => Promise<Session>
   verifyPhone: (params: VerifyParams) => Promise<Session>
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function sessionsClientFactory(api: any, cache: any): SessionsClient {
+function sessionsClientFactory(api: any, _cache: any): SessionsClient {
   return {
-    create: async ({ phone, email, rememberMe }) =>
-      api.createSession(phone, email, rememberMe),
-    get: () => api.getSession(),
-    getAll: () => api.getAllSessions(),
+    create: ({ email, phone, rememberMe }) =>
+      api.createSession(email, phone, rememberMe),
+    getActive: () => api.getSession(),
+    getAll: ({ since }) => api.getSessions(since),
     expire: (sessionUUID) => api.expireSession(sessionUUID),
-    verifyEmail: ({ code }) => api.verifySessionEmail(code),
-    verifyPhone: ({ code }) => api.verifySessionPhone(code)
+    verifyEmail: ({ code }) => api.verifyEmail(code),
+    verifyPhone: ({ code }) => api.verifyPhone(code)
   }
 }
 
