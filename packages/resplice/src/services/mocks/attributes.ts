@@ -1,10 +1,11 @@
 import type { Attribute } from '$types/attribute'
 import { AttributeType } from '$types/attribute'
+import { returnPromise } from './utils'
 
-const attributes: Attribute[] = [
+export const attributes: Attribute[] = [
   {
     uuid: '987sdf2',
-    type: AttributeType.Address,
+    type: AttributeType.ADDRESS,
     name: 'Apartment',
     value: {
       address_1: '12 Temple Rd',
@@ -19,7 +20,7 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'cphone',
-    type: AttributeType.Phone,
+    type: AttributeType.PHONE,
     name: 'Mobile',
     value: {
       countryCallingCode: '1',
@@ -31,7 +32,7 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'cemail',
-    type: AttributeType.Email,
+    type: AttributeType.EMAIL,
     name: 'Email',
     value: {
       email: 'anakin@naboo.com'
@@ -40,7 +41,7 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'caddress',
-    type: AttributeType.Address,
+    type: AttributeType.ADDRESS,
     name: 'Address',
     value: {
       address_1: '154 Amidala Ln',
@@ -55,18 +56,30 @@ const attributes: Attribute[] = [
   },
   {
     uuid: 'cemail',
-    type: AttributeType.Email,
+    type: AttributeType.EMAIL,
     name: 'Email',
     value: { email: 'vader@deathstar.com' },
     sort_order: 5
   },
   {
     uuid: 'cdatetime',
-    type: AttributeType.Date,
+    type: AttributeType.DATE,
     name: 'Mustafar Battle',
     value: { date: 1624828440000 },
     sort_order: 6
   }
 ]
 
-export default attributes
+const attributesApi = {
+  getAttributes: (...args) => returnPromise(attributes),
+  addAttribute: (...args) => returnPromise(attributes[1]),
+  editAttributeName: (...args) => returnPromise(attributes[1]),
+  editAttributeValue: (...args) => returnPromise(attributes[1]),
+  enableDefaultShare: (...args) => returnPromise({ status: 'SUCCESS' }),
+  disableDefaultShare: (...args) => returnPromise({ status: 'SUCCESS' }),
+  sendVerifyToken: (...args) => returnPromise(attributes[1]),
+  verifyAttribute: (...args) => returnPromise(attributes[1]),
+  deleteAttribute: (...args) => returnPromise(attributes[1])
+}
+
+export default attributesApi

@@ -2,13 +2,14 @@ import type { Attribute, Invite, User } from '$types/user'
 
 type CreateParams = {
   name: string
-  avatar: Blob
+  avatar?: Blob
 }
 
 export interface UserClient {
   create: (params: CreateParams) => Promise<User>
   get: () => Promise<User>
-  update: (user: Pick<User, 'name' | 'avatar'>) => Promise<User>
+  updateName: (user: Pick<User, 'name'>) => Promise<User>
+  updateAvatar: (user: Pick<User, 'avatar'>) => Promise<User>
   delete: (user: Pick<User, 'name'>) => Promise<void>
   addAttribute: (attribute: Attribute) => Promise<Attribute>
   getAttribute: (attributeUUID: string) => Promise<Attribute>
@@ -24,7 +25,8 @@ function userClientFactory(api: any, _cache: any): UserClient {
   return {
     create: ({ name, avatar }) => api.createUser(name, avatar),
     get: () => api.getUser(),
-    update: ({ name, avatar }) => api.updateUser(name, avatar),
+    updateName: ({ name }) => api.editUserName(name),
+    updateAvatar: ({ avatar }) => api.editUserAvatar(avatar),
     delete: ({ name }) => api.deleteUser(name),
     addAttribute: (attribute) => api.addAttribute(attribute),
     getAttribute: (attributeUUID) => api.getAttribute(attributeUUID),

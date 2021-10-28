@@ -1,11 +1,18 @@
 <script lang="ts">
+  import useRespliceClient from '$lib/hooks/respliceClient'
   import UserAvatar from '$lib/user/UserAvatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import Button from '$lib/common/Button.svelte'
+  import authStore from '$stores/auth'
+
+  const client = useRespliceClient()
+
+  const RAND_UUID = Math.random().toString(36)
 
   let fullName = ''
   let formErrs: Record<string, string> = {}
+  let isLoading = false
 
   async function createUser() {
     formErrs = {}
@@ -15,13 +22,23 @@
       formErrs = errs
       return
     }
-    console.log(fullName)
+    try {
+      isLoading = true
+      const user = await client.user.create({ name: fullName, avatar: null })
+      authStore.update((auth) => ({
+        ...auth,
+        session: { ...auth.session, user_uuid: user.uuid }
+      }))
+    } catch (err) {
+      console.log(err)
+      isLoading = false
+    }
   }
 </script>
 
 <div class="flex-1 space-y-6 flex flex-col justify-between overflow-scroll">
   <div>
-    <UserAvatar user={{ uuid: '', avatar: null }} />
+    <UserAvatar user={{ uuid: RAND_UUID, avatar: null }} />
     <div class="mt-8 px-2">
       <TextField
         name="full-name"
@@ -37,6 +54,6 @@
     <a class="text-brand-primary underline mb-2" href="/auth/verify-existing">
       I already have an account
     </a>
-    <Button color="brand" on:click={createUser}>Continue</Button>
+    <Button color="brand" {isLoading} on:click={createUser}>Continue</Button>
   </div>
 </div>

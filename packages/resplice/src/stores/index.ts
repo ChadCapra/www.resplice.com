@@ -1,7 +1,11 @@
 import auth from './auth'
+import attributes from './attributes'
+import user from './user'
 
 const stores = {
-  auth
+  auth,
+  attributes,
+  user
 }
 
 export type Stores = typeof stores

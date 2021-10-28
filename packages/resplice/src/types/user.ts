@@ -5,8 +5,9 @@ export type User = {
   uuid: string
   name: string
   avatar: string | null
-  tags: string[]
-  attributes: Attribute[]
+  handle: string | null
+  public_access_enabled: boolean
+  user_registered_at: Date
 }
 
 export type Attribute = BaseAttribute
