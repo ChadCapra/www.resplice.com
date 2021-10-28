@@ -10,7 +10,7 @@
 
 <script lang="ts">
   import { onMount } from 'svelte'
-  import type { ContactDetail } from '$types'
+  import type { ContactDetail } from '$types/contact'
   import ContactHeader from '$lib/contacts/ContactHeader.svelte'
   import ContactAttributes from '$lib/contacts/ContactAttributes.svelte'
   import ContactChat from '$lib/contacts/ContactChat.svelte'

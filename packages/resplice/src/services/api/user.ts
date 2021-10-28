@@ -9,10 +9,12 @@ export interface UserClient {
   create: (params: CreateParams) => Promise<User>
   get: () => Promise<User>
   updateName: (user: Pick<User, 'name'>) => Promise<User>
+  updateHandle: ({ handle }) => Promise<User>
   updateAvatar: (user: Pick<User, 'avatar'>) => Promise<User>
   delete: (user: Pick<User, 'name'>) => Promise<void>
   addAttribute: (attribute: Attribute) => Promise<Attribute>
   getAttribute: (attributeUUID: string) => Promise<Attribute>
+  getAllAttributes: () => Promise<Attribute[]>
   updateAttribute: (attribute: Attribute) => Promise<Attribute>
   verifyAttribute: (attributeUUID: string, code: string) => Promise<void>
   resendAttributeVerification: (attributeUUID: string) => Promise<void>
@@ -24,12 +26,14 @@ export interface UserClient {
 function userClientFactory(api: any, _cache: any): UserClient {
   return {
     create: ({ name, avatar }) => api.createUser(name, avatar),
-    get: () => api.getUser(),
-    updateName: ({ name }) => api.editUserName(name),
-    updateAvatar: ({ avatar }) => api.editUserAvatar(avatar),
+    get: () => api.getProfile(),
+    updateName: ({ name }) => api.editName(name),
+    updateHandle: ({ handle }) => api.editHandle(handle),
+    updateAvatar: ({ avatar }) => api.editAvatar(avatar),
     delete: ({ name }) => api.deleteUser(name),
     addAttribute: (attribute) => api.addAttribute(attribute),
     getAttribute: (attributeUUID) => api.getAttribute(attributeUUID),
+    getAllAttributes: () => api.getAttributes(),
     updateAttribute: (attribute) => api.updateAttribute(attribute),
     verifyAttribute: (attributeUUID, code) =>
       api.verifyAttribute(attributeUUID, code),

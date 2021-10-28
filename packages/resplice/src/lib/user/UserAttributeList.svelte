@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Attribute } from '$types'
+  import type { Attribute } from '$types/attribute'
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
 
   export let attributes: Attribute[]

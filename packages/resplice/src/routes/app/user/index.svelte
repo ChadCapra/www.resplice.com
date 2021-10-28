@@ -1,19 +1,26 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import type { User } from '$types/user'
+  import attributeStore from '$stores/attributes'
+  import userStore from '$stores/user'
+
   import Header from '$lib/user/Header.svelte'
   import UserAttributeList from '$lib/user/UserAttributeList.svelte'
   import UserAvatar from '$lib/user/UserAvatar.svelte'
-
-  // TODO: Remove after api request
-  import user from '../../services/mocks/user'
   import AddAttributeButton from '$lib/user/AddAttributeButton.svelte'
 
-  $: attributes = sortUserAttributes(user)
+  import type { Attribute } from '$types/attribute'
 
-  function sortUserAttributes(user: User) {
-    if (!user) return []
-    return user.attributes.sort((a, b) => a.sort_order - b.sort_order)
+  $: attributes = sortUserAttributes($attributeStore)
+
+  $: user = $userStore
+
+  $: {
+    console.log($userStore)
+  }
+
+  function sortUserAttributes(attributes: Record<string, Attribute>) {
+    if (!attributes) return []
+    return Object.values(attributes).sort((a, b) => a.sort_order - b.sort_order)
   }
 
   let scrollEl: HTMLDivElement
@@ -30,20 +37,22 @@
 </script>
 
 <svelte:head>
-  <title>{user.name}</title>
+  <title>{user?.name}</title>
 </svelte:head>
 
-<main class="flex flex-col w-full h-full">
-  <Header showUser={showUserOnHeader} {user} />
-  <div class="flex-1 overflow-auto relative w-full max-w-xl m-auto">
-    <UserAvatar {user} />
-    <h1 class="text-4xl font-bold mt-2 text-center mb-4">{user.name}</h1>
-    <div
-      bind:this={scrollEl}
-      id="scrollIntersection"
-      class="absolute top-1/4"
-    />
-    <UserAttributeList {attributes} />
-    <AddAttributeButton />
-  </div>
-</main>
+{#if user}
+  <main class="flex flex-col w-full h-full">
+    <Header showUser={showUserOnHeader} {user} />
+    <div class="flex-1 overflow-auto relative w-full max-w-xl m-auto">
+      <UserAvatar {user} />
+      <h1 class="text-4xl font-bold mt-2 text-center mb-4">{user.name}</h1>
+      <div
+        bind:this={scrollEl}
+        id="scrollIntersection"
+        class="absolute top-1/4"
+      />
+      <UserAttributeList {attributes} />
+      <AddAttributeButton />
+    </div>
+  </main>
+{/if}

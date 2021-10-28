@@ -1,30 +1,52 @@
 <script lang="ts">
-  import { page } from '$app/stores'
-  import NavItem from '$lib/common/NavItem.svelte'
-  import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
-  import ChatBubbles from '$lib/icons/ChatBubblesIcon.svelte'
-  import NavActions from '$lib/common/NavActions.svelte'
-  // import MockWorker from '$lib/common/MockWorker.svelte'
+  import { onMount } from 'svelte'
+  import { goto } from '$app/navigation'
+  import useRespliceClient from '$lib/hooks/respliceClient'
+  import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
+  import userStore from '$stores/user'
+  import attributeStore from '$stores/attributes'
+  import { arrToDict } from '$lib/utils'
 
-  const isOnContacts = $page.path === '/app/contacts'
-  const isOnSplices = $page.path === '/app/splices'
+  let appLoadPromise: Promise<boolean> = Promise.resolve(false)
+
+  const client = useRespliceClient()
+
+  async function fetchAllData() {
+    try {
+      const session = await client.sessions.getActive()
+      if (!session) {
+        goto('/auth/start')
+        return
+      }
+    } catch (err) {
+      console.log(err)
+      goto('/auth/start')
+    }
+
+    try {
+      const [user, attributes, _] = await Promise.all([
+        client.user.get(),
+        client.user.getAllAttributes(),
+        client.contacts.getAll()
+      ])
+      userStore.set(user)
+      attributeStore.set(arrToDict(attributes, 'uuid'))
+    } catch (err) {
+      console.log(err)
+    }
+
+    return true
+  }
+
+  onMount(() => {
+    appLoadPromise = fetchAllData()
+  })
 </script>
 
-<!-- <MockWorker> -->
-<main class="flex flex-col w-full h-full overflow-auto space-y-2">
-  <div class="flex-1 overflow-auto"><slot /></div>
-  <nav
-    class="relative flex-none flex justify-between items-center rounded-t-3xl shadow-md bg-gray-100 p-4"
-  >
-    <NavItem isActive={isOnContacts} href="/app/contacts">
-      <PeopleIcon width={32} height={32} />
-      <span>Contacts</span>
-    </NavItem>
-    <NavActions />
-    <NavItem isActive={isOnSplices} href="/app/splices">
-      <ChatBubbles width={32} height={32} />
-      <span>Splices</span>
-    </NavItem>
-  </nav>
-</main>
-<!-- </MockWorker> -->
+{#await appLoadPromise}
+  <AppLoad />
+{:then loaded}
+  {#if loaded}
+    <slot />
+  {/if}
+{/await}

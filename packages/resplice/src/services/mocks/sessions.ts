@@ -32,7 +32,7 @@ const authenticatedSession: Session = {
 const sessionsApi = {
   createSession: (_email: string, _phone: string, _rememberMe: boolean) =>
     returnPromise({ session, confirmation_hash: 'confirming' }),
-  getSession: () => returnPromise(sessionVerifiedBoth),
+  getSession: () => returnPromise(authenticatedSession),
   getSessions: (_since: Date) =>
     returnPromise({
       requested_at: new Date('2021-10-22T00:16:19.301Z'),

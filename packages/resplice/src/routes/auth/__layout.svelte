@@ -26,7 +26,7 @@
 
     if (session.email_verified_at && session.phone_verified_at) {
       if (session.user_uuid) {
-        goto('/app/contacts')
+        goto('/app/list/contacts')
         return
       } else {
         goto('/auth/sign-up')

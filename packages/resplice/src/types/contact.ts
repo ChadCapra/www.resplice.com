@@ -10,8 +10,8 @@ export type Contact = {
   type: ContactType
   name: string
   avatar_url?: string
-  handle: string
-  alias: string
+  handle?: string
+  alias?: string
   description?: string
   isFavored: boolean
   expiry?: Date

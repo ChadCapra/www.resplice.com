@@ -1,7 +1,7 @@
 <script lang="ts">
   // import { onMount } from 'svelte'
   // import { t } from 'svelte-i18n'
-  import type { Contact } from '$types'
+  import type { Contact } from '$types/contact'
   import SearchHeader from '$lib/common/SearchHeader.svelte'
   import TagsList from '$lib/contacts/TagsList.svelte'
   import ContactList from '$lib/contacts/ContactList.svelte'

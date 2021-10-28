@@ -8,6 +8,14 @@ export function filtersContactsList(
   return contacts
 }
 
+export function arrToDict<T>(arr: T[], key: string) {
+  const dict: Record<string, T> = {}
+  arr.forEach((item) => {
+    dict[item[key]] = item
+  })
+  return dict
+}
+
 export function capitalize(text: string): string {
   return text.substring(0, 1).toUpperCase() + text.substring(1)
 }

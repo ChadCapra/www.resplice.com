@@ -9,31 +9,36 @@ export const contacts: Contact[] = [
     uuid: 'darth-vader',
     type: ContactType.CONTACT,
     name: 'Darth Vader',
-    tags: ['Sith', 'Legends']
+    isFavored: false
+    // tags: ['Sith', 'Legends']
   },
   {
     uuid: 'darth-revan',
     type: ContactType.CONTACT,
     name: 'Darth Revan',
-    tags: ['Nemesis']
+    isFavored: true
+    // tags: ['Nemesis']
   },
   {
     uuid: 'luke-skywalker',
     type: ContactType.CONTACT,
     name: 'Luke Skywalker',
-    tags: ['Friends']
+    isFavored: false
+    // tags: ['Friends']
   },
   {
     uuid: 'mace-windu',
     type: ContactType.PENDING,
     name: 'Mace Windu',
-    tags: ['Jedi']
+    isFavored: false
+    // tags: ['Jedi']
   },
   {
     uuid: 'han-solo',
-    type: ContactType.INVITED,
+    type: ContactType.CONTACT,
     name: 'Han Solo',
-    tags: ['Hero']
+    isFavored: false
+    // tags: ['Hero']
   }
 ]
 
