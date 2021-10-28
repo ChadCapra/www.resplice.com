@@ -11,6 +11,7 @@
   const RAND_UUID = Math.random().toString(36)
 
   let fullName = ''
+  let avatar: Blob | null = null
   let formErrs: Record<string, string> = {}
   let isLoading = false
 
@@ -24,7 +25,7 @@
     }
     try {
       isLoading = true
-      const user = await client.user.create({ name: fullName, avatar: null })
+      const user = await client.user.create({ name: fullName, avatar })
       authStore.update((auth) => ({
         ...auth,
         session: { ...auth.session, user_uuid: user.uuid }
@@ -38,7 +39,13 @@
 
 <div class="flex-1 space-y-6 flex flex-col justify-between overflow-scroll">
   <div>
-    <UserAvatar user={{ uuid: RAND_UUID, avatar: null }} />
+    <UserAvatar
+      user={{
+        uuid: RAND_UUID,
+        avatar: avatar ? URL.createObjectURL(avatar) : null
+      }}
+      on:crop={(e) => (avatar = e.detail)}
+    />
     <div class="mt-8 px-2">
       <TextField
         name="full-name"

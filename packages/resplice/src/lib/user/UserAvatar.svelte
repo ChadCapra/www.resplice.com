@@ -12,21 +12,16 @@
 
   let imageInput: HTMLInputElement
   let rawImage: File | null = null
-  let croppedUrl: string | null = null
 
-  function onCrop(image: File) {
-    // TODO: Upload image
-    console.log(image)
-    const url = URL.createObjectURL(image)
-    croppedUrl = url
+  function onCrop(image: Blob) {
     rawImage = null
-    dispatch('upload', url)
+    dispatch('crop', image)
   }
 </script>
 
 <div class="w-full flex flex-col items-center">
   <div class="relative active:scale-95" on:click={() => imageInput.click()}>
-    <Avatar uuid={user.uuid} src={croppedUrl || user.avatar} size="xl" />
+    <Avatar uuid={user.uuid} src={user.avatar} size="xl" />
     <div
       class="absolute right-2 bottom-0 bg-white rounded-full p-2 text-gray-600"
     >
