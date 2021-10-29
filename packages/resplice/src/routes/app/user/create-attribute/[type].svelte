@@ -3,9 +3,10 @@
    * @type {import('@sveltejs/kit').Load}
    */
   export async function load({ page }) {
+    console.log(page.params.type.toUpperCase())
     return {
       props: {
-        typeParam: page.params.type
+        attributeType: page.params.type.toUpperCase()
       }
     }
   }
@@ -13,16 +14,16 @@
 
 <script lang="ts">
   import AttributeForm from '$lib/attributes/form/AttributeForm.svelte'
-  import type { AttributeTypeEnum } from '$types'
-  import attributeTypes from '../../../services/mocks/attributeTypes'
+  import type { AttributeType } from '$types/attribute'
+  import attributeTypes from '$services/mocks/attributeTypes'
 
-  export let typeParam: AttributeTypeEnum
+  export let attributeType: AttributeType
 
-  $: attributeType = attributeTypes[typeParam]
+  $: attributeTypeConfig = attributeTypes[attributeType]
 </script>
 
 <main
   class="h-full w-full flex flex-col items-center justify-between max-w-xl m-auto"
 >
-  <AttributeForm {attributeType} />
+  <AttributeForm {attributeType} {attributeTypeConfig} />
 </main>

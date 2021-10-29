@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { AttributeTypeConfig } from '$types'
+  import type { AttributeTypeConfig } from '$types/attribute'
   import AttributeAction from '$lib/attributes/AttributeAction.svelte'
 
   export let attributeTypeConfig: AttributeTypeConfig

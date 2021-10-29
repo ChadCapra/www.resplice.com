@@ -2,7 +2,7 @@
   import { goto } from '$app/navigation'
   import AttributeTypeItem from '$lib/attributes/AttributeTypeItem.svelte'
   import Button from '$lib/common/Button.svelte'
-  import attributeTypes from '../../../services/mocks/attributeTypes'
+  import attributeTypes from '$services/mocks/attributeTypes'
 
   $: typeConfigs = Object.entries(attributeTypes)
 </script>

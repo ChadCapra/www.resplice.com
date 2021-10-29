@@ -53,12 +53,7 @@
       bind:value={name}
       error={formErrs.name}
     />
-    <PhoneField
-      name="phone"
-      label="Phone"
-      bind:value={phone}
-      error={formErrs.phone}
-    />
+    <PhoneField name="phone" label="Phone" bind:phone error={formErrs.phone} />
     <Toggle name="isSms" label="Allow SMS" bind:isActive={isSms} />
 
     {#each Object.values(formErrs) as err}

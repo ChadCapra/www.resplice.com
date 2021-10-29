@@ -5,8 +5,7 @@ export enum AttributeType {
   EMAIL = 'EMAIL',
   PHONE = 'PHONE',
   SOCIAL = 'SOCIAL',
-  TEXT = 'TEXT',
-  UNKNOWN = 'UNKNOWN'
+  TEXT = 'TEXT'
 }
 export type AttributeValue =
   | AddressValue
@@ -16,7 +15,6 @@ export type AttributeValue =
   | PhoneValue
   | SocialValue
   | TextValue
-  | UnknownValue
 interface BaseAttribute {
   uuid: string
   type: AttributeType
@@ -92,18 +90,11 @@ export type TextValue = {
   text: string
 }
 
-export interface Unknown extends BaseAttribute {
-  type: AttributeType.UNKNOWN
-  value: UnknownValue
-}
-export type UnknownValue = Record<string, unknown>
-
 export type Attribute =
   | Address
   | Credential
   | Date
   | Email
-  | Unknown
   | Phone
   | Social
   | Text

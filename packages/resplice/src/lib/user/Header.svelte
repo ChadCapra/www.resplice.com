@@ -4,7 +4,8 @@
   import Avatar from '$lib/common/Avatar.svelte'
   import IconButton from '$lib/common/IconButton.svelte'
   import SettingsIcon from '$lib/icons/SettingsIcon.svelte'
-  import type { User } from '$types'
+
+  import type { User } from '$types/user'
 
   export let user: User
   export let showUser = false

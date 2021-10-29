@@ -36,7 +36,9 @@
       >
         {attribute.name}
       </span>
-      <AttributeValue {attribute} />
+      {#if !!Object.values(attribute.value).length}
+        <AttributeValue {attribute} />
+      {/if}
     </div>
   </div>
   {#if itemType !== 'user' && showSecondAction}

@@ -14,10 +14,6 @@
 
   $: user = $userStore
 
-  $: {
-    console.log($userStore)
-  }
-
   function sortUserAttributes(attributes: Record<string, Attribute>) {
     if (!attributes) return []
     return Object.values(attributes).sort((a, b) => a.sort_order - b.sort_order)
@@ -41,9 +37,11 @@
 </svelte:head>
 
 {#if user}
-  <main class="flex flex-col w-full h-full">
+  <main class="flex flex-col w-full h-full bg-gray-100">
     <Header showUser={showUserOnHeader} {user} />
-    <div class="flex-1 overflow-auto relative w-full max-w-xl m-auto">
+    <div
+      class="flex-1 overflow-auto relative w-full max-w-xl m-auto py-4 rounded-t-3xl bg-white"
+    >
       <UserAvatar {user} />
       <h1 class="text-4xl font-bold mt-2 text-center mb-4">{user.name}</h1>
       <div

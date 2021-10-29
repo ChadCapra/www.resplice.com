@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Attribute } from '$types'
-  import { AttributeType } from '$types'
+  import type { Attribute, AttributeTypeConfig } from '$types/attribute'
+  import { AttributeType } from '$types/attribute'
 
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import PhoneForm from './PhoneForm.svelte'
@@ -8,54 +8,57 @@
   import AddressForm from './AddressForm.svelte'
   import SocialForm from './SocialForm.svelte'
 
-  export let attribute: Attribute
+  export let attributeType: AttributeType
+  export let attributeTypeConfig: AttributeTypeConfig
 
-  // Deep clone the attribute to edit properties.
-  // If attributes start using anyhing other than primitives
-  // it may result it data loss.
-  // This should be refactored at some point
-  let editingAttribute: Attribute = JSON.parse(JSON.stringify(attribute))
+  let newAttribute: Attribute = {
+    type: attributeType,
+    uuid: 'new-attribute',
+    name: '',
+    value: {} as any,
+    sort_order: 0
+  }
 
   function saveAttribute() {
-    console.log(editingAttribute)
+    console.log(newAttribute)
   }
 </script>
 
 <div class="w-full h-full flex-1 overflow-auto p-4 flex flex-col">
   <div class="w-full shadow-lg rounded-lg p-4 mb-12 flex-none">
-    <h2 class="text-xl font-semibold mb-4">{editingAttribute.name}</h2>
-    <AttributeItem itemType="disabled" attribute={editingAttribute} />
+    <h2 class="text-xl font-semibold mb-4">{attributeTypeConfig.name}</h2>
+    <AttributeItem itemType="disabled" attribute={newAttribute} />
   </div>
-  {#if editingAttribute.type === AttributeType.Phone}
+  {#if newAttribute.type === AttributeType.PHONE}
     <PhoneForm
-      bind:name={editingAttribute.name}
-      bind:countryCallingCode={editingAttribute.value.countryCallingCode}
-      bind:number={editingAttribute.value.number}
-      bind:extension={editingAttribute.value.extension}
-      bind:isSms={editingAttribute.value.isSms}
+      bind:name={newAttribute.name}
+      bind:countryCallingCode={newAttribute.value.countryCallingCode}
+      bind:number={newAttribute.value.number}
+      bind:extension={newAttribute.value.extension}
+      bind:isSms={newAttribute.value.isSms}
       on:save={saveAttribute}
     />
-  {:else if editingAttribute.type === AttributeType.Email}
+  {:else if newAttribute.type === AttributeType.EMAIL}
     <EmailForm
-      bind:name={editingAttribute.name}
-      bind:email={editingAttribute.value.email}
+      bind:name={newAttribute.name}
+      bind:email={newAttribute.value.email}
       on:save={saveAttribute}
     />
-  {:else if editingAttribute.type === AttributeType.Address}
+  {:else if newAttribute.type === AttributeType.ADDRESS}
     <AddressForm
-      bind:name={editingAttribute.name}
-      bind:address1={editingAttribute.value.address_1}
-      bind:address2={editingAttribute.value.address_2}
-      bind:locality={editingAttribute.value.locality}
-      bind:region={editingAttribute.value.region}
-      bind:postalCode={editingAttribute.value.postal_code}
-      bind:country={editingAttribute.value.country}
+      bind:name={newAttribute.name}
+      bind:address1={newAttribute.value.address_1}
+      bind:address2={newAttribute.value.address_2}
+      bind:locality={newAttribute.value.locality}
+      bind:region={newAttribute.value.region}
+      bind:postalCode={newAttribute.value.postal_code}
+      bind:country={newAttribute.value.country}
       on:save={saveAttribute}
     />
-  {:else if editingAttribute.type === AttributeType.Social}
+  {:else if newAttribute.type === AttributeType.SOCIAL}
     <SocialForm
-      bind:name={editingAttribute.name}
-      bind:handle={editingAttribute.value.handle}
+      bind:name={newAttribute.name}
+      bind:handle={newAttribute.value.handle}
       on:save={saveAttribute}
     />
   {:else}

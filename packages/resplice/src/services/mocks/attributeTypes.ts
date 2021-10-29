@@ -37,10 +37,6 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
   [AttributeType.TEXT]: {
     name: 'Text',
     actions: [AttributeAction.Copy]
-  },
-  [AttributeType.UNKNOWN]: {
-    name: 'Unkown',
-    actions: [AttributeAction.Copy]
   }
 }
 
