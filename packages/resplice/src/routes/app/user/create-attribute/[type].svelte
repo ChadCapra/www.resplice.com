@@ -3,7 +3,6 @@
    * @type {import('@sveltejs/kit').Load}
    */
   export async function load({ page }) {
-    console.log(page.params.type.toUpperCase())
     return {
       props: {
         attributeType: page.params.type.toUpperCase()

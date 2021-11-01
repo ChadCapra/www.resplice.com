@@ -1,21 +1,34 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
+  import { zonedTimeToUtc } from 'date-fns-tz'
   import TextField from '$lib/common/form/TextField.svelte'
+  import DateField from '$lib/common/form/DateField.svelte'
   import FormButtons from '$lib/attributes/form/FormButtons.svelte'
-  import { validateEmail } from '$lib/utils'
 
   const dispatch = createEventDispatcher()
 
   export let name = ''
-  export let email = ''
+  export let date = null
+
+  function toEpochTime(date: Date | string) {
+    if (!date) return null
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    const utc = zonedTimeToUtc(date, timeZone)
+    return utc.getTime()
+  }
+
+  let dateStr = ''
+
+  $: {
+    date = toEpochTime(dateStr)
+  }
 
   let formErrs: any = {}
 
   function onSave() {
     formErrs = {}
     if (!name) formErrs.name = 'A name is required'
-    if (!validateEmail(email))
-      formErrs.email = 'Please enter a valid email address'
+    if (!date) formErrs.date = 'A date is required'
 
     if (!Object.keys(formErrs).length) {
       dispatch('save')
@@ -31,11 +44,11 @@
       bind:value={name}
       error={formErrs.name}
     />
-    <TextField
-      name="email"
-      label="Email"
-      bind:value={email}
-      error={formErrs.email}
+    <DateField
+      name="date"
+      label="Date"
+      bind:value={dateStr}
+      error={formErrs.date}
     />
   </div>
 

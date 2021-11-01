@@ -35,12 +35,6 @@
       bind:value={handle}
       error={formErrs.handle}
     />
-
-    {#each Object.values(formErrs) as err}
-      <p class="text-red-600 h-6 w-full" style={'margin-top: 0.25rem'}>
-        {err}
-      </p>
-    {/each}
   </div>
 
   <FormButtons on:save={onSave} />

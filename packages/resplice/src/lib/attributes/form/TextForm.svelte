@@ -2,20 +2,18 @@
   import { createEventDispatcher } from 'svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import FormButtons from '$lib/attributes/form/FormButtons.svelte'
-  import { validateEmail } from '$lib/utils'
 
   const dispatch = createEventDispatcher()
 
   export let name = ''
-  export let email = ''
+  export let text = ''
 
   let formErrs: any = {}
 
   function onSave() {
     formErrs = {}
     if (!name) formErrs.name = 'A name is required'
-    if (!validateEmail(email))
-      formErrs.email = 'Please enter a valid email address'
+    if (!text) formErrs.text = 'Text is required'
 
     if (!Object.keys(formErrs).length) {
       dispatch('save')
@@ -32,10 +30,10 @@
       error={formErrs.name}
     />
     <TextField
-      name="email"
-      label="Email"
-      bind:value={email}
-      error={formErrs.email}
+      name="text"
+      label="Text"
+      bind:value={text}
+      error={formErrs.text}
     />
   </div>
 

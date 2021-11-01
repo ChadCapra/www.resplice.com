@@ -21,6 +21,7 @@ export function capitalize(text: string): string {
 }
 
 export function validateEmail(email: string): boolean {
+  if (!email) return false
   /* eslint-disable no-control-regex, no-useless-escape */
   // prettier-ignore
   return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)

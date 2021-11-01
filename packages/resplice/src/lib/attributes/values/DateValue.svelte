@@ -1,15 +1,24 @@
 <script lang="ts">
   import type { DateValue } from '$types/attribute'
-  import { format, parseISO } from 'date-fns'
+  import { utcToZonedTime, format } from 'date-fns-tz'
 
   export let value: DateValue
 
-  $: datetime = new Date(value.date).toISOString()
+  function parseDate(date: number) {
+    if (!date) return ''
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+    const zonedDate = utcToZonedTime(date, timeZone)
+    return format(zonedDate, "MMMM dd',' yyyy", {
+      timeZone
+    })
+  }
+
+  $: formattedDate = parseDate(value.date)
 </script>
 
 <!-- Can potentially localize this format per country, will use US format for now -->
 <div class="flex flex-col">
   <span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">
-    {format(parseISO(datetime), "MMMM dd',' yyyy 'at' hh:mm a")}
+    {formattedDate}
   </span>
 </div>

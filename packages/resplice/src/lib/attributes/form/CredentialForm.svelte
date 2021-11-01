@@ -1,21 +1,22 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
   import TextField from '$lib/common/form/TextField.svelte'
+  import PasswordField from '$lib/common/form/PasswordField.svelte'
   import FormButtons from '$lib/attributes/form/FormButtons.svelte'
-  import { validateEmail } from '$lib/utils'
 
   const dispatch = createEventDispatcher()
 
   export let name = ''
-  export let email = ''
+  export let identity = ''
+  export let passcode = ''
 
   let formErrs: any = {}
 
   function onSave() {
     formErrs = {}
     if (!name) formErrs.name = 'A name is required'
-    if (!validateEmail(email))
-      formErrs.email = 'Please enter a valid email address'
+    if (!identity) formErrs.identity = 'An identity is required'
+    if (!passcode) formErrs.passcode = 'A passcode is required'
 
     if (!Object.keys(formErrs).length) {
       dispatch('save')
@@ -32,10 +33,16 @@
       error={formErrs.name}
     />
     <TextField
-      name="email"
-      label="Email"
-      bind:value={email}
-      error={formErrs.email}
+      name="identity"
+      label="Identity"
+      bind:value={identity}
+      error={formErrs.identity}
+    />
+    <PasswordField
+      name="passcode"
+      label="Passcode"
+      bind:value={passcode}
+      error={formErrs.passcode}
     />
   </div>
 
