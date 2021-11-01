@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { Date } from '$types/attribute'
+  import type { DateValue } from '$types/attribute'
   import { format, parseISO } from 'date-fns'
 
-  export let attribute: Date
+  export let value: DateValue
 
-  let datetime = new Date(attribute.value.date).toISOString()
+  $: datetime = new Date(value.date).toISOString()
 </script>
 
 <!-- Can potentially localize this format per country, will use US format for now -->

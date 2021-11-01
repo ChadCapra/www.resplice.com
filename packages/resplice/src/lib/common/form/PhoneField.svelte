@@ -1,6 +1,6 @@
 <script lang="ts">
   import cx from 'classnames'
-  import { AsYouType } from 'libphonenumber-js'
+  import { AsYouType, CountryCode } from 'libphonenumber-js'
 
   export let name: string
   export let label: string
@@ -10,17 +10,21 @@
   export let Icon: any = null
   let isTouched = !!phone.value
 
+  function resetError() {
+    if (error) error = ''
+  }
+
   type InputEvent = Event & {
     currentTarget: EventTarget & HTMLInputElement
   }
   function onPhoneChange(e: InputEvent) {
+    resetError()
     const phoneStr = e.currentTarget.value
-    // console.log(phone)
-    // TODO: Use output from a country selector
-    const countryCallingCode = 'US'
     phone = {
-      value: new AsYouType(countryCallingCode).input(phoneStr),
-      countryCallingCode
+      value: new AsYouType(phone.countryCallingCode as CountryCode).input(
+        phoneStr
+      ),
+      countryCallingCode: phone.countryCallingCode
     }
     // if (/^[a-zA-Z]/.test(phone)) {
     //   // TODO: Figure out how to rerender here
@@ -68,11 +72,9 @@
       on:blur={() => (!!phone.value ? (isTouched = true) : (isTouched = false))}
     />
   </div>
-  <!-- <p class="text-sm text-red-600 h-4 ml-5">
-    {#if error}
-      {error}
-    {/if}
-  </p> -->
+  {#if error}
+    <p class="text-sm text-red-600 h-4 my-1 mx-2">{error}</p>
+  {/if}
 </div>
 
 <style>

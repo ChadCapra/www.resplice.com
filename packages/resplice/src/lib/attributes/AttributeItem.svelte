@@ -12,6 +12,8 @@
 
   const attributeType = attributeTypes[attribute.type]
 
+  $: showValue = !!Object.values(attribute.value).length
+
   function onAttributeClick() {
     if (itemType === 'disabled') return
 
@@ -36,7 +38,7 @@
       >
         {attribute.name}
       </span>
-      {#if !!Object.values(attribute.value).length}
+      {#if showValue}
         <AttributeValue {attribute} />
       {/if}
     </div>

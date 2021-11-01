@@ -2,6 +2,7 @@
   import { createEventDispatcher } from 'svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import FormButtons from '$lib/attributes/form/FormButtons.svelte'
+  import CountrySelect from '$lib/common/form/CountrySelect.svelte'
 
   const dispatch = createEventDispatcher()
 
@@ -11,8 +12,8 @@
   export let locality = ''
   export let region = ''
   export let postalCode = ''
-  export let country = ''
-  export let planet = ''
+  export let country = 'US'
+  export let planet = 'Earth'
 
   let formErrs: any = {}
 
@@ -67,7 +68,7 @@
         error={formErrs.postalCode}
       />
     </div>
-    <TextField
+    <CountrySelect
       name="country"
       label="Country"
       bind:value={country}
@@ -79,12 +80,6 @@
       bind:value={planet}
       error={formErrs.planet}
     />
-
-    {#each Object.values(formErrs) as err}
-      <p class="text-red-600 h-6 w-full" style={'margin-top: 0.25rem'}>
-        {err}
-      </p>
-    {/each}
   </div>
 
   <FormButtons on:save={onSave} />

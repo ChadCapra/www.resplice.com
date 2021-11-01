@@ -13,7 +13,7 @@
     "@dicebear/avatars": "^4.6.3",
     "@dicebear/avatars-gridy-sprites": "^4.6.3",
     "@sveltejs/adapter-node": "next",
-    "@sveltejs/kit": "^1.0.0-next.189",
+    "@sveltejs/kit": "^1.0.0-next.192",
     "@sveltejs/svelte-virtual-list": "^3.0.1",
     "@types/croppie": "^2.6.1",
     "@typescript-eslint/eslint-plugin": "^4.32.0",

@@ -1,10 +1,7 @@
 <script lang="ts">
-  import type { Credential } from '$types/attribute'
+  import type { CredentialValue } from '$types/attribute'
 
-  export let attribute: Credential
-
-  let identity = attribute.value.identity
-  let passcode = attribute.value.passcode
+  export let value: CredentialValue
 </script>
 
-<p>{identity}, {passcode}</p>
+<p>{value.identity}, {value.passcode}</p>

@@ -1,5 +1,8 @@
 <script lang="ts">
-  import parsePhoneNumber, { isValidPhoneNumber } from 'libphonenumber-js'
+  import parsePhoneNumber, {
+    CountryCode,
+    isValidPhoneNumber
+  } from 'libphonenumber-js'
   import { createEventDispatcher } from 'svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
@@ -15,7 +18,7 @@
   export let isSms = true
 
   let formErrs: any = {}
-  let phone = ''
+  let phone = { countryCallingCode: 'US', value: '' }
 
   function onSave() {
     formErrs = {}
@@ -29,9 +32,12 @@
   }
 
   $: {
-    if (phone) {
+    if (phone.value) {
       // Country code is not optional
-      const ph = parsePhoneNumber(phone, 'US')
+      const ph = parsePhoneNumber(
+        phone.value,
+        phone.countryCallingCode as CountryCode
+      )
       if (ph) {
         countryCallingCode = ph.countryCallingCode.toString()
         number = ph.number.toString()
@@ -55,12 +61,6 @@
     />
     <PhoneField name="phone" label="Phone" bind:phone error={formErrs.phone} />
     <Toggle name="isSms" label="Allow SMS" bind:isActive={isSms} />
-
-    {#each Object.values(formErrs) as err}
-      <p class="text-red-600 h-6 w-full" style={'margin-top: 0.25rem'}>
-        {err}
-      </p>
-    {/each}
   </div>
 
   <FormButtons on:save={onSave} />

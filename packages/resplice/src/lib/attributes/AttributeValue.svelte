@@ -14,17 +14,17 @@
 </script>
 
 {#if attribute.type === AttributeType.ADDRESS}
-  <AddressValue {attribute} />
+  <AddressValue value={attribute.value} />
 {:else if attribute.type === AttributeType.CREDENTIAL}
-  <CredentialValue {attribute} />
+  <CredentialValue value={attribute.value} />
 {:else if attribute.type === AttributeType.DATE}
-  <DateValue {attribute} />
+  <DateValue value={attribute.value} />
 {:else if attribute.type === AttributeType.EMAIL}
-  <EmailValue {attribute} />
+  <EmailValue value={attribute.value} />
 {:else if attribute.type === AttributeType.PHONE}
-  <PhoneValue {attribute} />
+  <PhoneValue value={attribute.value} />
 {:else if attribute.type === AttributeType.SOCIAL}
-  <SocialValue {attribute} />
+  <SocialValue value={attribute.value} />
 {:else if attribute.type === AttributeType.TEXT}
-  <TextValue {attribute} />
+  <TextValue value={attribute.value} />
 {/if}

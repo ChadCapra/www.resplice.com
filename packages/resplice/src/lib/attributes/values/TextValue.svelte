@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { Text } from '$types/attribute'
+  import type { TextValue } from '$types/attribute'
 
-  export let attribute: Text
-
-  let text = attribute.value.text
+  export let value: TextValue
 </script>
 
-<p>{text}</p>
+<p>{value.text}</p>

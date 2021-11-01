@@ -1,5 +1,7 @@
 <script lang="ts">
   import cx from 'classnames'
+  import countries from '$lib/common/countries'
+
   export let name: string
   export let label: string
   export let value: string
@@ -35,7 +37,7 @@
     >
       {label}
     </label>
-    <input
+    <select
       type="text"
       class="appearance-none absolute top-0 left-0 w-full h-14 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 font-semibold text-lg text-gray-900 ring-2 focus:ring-gray-800"
       class:pl-16={!!Icon}
@@ -49,7 +51,11 @@
       on:input={resetError}
       on:focus={() => (isTouched = true)}
       on:blur={() => (!!value ? (isTouched = true) : (isTouched = false))}
-    />
+    >
+      {#each Object.entries(countries) as c}
+        <option value={c[0]}>{c[1]}</option>
+      {/each}
+    </select>
   </div>
   {#if error}
     <p class="text-sm text-red-600 h-4 my-1 mx-2">{error}</p>

@@ -1,10 +1,7 @@
 <script lang="ts">
-  import type { Social } from '$types/attribute'
+  import type { SocialValue } from '$types/attribute'
 
-  export let attribute: Social
-
-  let provider = attribute.value.provider
-  let passcode = attribute.value.handle
+  export let value: SocialValue
 </script>
 
-<p>{provider}, {passcode}</p>
+<p>{value.provider}, {value.handle}</p>
