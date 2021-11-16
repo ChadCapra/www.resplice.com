@@ -86,10 +86,12 @@
     on:pointermove={onPointerMove}
   >
     <div
-      class="bg-gray-700 h-1 w-12 rounded-lg mt-1"
+      class="w-full py-1 flex justify-center"
       on:pointerdown={onPointerDown}
       on:pointerup={onPointerUp}
-    />
+    >
+      <div class="bg-gray-700 h-1 w-12 rounded-lg my-1" />
+    </div>
     <slot {close} />
   </div>
 </div>
