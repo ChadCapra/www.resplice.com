@@ -3,7 +3,7 @@ import contacts from './contacts'
 import attributes from './attributes'
 import messages from './messages'
 import user from './user'
-import type { ContactDetail } from '$types'
+import type { ContactDetail } from '$types/contact'
 
 const BACKEND_URL = 'https://api.resplice.com'
 
