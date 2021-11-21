@@ -4,17 +4,23 @@ const URL = 'http://localhost:3000'
 
 const browser = new Browser()
 
+beforeAll(async () => {
+  await browser.launch()
+})
+beforeEach(async () => {
+  await browser.createContext()
+})
+afterEach(async () => {
+  await browser.closeContext()
+})
+afterAll(async () => {
+  await browser.close()
+})
+
 describe('Auth Flow', () => {
-  beforeAll(async () => {
-    await browser.launch()
-  })
-  beforeEach(async () => {
-    await browser.createContext()
-  })
   test('Login Renders', async () => {
-    const page = await browser.newPage()
-    await page.goto(URL + '/auth')
-    await page.screenshot({ path: `example.png` })
-    await browser.close()
+    const page = await browser.newPage(URL + '/auth')
+    expect(page).toBeDefined()
+    await page.screenshot({ path: `auth.png` })
   })
 })

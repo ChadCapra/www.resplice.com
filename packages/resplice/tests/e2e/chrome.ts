@@ -12,8 +12,22 @@ class Chrome {
     this.ctx = await this.instance.newContext(options)
   }
 
-  async newPage() {
-    return this.ctx.newPage()
+  async newPage(url: string) {
+    try {
+      const page = await this.ctx.newPage()
+      await page.goto(url)
+      return page
+    } catch (err) {
+      if ((err as Error).message.includes('ERR_CONNECTION_REFUSED'))
+        console.log(
+          'Please start the app with `npm run dev` before running e2e tests.'
+        )
+      else console.log(err.message)
+    }
+  }
+
+  async closeContext() {
+    await this.ctx.close()
   }
 
   async close() {
