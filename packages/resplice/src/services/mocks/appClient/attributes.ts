@@ -1,6 +1,6 @@
 import type { Attribute } from '$types/attribute'
 import { AttributeType } from '$types/attribute'
-import { returnPromise } from './utils'
+import { returnPromise } from '../utils'
 
 export const attributes: Attribute[] = [
   {

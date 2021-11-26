@@ -2,7 +2,7 @@
 import type { Attribute, Contact } from '$types/contact'
 import { ContactType } from '$types/contact'
 import attributes from './attributes'
-import { returnPromise } from './utils'
+import { returnPromise } from '../utils'
 
 export const contacts: Contact[] = [
   {

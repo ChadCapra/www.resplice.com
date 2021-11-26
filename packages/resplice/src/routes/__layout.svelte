@@ -12,14 +12,15 @@
 
 <script lang="ts">
   import '../global.css'
-  import { setContext } from 'svelte'
-  import respliceClientFactory, { contextKey } from '$services/api'
-  import api from '$services/mocks/apiClient'
-  import cache from '$services/mocks/cache'
+  import { onMount, setContext } from 'svelte'
+  import getConfig, { contextKey } from '$services/config'
 
-  const respliceClient = respliceClientFactory(api, cache)
+  const configContext = { config: null }
+  setContext(contextKey, configContext)
 
-  setContext(contextKey, respliceClient)
+  onMount(() => {
+    configContext.config = getConfig()
+  })
 </script>
 
 <svelte:head>

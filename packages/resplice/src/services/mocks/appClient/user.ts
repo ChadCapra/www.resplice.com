@@ -1,6 +1,6 @@
 import type { User } from '$types/user'
 import { attributes } from './attributes'
-import { returnPromise } from './utils'
+import { returnPromise } from '../utils'
 
 const MOCK_UUID = 'bastilla-shan'
 

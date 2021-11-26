@@ -3,11 +3,15 @@ import contactsApi from './contacts'
 import sessionsApi from './sessions'
 import userApi from './user'
 
-const apiClient = {
+const mockClient = {
   ...attributesApi,
   ...contactsApi,
   ...sessionsApi,
   ...userApi
 }
 
-export default apiClient
+async function clientFactory(...args: any) {
+  return mockClient
+}
+
+export default clientFactory

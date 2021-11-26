@@ -1,45 +1,38 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import { goto } from '$app/navigation'
-  import useRespliceClient from '$lib/hooks/respliceClient'
+  import { onMount, setContext } from 'svelte'
+  import stores from '$stores/index'
+  import { contextKey as cacheContextKey } from '$services/cache'
+  import { contextKey as clientContextKey } from '$services/api/appClient'
+  import load from './load'
+
   import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
-  import userStore from '$stores/user'
-  import attributeStore from '$stores/attributes'
-  import { arrToDict } from '$lib/utils'
+  import AppError from '$lib/common/skeleton/AppError.svelte'
+  import useConfig from '$lib/hooks/useConfig'
+
+  const config = useConfig()
 
   let appLoadPromise: Promise<boolean> = Promise.resolve(false)
 
-  const client = useRespliceClient()
-
-  async function fetchAllData() {
-    try {
-      const session = await client.sessions.getActive()
-      if (!session) {
-        goto('/auth/start')
-        return
-      }
-    } catch (err) {
-      console.log(err)
-      goto('/auth/start')
-    }
-
-    try {
-      const [user, attributes, _] = await Promise.all([
-        client.user.get(),
-        client.user.getAllAttributes(),
-        client.contacts.getAll()
-      ])
-      userStore.set(user)
-      attributeStore.set(arrToDict(attributes, 'uuid'))
-    } catch (err) {
-      console.log(err)
-    }
-
-    return true
-  }
+  const cacheContext = { cache: null }
+  const clientContext = { client: null }
+  setContext(cacheContextKey, cacheContext)
+  setContext(clientContextKey, clientContext)
 
   onMount(() => {
-    appLoadPromise = fetchAllData()
+    appLoadPromise = new Promise(async (resolve, reject) => {
+      try {
+        // Setup cache and client
+        const { cache, client } = await load(config.server_endpoint, stores)
+        // set context objects
+        cacheContext.cache = cache
+        clientContext.client = client
+        // Mark as loaded
+        resolve(true)
+      } catch (err) {
+        console.log(err)
+        reject(err)
+      }
+    })
   })
 </script>
 
@@ -49,4 +42,6 @@
   {#if loaded}
     <slot />
   {/if}
+{:catch err}
+  <AppError error={err} />
 {/await}

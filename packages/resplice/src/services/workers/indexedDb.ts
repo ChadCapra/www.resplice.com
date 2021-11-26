@@ -177,11 +177,11 @@ ctx.onmessage = ({ data: cmd }) => {
     case Command.READ_CACHE:
       readCache()
       break
-    case Command.ADD_TO_STORE:
-      addToStore(cmd.store, cmd.key, cmd.data)
-      break
     case Command.READ_STORE:
       readStore(cmd.store, cmd.key)
+      break
+    case Command.ADD_TO_STORE:
+      addToStore(cmd.store, cmd.key, cmd.data)
       break
     case Command.UPDATE_STORE:
       updateStore(cmd.store, cmd.key, cmd.data)

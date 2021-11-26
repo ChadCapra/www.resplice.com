@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import type { Session } from '$types/session'
-import { returnPromise } from './utils'
+import { returnPromise } from '../utils'
 
 const session: Session = {
   uuid: 'mockUUID',
