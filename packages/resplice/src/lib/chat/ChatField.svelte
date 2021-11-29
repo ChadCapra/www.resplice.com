@@ -18,7 +18,7 @@
       spellcheck
       {label}
       id="message-content"
-      class="max-h-80 outline-none border-none rounded-3xl px-5 py-3 text-gray-900 focus:ring-2 focus:ring-gray-600 bg-gray-200 pr-12 overflow-auto"
+      class="max-h-80 outline-none border-none rounded-3xl px-5 py-3 text-gray-900 focus:ring-2 focus:ring-gray-600 bg-gray-200 pr-12 overflow-auto break-words"
       style="min-height: 3rem"
       on:focus={() => (isTouched = true)}
       on:blur={() => (!!content ? (isTouched = true) : (isTouched = false))}
