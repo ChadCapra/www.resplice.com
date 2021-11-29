@@ -1,4 +1,4 @@
-<script context="module">
+<script lang="ts" context="module">
   export async function load({ page }) {
     return {
       props: {
@@ -14,7 +14,7 @@
   import ContactHeader from '$lib/contacts/ContactHeader.svelte'
   import ContactAttributes from '$lib/contacts/ContactAttributes.svelte'
   import ContactChat from '$lib/contacts/ContactChat.svelte'
-  import MessageField from '$lib/common/MessageField.svelte'
+  import MessageField from '$lib/chat/ChatField.svelte'
 
   export let uuid: string
   let contactAsync: Promise<ContactDetail> = Promise.resolve(

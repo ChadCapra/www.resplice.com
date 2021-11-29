@@ -3,7 +3,7 @@
   import stores from '$stores/index'
   import { contextKey as cacheContextKey } from '$services/cache'
   import { contextKey as clientContextKey } from '$services/api/appClient'
-  import load from './load'
+  import load from './_load'
 
   import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
   import AppError from '$lib/common/skeleton/AppError.svelte'

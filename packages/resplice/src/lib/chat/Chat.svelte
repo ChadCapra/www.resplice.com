@@ -2,6 +2,7 @@
   import { differenceInDays, format } from 'date-fns'
   import type { Chat } from '$types/chat'
   import Avatar from '$lib/common/Avatar.svelte'
+  import ChatContent from '$lib/chat/ChatContent.svelte'
   export let chat: Chat
   const sa = chat.sent_at
   $: timestamp =
@@ -20,8 +21,6 @@
         {timestamp}
       </time>
     </div>
-    <p class="bg-gray-200 px-4 py-2 rounded-b-lg rounded-r-lg">
-      {chat.content}
-    </p>
+    <ChatContent {chat} />
   </div>
 </div>
