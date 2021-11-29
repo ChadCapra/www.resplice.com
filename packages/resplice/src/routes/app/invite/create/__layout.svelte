@@ -12,7 +12,7 @@
   </nav>
   <main class="bg-white rounded-t-3xl flex-1 flex flex-col p-8">
     <div class="flex-none flex justify-center w-full mb-8">
-      <Avatar uuid="invite" size="xl" />
+      <Avatar uuid="resplice" size="xl" />
     </div>
     <slot />
   </main>
