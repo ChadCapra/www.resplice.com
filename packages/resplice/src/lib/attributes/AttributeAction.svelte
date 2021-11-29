@@ -19,7 +19,7 @@
   export let attribute: Attribute
 
   function onActionClick() {
-    // I might change this to a more object oriented approach
+    // I might change this to use a more object oriented approach
     // classes with their own "toText" and various action methods
     // to avoid these nested switch statements
     if (itemType === 'disabled') return

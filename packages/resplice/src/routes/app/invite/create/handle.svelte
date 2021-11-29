@@ -2,9 +2,11 @@
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
+  import ShareContext from '$lib/sharing/ShareContext.svelte'
 
   let name: string
   let handle: string
+  let shares: string[] = []
   let formErrs: Record<string, string> = {}
 
   function onInvite(_e: Event) {
@@ -39,6 +41,8 @@
       error={formErrs.handle}
     />
   </div>
+
+  <ShareContext bind:shares />
 
   <Button type="submit">Send</Button>
 </form>

@@ -5,12 +5,14 @@
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneIcon from '$lib/icons/PhoneIcon.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
+  import ShareContext from '$lib/sharing/ShareContext.svelte'
 
   let name: string
   let phone = {
     value: '',
     countryCallingCode: 'US' as CountryCode
   }
+  let shares: string[] = []
   let formErrs: Record<string, string> = {}
 
   function onInvite(_e: Event) {
@@ -47,6 +49,8 @@
       error={formErrs.phone}
     />
   </div>
+
+  <ShareContext bind:shares />
 
   <Button type="submit">Send</Button>
 </form>
