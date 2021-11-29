@@ -14,7 +14,7 @@ enum MessageType {
   ERROR = 'ERROR'
 }
 
-async function cacheFactory(indexedDB: Worker) {
+async function cacheFactory(indexedDB: Worker): Promise<AppCache> {
   const cache: AppCache = {
     addUser: (user) =>
       indexedDB.postMessage({

@@ -2,7 +2,9 @@ import IndexedDBWorker from '$workers/indexedDb?worker'
 import WebSocketWorker from '$workers/ws?worker'
 
 import cacheFactory from '$services/cache'
+import type { AppCache } from '$services/cache'
 import clientFactory from '$services/api/appClient'
+import type { AppClient } from '$services/api/appClient'
 import type { Stores } from '$stores/index'
 
 // async function load(url: string, stores: Stores, useMocks = false) {
@@ -30,14 +32,24 @@ import type { Stores } from '$stores/index'
 //   }
 // }
 
-async function load(url: string, stores: Stores) {
+async function load(
+  url: string,
+  stores: Stores,
+  useMocks = false
+): Promise<{ cache: AppCache; client: AppClient }> {
+  if (useMocks)
+    return {
+      cache: {} as any,
+      client: {} as any
+    }
+
   const indexedDB = new IndexedDBWorker()
   const ws = new WebSocketWorker()
 
   const cache = await cacheFactory(indexedDB)
   const client = await clientFactory(url, ws, cache, stores)
 
-  await client.sessions.authenticate()
+  // await client.sessions.authenticate()
 
   return {
     cache,

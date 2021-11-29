@@ -1,5 +1,5 @@
 import type { Attribute as BaseAttribute } from './attribute'
-import type { Message as BaseMessage } from './message'
+import type { Chat as BaseChat } from './chat'
 
 export type User = {
   uuid: string
@@ -12,6 +12,6 @@ export type User = {
 
 export type Attribute = BaseAttribute
 
-export type Message = BaseMessage
+export type Chat = BaseChat
 
 export type Invite = string

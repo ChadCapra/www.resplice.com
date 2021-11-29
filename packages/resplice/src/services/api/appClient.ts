@@ -1,5 +1,8 @@
 import { ConnStatus } from '$stores/conn'
 import type { Stores } from '$stores/index'
+import type { AppCache } from '$services/cache'
+import chatClientFactory from './chat'
+import type { ChatClient } from './chat'
 import contactsClientFactory from './contacts'
 import type { ContactsClient } from './contacts'
 import invitesClientFactory from './invites'
@@ -10,6 +13,7 @@ import userClientFactory from './user'
 import type { UserClient } from './user'
 
 export interface AppClient {
+  chat: ChatClient
   contacts: ContactsClient
   invites: InvitesClient
   sessions: SessionsClient
@@ -26,12 +30,13 @@ enum MessageType {
 async function clientFactory(
   url: string,
   conn: Worker,
-  cache: Worker,
+  cache: AppCache,
   stores: Stores
 ): Promise<AppClient> {
+  const chat = chatClientFactory(conn, cache as any, stores.chat)
   const contacts = contactsClientFactory(conn, cache)
   const invites = invitesClientFactory(conn, cache)
-  const sessions = sessionsClientFactory(conn, cache, stores.auth)
+  const sessions = sessionsClientFactory(conn, cache as any, stores.auth)
   const user = userClientFactory(conn, cache)
 
   return new Promise<AppClient>((resolve, reject) => {
@@ -58,6 +63,7 @@ async function clientFactory(
           // This might be okay because only the first resolve is processed
           // subsequent calls are basically ignored.
           resolve({
+            chat,
             contacts,
             invites,
             sessions,
@@ -82,6 +88,7 @@ async function clientFactory(
           reject(cmd.reason)
           break
         case MessageType.MESSAGE:
+          chat.handleMessage(cmd.data)
           sessions.handleMessage(cmd.data)
           break
       }

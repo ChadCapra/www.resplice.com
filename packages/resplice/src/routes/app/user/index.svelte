@@ -29,17 +29,18 @@
     if (scrollEl) {
       observer.observe(scrollEl)
     }
+    return () => observer.disconnect()
   })
 </script>
 
 <svelte:head>
-  <title>{user?.name}</title>
+  <title>{user?.name || 'Loading'}</title>
 </svelte:head>
 
 {#if user}
-  <main class="flex flex-col w-full h-full bg-gray-100">
+  <div class="flex flex-col w-full h-full bg-gray-100">
     <Header showUser={showUserOnHeader} {user} />
-    <div
+    <main
       class="flex-1 overflow-auto relative w-full max-w-xl m-auto py-4 rounded-t-3xl bg-white"
     >
       <UserAvatar {user} />
@@ -51,6 +52,10 @@
       />
       <UserAttributeList {attributes} />
       <AddAttributeButton />
-    </div>
-  </main>
+    </main>
+  </div>
+{:else}
+  <div class="flex flex-col w-full h-full bg-gray-100">
+    <main><p>Loading</p></main>
+  </div>
 {/if}

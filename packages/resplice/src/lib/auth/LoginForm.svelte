@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { isValidPhoneNumber } from 'libphonenumber-js'
+  import { CountryCode, isValidPhoneNumber } from 'libphonenumber-js'
   import CryptoWorker from '$workers/crypto?worker'
   import authStore from '$stores/auth'
   import useRespliceClient from '$lib/hooks/respliceClient'
@@ -34,7 +34,7 @@
 
   let phone = {
     value: '',
-    countryCallingCode: ''
+    countryCallingCode: 'US' as CountryCode
   }
   let email = ''
   let rememberMe = false
@@ -48,11 +48,11 @@
   async function onSubmit(_e: SubmitEvent) {
     formErrs = {}
     const errs: Record<string, string> = {}
-    if (!isValidPhoneNumber(phone.value, 'US')) errs.phone = 'Invalid Phone'
+    if (!isValidPhoneNumber(phone.value, phone.countryCallingCode))
+      errs.phone = 'Invalid Phone'
     if (!validateEmail(email)) errs.email = 'Invalid Email'
     if (Object.keys(errs).length) {
       formErrs = errs
-      // TODO: Show errors under fields or in modal
       return
     }
     try {

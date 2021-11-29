@@ -12,7 +12,7 @@ interface OpenCommand {
 }
 interface SendCommand {
   type: Command.SEND
-  data: ArrayBufferLike
+  data: any
 }
 interface CloseCommand {
   type: Command.CLOSE
@@ -45,6 +45,7 @@ function open(url: string | URL) {
   }
   socket.onmessage = (ev) => {
     console.log(ev)
+    // TODO: Parse binary data before posting message
     ctx.postMessage({ type: MESSAGE, data: ev.data })
   }
   socket.onclose = () => {
@@ -73,6 +74,7 @@ ctx.onmessage = ({ data: cmd }) => {
       open(cmd.url)
       break
     case Command.SEND:
+      // TODO: Turn data into binary buffer
       send(cmd.data)
       break
     case Command.CLOSE:

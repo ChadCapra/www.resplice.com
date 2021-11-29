@@ -1,7 +1,6 @@
-const BASE_URL = 'http://localhost:8000'
 const ENABLE_ENCRYPTION = false
 
-interface Api {
+export interface Api {
   get: (endpoint: string, headers?: Record<string, string>) => Promise<any>
   post: (
     endpoint: string,
@@ -25,40 +24,43 @@ interface Api {
   ) => Promise<any>
 }
 
-const api: Api = {
-  get: (endpoint, headers) =>
-    commonFetch({
-      URL: BASE_URL + endpoint,
-      method: 'GET',
-      headers
-    }),
-  post: async (endpoint, data, headers) =>
-    commonFetch({
-      URL: BASE_URL + endpoint,
-      method: 'POST',
-      headers,
-      data
-    }),
-  patch: async (endpoint, data, headers) =>
-    commonFetch({
-      URL: BASE_URL + endpoint,
-      method: 'PATCH',
-      headers,
-      data
-    }),
-  put: async (endpoint, data, headers) =>
-    commonFetch({
-      URL: BASE_URL + endpoint,
-      method: 'PUT',
-      headers,
-      data
-    }),
-  delete: async (endpoint, headers) =>
-    commonFetch({
-      URL: BASE_URL + endpoint,
-      method: 'DELETE',
-      headers
-    })
+function apiFactory(server_endpoint: string): Api {
+  const BASE_URL = server_endpoint
+  return {
+    get: (endpoint, headers) =>
+      commonFetch({
+        URL: BASE_URL + endpoint,
+        method: 'GET',
+        headers
+      }),
+    post: async (endpoint, data, headers) =>
+      commonFetch({
+        URL: BASE_URL + endpoint,
+        method: 'POST',
+        headers,
+        data
+      }),
+    patch: async (endpoint, data, headers) =>
+      commonFetch({
+        URL: BASE_URL + endpoint,
+        method: 'PATCH',
+        headers,
+        data
+      }),
+    put: async (endpoint, data, headers) =>
+      commonFetch({
+        URL: BASE_URL + endpoint,
+        method: 'PUT',
+        headers,
+        data
+      }),
+    delete: async (endpoint, headers) =>
+      commonFetch({
+        URL: BASE_URL + endpoint,
+        method: 'DELETE',
+        headers
+      })
+  }
 }
 
 type FetchConfig = {
@@ -103,4 +105,4 @@ async function processRequestData(data: any, encrypt = false) {
   return json
 }
 
-export default api
+export default apiFactory

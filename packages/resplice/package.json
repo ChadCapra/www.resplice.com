@@ -7,6 +7,8 @@
     "start": "svelte-kit start",
     "lint": "prettier --check . && eslint --ignore-path .gitignore .",
     "format": "prettier --write .",
+    "proto": "pbjs -t static-module --no-service --no-beautify -w es6 -o resplice-pb.js  ../../../proto/*.proto",
+    "proto:debug": "pbjs -t static-module --no-service -w es6 -o resplice-pb.js ../../../proto/*.proto",
     "test": "jest",
     "test:e2e": "jest -c jest.e2e.config.cjs"
   },

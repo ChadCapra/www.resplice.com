@@ -1,14 +1,14 @@
-enum MessageType {
+export enum ChatType {
   IMMEDIDATE = 'IMMEDIDATE',
   DELAYED = 'DELAYED'
 }
 
-enum MessageDirection {
+export enum ChatDirection {
   SENT = 'SENT',
   RECEIVED = 'RECEIVED'
 }
 
-enum ContentType {
+export enum ContentType {
   ATTRIBUTE_SHARE = 'ATTRIBUTE_SHARE',
   TEXT = 'TEXT',
   IMAGE = 'IMAGE',
@@ -19,28 +19,28 @@ enum ContentType {
   REACTION = 'REACTION'
 }
 
-interface BaseMessage {
-  type: MessageType
+interface BaseChat {
+  type: ChatType
   uuid: string
-  contact_uuid: string
-  direction: MessageDirection
+  entity_uuid: string
+  direction: ChatDirection
   sent_at: Date
-  expiry: Date
+  expiry?: Date
 }
 
 type AttributeShareContent = {
   attribute_uuid: string
 }
-export interface AttributeShareMessage extends BaseMessage {
+export interface AttributeShareChat extends BaseChat {
   content_type: ContentType.ATTRIBUTE_SHARE
   content: AttributeShareContent
 }
 
 type TextContent = {
   text: string
-  reply_to_uuid: string
+  reply_to_uuid?: string
 }
-export interface TextMessage extends BaseMessage {
+export interface TextChat extends BaseChat {
   content_type: ContentType.TEXT
   content: TextContent
 }
@@ -50,7 +50,7 @@ type ImageContent = {
   caption: string
   reply_to_uuid: string
 }
-export interface ImageMessage extends BaseMessage {
+export interface ImageChat extends BaseChat {
   content_type: ContentType.IMAGE
   content: ImageContent
 }
@@ -67,7 +67,7 @@ type EventContent = {
   email: any
   coordinates: any
 }
-export interface EventMessage extends BaseMessage {
+export interface EventChat extends BaseChat {
   content_type: ContentType.EVENT
   content: EventContent
 }
@@ -76,7 +76,7 @@ type EventRsvpContent = {
   rsvp: string
   event_uuid: string
 }
-export interface EventRsvpMessage extends BaseMessage {
+export interface EventRsvpChat extends BaseChat {
   content_type: ContentType.EVENT_RSVP
   content: EventRsvpContent
 }
@@ -88,7 +88,7 @@ type PollContent = {
   allow_multiple_responses: boolean
   anonymous_responses: boolean
 }
-export interface PollMessage extends BaseMessage {
+export interface PollChat extends BaseChat {
   content_type: ContentType.POLL
   content: PollContent
 }
@@ -97,7 +97,7 @@ type PollResponseContent = {
   response: string
   poll_uuid: string
 }
-export interface PollResponseMessage extends BaseMessage {
+export interface PollResponseChat extends BaseChat {
   content_type: ContentType.POLL_RESPONSE
   content: PollResponseContent
 }
@@ -106,17 +106,17 @@ type ReactionContent = {
   reaction: string
   message_uuid: string
 }
-export interface ReactionMessage extends BaseMessage {
+export interface ReactionChat extends BaseChat {
   content_type: ContentType.REACTION
   content: ReactionContent
 }
 
-export type Message =
-  | AttributeShareMessage
-  | TextMessage
-  | ImageMessage
-  | EventMessage
-  | EventRsvpMessage
-  | PollMessage
-  | PollResponseMessage
-  | ReactionMessage
+export type Chat =
+  | AttributeShareChat
+  | TextChat
+  | ImageChat
+  | EventChat
+  | EventRsvpChat
+  | PollChat
+  | PollResponseChat
+  | ReactionChat

@@ -3,17 +3,21 @@
   import { browser } from '$app/env'
   import { goto } from '$app/navigation'
   import authStore from '$stores/auth'
-  import useRespliceClient from '$lib/hooks/respliceClient'
+  import apiFactory from '$services/api/http'
+  import authClientFactory from '$services/api/authClient'
   import type { Session } from '$types/session'
   import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
+  import useConfig from '$lib/hooks/useConfig'
 
-  const client = useRespliceClient()
+  const config = useConfig()
+
+  const api = apiFactory(config.server_endpoint)
+  const client = authClientFactory(api)
 
   let sessionPromise: Promise<Session | null>
 
   onMount(async () => {
-    sessionPromise = client.sessions.getActive()
-    const session = await sessionPromise
+    const session = await client.getActiveSession()
     authStore.set({ session })
   })
 

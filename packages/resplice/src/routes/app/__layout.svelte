@@ -22,7 +22,11 @@
     appLoadPromise = new Promise(async (resolve, reject) => {
       try {
         // Setup cache and client
-        const { cache, client } = await load(config.server_endpoint, stores)
+        const { cache, client } = await load(
+          config.server_endpoint,
+          stores,
+          true
+        )
         // set context objects
         cacheContext.cache = cache
         clientContext.client = client

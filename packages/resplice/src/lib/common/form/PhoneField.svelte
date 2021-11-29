@@ -4,7 +4,7 @@
 
   export let name: string
   export let label: string
-  export let phone: { value: string; countryCallingCode: string }
+  export let phone: { value: string; countryCallingCode: CountryCode }
   export let error: string = ''
   // TODO: Figure out how to type svelte component prop
   export let Icon: any = null
@@ -21,9 +21,7 @@
     resetError()
     const phoneStr = e.currentTarget.value
     phone = {
-      value: new AsYouType(phone.countryCallingCode as CountryCode).input(
-        phoneStr
-      ),
+      value: new AsYouType(phone.countryCallingCode).input(phoneStr),
       countryCallingCode: phone.countryCallingCode
     }
     // if (/^[a-zA-Z]/.test(phone)) {

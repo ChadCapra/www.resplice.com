@@ -1,5 +1,5 @@
 import type { Attribute as BaseAttribute } from './attribute'
-import type { Message as BaseMessage } from './message'
+import type { Chat as BaseChat } from './chat'
 
 export enum ContactType {
   CONTACT = 'CONTACT',
@@ -20,7 +20,7 @@ export type Contact = {
 export type ContactDetail = Contact & {
   attributes: Attribute[]
   common_splices: string[]
-  messages: Message[]
+  chats: Chat[]
   pending: boolean
 }
 
@@ -28,6 +28,6 @@ export type Attribute = BaseAttribute & {
   contact_uuid: string
 }
 
-export type Message = BaseMessage & {
+export type Chat = BaseChat & {
   contact_uuid: string
 }
