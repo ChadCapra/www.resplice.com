@@ -98,8 +98,7 @@ function getOperatingSystem() {
     return 'Android'
   }
 
-  // iOS detection from: http://stackoverflow.com/a/9039885/177710
-  if (/iPad|iPhone|iPod/.test(userAgent)) {
+  if (/iPad|iPhone|iPod/i.test(userAgent)) {
     return 'iOS'
   }
 
