@@ -20,7 +20,9 @@
 
   $: contact = $contactsStore ? $contactsStore[uuid] : null
 
-  console.log(contact)
+  function onSend(e: CustomEvent<{ content: string }>) {
+    console.log(e.detail.content)
+  }
 </script>
 
 <div class="flex flex-col w-full h-full bg-gray-100">
@@ -37,6 +39,6 @@
     <div class="flex-none bg-brand-primary text-white rounded-full p-3 m-2">
       <AddIcon width={24} height={24} />
     </div>
-    <ChatField label="Enter Message" />
+    <ChatField label="Enter Message" on:send={onSend} />
   </section>
 </div>
