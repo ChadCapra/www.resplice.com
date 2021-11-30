@@ -1,7 +1,7 @@
 <script lang="ts">
   import { CountryCode, parsePhoneNumber } from 'libphonenumber-js'
   import authStore from '$stores/auth'
-  import useRespliceClient from '$lib/hooks/respliceClient'
+  import useAuthClient from '$lib/hooks/useAuthClient'
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import LockClosedIcon from '$lib/icons/LockClosedIcon.svelte'
@@ -12,7 +12,7 @@
 
   const CODE_LENGTH = 6
 
-  const client = useRespliceClient()
+  const client = useAuthClient()
 
   const parsedPhone = parsePhoneNumber(
     $authStore.loginValues.phone.value,
@@ -45,7 +45,7 @@
   let phonePromise: Promise<Date>
 
   async function submitEmailCode(code: string): Promise<Date> {
-    const session = await client.sessions.verifyEmail({ code })
+    const session = await client.verifyEmail({ code })
     if (!session.email_verified_at)
       throw Error('Verification code did not work')
 
@@ -54,7 +54,7 @@
   }
 
   async function submitPhoneCode(code: string): Promise<Date> {
-    const session = await client.sessions.verifyPhone({ code })
+    const session = await client.verifyPhone({ code })
     if (!session.phone_verified_at)
       throw Error('Verification code did not work')
 

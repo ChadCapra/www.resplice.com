@@ -1,12 +1,12 @@
 <script lang="ts">
-  import useRespliceClient from '$lib/hooks/respliceClient'
+  import useAuthClient from '$lib/hooks/useAuthClient'
   import UserAvatar from '$lib/user/UserAvatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import Button from '$lib/common/Button.svelte'
   import authStore from '$stores/auth'
 
-  const client = useRespliceClient()
+  const client = useAuthClient()
 
   const RAND_UUID = Math.random().toString(36)
 
@@ -25,7 +25,7 @@
     }
     try {
       isLoading = true
-      const user = await client.user.create({ name: fullName, avatar })
+      const user = await client.createUser({ name: fullName, avatar })
       authStore.update((auth) => ({
         ...auth,
         session: { ...auth.session, user_uuid: user.uuid }

@@ -15,10 +15,12 @@
   import BackIcon from '$lib/icons/BackIcon.svelte'
   import AddIcon from '$lib/icons/AddIcon.svelte'
   import ChatField from '$lib/chat/ChatField.svelte'
+  import ComingSoon from '$lib/common/ComingSoon.svelte'
 
   export let uuid: string
 
   $: contact = $contactsStore ? $contactsStore[uuid] : null
+  const enableChat = false
 
   function onSend(e: CustomEvent<{ content: string }>) {
     console.log(e.detail.content)
@@ -31,7 +33,11 @@
     <h1 class="ml-4 font-semibold text-xl">{uuid}</h1>
   </nav>
   <main class="bg-white rounded-t-3xl flex-1 flex flex-col overflow-auto">
-    <ContactChat {uuid} />
+    {#if enableChat}
+      <ContactChat {uuid} />
+    {:else}
+      <ComingSoon title="Chat" />
+    {/if}
   </main>
   <section
     class="flex-none flex justify-between items-end bg-white p-2 border-t-2 border-gray-200"

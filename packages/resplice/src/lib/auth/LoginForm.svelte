@@ -3,7 +3,7 @@
   import { CountryCode, isValidPhoneNumber } from 'libphonenumber-js'
   import CryptoWorker from '$workers/crypto?worker'
   import authStore from '$stores/auth'
-  import useRespliceClient from '$lib/hooks/respliceClient'
+  import useAuthClient from '$lib/hooks/useAuthClient'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
@@ -12,7 +12,7 @@
   import { validateEmail } from '$lib/utils'
   import Toggle from '$lib/common/form/Toggle.svelte'
 
-  const client = useRespliceClient()
+  const client = useAuthClient()
 
   let keys
 
@@ -57,13 +57,13 @@
     }
     try {
       isLoading = true
-      const session = await client.sessions.create({ phone, email, rememberMe })
+      const session = await client.createSession({ phone, email, rememberMe })
       authStore.set({
         loginValues: {
           phone,
           email
         },
-        session: session.session,
+        session: session,
         public_key: {},
         private_key: {}
       })
