@@ -1,4 +1,5 @@
 <script lang="ts">
+  import cx from 'classnames'
   export let variant: 'circle' | 'rect'
   export let width: string
   export let height: string = width
@@ -7,7 +8,7 @@
 </script>
 
 <div
-  class="animate-pulse bg-gray-200"
+  class={cx($$props.class, 'animate-pulse bg-gray-200')}
   class:rounded-full={variant === 'circle'}
   class:rounded-lg={variant === 'rect'}
   style={`width: ${width}; height: ${height}`}

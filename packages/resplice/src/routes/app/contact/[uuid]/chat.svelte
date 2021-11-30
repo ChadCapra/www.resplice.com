@@ -34,7 +34,7 @@
   </nav>
   <main class="bg-white rounded-t-3xl flex-1 flex flex-col overflow-auto">
     {#if enableChat}
-      <ContactChat {uuid} />
+      <ContactChat {contact} />
     {:else}
       <ComingSoon title="Chat" />
     {/if}

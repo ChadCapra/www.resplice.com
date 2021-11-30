@@ -3,10 +3,11 @@
   import chatStore from '$stores/chat'
   import Chat from '$lib/chat/Chat.svelte'
   import SkeletonList from '$lib/common/skeleton/SkeletonList.svelte'
+  import type { Contact } from '$types/contact'
 
-  export let uuid: string
+  export let contact: Contact
 
-  $: chats = $chatStore ? $chatStore[uuid] : null
+  $: chats = $chatStore ? $chatStore[contact.uuid] : null
 </script>
 
 <div class="flex flex-col w-full h-full p-8 overflow-auto">
