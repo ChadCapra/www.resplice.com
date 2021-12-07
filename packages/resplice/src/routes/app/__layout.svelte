@@ -1,13 +1,27 @@
+<script context="module">
+  /** @type {import('@sveltejs/kit').Load} */
+  export async function load({ page }) {
+    return {
+      props: {
+        path: page.path
+      }
+    }
+  }
+</script>
+
 <script lang="ts">
   import { onMount, setContext } from 'svelte'
   import stores from '$stores/index'
   import { contextKey as cacheContextKey } from '$services/cache'
   import { contextKey as clientContextKey } from '$services/api/appClient'
-  import load from './_load'
+  import loadApp from './_load'
 
   import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
   import AppError from '$lib/common/skeleton/AppError.svelte'
   import useConfig from '$lib/hooks/useConfig'
+  import PageTransition from '$lib/common/skeleton/PageTransition.svelte'
+
+  export let path: string
 
   const config = useConfig()
 
@@ -22,7 +36,7 @@
     appLoadPromise = new Promise(async (resolve, reject) => {
       try {
         // Setup cache and client
-        const { cache, client } = await load(
+        const { cache, client } = await loadApp(
           config.server_endpoint,
           stores,
           true
@@ -44,7 +58,9 @@
   <AppLoad />
 {:then loaded}
   {#if loaded}
-    <slot />
+    <PageTransition refresh={path}>
+      <slot />
+    </PageTransition>
   {/if}
 {:catch err}
   <AppError error={err} />
