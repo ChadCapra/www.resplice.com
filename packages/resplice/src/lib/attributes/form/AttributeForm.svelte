@@ -4,6 +4,7 @@
 
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import AddressForm from './AddressForm.svelte'
+  import CoordinateForm from './CoordinateForm.svelte'
   import CredentialForm from './CredentialForm.svelte'
   import EmailForm from './EmailForm.svelte'
   import PhoneForm from './PhoneForm.svelte'
@@ -39,12 +40,19 @@
   {#if newAttribute.type === AttributeType.ADDRESS}
     <AddressForm
       bind:name={newAttribute.name}
-      bind:address1={newAttribute.value.address_1}
-      bind:address2={newAttribute.value.address_2}
+      bind:address1={newAttribute.value.street_address_1}
+      bind:address2={newAttribute.value.street_address_2}
       bind:locality={newAttribute.value.locality}
       bind:region={newAttribute.value.region}
       bind:postalCode={newAttribute.value.postal_code}
       bind:country={newAttribute.value.country}
+      on:save={saveAttribute}
+    />
+  {:else if newAttribute.type === AttributeType.COORDINATE}
+    <CoordinateForm
+      bind:name={newAttribute.name}
+      bind:latitude={newAttribute.value.latitude}
+      bind:longitude={newAttribute.value.longitude}
       on:save={saveAttribute}
     />
   {:else if newAttribute.type === AttributeType.CREDENTIAL}
@@ -57,7 +65,9 @@
   {:else if newAttribute.type === AttributeType.DATE}
     <DateForm
       bind:name={newAttribute.name}
-      bind:date={newAttribute.value.date}
+      bind:year={newAttribute.value.year}
+      bind:month={newAttribute.value.month}
+      bind:day={newAttribute.value.day}
       on:save={saveAttribute}
     />
   {:else if newAttribute.type === AttributeType.EMAIL}
@@ -78,6 +88,7 @@
   {:else if newAttribute.type === AttributeType.SOCIAL}
     <SocialForm
       bind:name={newAttribute.name}
+      bind:provider={newAttribute.value.provider}
       bind:handle={newAttribute.value.handle}
       on:save={saveAttribute}
     />

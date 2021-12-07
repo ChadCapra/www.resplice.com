@@ -1,5 +1,6 @@
 export enum AttributeType {
   ADDRESS = 'ADDRESS',
+  COORDINATE = 'COORDINATE',
   CREDENTIAL = 'CREDENTIAL',
   DATE = 'DATE',
   EMAIL = 'EMAIL',
@@ -9,6 +10,7 @@ export enum AttributeType {
 }
 export type AttributeValue =
   | AddressValue
+  | CoordinateValue
   | CredentialValue
   | DateValue
   | EmailValue
@@ -28,13 +30,21 @@ export interface Address extends BaseAttribute {
   value: AddressValue
 }
 export type AddressValue = {
-  address_1: string
-  address_2?: string
+  street_address_1: string
+  street_address_2?: string
   locality: string
   region: string
   postal_code: string
   country: string
-  planet?: string
+}
+
+export interface Coordinate extends BaseAttribute {
+  type: AttributeType.COORDINATE
+  value: CoordinateValue
+}
+export type CoordinateValue = {
+  latitude: number
+  longitude: number
 }
 
 export interface Credential extends BaseAttribute {
@@ -51,7 +61,9 @@ export interface Date extends BaseAttribute {
   value: DateValue
 }
 export type DateValue = {
-  date: number
+  year: number
+  month: number
+  day: number
 }
 
 export interface Email extends BaseAttribute {
@@ -92,6 +104,7 @@ export type TextValue = {
 
 export type Attribute =
   | Address
+  | Coordinate
   | Credential
   | Date
   | Email

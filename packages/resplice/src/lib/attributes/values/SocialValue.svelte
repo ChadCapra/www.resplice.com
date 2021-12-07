@@ -4,4 +4,6 @@
   export let value: SocialValue
 </script>
 
-<p>{value.provider}, {value.handle}</p>
+{#if value.provider && value.handle}
+  <p>{value.provider}, {value.handle}</p>
+{/if}

@@ -9,6 +9,10 @@ wss.on('connection', ws => {
     console.log('received: %s', data)
   })
 
+  // setTimeout(() => {
+  //   ws.close(1000, 'I killed you')
+  // }, 2000)
+
   // ws.send('something')
 })
 

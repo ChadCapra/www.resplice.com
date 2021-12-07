@@ -3,7 +3,7 @@
   import AttributeAction from '$lib/attributes/AttributeAction.svelte'
   import AttributeValue from '$lib/attributes/AttributeValue.svelte'
   import Modal from '$lib/common/Modal.svelte'
-  import attributeTypes from '$services/mocks/appClient/attributeTypes'
+  import attributeTypes from '$lib/attributes/attributeTypes'
 
   export let itemType: 'contact' | 'user' | 'disabled'
   export let attribute: Attribute
@@ -43,7 +43,7 @@
       {/if}
     </div>
   </div>
-  {#if itemType !== 'user' && showSecondAction}
+  {#if itemType !== 'user' && showSecondAction && !!attributeType.actions[1]}
     <AttributeAction
       {itemType}
       {attribute}

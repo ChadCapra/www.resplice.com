@@ -1,4 +1,6 @@
-import type { Attribute, Invite, User } from '$types/user'
+import type { UserStore } from '$stores/user'
+import type { Attribute, Invite, Message, User } from '$types/user'
+import { MessageType } from '$types/user'
 
 type CreateParams = {
   name: string
@@ -6,6 +8,7 @@ type CreateParams = {
 }
 
 export interface UserClient {
+  handleMessage: (message: Message) => void
   create: (params: CreateParams) => Promise<User>
   get: () => Promise<User>
   updateName: (user: Pick<User, 'name'>) => Promise<User>
@@ -23,8 +26,18 @@ export interface UserClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function userClientFactory(api: any, _cache: any): UserClient {
+function userClientFactory(
+  api: any,
+  _cache: any,
+  store: UserStore
+): UserClient {
   return {
+    handleMessage: (message) => {
+      switch (message.type) {
+        case MessageType.UPDATE_NAME:
+          store.update((state) => ({ ...state, name: message.data }))
+      }
+    },
     create: ({ name, avatar }) => api.createUser(name, avatar),
     get: () => api.getProfile(),
     updateName: ({ name }) => api.editName(name),

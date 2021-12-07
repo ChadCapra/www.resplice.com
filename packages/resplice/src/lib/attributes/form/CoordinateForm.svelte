@@ -1,31 +1,23 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
-  // import { zonedTimeToUtc } from 'date-fns-tz'
   import TextField from '$lib/common/form/TextField.svelte'
-  import DateField from '$lib/common/form/DateField.svelte'
   import FormButtons from '$lib/attributes/form/FormButtons.svelte'
 
   const dispatch = createEventDispatcher()
 
   export let name = ''
-  export let year = null
-  export let month = null
-  export let day = null
+  export let latitude = 0
+  export let longitude = 0
 
-  // function toEpochTime(date: Date | string) {
-  //   if (!date) return null
-  //   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-  //   const utc = zonedTimeToUtc(date, timeZone)
-  //   return utc.getTime()
-  // }
-
-  let dateStr = ''
+  let strLat = ''
+  let strLng = ''
 
   $: {
-    const date = new Date(dateStr)
-    year = date.getFullYear()
-    month = date.getMonth()
-    day = date.getDate()
+    latitude = Number(strLat)
+  }
+
+  $: {
+    longitude = Number(strLng)
   }
 
   let formErrs: any = {}
@@ -33,7 +25,8 @@
   function onSave() {
     formErrs = {}
     if (!name) formErrs.name = 'A name is required'
-    if (!dateStr) formErrs.date = 'A date is required'
+    if (!latitude) formErrs.latitude = 'Please enter a valid latitude value'
+    if (!longitude) formErrs.longitude = 'Please enter a valid longitude value'
 
     if (!Object.keys(formErrs).length) {
       dispatch('save')
@@ -49,11 +42,17 @@
       bind:value={name}
       error={formErrs.name}
     />
-    <DateField
-      name="date"
-      label="Date"
-      bind:value={dateStr}
-      error={formErrs.date}
+    <TextField
+      name="latitude"
+      label="Latitude"
+      bind:value={strLat}
+      error={formErrs.text}
+    />
+    <TextField
+      name="longitude"
+      label="Longitude"
+      bind:value={strLng}
+      error={formErrs.longitude}
     />
   </div>
 

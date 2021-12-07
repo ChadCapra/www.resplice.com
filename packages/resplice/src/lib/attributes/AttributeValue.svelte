@@ -3,6 +3,7 @@
   import { AttributeType } from '$types/attribute'
 
   import AddressValue from '$lib/attributes/values/AddressValue.svelte'
+  import CoordinateValue from './values/CoordinateValue.svelte'
   import CredentialValue from '$lib/attributes/values/CredentialValue.svelte'
   import DateValue from '$lib/attributes/values/DateValue.svelte'
   import EmailValue from '$lib/attributes/values/EmailValue.svelte'
@@ -15,6 +16,8 @@
 
 {#if attribute.type === AttributeType.ADDRESS}
   <AddressValue value={attribute.value} />
+{:else if attribute.type === AttributeType.COORDINATE}
+  <CoordinateValue value={attribute.value} />
 {:else if attribute.type === AttributeType.CREDENTIAL}
   <CredentialValue value={attribute.value} />
 {:else if attribute.type === AttributeType.DATE}

@@ -1,7 +1,9 @@
 import { writable } from 'svelte/store'
 import type { Attribute } from '$types/user'
 
-const attributeStore = writable<Record<string, Attribute> | null>(null)
+import { attributes } from '$services/mocks/state/attributes'
+
+const attributeStore = writable<Record<string, Attribute> | null>(attributes)
 
 export type AttributeStore = typeof attributeStore
 

@@ -10,17 +10,21 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       AttributeAction.Copy
     ]
   },
+  [AttributeType.COORDINATE]: {
+    name: 'Coordinate',
+    actions: [
+      AttributeAction.Locate,
+      AttributeAction.Navigate,
+      AttributeAction.Copy
+    ]
+  },
   [AttributeType.CREDENTIAL]: {
     name: 'Credential',
     actions: [AttributeAction.Copy]
   },
   [AttributeType.DATE]: {
     name: 'Date',
-    actions: [
-      AttributeAction.Calendar,
-      AttributeAction.Navigate,
-      AttributeAction.Copy
-    ]
+    actions: [AttributeAction.Calendar, AttributeAction.Copy]
   },
   [AttributeType.EMAIL]: {
     name: 'Email',

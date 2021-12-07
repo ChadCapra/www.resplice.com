@@ -37,7 +37,7 @@ async function clientFactory(
   const contacts = contactsClientFactory(conn, cache)
   const invites = invitesClientFactory(conn, cache)
   const sessions = sessionsClientFactory(conn, cache as any, stores.auth)
-  const user = userClientFactory(conn, cache)
+  const user = userClientFactory(conn, cache, stores.user)
 
   return new Promise<AppClient>((resolve, reject) => {
     stores.conn.set({
@@ -58,6 +58,7 @@ async function clientFactory(
             status: ConnStatus.CONNECTED,
             error: null
           }))
+          // conn.postMessage({ type: '', data: {} }) // Need to send a handshake here.
           // This feels weird because resolve may be called multiple times
           // if the socket connects, disconnects, then connects again.
           // This might be okay because only the first resolve is processed
@@ -90,6 +91,7 @@ async function clientFactory(
         case MessageType.MESSAGE:
           chat.handleMessage(cmd.data)
           sessions.handleMessage(cmd.data)
+          user.handleMessage(cmd.data)
           break
       }
     }

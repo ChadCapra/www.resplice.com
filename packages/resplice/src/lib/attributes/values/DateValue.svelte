@@ -1,19 +1,38 @@
 <script lang="ts">
   import type { DateValue } from '$types/attribute'
-  import { utcToZonedTime, format } from 'date-fns-tz'
+  // import { utcToZonedTime, format } from 'date-fns-tz'
 
   export let value: DateValue
 
-  function parseDate(date: number) {
-    if (!date) return ''
-    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-    const zonedDate = utcToZonedTime(date, timeZone)
-    return format(zonedDate, "MMMM dd',' yyyy", {
-      timeZone
-    })
+  const monthMap = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December'
+  ]
+
+  // function parseDateValue(date: number) {
+  //   if (!date) return ''
+  //   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
+  //   const zonedDate = utcToZonedTime(date, timeZone)
+  //   return format(zonedDate, "MMMM dd',' yyyy", {
+  //     timeZone
+  //   })
+  // }
+  function parseDateValue(value: DateValue) {
+    if (!value.year || !value.month || !value.day) return ''
+    return `${monthMap[value.month - 1]} ${value.day}, ${value.year}`
   }
 
-  $: formattedDate = parseDate(value.date)
+  $: formattedDate = parseDateValue(value)
 </script>
 
 <!-- Can potentially localize this format per country, will use US format for now -->

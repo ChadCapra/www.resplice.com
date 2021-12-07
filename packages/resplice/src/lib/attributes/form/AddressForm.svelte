@@ -13,7 +13,6 @@
   export let region = ''
   export let postalCode = ''
   export let country = 'US'
-  export let planet = 'Earth'
 
   let formErrs: any = {}
 
@@ -73,12 +72,6 @@
       label="Country"
       bind:value={country}
       error={formErrs.country}
-    />
-    <TextField
-      name="planet"
-      label="Planet"
-      bind:value={planet}
-      error={formErrs.planet}
     />
   </div>
 

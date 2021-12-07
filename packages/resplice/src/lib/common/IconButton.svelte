@@ -1,6 +1,8 @@
 <script lang="ts">
   export let Icon: any
   export let disabled: boolean = false
+  export let width = 28
+  export let height = 28
 </script>
 
 <button
@@ -8,5 +10,5 @@
   {disabled}
   on:click
 >
-  <svelte:component this={Icon} width={28} height={28} />
+  <svelte:component this={Icon} {width} {height} />
 </button>

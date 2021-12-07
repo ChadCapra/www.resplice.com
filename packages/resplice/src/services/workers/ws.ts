@@ -48,7 +48,9 @@ function open(url: string | URL) {
     // TODO: Parse binary data before posting message
     ctx.postMessage({ type: MESSAGE, data: ev.data })
   }
-  socket.onclose = () => {
+  socket.onclose = (ev) => {
+    console.log('Closing')
+    console.log(ev)
     ctx.postMessage({ type: Command.CLOSE })
   }
 }

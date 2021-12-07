@@ -6,6 +6,6 @@ const contactsStore = writable<Record<
   { profile: Contact; detail: ContactDetail }
 > | null>(null)
 
-export type UserStore = typeof contactsStore
+export type ContactStore = typeof contactsStore
 
 export default contactsStore

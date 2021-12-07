@@ -14,7 +14,7 @@
 <script lang="ts">
   import AttributeForm from '$lib/attributes/form/AttributeForm.svelte'
   import type { AttributeType } from '$types/attribute'
-  import attributeTypes from '$services/mocks/appClient/attributeTypes'
+  import attributeTypes from '$lib/attributes/attributeTypes'
 
   export let attributeType: AttributeType
 
