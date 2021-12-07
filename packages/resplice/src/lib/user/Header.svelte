@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
+  import { goto } from '$app/navigation'
   import BackIcon from '$lib/icons/BackIcon.svelte'
   import Avatar from '$lib/common/Avatar.svelte'
   import IconButton from '$lib/common/IconButton.svelte'
@@ -24,5 +25,5 @@
       </div>
     {/if}
   </div>
-  <IconButton Icon={SettingsIcon} />
+  <IconButton Icon={SettingsIcon} on:click={() => goto('/app/user/settings')} />
 </nav>
