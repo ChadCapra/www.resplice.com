@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+
   import attributeStore from '$stores/attributes'
   import userStore from '$stores/user'
 

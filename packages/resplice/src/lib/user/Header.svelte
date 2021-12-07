@@ -14,7 +14,7 @@
 
 <nav class="flex-none flex items-center justify-between p-4">
   <div class="flex items-center">
-    <IconButton Icon={BackIcon} />
+    <IconButton Icon={BackIcon} on:click={() => goto('/app/list/contacts')} />
     {#if showUser}
       <div
         class="flex items-center ml-4"
