@@ -1,25 +1,14 @@
 <script lang="ts">
-  // import { onMount } from 'svelte'
-  // import { t } from 'svelte-i18n'
   import type { Contact } from '$types/contact'
   import SearchHeader from '$lib/common/SearchHeader.svelte'
   import TagsList from '$lib/contacts/TagsList.svelte'
   import ContactList from '$lib/contacts/ContactList.svelte'
 
-  let selectedTags: Set<string> = new Set()
+  let selectedFilters: Set<string> = new Set()
   let contactsAsync: Promise<Contact[]> = Promise.resolve([])
 
-  async function fetchContacts(): Promise<Contact[]> {
-    const res = await fetch('https://api.resplice.com/contacts')
-    return await res.json()
-  }
-
-  // onMount(() => {
-  //   contactsAsync = fetchContacts()
-  // })
-
   const onTagSetChange = (e: CustomEvent<Set<string>>) => {
-    selectedTags = e.detail
+    selectedFilters = e.detail
   }
 </script>
 
