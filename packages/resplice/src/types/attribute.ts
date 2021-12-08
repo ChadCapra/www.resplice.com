@@ -22,6 +22,7 @@ interface BaseAttribute {
   type: AttributeType
   name: string
   value: AttributeValue
+  expiry?: Date
   sort_order: number
 }
 

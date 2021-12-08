@@ -5,12 +5,12 @@
   import ChatBubbles from '$lib/icons/ChatBubblesIcon.svelte'
   import NavActions from '$lib/common/NavActions.svelte'
 
-  $: isOnContacts = $page.path === '/app/list/contacts'
-  $: isOnChats = $page.path === '/app/list/chats'
+  $: isOnContacts = $page.path.includes('/app/list/contacts')
+  $: isOnChats = $page.path.includes('/app/list/chats')
 </script>
 
 <!-- <MockWorker> -->
-<main class="flex flex-col w-full h-full overflow-auto space-y-2">
+<main class="flex flex-col w-full h-full overflow-auto">
   <div class="flex-1 overflow-auto"><slot /></div>
   <nav
     class="relative flex-none flex justify-around items-center p-2 border-t-2 border-gray-200"

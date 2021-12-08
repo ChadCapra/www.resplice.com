@@ -8,6 +8,7 @@
     email,
     goto,
     locate,
+    navigate,
     openCalendar,
     openSms
   } from '$lib/utils'
@@ -54,13 +55,30 @@
         goto(attribute.value[0])
         break
       case AttributeAction.Locate:
+        switch (attribute.type) {
+          case AttributeType.ADDRESS:
+            locate({
+              locationType: 'address',
+              location: valueToString[AttributeType.ADDRESS](attribute)
+            })
+            break
+          case AttributeType.COORDINATE:
+            locate({ locationType: 'coordinate', location: attribute.value })
+          default:
+            break
+        }
         locate(attribute.value[0])
         break
       case AttributeAction.Navigate:
         switch (attribute.type) {
           case AttributeType.ADDRESS:
-            locate(valueToString[AttributeType.ADDRESS](attribute), true)
+            navigate({
+              locationType: 'address',
+              location: valueToString[AttributeType.ADDRESS](attribute)
+            })
             break
+          case AttributeType.COORDINATE:
+            navigate({ locationType: 'coordinate', location: attribute.value })
           default:
             break
         }

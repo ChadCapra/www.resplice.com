@@ -5,9 +5,9 @@
   import SkeletonList from '$lib/common/skeleton/SkeletonList.svelte'
   import type { Contact } from '$types/contact'
 
-  export let contact: Contact
+  export let contact: Contact | null
 
-  $: chats = $chatStore ? $chatStore[contact.uuid] : null
+  $: chats = contact && $chatStore && $chatStore[contact.uuid]
 </script>
 
 <div class="flex flex-col w-full h-full p-8 overflow-auto">

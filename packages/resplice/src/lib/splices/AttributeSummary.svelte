@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Attribute } from '$types'
+  import type { Attribute } from '$types/attribute'
   import { format, parseISO } from 'date-fns'
   import ActionIcon from '$lib/attributes/ActionIcon.svelte'
   // TODO: Change to svelte store or some cache
-  import attributeTypes from '../../services/mocks/attributeTypes'
+  import attributeTypes from '$lib/attributes/attributeTypes'
 
   export let attribute: Pick<Attribute, 'type' | 'name' | 'value'>
   const attributeType = attributeTypes[attribute.type]

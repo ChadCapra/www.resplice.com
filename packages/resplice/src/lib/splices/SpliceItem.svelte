@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Splice } from '$types'
+  import type { Splice } from '$types/splice'
   import Avatar from '$lib/common/Avatar.svelte'
   import AttributeSummary from '$lib/splices/AttributeSummary.svelte'
   import MessageSummary from '$lib/splices/MessageSummary.svelte'

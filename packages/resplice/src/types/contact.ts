@@ -14,18 +14,34 @@ export type Contact = {
   alias?: string
   description?: string
   isFavored: boolean
-  expiry?: Date
+  connected_at: Date
 }
 
-export type ContactDetail = Contact & {
+export type PendingContact = {
+  uuid: string
+  type: ContactType
+  name: string
+  avatar_url?: string
+  handle?: string
+  expiry: Date
+}
+
+export type ContactDetail = {
+  uuid: string
   attributes: Attribute[]
+  pending_attributes: PendingAttribute[]
   common_splices: string[]
   chats: Chat[]
-  pending: boolean
 }
 
 export type Attribute = BaseAttribute & {
   contact_uuid: string
+}
+
+// TODO: Create pending attribute
+export type PendingAttribute = {
+  expiry: Date
+  required_share_uuids: string[]
 }
 
 export type Chat = BaseChat & {

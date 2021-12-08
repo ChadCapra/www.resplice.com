@@ -54,16 +54,48 @@ export function goto(link: string): void {
   window.open(link, '_blank')
 }
 
-export function locate(location: string, navigate = false): void {
-  const api = navigate ? 'dir' : 'search'
-  const googleMapsUrl = `https://www.google.com/maps/${api}/?api=1`
+type locateParams =
+  | {
+      locationType: 'coordinate'
+      location: { latitude: number; longitude: number }
+    }
+  | {
+      locationType: 'address'
+      location: string
+    }
+export function locate(params: locateParams) {
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1`
+  let query = ''
 
-  const locationUrl = location.replace(' ', '+')
-  window.open(`${googleMapsUrl}&query=${locationUrl}`, '_blank')
+  if (params.locationType === 'coordinate') {
+    query = `${params.location.latitude},${params.location.longitude}`
+  } else {
+    query = params.location.replace(' ', '+')
+  }
 
-  // For coordinates
-  // const coordinateString = `${location.lat},${location.lon}`
-  // window.open(`${googleMapsUrl}&query=${coordinateString}`, '_blank')
+  window.open(`${googleMapsUrl}&query=${query}`, '_blank')
+}
+
+type navigateParams =
+  | {
+      locationType: 'coordinate'
+      location: { latitude: number; longitude: number }
+    }
+  | {
+      locationType: 'address'
+      location: string
+    }
+export function navigate(params: navigateParams) {
+  const googleMapsUrl = `https://www.google.com/maps/dir/?api=1`
+  let query = ''
+
+  if (params.locationType === 'coordinate') {
+    query = `${params.location.latitude},${params.location.longitude}`
+  } else {
+    query = params.location.replace(' ', '+')
+  }
+
+  window.open(`${googleMapsUrl}&query=${query}`, '_blank')
 }
 
 export function openSms(phone: string, text = ''): void {

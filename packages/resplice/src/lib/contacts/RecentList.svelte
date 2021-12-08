@@ -6,7 +6,7 @@
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
   import contactsStore from '$stores/contacts'
 
-  $: contactList = $contactsStore && Object.values($contactsStore)
+  $: contactList = $contactsStore && Object.values($contactsStore).slice(1, 2)
 </script>
 
 <!-- TODO: Implement Alphabet slider -->
@@ -16,7 +16,7 @@
       <ContactItem
         contact={item.profile}
         on:click={() => {
-          goto(`/app/contact/${item.profile.uuid}/shares`)
+          goto(`contacts/${item.profile.uuid}`)
         }}
       />
     </VirtualList>
