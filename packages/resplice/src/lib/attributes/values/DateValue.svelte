@@ -37,7 +37,7 @@
 
 <!-- Can potentially localize this format per country, will use US format for now -->
 <div class="flex flex-col">
-  <span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">
+  <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
     {formattedDate}
   </span>
 </div>

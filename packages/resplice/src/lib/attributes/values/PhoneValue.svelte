@@ -20,6 +20,6 @@
   $: phone = parsePhone(value)
 </script>
 
-<span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">
+<span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
   {phone}
 </span>

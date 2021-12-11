@@ -6,20 +6,20 @@
 
 <!-- Can potentially localize this format per country, will use US format for now -->
 <div class="flex flex-col">
-  <span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">
+  <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
     {value.street_address_1}
   </span>
   {#if !!value.street_address_2}
-    <span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">
+    <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
       {value.street_address_2}
     </span>
   {/if}
-  <span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">
+  <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
     {value.locality
       ? `${value.locality}, ${value.region} ${value.postal_code}`
       : `${value.region} ${value.postal_code}`}
   </span>
-  <span class="overflow-hidden overflow-ellipsis whitespace-pre-line h-6">
+  <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
     {value.country}
   </span>
 </div>

@@ -14,7 +14,7 @@
     attribute={{ value: {} }}
     attributeAction={attributeTypeConfig.actions[0]}
   />
-  <span class="font-semibold text-gray-800 overflow-hidden overflow-ellipsis">
+  <span class="font-semibold text-gray-800 overflow-hidden text-ellipsis">
     {attributeTypeConfig.name}
   </span>
 </button>

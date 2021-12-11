@@ -1,13 +1,12 @@
 const colors = require('tailwindcss/colors')
 
 module.exports = {
-  mode: 'jit',
-  purge: {
-    content: ['./src/**/*.{html,js,svelte,ts}'],
-    options: {
-      keyframes: true
-    }
-  },
+  content: [
+    './src/app.html',
+    './src/lib/**/*.{html,svelte}',
+    './src/routes/**/*.{html,svelte}',
+    './src/lib/**/*.{html,svelte}'
+  ],
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
@@ -25,13 +24,10 @@ module.exports = {
         //     return `rgb(var(--brand-primary))`
         //   }
         // },
-        gray: colors.blueGray,
+        gray: colors.slate,
         indigo: colors.indigo
       }
     }
-  },
-  variants: {
-    extend: {}
   },
   plugins: []
 }

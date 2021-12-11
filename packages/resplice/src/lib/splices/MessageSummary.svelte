@@ -17,7 +17,7 @@
         })}
       </span>
     </p>
-    <p class="w-full whitespace-nowrap overflow-hidden overflow-ellipsis">
+    <p class="w-full whitespace-nowrap overflow-hidden text-ellipsis">
       {message.content}
     </p>
   </div>
