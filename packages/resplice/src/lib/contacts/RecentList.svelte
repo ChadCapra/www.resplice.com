@@ -16,7 +16,7 @@
       <ContactItem
         contact={item.profile}
         on:click={() => {
-          goto(`contacts/${item.profile.uuid}`)
+          goto(`/app/contact/${item.profile.uuid}/shares`)
         }}
       />
     </VirtualList>
