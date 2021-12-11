@@ -20,7 +20,7 @@
         class="flex items-center ml-4"
         transition:fade={{ delay: 50, duration: 150 }}
       >
-        <Avatar uuid={user.uuid} />
+        <Avatar uuid={user.uuid} src={user.avatar} size="sm" />
         <h2 class="ml-2 font-semibold text-xl">{user.name}</h2>
       </div>
     {/if}

@@ -8,21 +8,21 @@
     email,
     goto,
     locate,
-    navigate,
     openCalendar,
     openSms
-  } from '$lib/utils'
+  } from '$lib/attributes/actions'
   import ActionIcon from '$lib/attributes/ActionIcon.svelte'
   import { valueToString } from './values/attributeUtils'
+  import attributeTypes from '$lib/attributes/attributeTypes'
 
   export let itemType: 'contact' | 'user' | 'disabled'
   export let attributeAction: AttributeAction
   export let attribute: Attribute
 
   function onActionClick() {
-    // I might change this to use a more object oriented approach
-    // classes with their own "toText" and various action methods
-    // to avoid these nested switch statements
+    // Not a fan of these nested switch statements
+    // There is probably a better way by mapping functions to actions
+    // TODO: Make this more readable
     if (itemType === 'disabled') return
     switch (attributeAction) {
       case AttributeAction.Calendar:
@@ -46,20 +46,34 @@
         }
         break
       case AttributeAction.Copy:
-        copyText(attribute.value[0])
+        copyText(attributeTypes[attribute.type].valueToString(attribute.value))
         break
       case AttributeAction.Email:
-        email(attribute.value[0])
+        switch (attribute.type) {
+          case AttributeType.EMAIL:
+            email(attribute.value.email)
+            break
+          default:
+            break
+        }
         break
       case AttributeAction.Link:
-        goto(attribute.value[0])
+        switch (attribute.type) {
+          case AttributeType.SOCIAL:
+            goto(attribute.value.url)
+            break
+          default:
+            break
+        }
         break
       case AttributeAction.Locate:
         switch (attribute.type) {
           case AttributeType.ADDRESS:
             locate({
               locationType: 'address',
-              location: valueToString[AttributeType.ADDRESS](attribute)
+              location: attributeTypes[attribute.type].valueToString(
+                attribute.value
+              )
             })
             break
           case AttributeType.COORDINATE:
@@ -72,19 +86,32 @@
       case AttributeAction.Navigate:
         switch (attribute.type) {
           case AttributeType.ADDRESS:
-            navigate({
-              locationType: 'address',
-              location: valueToString[AttributeType.ADDRESS](attribute)
-            })
+            locate(
+              {
+                locationType: 'address',
+                location: valueToString[AttributeType.ADDRESS](attribute)
+              },
+              true
+            )
             break
           case AttributeType.COORDINATE:
-            navigate({ locationType: 'coordinate', location: attribute.value })
+            locate(
+              { locationType: 'coordinate', location: attribute.value },
+              true
+            )
+            break
           default:
             break
         }
         break
       case AttributeAction.Sms:
-        openSms(attribute.value[1])
+        switch (attribute.type) {
+          case AttributeType.PHONE:
+            openSms(attribute.value.countryCallingCode + attribute.value.number)
+            break
+          default:
+            break
+        }
         break
     }
   }

@@ -6,8 +6,6 @@
 </script>
 
 <div class="flex space-x-4 w-full mt-4">
-  <Button color="danger-light" on:click={() => window.history.back()}>
-    Cancel
-  </Button>
+  <Button color="gray" on:click={() => window.history.back()}>Back</Button>
   <Button class="w-full" on:click={() => dispatch('save')}>Save</Button>
 </div>

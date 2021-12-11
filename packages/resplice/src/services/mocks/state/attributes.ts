@@ -69,5 +69,15 @@ export const attributes: Record<string, Attribute> = {
       day: 12
     },
     sort_order: 6
+  },
+  'insta-uuid': {
+    uuid: 'insta-uuid',
+    type: AttributeType.SOCIAL,
+    name: 'Instagram',
+    value: {
+      handle: 'bastilla_shan',
+      url: 'https://www.instagram.com/bastilla_shan/'
+    },
+    sort_order: 7
   }
 }

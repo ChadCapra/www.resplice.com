@@ -11,7 +11,7 @@
 </script>
 
 <div class="flex flex-col w-full h-full p-8 overflow-auto">
-  {#if chats}
+  {#if !!chats}
     {#each chats as chat}
       <Chat {chat} />
     {/each}

@@ -91,8 +91,8 @@ export interface Social extends BaseAttribute {
   value: SocialValue
 }
 export type SocialValue = {
-  provider: string
   handle: string
+  url: string
 }
 
 export interface Text extends BaseAttribute {
@@ -127,4 +127,5 @@ export enum AttributeAction {
 export type AttributeTypeConfig = {
   name: string
   actions: AttributeAction[]
+  valueToString: (value: AttributeValue) => string
 }
