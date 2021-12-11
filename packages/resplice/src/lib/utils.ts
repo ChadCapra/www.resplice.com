@@ -20,6 +20,14 @@ export function capitalize(text: string): string {
   return text.substring(0, 1).toUpperCase() + text.substring(1)
 }
 
+export function validateEmail(email: string): boolean {
+  if (!email) return false
+  /* eslint-disable no-control-regex, no-useless-escape */
+  // prettier-ignore
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)
+  /* eslint-enable no-control-regex, no-useless-escape */
+}
+
 export function getOperatingSystem() {
   // Use new userAgentData if possible
   // TODO: Remove any type when lib.dom is updated

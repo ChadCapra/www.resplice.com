@@ -13,7 +13,7 @@
 <main class="flex flex-col w-full h-full overflow-auto">
   <div class="flex-1 overflow-auto"><slot /></div>
   <nav
-    class="relative flex-none flex justify-around items-center p-2 border-t-2 border-gray-200"
+    class="relative flex-none flex justify-around items-center p-2 border-t-2 border-gray-200 overflow-hidden"
   >
     <NavItem isActive={isOnContacts} href="/app/list/contacts">
       <PeopleIcon width={32} height={32} />
