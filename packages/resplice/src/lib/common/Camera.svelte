@@ -6,11 +6,11 @@
 
   const dispatch = createEventDispatcher()
 
-  export let showControls = true
+  export let hideControls = false
 
   let stream: HTMLVideoElement
   let streamError: Error | null
-  let facingMode: 'user' | 'environment' = 'user'
+  let facingMode: 'user' | 'environment' = 'environment'
 
   const cameraClickAudio = new Audio('/sounds/camera_click.mp3')
   cameraClickAudio.volume = 0.25
@@ -28,6 +28,7 @@
       if (stream) {
         stream.srcObject = video
         stream.play()
+        dispatch('stream', stream)
       }
     } catch (err) {
       streamError = err
@@ -48,6 +49,7 @@
   }
 
   function takePicture() {
+    cameraClickAudio.play()
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')
     const { height, width } = stream.getBoundingClientRect()
@@ -55,8 +57,7 @@
     canvas.width = width
     context.drawImage(stream, 0, 0, width, height)
     canvas.toBlob((blob) => dispatch('picture', blob))
-    cameraClickAudio.play()
-    // dispatch('close')
+    dispatch('close')
   }
 
   onMount(initCamera)
@@ -73,9 +74,9 @@
     Sorry, your browser doesn't support embedded videos.
   </video>
 
-  {#if showControls}
+  {#if !hideControls}
     <div
-      class="absolute bottom-0 z-20 flex items-center justify-around w-full p-4"
+      class="absolute bottom-0 z-10 flex items-center justify-around w-full p-4"
     >
       <button
         class="h-12 w-12 p-2 rounded-full bg-gray-800 bg-opacity-50 transform transition duration-75 ease-in-out active:scale-90"
