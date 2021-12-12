@@ -5,11 +5,10 @@
   import Avatar from '$lib/common/Avatar.svelte'
   import IconButton from '$lib/common/IconButton.svelte'
   import SettingsIcon from '$lib/icons/SettingsIcon.svelte'
-
-  import type { User } from '$types/user'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
+  import userStore from '$stores/user'
 
-  export let user: User | null
+  $: user = $userStore
   export let showUser = false
 </script>
 

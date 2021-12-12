@@ -42,7 +42,7 @@
   })
 </script>
 
-<div class="relative w-full h-full flex items-center justify-center">
+<main class="relative w-full h-full flex items-center justify-center">
   <Camera
     hideControls
     on:stream={onVideoStream}
@@ -67,4 +67,4 @@
       <PublicContact />
     </Modal>
   {/if}
-</div>
+</main>

@@ -38,12 +38,12 @@
   <title>{user?.name || 'Loading'}</title>
 </svelte:head>
 
-{#if user}
-  <div class="flex flex-col w-full h-full bg-gray-100">
-    <Header showUser={showUserOnHeader} {user} />
-    <main
-      class="flex-1 overflow-auto relative w-full max-w-xl m-auto py-4 rounded-t-3xl bg-white"
-    >
+<div class="flex flex-col w-full h-full bg-gray-100">
+  <Header showUser={showUserOnHeader} />
+  <main
+    class="flex-1 overflow-auto relative w-full max-w-xl m-auto py-4 rounded-t-3xl bg-white"
+  >
+    {#if user}
       <UserAvatar {user} />
       <h1 class="text-4xl font-bold mt-2 text-center mb-4">{user.name}</h1>
       <div
@@ -53,10 +53,6 @@
       />
       <UserAttributeList {attributes} />
       <AddAttributeButton />
-    </main>
-  </div>
-{:else}
-  <div class="flex flex-col w-full h-full bg-gray-100">
-    <main><p>Loading</p></main>
-  </div>
-{/if}
+    {/if}
+  </main>
+</div>

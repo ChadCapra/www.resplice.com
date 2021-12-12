@@ -58,7 +58,7 @@
 </section>
 
 {#if isEditing}
-  <Modal on:close={() => (isEditing = false)} initialY={56}>
+  <Modal let:close on:close={() => (isEditing = false)} initialY={56}>
     <div
       class="flex-1 w-full px-4 overflow-scroll"
       style="padding-bottom: 76px"
@@ -77,7 +77,7 @@
         {/each}
       </div>
       <div class="w-full flex justify-center mt-4">
-        <Button class="w-48" on:click={() => (isEditing = false)}>Save</Button>
+        <Button class="w-48" on:click={close}>Save</Button>
       </div>
     </div>
   </Modal>
