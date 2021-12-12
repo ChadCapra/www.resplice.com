@@ -5,7 +5,9 @@
   const dispatch = createEventDispatcher()
 </script>
 
-<div class="flex space-x-4 w-full mt-4">
-  <Button color="gray" on:click={() => window.history.back()}>Back</Button>
-  <Button class="w-full" on:click={() => dispatch('save')}>Save</Button>
+<div class="flex flex-col items-center space-y-4 w-full mt-4">
+  <Button class="w-48" on:click={() => dispatch('save')}>Save</Button>
+  <Button class="w-48" color="gray" on:click={() => window.history.back()}>
+    Back
+  </Button>
 </div>

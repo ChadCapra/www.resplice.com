@@ -22,6 +22,8 @@
     </div>
   </div>
   <div class="p-4">
-    <Button color="gray" on:click={() => window.history.back()}>Back</Button>
+    <Button class="w-48" color="gray" on:click={() => window.history.back()}>
+      Back
+    </Button>
   </div>
 </main>

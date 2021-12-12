@@ -88,8 +88,8 @@
   {:else if newAttribute.type === AttributeType.SOCIAL}
     <SocialForm
       bind:name={newAttribute.name}
-      bind:provider={newAttribute.value.provider}
       bind:handle={newAttribute.value.handle}
+      bind:url={newAttribute.value.url}
       on:save={saveAttribute}
     />
   {:else if newAttribute.type === AttributeType.TEXT}
