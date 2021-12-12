@@ -27,7 +27,6 @@
     if (shares.has(uuid)) shares.delete(uuid)
     else shares.add(uuid)
     // Need to do this so svelte will rerender
-    console.log(shares)
     shares = shares
   }
 </script>
