@@ -8,6 +8,7 @@
   export let itemType: 'contact' | 'user' | 'disabled'
   export let attribute: Attribute
   export let showSecondAction = true
+  export let disableActions = false
   let showContextModal = false
 
   const attributeType = attributeTypes[attribute.type]
@@ -15,7 +16,7 @@
   $: showValue = !!Object.values(attribute.value).length
 
   function onAttributeClick() {
-    if (itemType === 'disabled') return
+    if (itemType === 'disabled' || disableActions) return
 
     showContextModal = true
   }
@@ -27,6 +28,7 @@
       {itemType}
       {attribute}
       attributeAction={attributeType.actions[0]}
+      disableAction={disableActions}
     />
     <div
       class="flex flex-col mx-4 flex-1 overflow-hidden no-highlight"
@@ -48,6 +50,7 @@
       {itemType}
       {attribute}
       attributeAction={attributeType.actions[1]}
+      disableAction={disableActions}
     />
   {/if}
 </div>

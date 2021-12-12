@@ -16,10 +16,12 @@
   import attributeTypes from '$lib/attributes/attributeTypes'
 
   export let itemType: 'contact' | 'user' | 'disabled'
+  export let disableAction = false
   export let attributeAction: AttributeAction
   export let attribute: Attribute
 
   function onActionClick() {
+    if (disableAction) return
     // Not a fan of these nested switch statements
     // There is probably a better way by mapping functions to actions
     // TODO: Make this more readable
@@ -118,12 +120,15 @@
 </script>
 
 <button
+  type="button"
   class={cx(
-    'outline-none border-none p-3 bg-opacity-20 rounded-lg focus:outline-none transform transition duration-75 ease-in-out active:scale-90',
+    'outline-none border-none p-3 bg-opacity-20 rounded-lg focus:outline-none',
     {
       'bg-brand-primary text-brand-primary': itemType === 'contact',
       'bg-indigo-400 text-indigo-600': itemType === 'user',
-      'bg-gray-400 text-gray-600': itemType === 'disabled'
+      'bg-gray-400 text-gray-600': itemType === 'disabled',
+      'transform transition duration-75 ease-in-out active:scale-90':
+        !disableAction
     }
   )}
   on:click={onActionClick}

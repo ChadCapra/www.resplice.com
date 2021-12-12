@@ -6,7 +6,7 @@
 
   let name: string
   let handle: string
-  let shares: string[] = []
+  let shares: Set<string>
   let formErrs: Record<string, string> = {}
 
   function onInvite(_e: Event) {
@@ -14,19 +14,21 @@
     const errs: Record<string, string> = {}
     if (!name) errs.name = 'Please enter your full name'
     if (!handle) errs.handle = 'Please enter a Resplice Handle'
+    if (!shares.size)
+      errs.shares = 'Please share at least one attribute before inviting'
     if (Object.keys(errs).length) {
       formErrs = errs
       return
     }
-    console.log(handle)
+    console.log(name, handle, shares)
   }
 </script>
 
 <form
-  class="flex-1 flex flex-col justify-between"
+  class="flex-1 flex flex-col justify-between items-center space-y-8"
   on:submit|preventDefault={onInvite}
 >
-  <div class="flex flex-col space-y-4">
+  <div class="flex flex-col space-y-4 w-full">
     <TextField
       name="name"
       label="Full Name"
@@ -43,6 +45,9 @@
   </div>
 
   <ShareContext bind:shares />
+  {#if formErrs.shares}
+    <p class="text-sm text-red-600 h-4 my-1 mx-2">{formErrs.shares}</p>
+  {/if}
 
-  <Button type="submit">Send</Button>
+  <Button class="w-48" type="submit">Send</Button>
 </form>

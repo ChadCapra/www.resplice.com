@@ -6,7 +6,7 @@
   export let value: SocialValue
 </script>
 
-<div>
+<div class="pb-2">
   {#if value.url}
     <a
       class="underline underline-offset-4 decoration-brand-primary decoration-2"
