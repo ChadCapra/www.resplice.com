@@ -20,6 +20,7 @@
   import AppError from '$lib/common/skeleton/AppError.svelte'
   import useConfig from '$lib/hooks/useConfig'
   import PageTransition from '$lib/common/skeleton/PageTransition.svelte'
+  import ToastProvider from '$lib/common/ToastProvider.svelte'
 
   export let path: string
 
@@ -35,16 +36,13 @@
   onMount(() => {
     appLoadPromise = new Promise(async (resolve, reject) => {
       try {
-        // Setup cache and client
         const { cache, client } = await loadApp(
           config.server_endpoint,
           stores,
           true
         )
-        // set context objects
         cacheContext.cache = cache
         clientContext.client = client
-        // Mark as loaded
         resolve(true)
       } catch (err) {
         console.log(err)
@@ -59,7 +57,9 @@
 {:then loaded}
   {#if loaded}
     <PageTransition refresh={path}>
-      <slot />
+      <ToastProvider>
+        <slot />
+      </ToastProvider>
     </PageTransition>
   {/if}
 {:catch err}
