@@ -3,7 +3,8 @@
   export let name: string
   export let label: string
   export let value: string
-  export let error: string = ''
+  export let autoComplete = ''
+  export let error = ''
   export let disabled = false
   // TODO: Figure out how to type svelte component prop
   export let Icon: any = null
@@ -45,6 +46,7 @@
       title={name}
       {name}
       {disabled}
+      autocomplete={autoComplete}
       bind:value
       on:input={resetError}
       on:focus={() => (isTouched = true)}

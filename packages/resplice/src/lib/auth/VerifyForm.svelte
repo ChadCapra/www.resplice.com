@@ -88,6 +88,7 @@
         <TextField
           name="email-code"
           label="Enter Code"
+          autoComplete="one-time-code"
           bind:value={emailCode}
           disabled={emailCode.length >= CODE_LENGTH}
           Icon={LockClosedIcon}
@@ -115,6 +116,7 @@
         <TextField
           name="phone-code"
           label={emailVerified ? 'Enter Code' : 'Verify Email'}
+          autoComplete="one-time-code"
           bind:value={phoneCode}
           disabled={!emailVerified || phoneCode.length >= CODE_LENGTH}
           Icon={LockClosedIcon}
