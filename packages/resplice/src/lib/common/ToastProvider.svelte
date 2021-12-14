@@ -21,9 +21,9 @@
     if (toastQueue.length) {
       currentToast = toastQueue.shift()
       console.log(currentToast)
-      toastTimeout = setTimeout(() => {
-        currentToast = null
-      }, 2500)
+      // toastTimeout = setTimeout(() => {
+      //   currentToast = null
+      // }, 2500)
     }
   }
 
