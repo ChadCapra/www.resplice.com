@@ -1,18 +1,18 @@
 import type { Contact } from './contact'
 import type { Attribute as BaseAttribute } from './attribute'
-import type { Message as BaseMessage } from './chat'
+import type { Chat as BaseChat } from './chat'
 
 export type Splice = {
   uuid: string
   name: string
   members: Contact[]
-  latest_message: Message
+  latest_message: Chat
   latest_attribute: Attribute
-  missed_messages: number
+  missed_chats: number
 }
 
 export type SpliceDetail = Splice & {
-  messages: Message[]
+  chats: Chat[]
   attributes: Attribute[]
 }
 
@@ -20,7 +20,7 @@ export type Attribute = BaseAttribute & {
   splice_uuid: string
 }
 
-export type Message = BaseMessage & {
+export type Chat = BaseChat & {
   splice_uuid: string
 }
 

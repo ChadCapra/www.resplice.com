@@ -1,8 +1,12 @@
-export function returnPromise<T>(
-  data: T,
+export function returnPromise<T>({
+  data,
   timeout = 300,
   rejectPromise = false
-): Promise<T> {
+}: {
+  data: T
+  timeout?: number
+  rejectPromise?: boolean
+}): Promise<T> {
   return new Promise((resolve, reject) => {
     setTimeout(
       () =>

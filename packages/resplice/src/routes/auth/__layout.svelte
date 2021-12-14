@@ -1,24 +1,37 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, setContext } from 'svelte'
   import { browser } from '$app/env'
   import { goto } from '$app/navigation'
   import authStore from '$stores/auth'
   import apiFactory from '$services/api/http'
-  import authClientFactory from '$services/api/authClient'
+  import authClientFactory, {
+    contextKey as authContextKey
+  } from '$services/api/authClient'
   import type { Session } from '$types/session'
   import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
   import useConfig from '$lib/hooks/useConfig'
 
   const config = useConfig()
 
-  const api = apiFactory(config.server_endpoint)
-  const client = authClientFactory(api)
+  const api = apiFactory(config.http_endpoint)
+  const client = authClientFactory(api, true)
 
-  let sessionPromise: Promise<Session | null>
+  let sessionPromise: Promise<boolean> = Promise.resolve(false)
 
-  onMount(async () => {
-    const session = await client.getActiveSession()
-    authStore.set({ session })
+  const authContext = { client: null }
+  setContext(authContextKey, authContext)
+
+  onMount(() => {
+    authContext.client = client
+    sessionPromise = new Promise(async (resolve) => {
+      try {
+        const session = await client.getActiveSession()
+        authStore.set({ session })
+      } catch (err) {
+        authStore.set({ session: null })
+      }
+      resolve(true)
+    })
   })
 
   function routeGuard(session: Session | null) {
@@ -44,14 +57,15 @@
   }
 
   $: {
+    // I don't love this, I might move route guard logic into the pages they protect.
     if (browser) routeGuard($authStore?.session)
   }
 </script>
 
 {#await sessionPromise}
   <AppLoad />
-{:then _}
-  {#if !!$authStore}
+{:then isLoaded}
+  {#if isLoaded}
     <slot />
   {/if}
 {/await}

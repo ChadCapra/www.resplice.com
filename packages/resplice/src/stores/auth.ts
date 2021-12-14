@@ -10,7 +10,7 @@ type LoginValues = {
 }
 type Auth = {
   loginValues?: LoginValues
-  session: Session
+  session: Session | null
   public_key?: Record<string, string>
   private_key?: Record<string, string>
 }

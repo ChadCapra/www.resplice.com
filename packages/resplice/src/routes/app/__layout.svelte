@@ -37,7 +37,7 @@
     appLoadPromise = new Promise(async (resolve, reject) => {
       try {
         const { cache, client } = await loadApp(
-          config.server_endpoint,
+          config.ws_endpoint,
           stores,
           true
         )
@@ -54,8 +54,8 @@
 
 {#await appLoadPromise}
   <AppLoad />
-{:then loaded}
-  {#if loaded}
+{:then isLoaded}
+  {#if isLoaded}
     <PageTransition refresh={path}>
       <ToastProvider>
         <slot />

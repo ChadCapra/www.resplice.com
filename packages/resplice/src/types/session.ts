@@ -16,6 +16,4 @@ export type Session = {
   email_verified_at: Date | null
   phone_verified_at: Date | null
   expiry: Date
-  // public_key: Record<string, string>
-  // private_key: Record<string, string>
 }

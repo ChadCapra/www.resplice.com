@@ -1,16 +1,18 @@
-type ENV = 'development' | 'production'
+type ENV = 'local' | 'development' | 'production'
 
 export type RespliceConfig = {
   env: ENV
-  server_endpoint: string
+  http_endpoint: string
+  ws_endpoint: string
   apm_endpoint: string
 }
 
 export const contextKey = 'CONFIG'
 
 export const default_config: RespliceConfig = {
-  env: 'development',
-  server_endpoint: 'ws://localhost:8080',
+  env: 'local',
+  http_endpoint: 'http://localhost:4000',
+  ws_endpoint: 'ws://localhost:8080',
   apm_endpoint: 'localhost:4000'
 }
 
