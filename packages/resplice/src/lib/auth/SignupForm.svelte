@@ -58,7 +58,10 @@
   </div>
 
   <div class="flex-none flex flex-col items-center p-2">
-    <a class="text-brand-primary underline mb-2" href="/auth/verify-existing">
+    <a
+      class="underline underline-offset-4 decoration-brand-primary decoration-2 mb-4 text-gray-600"
+      href="/auth/verify-existing"
+    >
       I already have an account
     </a>
     <Button color="brand" {isLoading} on:click={createUser}>Continue</Button>

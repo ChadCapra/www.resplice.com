@@ -1,6 +1,10 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { CountryCode, isValidPhoneNumber } from 'libphonenumber-js'
+  import {
+    CountryCode,
+    parsePhoneNumber,
+    isValidPhoneNumber
+  } from 'libphonenumber-js'
   import CryptoWorker from '$workers/crypto?worker'
   import authStore from '$stores/auth'
   import useAuthClient from '$lib/hooks/useAuthClient'
@@ -14,23 +18,23 @@
 
   const client = useAuthClient()
 
-  let keys
+  let aesKey
 
   onMount(() => {
     const cryptoWorker = new CryptoWorker()
     cryptoWorker.onmessage = ({ data: cmd }) => {
       switch (cmd.type) {
         case 'GENERATE_KEYS':
-          keys = cmd.data.keys
+          aesKey = cmd.data.derivedKey
           break
       }
     }
-    // cryptoWorker.postMessage({ type: 'GENERATE_KEYS' })
+    cryptoWorker.postMessage({ type: 'GENERATE_KEYS' })
   })
 
-  // $: {
-  //   console.log(keys)
-  // }
+  $: {
+    console.log(aesKey)
+  }
 
   let phone = {
     value: '',
@@ -57,7 +61,21 @@
     }
     try {
       isLoading = true
-      const session = await client.createSession({ phone, email, rememberMe })
+      const phoneNumber = parsePhoneNumber(
+        phone.value,
+        phone.countryCallingCode
+      ).number as string
+      // TODO: Bot score
+      // TODO: HCMAC (Use crypto.sublte.sign("HMAC"))
+      // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign
+      const session = await client.createSession({
+        phone: phoneNumber,
+        email,
+        remember_me: rememberMe,
+        bot_score: 0,
+        aes_key: aesKey,
+        hmac_token: ''
+      })
       authStore.set({
         loginValues: {
           phone,
@@ -93,11 +111,16 @@
       Icon={MailIcon}
       error={formErrs.email}
     />
-    <Toggle name="remember-me" label="Remember Me" bind:isActive={rememberMe} />
+    <Toggle
+      name="remember-me"
+      label="Remember Me"
+      isActive={rememberMe}
+      on:toggle={() => (rememberMe = !rememberMe)}
+    />
   </div>
 
   <div class="w-40 flex flex-col">
-    <Button type="submit" {isLoading}>Continue</Button>
+    <Button type="submit" {isLoading} disabled={!aesKey}>Continue</Button>
     {#if networkErr}
       <p>{networkErr.message}</p>
     {/if}

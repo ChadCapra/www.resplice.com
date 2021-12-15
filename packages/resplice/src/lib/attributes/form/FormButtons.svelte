@@ -6,8 +6,8 @@
 </script>
 
 <div class="flex flex-col items-center space-y-4 w-full mt-4">
-  <Button class="w-48" on:click={() => dispatch('save')}>Save</Button>
-  <Button class="w-48" color="gray" on:click={() => window.history.back()}>
+  <Button class="w-40" on:click={() => dispatch('save')}>Save</Button>
+  <Button class="w-40" color="gray" on:click={() => window.history.back()}>
     Back
   </Button>
 </div>
