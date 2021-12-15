@@ -91,6 +91,20 @@ export const contacts: Record<
             passcode: 'hellothere123'
           },
           sort_order: 2
+        },
+        {
+          contact_uuid: 'obi-wan',
+          uuid: 'obi-address-uuid',
+          type: AttributeType.ADDRESS,
+          name: 'Home',
+          value: {
+            street_address_1: '1211 N 11th Ave',
+            locality: 'Minneapolis',
+            region: 'Minnesota',
+            postal_code: '55411',
+            country: 'USA'
+          },
+          sort_order: 2
         }
       ],
       pending_attributes: [],

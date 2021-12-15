@@ -20,12 +20,11 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       AttributeAction.Copy
     ],
     valueToString: (value: AddressValue) =>
-      `
-        ${value.street_address_1}
-        ${value.street_address_2}
-        ${value.locality}, ${value.region} ${value.postal_code}
-        ${value.country}
-      `
+      `${value.street_address_1}\n${
+        value.street_address_2 ? value.street_address_2 + '\n' : ''
+      }${value.locality}, ${value.region} ${value.postal_code}\n${
+        value.country
+      }`
   },
   [AttributeType.COORDINATE]: {
     name: 'Coordinate',

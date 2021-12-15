@@ -37,17 +37,17 @@ type locateParams =
     }
 export function locate(params: locateParams, navigate = false) {
   const googleMapsUrl = navigate
-    ? 'https://www.google.com/maps/dir/?api=1'
-    : 'https://www.google.com/maps/search/?api=1'
+    ? 'https://www.google.com/maps/dir/?api=1&destination='
+    : 'https://www.google.com/maps/search/?api=1&query='
   let query = ''
 
   if (params.locationType === 'coordinate') {
     query = `${params.location.latitude},${params.location.longitude}`
   } else {
-    query = params.location.replace(' ', '+')
+    query = encodeURI(params.location)
   }
 
-  window.open(`${googleMapsUrl}&query=${query}`, '_blank')
+  window.open(`${googleMapsUrl}${query}`, '_blank')
 }
 
 export function openSms(phone: string, text = ''): void {

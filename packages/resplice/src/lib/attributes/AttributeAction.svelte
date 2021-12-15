@@ -83,7 +83,6 @@
           default:
             break
         }
-        locate(attribute.value[0])
         break
       case AttributeAction.Navigate:
         switch (attribute.type) {
@@ -91,7 +90,9 @@
             locate(
               {
                 locationType: 'address',
-                location: valueToString[AttributeType.ADDRESS](attribute)
+                location: attributeTypes[attribute.type].valueToString(
+                  attribute.value
+                )
               },
               true
             )
