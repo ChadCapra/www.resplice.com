@@ -10,7 +10,7 @@
 
 <script lang="ts">
   import contactsStore from '$stores/contacts'
-  import ContactChat from '$lib/contacts/ContactChat.svelte'
+  import ContactChat from '$lib/contacts/Chat.svelte'
   import IconButton from '$lib/common/IconButton.svelte'
   import BackIcon from '$lib/icons/BackIcon.svelte'
   import AddIcon from '$lib/icons/AddIcon.svelte'

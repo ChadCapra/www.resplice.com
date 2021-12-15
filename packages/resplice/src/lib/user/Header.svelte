@@ -6,9 +6,9 @@
   import IconButton from '$lib/common/IconButton.svelte'
   import SettingsIcon from '$lib/icons/SettingsIcon.svelte'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
-  import userStore from '$stores/user'
+  import type { User } from '$types/user'
 
-  $: user = $userStore
+  export let user: User | null
   export let showUser = false
 </script>
 

@@ -39,7 +39,7 @@
 </svelte:head>
 
 <div class="flex flex-col w-full h-full bg-gray-100">
-  <Header showUser={showUserOnHeader} />
+  <Header {user} showUser={showUserOnHeader} />
   <main
     class="flex-1 overflow-auto relative w-full max-w-xl m-auto py-4 rounded-t-3xl bg-white"
   >

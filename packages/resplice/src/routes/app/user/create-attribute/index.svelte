@@ -22,7 +22,7 @@
     </div>
   </div>
   <div class="p-4">
-    <Button class="w-48" color="gray" on:click={() => window.history.back()}>
+    <Button class="w-40" color="gray" on:click={() => window.history.back()}>
       Back
     </Button>
   </div>
