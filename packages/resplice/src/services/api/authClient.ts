@@ -15,9 +15,9 @@ type CreateSessionRequest = {
   phone: string
   email: string
   remember_me: boolean
-  bot_score: number
+  recaptcha_token: string
   aes_key: string
-  hmac_token: string
+  hmac_key: string
 }
 
 type CreateUserRequest = {
@@ -40,6 +40,7 @@ export interface AuthClient {
 function authClientFactory(api: Api, returnMock = false): AuthClient {
   if (returnMock) return mockAuthClientFactory()
   return {
+    // TODO: Encypt with server public key on session create
     createSession: (params) => api.post('/session/create', params),
     createUser: (params) => api.post('/user/create', params),
     getActiveSession: () => api.get('/session/active'),
