@@ -18,14 +18,14 @@
 
   const client = useAuthClient()
 
-  let aesKey
+  let keys
 
   onMount(() => {
     const cryptoWorker = new CryptoWorker()
     cryptoWorker.onmessage = ({ data: cmd }) => {
       switch (cmd.type) {
         case 'GENERATE_KEYS':
-          aesKey = cmd.data.derivedKey
+          keys = cmd.data
           break
       }
     }
@@ -33,7 +33,7 @@
   })
 
   $: {
-    console.log(aesKey)
+    console.log(keys)
   }
 
   let phone = {
@@ -61,20 +61,21 @@
     }
     try {
       isLoading = true
+      // TODO: Fetch server public key from url
       const phoneNumber = parsePhoneNumber(
         phone.value,
         phone.countryCallingCode
       ).number as string
-      // TODO: Bot score
+      // TODO: Get recaptcha token
       // TODO: HCMAC (Use crypto.sublte.sign("HMAC"))
       // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign
       const session = await client.createSession({
         phone: phoneNumber,
         email,
         remember_me: rememberMe,
-        bot_score: 0,
-        aes_key: aesKey,
-        hmac_token: ''
+        recaptcha_token: '',
+        aes_key: keys.jwk.aes,
+        hmac_key: keys.jwk.hmac
       })
       authStore.set({
         loginValues: {
@@ -120,7 +121,7 @@
   </div>
 
   <div class="w-40 flex flex-col">
-    <Button type="submit" {isLoading} disabled={!aesKey}>Continue</Button>
+    <Button type="submit" {isLoading} disabled={!keys}>Continue</Button>
     {#if networkErr}
       <p>{networkErr.message}</p>
     {/if}
