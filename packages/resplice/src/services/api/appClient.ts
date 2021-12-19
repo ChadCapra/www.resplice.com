@@ -1,8 +1,8 @@
 import { ConnStatus } from '$stores/conn'
 import type { Stores } from '$stores/index'
 import type { AppCache } from '$services/cache'
-import chatClientFactory from './chat'
-import type { ChatClient } from './chat'
+// import chatClientFactory from './chat'
+// import type { ChatClient } from './chat'
 import contactsClientFactory from './contacts'
 import type { ContactsClient } from './contacts'
 import invitesClientFactory from './invites'
@@ -13,7 +13,7 @@ import userClientFactory from './user'
 import type { UserClient } from './user'
 
 export interface AppClient {
-  chat: ChatClient
+  // chat: ChatClient
   contacts: ContactsClient
   invites: InvitesClient
   sessions: SessionsClient
@@ -33,8 +33,8 @@ async function clientFactory(
   cache: AppCache,
   stores: Stores
 ): Promise<AppClient> {
-  const chat = chatClientFactory(conn, cache as any, stores.chat)
-  const contacts = contactsClientFactory(conn, cache)
+  // const chat = chatClientFactory(conn, cache as any, stores.chat)
+  const contacts = contactsClientFactory(conn, cache, stores.contacts)
   const invites = invitesClientFactory(conn, cache)
   const sessions = sessionsClientFactory(conn, cache as any, stores.auth)
   const user = userClientFactory(conn, cache, stores.user)
@@ -64,7 +64,7 @@ async function clientFactory(
           // This might be okay because only the first resolve is processed
           // subsequent calls are basically ignored.
           resolve({
-            chat,
+            // chat,
             contacts,
             invites,
             sessions,
@@ -89,7 +89,7 @@ async function clientFactory(
           reject(cmd.reason)
           break
         case MessageType.MESSAGE:
-          chat.handleMessage(cmd.data)
+          // chat.handleMessage(cmd.data)
           sessions.handleMessage(cmd.data)
           user.handleMessage(cmd.data)
           break

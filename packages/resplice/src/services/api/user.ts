@@ -1,59 +1,65 @@
+import type { AppCache } from '$services/cache'
 import type { UserStore } from '$stores/user'
-import type { Attribute, Invite, Message, User } from '$types/user'
-import { MessageType } from '$types/user'
+import type { Attribute, User } from '$types/user'
+import proto from '$services/resplice-pb'
 
-type CreateParams = {
-  name: string
-  avatar?: Blob
+const MessageType = proto.resplice.util.ServerMessageType
+export type Message = {
+  type: proto.resplice.util.ServerMessageType
+  data: any
 }
 
 export interface UserClient {
   handleMessage: (message: Message) => void
-  create: (params: CreateParams) => Promise<User>
-  get: () => Promise<User>
-  updateName: (user: Pick<User, 'name'>) => Promise<User>
-  updateHandle: ({ handle }) => Promise<User>
-  updateAvatar: (user: Pick<User, 'avatar'>) => Promise<User>
-  delete: (user: Pick<User, 'name'>) => Promise<void>
-  addAttribute: (attribute: Attribute) => Promise<Attribute>
-  getAttribute: (attributeUUID: string) => Promise<Attribute>
-  getAllAttributes: () => Promise<Attribute[]>
-  updateAttribute: (attribute: Attribute) => Promise<Attribute>
-  verifyAttribute: (attributeUUID: string, code: string) => Promise<void>
-  resendAttributeVerification: (attributeUUID: string) => Promise<void>
-  deleteAttribute: (attributeUUID: string) => Promise<void>
-  generateQrInvite: () => Promise<Invite>
+  updateName: (user: Pick<User, 'name'>) => void
+  updateHandle: ({ handle }) => void
+  updateAvatar: (user: Pick<User, 'avatar'>) => void
+  delete: (user: Pick<User, 'name'>) => void
+  addAttribute: (attribute: Attribute) => void
+  getAttribute: (attributeUUID: string) => void
+  getAllAttributes: () => void
+  updateAttribute: (attribute: Attribute) => void
+  verifyAttribute: (attributeUUID: string, code: string) => void
+  resendAttributeVerification: (attributeUUID: string) => void
+  deleteAttribute: (attributeUUID: string) => void
+  generateQrInvite: () => void
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function userClientFactory(
-  api: any,
-  _cache: any,
+  conn: Worker,
+  cache: AppCache,
   store: UserStore
 ): UserClient {
   return {
     handleMessage: (message) => {
       switch (message.type) {
-        case MessageType.UPDATE_NAME:
-          store.update((state) => ({ ...state, name: message.data }))
+        case MessageType.USER:
+          cache.addUser(message.data)
+          store.update((state) => ({ ...state, ...message.data }))
+          break
       }
     },
-    create: ({ name, avatar }) => api.createUser(name, avatar),
-    get: () => api.getProfile(),
-    updateName: ({ name }) => api.editName(name),
-    updateHandle: ({ handle }) => api.editHandle(handle),
-    updateAvatar: ({ avatar }) => api.editAvatar(avatar),
-    delete: ({ name }) => api.deleteUser(name),
-    addAttribute: (attribute) => api.addAttribute(attribute),
-    getAttribute: (attributeUUID) => api.getAttribute(attributeUUID),
-    getAllAttributes: () => api.getAttributes(),
-    updateAttribute: (attribute) => api.updateAttribute(attribute),
-    verifyAttribute: (attributeUUID, code) =>
-      api.verifyAttribute(attributeUUID, code),
-    resendAttributeVerification: (attributeUUID) =>
-      api.resendVerification(attributeUUID),
-    deleteAttribute: (attributeUUID) => api.deleteAttribute(attributeUUID),
-    generateQrInvite: () => api.generateQRInvite()
+    updateName: ({ name }) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: proto.resplice.util.ClientMessageType.EDIT_ATTRIBUTE_NAME,
+          data: { name }
+        }
+      })
+    },
+    updateHandle: ({ handle }) => 0,
+    updateAvatar: ({ avatar }) => 0,
+    delete: ({ name }) => 0,
+    addAttribute: (attribute) => 0,
+    getAttribute: (attributeUUID) => 0,
+    getAllAttributes: () => 0,
+    updateAttribute: (attribute) => 0,
+    verifyAttribute: (attributeUUID, code) => 0,
+    resendAttributeVerification: (attributeUUID) => 0,
+    deleteAttribute: (attributeUUID) => 0,
+    generateQrInvite: () => 0
   }
 }
 

@@ -4,4 +4,4 @@ node_modules
 /build
 /functions
 .env
-resplice-pb.js
+resplice-pb.*

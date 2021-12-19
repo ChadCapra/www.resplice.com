@@ -1,16 +1,6 @@
 import type { Attribute as BaseAttribute } from './attribute'
 import type { Chat as BaseChat } from './chat'
 
-export enum MessageType {
-  UPDATE_AVATAR = 'UPDATE_AVATAR',
-  UPDATE_NAME = 'UPDATE_NAME'
-}
-
-export type Message = {
-  type: MessageType
-  data: any
-}
-
 export type User = {
   uuid: string
   name: string

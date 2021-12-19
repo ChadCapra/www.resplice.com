@@ -1,6 +1,18 @@
+import type { AppCache } from '$services/cache'
+import type { ContactStore } from '$stores/contacts'
 import type { Contact } from '$types/contact'
 
+export enum MessageType {
+  UPDATE_ALIAS = 'UPDATE_ALIAS',
+  UPDATE_DESCRIPTION = 'UPDATE_DESCRIPTION'
+}
+export type Message = {
+  type: MessageType
+  data: any
+}
+
 export interface ContactsClient {
+  handleMessage: (message: Message) => void
   get: (contactUUID: string) => void
   getAll: () => Contact[]
   update: (
@@ -22,8 +34,15 @@ export interface ContactsClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function contactsClientFactory(api: any, _cache: any): ContactsClient {
+function contactsClientFactory(
+  api: any,
+  cache: AppCache,
+  store: ContactStore
+): ContactsClient {
   return {
+    handleMessage: (message) => {
+      return
+    },
     get: async (contactUUID) => {
       // make api request
       // sync cache

@@ -1,5 +1,5 @@
 import IndexedDBWorker from '$workers/indexedDb?worker'
-import WebSocketWorker from '$workers/ws?worker'
+import ConnWorker from '$workers/conn?worker'
 
 import cacheFactory from '$services/cache'
 import type { AppCache } from '$services/cache'
@@ -9,7 +9,7 @@ import type { Stores } from '$stores/index'
 
 // async function load(url: string, stores: Stores, useMocks = false) {
 //   const indexedDB = new IndexedDBWorker()
-//   const ws = new WebSocketWorker()
+//   const ws = new ConnWorker()
 
 //   let cacheFactory: CacheFactory
 //   let clientFactory: ClientFactory
@@ -44,10 +44,10 @@ async function load(
     }
 
   const indexedDB = new IndexedDBWorker()
-  const ws = new WebSocketWorker()
+  const conn = new ConnWorker()
 
   const cache = await cacheFactory(indexedDB)
-  const client = await clientFactory(url, ws, cache, stores)
+  const client = await clientFactory(url, conn, cache, stores)
 
   // await client.sessions.authenticate()
 

@@ -1,7 +1,4 @@
-// Export an empty object to satisfy the isolated modules TS requirement.
-export {}
-
-enum Command {
+export enum Command {
   GENERATE_KEYS = 'GENERATE_KEYS',
   ENCRYPT = 'ENCRYPT',
   DECRYPT = 'DECRYPT'
@@ -77,7 +74,7 @@ async function encrypt(key: CryptoKey, data: ArrayBuffer) {
   if (!data) ctx.postMessage({ type: Command.ENCRYPT, data: '' })
   if (!key) throw new Error('Key must exist to encrypt data')
   // The IV should change everytime encryption happens?
-  const encryptedData = await crypto.subtle.encrypt(
+  const encryptedData: Uint8Array = await crypto.subtle.encrypt(
     {
       name: 'AES-GCM',
       // Recommended to use 12 bytes length

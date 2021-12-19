@@ -2,6 +2,7 @@ import auth from './auth'
 import attributes from './attributes'
 import chat from './chat'
 import conn from './conn'
+import contacts from './contacts'
 import user from './user'
 
 const stores = {
@@ -9,6 +10,7 @@ const stores = {
   attributes,
   chat,
   conn,
+  contacts,
   user
 }
 

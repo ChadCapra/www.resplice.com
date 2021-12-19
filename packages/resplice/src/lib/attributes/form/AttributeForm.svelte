@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Attribute, AttributeTypeConfig } from '$types/attribute'
   import { AttributeType } from '$types/attribute'
-
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import AddressForm from './AddressForm.svelte'
   import CoordinateForm from './CoordinateForm.svelte'
@@ -11,6 +10,9 @@
   import SocialForm from './SocialForm.svelte'
   import DateForm from './DateForm.svelte'
   import TextForm from './TextForm.svelte'
+  import useAppClient from '$lib/hooks/useAppClient'
+
+  const appClient = useAppClient()
 
   export let attributeType: AttributeType
   export let attributeTypeConfig: AttributeTypeConfig
@@ -24,7 +26,7 @@
   }
 
   function saveAttribute() {
-    console.log(newAttribute)
+    appClient.user.addAttribute(newAttribute)
   }
 
   function throwInvalidType() {
