@@ -19,9 +19,9 @@
   }
 </script>
 
-<div class="w-full">
+<div class="w-full h-full">
   <div
-    class="relative rounded-2xl w-full text-left h-14 flex items-center"
+    class="relative rounded-2xl w-full text-left h-full max-h-72 flex items-center"
     class:bg-white={!disabled}
     class:bg-gray-200={disabled}
   >
@@ -40,9 +40,9 @@
     >
       {label}
     </label>
-    <input
+    <textarea
       type="text"
-      class="appearance-none absolute top-0 left-0 w-full h-14 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 font-semibold text-lg text-gray-900 ring-2 focus:ring-gray-800"
+      class="appearance-none absolute top-0 left-0 w-full h-full max-h-72 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 font-semibold text-lg text-gray-900 ring-2 focus:ring-gray-800"
       class:pl-16={!!Icon}
       class:ring-gray-200={disabled}
       class:ring-gray-600={!disabled && !error}

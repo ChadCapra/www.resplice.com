@@ -1,30 +1,24 @@
-import type { Attribute, Contact } from '$types/contact'
+import type { Contact } from '$types/contact'
 
 export interface ContactsClient {
-  get: (contactUUID: string) => Promise<Contact>
+  get: (contactUUID: string) => void
   getAll: () => Contact[]
   update: (
     contactUUID: string,
     contact: Pick<Contact, 'alias' | 'description'>
-  ) => Promise<Contact>
-  delete: (contactUUID: string) => Promise<void>
-  getAttributes: (contactUUID: string) => Promise<Attribute[]>
-  getAllAttributes: () => Promise<Attribute[]>
-  addShare: (attributeUUID: string) => Promise<any>
-  getShare: (contactUUID: string, shareUUID: string) => Promise<any>
-  getShares: (contactUUID: string) => Promise<any>
-  getAllShares: () => Promise<any>
-  expireShare: (shareUUID: string, expiry: Date) => Promise<void>
-  removeShare: (shareUUID: string) => Promise<void>
-  createInvite: (attributeUUIDs: string[]) => Promise<Contact>
-  addInviteAttribute: (
-    inviteUUID: string,
-    attributeUUID: string
-  ) => Promise<Contact>
-  removedInviteAttribute: (
-    inviteUUID: string,
-    attributeUUID: string
-  ) => Promise<Contact>
+  ) => void
+  delete: (contactUUID: string) => void
+  getAttributes: (contactUUID: string) => void
+  getAllAttributes: () => void
+  addShare: (attributeUUID: string) => void
+  getShare: (contactUUID: string, shareUUID: string) => void
+  getShares: (contactUUID: string) => void
+  getAllShares: () => void
+  expireShare: (shareUUID: string, expiry: Date) => void
+  removeShare: (shareUUID: string) => void
+  createInvite: (attributeUUIDs: string[]) => void
+  addInviteAttribute: (inviteUUID: string, attributeUUID: string) => void
+  removedInviteAttribute: (inviteUUID: string, attributeUUID: string) => void
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

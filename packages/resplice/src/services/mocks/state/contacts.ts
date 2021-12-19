@@ -63,7 +63,7 @@ export const contacts: Record<
       avatar_url:
         'https://res.cloudinary.com/capabit-solutions/image/upload/v1529422158/Resplice/m3ifzpxcjmwnhl4d4gmi.png',
       handle: null,
-      alias: null,
+      alias: 'Ben Kenobi',
       description: 'Old Ben',
       isFavored: true,
       connected_at: new Date('2021-12-07T16:06:50.271Z')

@@ -96,7 +96,7 @@ async function decrypt(key: CryptoKey, data: ArrayBuffer) {
   const decryptedData = await crypto.subtle.decrypt(
     {
       name: 'AES-GCM',
-      iv: new ArrayBuffer(12) // The initialization vector you used to encrypt
+      iv: crypto.getRandomValues(new Uint8Array(12)) // The initialization vector you used to encrypt
       // additionalData: ArrayBuffer, // The additionalData you used to encrypt (if any)
     },
     key,

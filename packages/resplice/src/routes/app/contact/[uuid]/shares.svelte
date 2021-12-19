@@ -9,12 +9,12 @@
 </script>
 
 <script lang="ts">
+  import { goto } from '$app/navigation'
   import contactsStore from '$stores/contacts'
   import Avatar from '$lib/common/Avatar.svelte'
   import ContactAttributes from '$lib/contacts/ContactAttributes.svelte'
   import Header from '$lib/contacts/Header.svelte'
   import ContactName from '$lib/contacts/ContactName.svelte'
-  import { goto } from '$app/navigation'
 
   export let uuid: string
   $: contact = $contactsStore && $contactsStore[uuid]
