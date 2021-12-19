@@ -11,6 +11,8 @@
     <a
       class="underline underline-offset-4 decoration-brand-primary decoration-2"
       href={value.url}
+      target="_blank"
+      rel="noopener"
     >
       {value.handle}
     </a>
