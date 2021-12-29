@@ -1,8 +1,13 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
+
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
+  import useAppClient from '$lib/hooks/useAppClient'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import ShareContext from '$lib/sharing/ShareContext.svelte'
+
+  const client = useAppClient()
 
   let name: string
   let handle: string
@@ -20,7 +25,8 @@
       formErrs = errs
       return
     }
-    console.log(name, handle, shares)
+    client.invites.create(Array.from(shares), { name, value: handle })
+    goto('/app/list/contacts', { replaceState: true })
   }
 </script>
 

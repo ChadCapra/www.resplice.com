@@ -11,12 +11,13 @@ interface GenerateCommand {
 interface EncryptCommand {
   type: Command.ENCRYPT
   derived_key: CryptoKey
-  data: any
+  data: ArrayBuffer
 }
 interface DecryptCommand {
   type: Command.DECRYPT
   derived_key: CryptoKey
-  data: any
+  data: ArrayBuffer
+  iv: Uint8Array
 }
 type CryptoCommand = GenerateCommand | EncryptCommand | DecryptCommand
 
@@ -73,10 +74,10 @@ async function encrypt(key: CryptoKey, data: ArrayBuffer) {
   })
 }
 
-async function decrypt(key: CryptoKey, data: ArrayBuffer) {
+async function decrypt(key: CryptoKey, data: ArrayBuffer, iv: Uint8Array) {
   if (!key) throw new ReferenceError('Key must exist to decrypt data')
 
-  const decryptedData = data ? await crypto.decrypt(key, data) : ''
+  const decryptedData = data ? await crypto.decrypt(key, data, iv) : ''
   return ctx.postMessage({
     type: CryptoMessageType.DECRYPTED,
     data: decryptedData
@@ -92,7 +93,7 @@ ctx.onmessage = ({ data: cmd }) => {
       encrypt(cmd.derived_key, cmd.data)
       break
     case Command.DECRYPT:
-      decrypt(cmd.derived_key, cmd.data)
+      decrypt(cmd.derived_key, cmd.data, cmd.iv)
       break
     default:
       throw new Error('Invalid command for Crypto worker')

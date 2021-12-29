@@ -2,7 +2,7 @@ import type { EmailValue, PhoneValue } from './attribute'
 
 export type Invite = {
   name: string
-  value: PhoneValue | EmailValue
+  value: PhoneValue | EmailValue | string
 }
 
 export type Share = {

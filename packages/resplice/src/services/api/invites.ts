@@ -4,16 +4,13 @@ export interface InvitesClient {
   create: (
     attributeUUIDs: string[],
     invite: Pick<Invite, 'name' | 'value'>
-  ) => Promise<Invite>
-  update: (inviteUUID: string, invite: Pick<Invite, 'name'>) => Promise<Invite>
-  accept: (inviteUUID: string, attributeUUIDs: string[]) => Promise<Invite>
-  delete: (inviteUUID: string) => Promise<void>
-  addAttribute: (inviteUUID: string, attributeUUID: string) => Promise<Invite>
-  removeAttribute: (
-    inviteUUID: string,
-    attributeUUID: string
-  ) => Promise<Invite>
-  generateQrCode: () => Promise<Invite>
+  ) => void
+  update: (inviteUUID: string, invite: Pick<Invite, 'name'>) => void
+  accept: (inviteUUID: string, attributeUUIDs: string[]) => void
+  delete: (inviteUUID: string) => void
+  addAttribute: (inviteUUID: string, attributeUUID: string) => void
+  removeAttribute: (inviteUUID: string, attributeUUID: string) => void
+  generateQrCode: () => void
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types

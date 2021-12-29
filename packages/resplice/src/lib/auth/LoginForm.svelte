@@ -24,12 +24,16 @@
     const cryptoWorker = new CryptoWorker()
     cryptoWorker.onmessage = ({ data: cmd }) => {
       switch (cmd.type) {
-        case 'GENERATE_KEYS':
-          keys = cmd.data
+        case 'GENERATED':
+          keys = cmd.keys
           break
       }
     }
     cryptoWorker.postMessage({ type: 'GENERATE_KEYS' })
+
+    return () => {
+      cryptoWorker.terminate()
+    }
   })
 
   $: {
@@ -59,16 +63,30 @@
       formErrs = errs
       return
     }
+    isLoading = true
+    const grecaptcha: any = (window as any).grecaptcha
+    grecaptcha.ready(async () => {
+      const token = await grecaptcha.execute(
+        '6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG',
+        { action: 'auth' }
+      )
+      const isBot = await client.submitRecaptchaToken(token)
+      if (isBot) {
+        networkErr = new Error(
+          'We detected some bot behavior, you must be a robot?'
+        )
+      } else {
+        createSession()
+      }
+    })
+  }
+  async function createSession() {
     try {
-      isLoading = true
       // TODO: Fetch server public key from url
       const phoneNumber = parsePhoneNumber(
         phone.value,
         phone.countryCallingCode
       ).number as string
-      // TODO: Get recaptcha token
-      // TODO: HCMAC (Use crypto.sublte.sign("HMAC"))
-      // https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto/sign
       const session = await client.createSession({
         phone: phoneNumber,
         email,
@@ -92,6 +110,14 @@
     }
   }
 </script>
+
+<svelte:head>
+  <script
+    src="https://www.google.com/recaptcha/api.js?render=6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG"
+    async
+    defer>
+  </script>
+</svelte:head>
 
 <form
   class="flex-1 flex flex-col justify-between items-center w-full p-2 overflow-auto"
@@ -120,10 +146,32 @@
     />
   </div>
 
-  <div class="w-40 flex flex-col">
-    <Button type="submit" {isLoading} disabled={!keys}>Continue</Button>
-    {#if networkErr}
-      <p>{networkErr.message}</p>
-    {/if}
+  <div class="flex flex-col items-center justify-center">
+    <div class="w-40 flex flex-col">
+      <Button type="submit" {isLoading} disabled={!keys}>Continue</Button>
+      {#if networkErr}
+        <p>{networkErr.message}</p>
+      {/if}
+    </div>
+    <!-- We have to have this text according to google :( -->
+    <!-- https://developers.google.com/recaptcha/docs/faq#id-like-to-hide-the-recaptcha-badge.-what-is-allowed -->
+    <p class="text-xs text-gray-400 mt-4 w-full">
+      This site is protected by reCAPTCHA and the Google
+      <a
+        class="underline text-brand-primary"
+        href="https://policies.google.com/privacy">Privacy Policy</a
+      >
+      and
+      <a
+        class="underline text-brand-primary"
+        href="https://policies.google.com/terms">Terms of Service</a
+      > apply.
+    </p>
   </div>
 </form>
+
+<style>
+  :global(.grecaptcha-badge) {
+    visibility: hidden;
+  }
+</style>

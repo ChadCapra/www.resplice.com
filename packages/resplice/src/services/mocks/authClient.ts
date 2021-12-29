@@ -10,7 +10,9 @@ import { user } from '$services/mocks/state/user'
 
 function mockAuthClientFactory(..._args: any): AuthClient {
   return {
-    createSession: (_params) => returnPromise({ data: session }),
+    submitRecaptchaToken: (_token) => returnPromise({ data: false }),
+    createSession: async (_params) =>
+      returnPromise({ data: session, timeout: 3000 }),
     createUser: (_params) => returnPromise({ data: user }),
     getActiveSession: () =>
       returnPromise({

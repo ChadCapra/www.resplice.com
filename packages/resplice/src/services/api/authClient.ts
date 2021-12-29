@@ -2,6 +2,7 @@ import type { Api } from './http'
 import type { Session } from '$types/session'
 import type { User } from '$types/user'
 import mockAuthClientFactory from '$services/mocks/authClient'
+import { importPublicKey } from '$services/crypto'
 
 type AuthMessage = {
   session_uuid: string
@@ -30,6 +31,7 @@ type VerifyRequest = {
 }
 
 export interface AuthClient {
+  submitRecaptchaToken: (token: string) => Promise<boolean>
   createSession: (params: CreateSessionRequest) => Promise<Session>
   createUser: (params: CreateUserRequest) => Promise<User>
   getActiveSession: () => Promise<Session | null>
@@ -40,13 +42,23 @@ export interface AuthClient {
 function authClientFactory(api: Api, returnMock = false): AuthClient {
   if (returnMock) return mockAuthClientFactory()
   return {
-    // TODO: Encypt with server public key on session create
-    createSession: (params) => api.post('/session/create', params),
+    submitRecaptchaToken: (token) =>
+      api.post('/session/recaptcha-token', token),
+    createSession: async (params) => {
+      const publicKey = await fetchServerPublicKey(api)
+
+      return await api.post('/session/create', params)
+    },
     createUser: (params) => api.post('/user/create', params),
     getActiveSession: () => api.get('/session/active'),
     verifyEmail: (params) => api.post('/session/verify-email', params),
     verifyPhone: (params) => api.post('/session/verify-phone', params)
   }
+}
+
+async function fetchServerPublicKey(api: Api) {
+  const key: ArrayBuffer = await api.get('/pub-key')
+  return importPublicKey(key)
 }
 
 export const contextKey = 'AuthClient'

@@ -56,11 +56,15 @@ export async function encrypt(key: CryptoKey, data: ArrayBuffer) {
   return encryptedData
 }
 
-export async function decrypt(key: CryptoKey, data: ArrayBuffer) {
+export async function decrypt(
+  key: CryptoKey,
+  data: ArrayBuffer,
+  iv: Uint8Array
+) {
   const decryptedData: Uint8Array = await crypto.subtle.decrypt(
     {
       name: 'AES-GCM',
-      iv: crypto.getRandomValues(new Uint8Array(12)) // The initialization vector you used to encrypt
+      iv // The initialization vector you used to encrypt
       // additionalData: ArrayBuffer, // The additionalData you used to encrypt (if any)
     },
     key,
@@ -79,4 +83,16 @@ export function verify(
   data: ArrayBuffer
 ) {
   return crypto.subtle.verify('HMAC', key, signature, data)
+}
+
+export function importPublicKey(rawKey: ArrayBuffer) {
+  return crypto.subtle.importKey('raw', rawKey, 'RSA-OAEP', false, ['encrypt'])
+}
+
+export function publicKeyEncrypt(key: CryptoKey, data: ArrayBuffer) {
+  return crypto.subtle.encrypt({ name: 'RSA-OAEP' }, key, data)
+}
+
+export function generateIV() {
+  return crypto.getRandomValues(new Uint8Array(12))
 }
