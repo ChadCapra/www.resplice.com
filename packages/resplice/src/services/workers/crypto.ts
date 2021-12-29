@@ -1,3 +1,5 @@
+import * as crypto from '$services/crypto'
+
 export enum Command {
   GENERATE_KEYS = 'GENERATE_KEYS',
   ENCRYPT = 'ENCRYPT',
@@ -16,90 +18,69 @@ interface DecryptCommand {
   derived_key: CryptoKey
   data: any
 }
-type WorkerCommand = GenerateCommand | EncryptCommand | DecryptCommand
+type CryptoCommand = GenerateCommand | EncryptCommand | DecryptCommand
+
+enum CryptoMessageType {
+  GENERATED = 'GENERATED',
+  ENCRYPTED = 'ENCRYPTED',
+  DECRYPTED = 'DECRYPTED'
+}
+interface GeneratedMessage {
+  type: CryptoMessageType.GENERATED
+  keys: {
+    jwk: { aes: string; hmac: string }
+    keys: { aes: CryptoKey; hmac: CryptoKey }
+  }
+}
+interface EncryptedMessage {
+  type: CryptoMessageType.ENCRYPTED
+  data: ArrayBuffer
+}
+interface DecryptedMessage {
+  type: CryptoMessageType.DECRYPTED
+  data: unknown
+}
+type CryptoMessage = GeneratedMessage | EncryptedMessage | DecryptedMessage
 
 // TODO: Figure out how to get type hints in consumers of this worker
 interface CryptoWorker extends Worker {
-  onmessage: (this: Worker, ev: MessageEvent<WorkerCommand>) => void
+  onmessage: (this: Worker, ev: MessageEvent<CryptoCommand>) => void
+  postMessage: {
+    (message: CryptoMessage, transfer: Transferable[]): void
+    (message: CryptoMessage, options?: StructuredSerializeOptions): void
+  }
 }
 
 const ctx: CryptoWorker = self as any
 
 async function generateKeys() {
-  // Public Private Key generation
-  // const keys = await crypto.subtle.generateKey(
-  //   {
-  //     name: 'ECDH',
-  //     namedCurve: 'P-256'
-  //   },
-  //   true,
-  //   ['deriveKey', 'deriveBits']
-  // )
-  // const derivedKey = await crypto.subtle.deriveKey(
-  //   { name: 'ECDH', public: keys.publicKey },
-  //   keys.privateKey,
-  //   { name: 'AES-GCM', length: 256 },
-  //   true,
-  //   ['encrypt', 'decrypt']
-  // )
-  // TODO: 128 or 256
-  const aesKey = await crypto.subtle.generateKey(
-    {
-      name: 'AES-GCM',
-      length: 256
-    },
-    true,
-    ['encrypt', 'decrypt']
-  )
-  const hmacKey = await crypto.subtle.generateKey(
-    {
-      name: 'HMAC',
-      hash: 'SHA-256'
-    },
-    true,
-    ['sign']
-  )
-  const aesJwk = await crypto.subtle.exportKey('jwk', aesKey)
-  const hmacJwk = await crypto.subtle.exportKey('jwk', hmacKey)
+  const keys = await crypto.generateKeys()
   ctx.postMessage({
-    type: Command.GENERATE_KEYS,
-    data: {
-      jwk: { hmac: hmacJwk.k, aes: aesJwk.k },
-      keys: { aes: aesKey, hmac: hmacKey }
-    }
+    type: CryptoMessageType.GENERATED,
+    keys
   })
 }
 
 async function encrypt(key: CryptoKey, data: ArrayBuffer) {
-  if (!data) ctx.postMessage({ type: Command.ENCRYPT, data: '' })
-  if (!key) throw new Error('Key must exist to encrypt data')
-  // The IV should change everytime encryption happens?
-  const encryptedData: Uint8Array = await crypto.subtle.encrypt(
-    {
-      name: 'AES-GCM',
-      // Recommended to use 12 bytes length
-      iv: crypto.getRandomValues(new Uint8Array(12))
-      // Additional authentication data (optional)
-      // additionalData: ArrayBuffer,
-    },
-    key,
-    data
-  )
-  return ctx.postMessage({ type: Command.ENCRYPT, data: encryptedData })
+  if (!key) throw new ReferenceError('Key must exist to encrypt data')
+
+  const encryptedData = data
+    ? await crypto.encrypt(key, data)
+    : new ArrayBuffer(0)
+  return ctx.postMessage({
+    type: CryptoMessageType.ENCRYPTED,
+    data: encryptedData
+  })
 }
 
 async function decrypt(key: CryptoKey, data: ArrayBuffer) {
-  if (!data) ctx.postMessage({ type: Command.DECRYPT, data: '' })
-  const decryptedData = await crypto.subtle.decrypt(
-    {
-      name: 'AES-GCM',
-      iv: crypto.getRandomValues(new Uint8Array(12)) // The initialization vector you used to encrypt
-      // additionalData: ArrayBuffer, // The additionalData you used to encrypt (if any)
-    },
-    key,
-    data
-  )
-  return ctx.postMessage({ type: Command.DECRYPT, data: decryptedData })
+  if (!key) throw new ReferenceError('Key must exist to decrypt data')
+
+  const decryptedData = data ? await crypto.decrypt(key, data) : ''
+  return ctx.postMessage({
+    type: CryptoMessageType.DECRYPTED,
+    data: decryptedData
+  })
 }
 
 ctx.onmessage = ({ data: cmd }) => {

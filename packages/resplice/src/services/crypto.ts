@@ -30,12 +30,12 @@ export async function generateKeys() {
       hash: 'SHA-256'
     },
     true,
-    ['sign']
+    ['sign', 'verify']
   )
   const aesJwk = await crypto.subtle.exportKey('jwk', aesKey)
   const hmacJwk = await crypto.subtle.exportKey('jwk', hmacKey)
   return {
-    jwk: { hmac: hmacJwk.k, aes: aesJwk.k },
+    jwk: { aes: aesJwk.k, hmac: hmacJwk.k },
     keys: { aes: aesKey, hmac: hmacKey }
   }
 }
@@ -69,16 +69,14 @@ export async function decrypt(key: CryptoKey, data: ArrayBuffer) {
   return decryptedData
 }
 
-export async function sign(key: CryptoKey, data: ArrayBuffer) {
-  const signature = await crypto.subtle.sign('HMAC', key, data)
-  return signature
+export function sign(key: CryptoKey, data: ArrayBuffer) {
+  return crypto.subtle.sign('HMAC', key, data)
 }
 
-export async function verify(
+export function verify(
   key: CryptoKey,
   signature: ArrayBuffer,
   data: ArrayBuffer
 ) {
-  const isValid = await crypto.subtle.verify('HMAC', key, signature, data)
-  return isValid
+  return crypto.subtle.verify('HMAC', key, signature, data)
 }
