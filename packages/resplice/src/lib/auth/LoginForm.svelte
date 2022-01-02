@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
   import {
     CountryCode,
     parsePhoneNumber,
     isValidPhoneNumber
   } from 'libphonenumber-js'
-  import CryptoWorker from '$workers/crypto?worker'
   import authStore from '$stores/auth'
   import useAuthClient from '$lib/hooks/useAuthClient'
   import Button from '$lib/common/Button.svelte'
@@ -17,28 +15,6 @@
   import Toggle from '$lib/common/form/Toggle.svelte'
 
   const client = useAuthClient()
-
-  let keys
-
-  onMount(() => {
-    const cryptoWorker = new CryptoWorker()
-    cryptoWorker.onmessage = ({ data: cmd }) => {
-      switch (cmd.type) {
-        case 'GENERATED':
-          keys = cmd.keys
-          break
-      }
-    }
-    cryptoWorker.postMessage({ type: 'GENERATE_KEYS' })
-
-    return () => {
-      cryptoWorker.terminate()
-    }
-  })
-
-  $: {
-    console.log(keys)
-  }
 
   let phone = {
     value: '',
@@ -82,28 +58,24 @@
   }
   async function createSession() {
     try {
-      // TODO: Fetch server public key from url
       const phoneNumber = parsePhoneNumber(
         phone.value,
         phone.countryCallingCode
       ).number as string
-      const session = await client.createSession({
+      const { session, aesKey } = await client.createSession({
         phone: phoneNumber,
         email,
-        remember_me: rememberMe,
-        recaptcha_token: '',
-        aes_key: keys.jwk.aes,
-        hmac_key: keys.jwk.hmac
+        remember_me: rememberMe
       })
       authStore.set({
         loginValues: {
           phone,
           email
         },
-        session: session,
-        public_key: {},
-        private_key: {}
+        session,
+        aesKey
       })
+      console.log(session, aesKey)
     } catch (err) {
       networkErr = err
       isLoading = false
@@ -148,7 +120,7 @@
 
   <div class="flex flex-col items-center justify-center">
     <div class="w-40 flex flex-col">
-      <Button type="submit" {isLoading} disabled={!keys}>Continue</Button>
+      <Button type="submit" {isLoading}>Continue</Button>
       {#if networkErr}
         <p>{networkErr.message}</p>
       {/if}
