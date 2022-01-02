@@ -35,8 +35,24 @@ export async function generateKeys() {
   const aesJwk = await crypto.subtle.exportKey('jwk', aesKey)
   const hmacJwk = await crypto.subtle.exportKey('jwk', hmacKey)
   return {
-    jwk: { aes: aesJwk.k, hmac: hmacJwk.k },
-    keys: { aes: aesKey, hmac: hmacKey }
+    keys: { aes: aesKey, hmac: hmacKey },
+    jwk: { aes: aesJwk.k, hmac: hmacJwk.k }
+  }
+}
+
+export async function generateAesKey() {
+  const key = await crypto.subtle.generateKey(
+    {
+      name: 'AES-GCM',
+      length: 256
+    },
+    true,
+    ['encrypt', 'decrypt']
+  )
+  const jwk = await crypto.subtle.exportKey('jwk', key)
+  return {
+    key,
+    jwk
   }
 }
 

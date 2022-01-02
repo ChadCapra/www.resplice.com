@@ -13,7 +13,7 @@
 
   const config = useConfig()
 
-  const api = apiFactory(config.http_endpoint)
+  const api = apiFactory(config.http_endpoint, true)
   const client = authClientFactory(api, true)
 
   let sessionPromise: Promise<boolean> = Promise.resolve(false)
@@ -26,9 +26,9 @@
     sessionPromise = new Promise(async (resolve) => {
       try {
         const session = await client.getActiveSession()
-        authStore.set({ session })
+        authStore.set({ session, aesKey: {} as any })
       } catch (err) {
-        authStore.set({ session: null })
+        authStore.set({ session: null, aesKey: null })
       }
       resolve(true)
     })

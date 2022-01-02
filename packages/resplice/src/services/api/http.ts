@@ -1,5 +1,3 @@
-const ENABLE_ENCRYPTION = false
-
 export interface Api {
   get: (endpoint: string, headers?: Record<string, string>) => Promise<any>
   post: (
@@ -24,20 +22,22 @@ export interface Api {
   ) => Promise<any>
 }
 
-function apiFactory(server_endpoint: string): Api {
+function apiFactory(server_endpoint: string, useBinary = false): Api {
   const BASE_URL = server_endpoint
   return {
     get: (endpoint, headers) =>
       commonFetch({
         URL: BASE_URL + endpoint,
         method: 'GET',
-        headers
+        headers,
+        useBinary
       }),
     post: async (endpoint, data, headers) =>
       commonFetch({
         URL: BASE_URL + endpoint,
         method: 'POST',
         headers,
+        useBinary,
         data
       }),
     patch: async (endpoint, data, headers) =>
@@ -45,6 +45,7 @@ function apiFactory(server_endpoint: string): Api {
         URL: BASE_URL + endpoint,
         method: 'PATCH',
         headers,
+        useBinary,
         data
       }),
     put: async (endpoint, data, headers) =>
@@ -52,13 +53,15 @@ function apiFactory(server_endpoint: string): Api {
         URL: BASE_URL + endpoint,
         method: 'PUT',
         headers,
+        useBinary,
         data
       }),
     delete: async (endpoint, headers) =>
       commonFetch({
         URL: BASE_URL + endpoint,
         method: 'DELETE',
-        headers
+        headers,
+        useBinary
       })
   }
 }
@@ -67,13 +70,19 @@ type FetchConfig = {
   URL: string
   method: string
   headers?: Record<string, string>
+  useBinary?: boolean
   data?: any
 }
-async function commonFetch({ URL, method, headers = {}, data }: FetchConfig) {
-  const contentType = ENABLE_ENCRYPTION
+async function commonFetch({
+  URL,
+  method,
+  headers = {},
+  useBinary = false,
+  data
+}: FetchConfig) {
+  const contentType = useBinary
     ? 'application/octet-stream'
     : 'application/json'
-  const body = await processRequestData(data, ENABLE_ENCRYPTION)
 
   const res = await fetch(URL, {
     method,
@@ -82,27 +91,13 @@ async function commonFetch({ URL, method, headers = {}, data }: FetchConfig) {
       'Content-Type': contentType,
       ...headers
     },
-    body
+    body: data
   })
   if (!res.ok) throw res
   if (res.status === 204) return
 
-  const parser = (() => {
-    if (ENABLE_ENCRYPTION) return res.arrayBuffer
-    return res.json
-  })()
+  const parser = useBinary ? res.arrayBuffer : res.json
   return parser()
-}
-
-async function processRequestData(data: any, encrypt = false) {
-  if (!data) return
-  const json = JSON.stringify(data)
-  if (encrypt) {
-    // TODO: encrypt json
-    return json
-  }
-
-  return json
 }
 
 export default apiFactory

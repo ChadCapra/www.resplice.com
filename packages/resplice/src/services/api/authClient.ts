@@ -1,8 +1,9 @@
 import type { Api } from './http'
 import type { Session } from '$types/session'
 import type { User } from '$types/user'
+import proto from '$services/resplice-pb'
 import mockAuthClientFactory from '$services/mocks/authClient'
-import { importPublicKey } from '$services/crypto'
+import { generateAesKey, importPublicKey } from '$services/crypto'
 
 type AuthMessage = {
   session_uuid: string
@@ -16,9 +17,6 @@ type CreateSessionRequest = {
   phone: string
   email: string
   remember_me: boolean
-  recaptcha_token: string
-  aes_key: string
-  hmac_key: string
 }
 
 type CreateUserRequest = {
@@ -32,7 +30,9 @@ type VerifyRequest = {
 
 export interface AuthClient {
   submitRecaptchaToken: (token: string) => Promise<boolean>
-  createSession: (params: CreateSessionRequest) => Promise<Session>
+  createSession: (
+    params: CreateSessionRequest
+  ) => Promise<{ session: Session; aesKey: CryptoKey }>
   createUser: (params: CreateUserRequest) => Promise<User>
   getActiveSession: () => Promise<Session | null>
   verifyEmail: (params: VerifyRequest) => Promise<Session>
@@ -46,8 +46,11 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       api.post('/session/recaptcha-token', token),
     createSession: async (params) => {
       const publicKey = await fetchServerPublicKey(api)
+      const { key: aesKey, jwk } = await generateAesKey()
 
-      return await api.post('/session/create', params)
+      const data = await api.post('/session/create', params)
+
+      return { session: {} as Session, aesKey }
     },
     createUser: (params) => api.post('/user/create', params),
     getActiveSession: () => api.get('/session/active'),
