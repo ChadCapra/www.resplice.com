@@ -2,10 +2,10 @@
   /**
    * @type {import('@sveltejs/kit').Load}
    */
-  export async function load({ page }) {
+  export async function load({ params }) {
     return {
       props: {
-        attributeType: page.params.type.toUpperCase()
+        attributeType: params.type.toUpperCase()
       }
     }
   }

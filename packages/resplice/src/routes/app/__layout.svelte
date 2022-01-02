@@ -1,9 +1,10 @@
 <script context="module">
   /** @type {import('@sveltejs/kit').Load} */
-  export async function load({ page }) {
+  export async function load({ url }) {
+    console.log(url)
     return {
       props: {
-        path: page.path
+        path: url.path
       }
     }
   }

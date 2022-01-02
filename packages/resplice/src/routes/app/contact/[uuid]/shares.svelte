@@ -1,8 +1,9 @@
 <script lang="ts" context="module">
-  export async function load({ page }) {
+  /** @type {import('@sveltejs/kit').Load} */
+  export async function load({ params }) {
     return {
       props: {
-        uuid: page.params.uuid
+        uuid: params.uuid
       }
     }
   }
