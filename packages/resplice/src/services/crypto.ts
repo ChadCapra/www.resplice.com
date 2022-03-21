@@ -49,35 +49,40 @@ export async function generateAesKey() {
     true,
     ['encrypt', 'decrypt']
   )
-  const jwk = await crypto.subtle.exportKey('jwk', key)
+  const raw = await crypto.subtle.exportKey('raw', key)
   return {
     key,
-    jwk
+    raw
   }
 }
 
-export async function encrypt(key: CryptoKey, data: ArrayBuffer) {
+export async function encrypt(
+  key: CryptoKey,
+  data: ArrayBuffer
+): Promise<{ iv: Uint8Array; bytes: Uint8Array }> {
   // The IV should change everytime encryption happens
-  const encryptedData: Uint8Array = await crypto.subtle.encrypt(
+  const iv = crypto.getRandomValues(new Uint8Array(12))
+  const bytes = await crypto.subtle.encrypt(
     {
       name: 'AES-GCM',
-      // Recommended to use 12 bytes length
-      iv: crypto.getRandomValues(new Uint8Array(12))
+      // Recommended to use 12 bytes length for iv
+      iv
       // Additional authentication data (optional)
       // additionalData: ArrayBuffer,
     },
     key,
     data
   )
-  return encryptedData
+
+  return { iv, bytes }
 }
 
 export async function decrypt(
   key: CryptoKey,
-  data: ArrayBuffer,
-  iv: Uint8Array
-) {
-  const decryptedData: Uint8Array = await crypto.subtle.decrypt(
+  iv: Uint8Array,
+  data: ArrayBuffer
+): Promise<Uint8Array> {
+  return await crypto.subtle.decrypt(
     {
       name: 'AES-GCM',
       iv // The initialization vector you used to encrypt
@@ -86,7 +91,6 @@ export async function decrypt(
     key,
     data
   )
-  return decryptedData
 }
 
 export function sign(key: CryptoKey, data: ArrayBuffer) {

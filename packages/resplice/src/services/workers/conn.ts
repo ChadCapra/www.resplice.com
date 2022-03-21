@@ -97,6 +97,7 @@ async function onMessage(ev: MessageEvent<any>) {
 
   const decryptedMessage = await decrypt(
     auth.keys.aes,
+    crypto.getRandomValues(new Uint8Array(12)),
     serverPush.message.encryptedPayload
   )
   const message = decode({

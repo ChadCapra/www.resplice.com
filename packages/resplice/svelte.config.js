@@ -15,9 +15,6 @@ const config = {
       fallback: '200.html'
     }),
 
-    // hydrate the <div id="svelte"> element in src/app.html
-    target: '#app',
-
     vite: {
       resolve: {
         alias: {

@@ -1,13 +1,12 @@
 <script lang="ts">
-  import parsePhoneNumber, {
-    CountryCode,
-    isValidPhoneNumber
-  } from 'libphonenumber-js'
+  import parsePhoneNumber, { isValidPhoneNumber } from 'libphonenumber-js'
   import { createEventDispatcher } from 'svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
   import Toggle from '$lib/common/form/Toggle.svelte'
   import FormButtons from '$lib/attributes/form/FormButtons.svelte'
+
+  import type { CountryCode } from 'libphonenumber-js'
 
   const dispatch = createEventDispatcher()
 

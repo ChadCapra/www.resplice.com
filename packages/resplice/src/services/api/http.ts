@@ -1,38 +1,31 @@
-export interface Api {
-  get: (endpoint: string, headers?: Record<string, string>) => Promise<any>
-  post: (
-    endpoint: string,
-    data: any,
-    headers?: Record<string, string>
-  ) => Promise<any>
-  patch: (
-    endpoint: string,
-    data: any,
-    headers?: Record<string, string>
-  ) => Promise<any>
-  put: (
-    endpoint: string,
-    data: any,
-    headers?: Record<string, string>
-  ) => Promise<any>
-  delete: (
-    endpoint: string,
-    data: any,
-    headers?: Record<string, string>
-  ) => Promise<any>
+type ApiParams = {
+  endpoint: string
+  headers?: Record<string, string>
+  useBinary?: boolean
 }
 
-function apiFactory(server_endpoint: string, useBinary = false): Api {
+// TODO: Find better name
+type ApiParamsData = ApiParams & { data: any }
+
+export interface Api {
+  get: (params: ApiParams) => Promise<any>
+  post: (params: ApiParamsData) => Promise<any>
+  patch: (params: ApiParamsData) => Promise<any>
+  put: (params: ApiParamsData) => Promise<any>
+  delete: (params: ApiParamsData) => Promise<any>
+}
+
+function apiFactory(server_endpoint: string): Api {
   const BASE_URL = server_endpoint
   return {
-    get: (endpoint, headers) =>
+    get: ({ endpoint, headers, useBinary = true }) =>
       commonFetch({
         URL: BASE_URL + endpoint,
         method: 'GET',
         headers,
         useBinary
       }),
-    post: async (endpoint, data, headers) =>
+    post: async ({ endpoint, headers, useBinary = true, data }) =>
       commonFetch({
         URL: BASE_URL + endpoint,
         method: 'POST',
@@ -40,7 +33,7 @@ function apiFactory(server_endpoint: string, useBinary = false): Api {
         useBinary,
         data
       }),
-    patch: async (endpoint, data, headers) =>
+    patch: async ({ endpoint, headers, useBinary = true, data }) =>
       commonFetch({
         URL: BASE_URL + endpoint,
         method: 'PATCH',
@@ -48,7 +41,7 @@ function apiFactory(server_endpoint: string, useBinary = false): Api {
         useBinary,
         data
       }),
-    put: async (endpoint, data, headers) =>
+    put: async ({ endpoint, headers, useBinary = true, data }) =>
       commonFetch({
         URL: BASE_URL + endpoint,
         method: 'PUT',
@@ -56,12 +49,13 @@ function apiFactory(server_endpoint: string, useBinary = false): Api {
         useBinary,
         data
       }),
-    delete: async (endpoint, headers) =>
+    delete: async ({ endpoint, headers, useBinary = true, data }) =>
       commonFetch({
         URL: BASE_URL + endpoint,
         method: 'DELETE',
         headers,
-        useBinary
+        useBinary,
+        data
       })
   }
 }

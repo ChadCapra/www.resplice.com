@@ -1,17 +1,26 @@
+import reproto from '@resplice/proto'
+import {
+  encode,
+  decode,
+  encodeClientMessageWrapper,
+  decodeServerMessageWrapper
+} from '$services/proto'
+import {
+  generateAesKey,
+  importPublicKey,
+  encrypt,
+  decrypt,
+  publicKeyEncrypt
+} from '$services/crypto'
+import mockAuthClientFactory from '$services/mocks/authClient'
+
+// Needs the full path of import to import interface only
+import type { ApiRequest } from '@resplice/proto/dist/api_request'
 import type { Api } from './http'
 import type { Session } from '$types/session'
-import type { User } from '$types/user'
-import proto from '$services/resplice-pb'
-import mockAuthClientFactory from '$services/mocks/authClient'
-import { generateAesKey, importPublicKey } from '$services/crypto'
 
-type AuthMessage = {
-  session_uuid: string
-  request_id: number
-  access_token_hash: string
-  payload_hmac: string
-  encrypted_payload: ArrayBuffer
-}
+const ServerMessageType = reproto.api_response.ResponseType
+const ClientMessageType = reproto.api_request.RequestType
 
 type CreateSessionRequest = {
   phone: string
@@ -19,9 +28,10 @@ type CreateSessionRequest = {
   remember_me: boolean
 }
 
-type CreateUserRequest = {
+type CreateAccountRequest = {
   name: string
   avatar: Blob | null
+  handle: string
 }
 
 type VerifyRequest = {
@@ -30,37 +40,210 @@ type VerifyRequest = {
 
 export interface AuthClient {
   submitRecaptchaToken: (token: string) => Promise<boolean>
-  createSession: (
-    params: CreateSessionRequest
-  ) => Promise<{ session: Session; aesKey: CryptoKey }>
-  createUser: (params: CreateUserRequest) => Promise<User>
+  createSession: (params: CreateSessionRequest) => Promise<Session>
+  createAccount: (params: CreateAccountRequest) => Promise<Session>
   getActiveSession: () => Promise<Session | null>
   verifyEmail: (params: VerifyRequest) => Promise<Session>
   verifyPhone: (params: VerifyRequest) => Promise<Session>
 }
 
+// TODO: There is a lot of repeated code, could be cleaned up
 function authClientFactory(api: Api, returnMock = false): AuthClient {
   if (returnMock) return mockAuthClientFactory()
+
+  let aesKey: CryptoKey | null = null
+  let latestTransactionId = 0
+
   return {
     submitRecaptchaToken: (token) =>
-      api.post('/session/recaptcha-token', token),
+      api.post({
+        endpoint: '/session/recaptcha-token',
+        data: token,
+        useBinary: false
+      }),
     createSession: async (params) => {
       const publicKey = await fetchServerPublicKey(api)
-      const { key: aesKey, jwk } = await generateAesKey()
+      const { key: aesCryptoKey, raw: aesKeyRaw } = await generateAesKey()
+      aesKey = aesCryptoKey
 
-      const data = await api.post('/session/create', params)
+      const createSessionBytes = encode({
+        type: ClientMessageType.SESSION_CREATE,
+        data: { ...params, aesKey: aesKeyRaw }
+      })
 
-      return { session: {} as Session, aesKey }
+      const encryptedMessage = await publicKeyEncrypt(
+        publicKey,
+        createSessionBytes
+      )
+
+      const resBuffer: ArrayBuffer = await api.post({
+        endpoint: '/session/create',
+        data: encryptedMessage
+      })
+
+      const serverMessage = decodeServerMessageWrapper(
+        new Uint8Array(resBuffer)
+      )
+      latestTransactionId = serverMessage.serverTime
+
+      const sessionDecrypted = await decrypt(
+        aesKey,
+        serverMessage.iv,
+        serverMessage.encryptedPayload
+      )
+
+      const session: Session = decode({
+        type: ServerMessageType.CURRENT_SESSION,
+        data: sessionDecrypted
+      })
+
+      return session
     },
-    createUser: (params) => api.post('/user/create', params),
-    getActiveSession: () => api.get('/session/active'),
-    verifyEmail: (params) => api.post('/session/verify-email', params),
-    verifyPhone: (params) => api.post('/session/verify-phone', params)
+    createAccount: async (params) => {
+      checkAesKey(aesKey)
+      const createAccountBytes = encode({
+        type: ClientMessageType.ACCOUNT_CREATE,
+        data: params
+      })
+      const encryptedMessage = await encrypt(aesKey, createAccountBytes)
+      const clientMessage: ApiRequest = {
+        requestType: ClientMessageType.ACCOUNT_CREATE,
+        requestId: latestTransactionId,
+        iv: encryptedMessage.iv,
+        encryptedParameters: encryptedMessage.bytes
+      }
+      const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
+
+      const resBuffer: ArrayBuffer = await api.post({
+        endpoint: '/user/create',
+        data: clientMessageBytes
+      })
+
+      const serverMessage = decodeServerMessageWrapper(
+        new Uint8Array(resBuffer)
+      )
+      latestTransactionId = serverMessage.serverTime
+
+      const sessionDecrypted = await decrypt(
+        aesKey,
+        serverMessage.iv,
+        serverMessage.encryptedPayload
+      )
+
+      const session: Session = decode({
+        type: ServerMessageType.CURRENT_SESSION,
+        data: sessionDecrypted
+      })
+
+      return session
+    },
+    getActiveSession: async () => {
+      checkAesKey(aesKey)
+      const resBuffer: ArrayBuffer = await api.get({
+        endpoint: '/session/active'
+      })
+
+      const serverMessage = decodeServerMessageWrapper(
+        new Uint8Array(resBuffer)
+      )
+      latestTransactionId = serverMessage.serverTime
+
+      const sessionDecrypted = await decrypt(
+        aesKey,
+        serverMessage.iv,
+        serverMessage.encryptedPayload
+      )
+
+      const session: Session = decode({
+        type: ServerMessageType.CURRENT_SESSION,
+        data: sessionDecrypted
+      })
+
+      return session
+    },
+    verifyEmail: async (params) => {
+      checkAesKey(aesKey)
+      const verifyEmailBytes = encode({
+        type: ClientMessageType.SESSION_VERIFY_EMAIL,
+        data: params
+      })
+      const encryptedMessage = await encrypt(aesKey, verifyEmailBytes)
+      const clientMessage: ApiRequest = {
+        requestType: ClientMessageType.SESSION_VERIFY_EMAIL,
+        requestId: latestTransactionId,
+        iv: encryptedMessage.iv,
+        encryptedParameters: encryptedMessage.bytes
+      }
+      const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
+      const resBuffer: ArrayBuffer = await api.post({
+        endpoint: '/session/verify-email',
+        data: clientMessageBytes
+      })
+
+      const serverMessage = decodeServerMessageWrapper(
+        new Uint8Array(resBuffer)
+      )
+      latestTransactionId = serverMessage.serverTime
+
+      const sessionDecrypted = await decrypt(
+        aesKey,
+        serverMessage.iv,
+        serverMessage.encryptedPayload
+      )
+
+      const session: Session = decode({
+        type: ServerMessageType.CURRENT_SESSION,
+        data: sessionDecrypted
+      })
+
+      return session
+    },
+    verifyPhone: async (params) => {
+      checkAesKey(aesKey)
+      const verifyEmailBytes = encode({
+        type: ClientMessageType.SESSION_VERIFY_PHONE,
+        data: params
+      })
+      const encryptedMessage = await encrypt(aesKey, verifyEmailBytes)
+      const clientMessage: ApiRequest = {
+        requestType: ClientMessageType.SESSION_VERIFY_PHONE,
+        requestId: latestTransactionId,
+        iv: encryptedMessage.iv,
+        encryptedParameters: encryptedMessage.bytes
+      }
+      const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
+      const resBuffer: ArrayBuffer = await api.post({
+        endpoint: '/session/verify-phone',
+        data: clientMessageBytes
+      })
+
+      const serverMessage = decodeServerMessageWrapper(
+        new Uint8Array(resBuffer)
+      )
+      latestTransactionId = serverMessage.serverTime
+
+      const sessionDecrypted = await decrypt(
+        aesKey,
+        serverMessage.iv,
+        serverMessage.encryptedPayload
+      )
+
+      const session: Session = decode({
+        type: ServerMessageType.CURRENT_SESSION,
+        data: sessionDecrypted
+      })
+
+      return session
+    }
   }
 }
 
+function checkAesKey(aesKey: CryptoKey | null) {
+  if (!aesKey) throw new Error('Invalid AES Key')
+}
+
 async function fetchServerPublicKey(api: Api) {
-  const key: ArrayBuffer = await api.get('/pub-key')
+  const key: ArrayBuffer = await api.get({ endpoint: '/pub-key' })
   return importPublicKey(key)
 }
 

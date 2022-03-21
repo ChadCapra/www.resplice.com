@@ -6,7 +6,6 @@ export type User = {
   name: string
   avatar: string | null
   handle: string | null
-  public_access_enabled: boolean
   user_registered_at: Date
 }
 

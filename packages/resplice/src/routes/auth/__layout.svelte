@@ -13,7 +13,7 @@
 
   const config = useConfig()
 
-  const api = apiFactory(config.http_endpoint, true)
+  const api = apiFactory(config.http_endpoint)
   const client = authClientFactory(api, true)
 
   let sessionPromise: Promise<boolean> = Promise.resolve(false)
