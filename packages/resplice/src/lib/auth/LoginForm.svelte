@@ -1,9 +1,5 @@
 <script lang="ts">
-  import {
-    CountryCode,
-    parsePhoneNumber,
-    isValidPhoneNumber
-  } from 'libphonenumber-js'
+  import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
   import authStore from '$stores/auth'
   import useAuthClient from '$lib/hooks/useAuthClient'
   import Button from '$lib/common/Button.svelte'
@@ -13,6 +9,8 @@
   import PhoneIcon from '$lib/icons/PhoneIcon.svelte'
   import { validateEmail } from '$lib/utils'
   import Toggle from '$lib/common/form/Toggle.svelte'
+
+  import type { CountryCode } from 'libphonenumber-js'
 
   const client = useAuthClient()
 
@@ -62,7 +60,7 @@
         phone.value,
         phone.countryCallingCode
       ).number as string
-      const { session, aesKey } = await client.createSession({
+      const session = await client.createSession({
         phone: phoneNumber,
         email,
         remember_me: rememberMe
@@ -72,10 +70,8 @@
           phone,
           email
         },
-        session,
-        aesKey
+        session
       })
-      console.log(session, aesKey)
     } catch (err) {
       networkErr = err
       isLoading = false

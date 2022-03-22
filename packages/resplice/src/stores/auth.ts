@@ -11,7 +11,6 @@ type LoginValues = {
 type Auth = {
   loginValues?: LoginValues
   session: Session | null
-  aesKey: CryptoKey | null
 }
 
 const authStore = writable<Auth | null>(null)

@@ -58,11 +58,11 @@ export async function generateAesKey() {
 
 export async function encrypt(
   key: CryptoKey,
-  data: ArrayBuffer
+  data: Uint8Array
 ): Promise<{ iv: Uint8Array; bytes: Uint8Array }> {
   // The IV should change everytime encryption happens
   const iv = crypto.getRandomValues(new Uint8Array(12))
-  const bytes = await crypto.subtle.encrypt(
+  const encryptedBuffer: ArrayBuffer = await crypto.subtle.encrypt(
     {
       name: 'AES-GCM',
       // Recommended to use 12 bytes length for iv
@@ -71,8 +71,10 @@ export async function encrypt(
       // additionalData: ArrayBuffer,
     },
     key,
-    data
+    data.buffer
   )
+
+  const bytes = new Uint8Array(encryptedBuffer)
 
   return { iv, bytes }
 }

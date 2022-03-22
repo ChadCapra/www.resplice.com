@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Attribute, AttributeType } from '$types/attribute'
+  import { AttributeType } from '$types/attribute'
   import { AttributeAction } from '$types/attribute'
   import cx from 'classnames'
   import {
@@ -12,8 +12,8 @@
     openSms
   } from '$lib/attributes/actions'
   import ActionIcon from '$lib/attributes/ActionIcon.svelte'
-  import { valueToString } from './values/attributeUtils'
   import attributeTypes from '$lib/attributes/attributeTypes'
+  import type { Attribute } from '$types/attribute'
 
   export let itemType: 'contact' | 'user' | 'disabled'
   export let disableAction = false

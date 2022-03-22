@@ -1,6 +1,8 @@
 <script lang="ts">
   import cx from 'classnames'
-  import { AsYouType, CountryCode } from 'libphonenumber-js'
+  import { AsYouType } from 'libphonenumber-js'
+
+  import type { CountryCode } from 'libphonenumber-js'
 
   export let name: string
   export let label: string

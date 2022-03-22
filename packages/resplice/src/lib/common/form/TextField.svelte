@@ -21,18 +21,22 @@
 
 <div class="w-full">
   <div
-    class="relative rounded-2xl w-full text-left h-14 flex items-center"
-    class:bg-white={!disabled}
-    class:bg-gray-200={disabled}
+    class={cx(
+      'relative rounded-2xl w-full text-left h-14 flex items-center text-gray-700',
+      {
+        'bg-white': !disabled,
+        'bg-gray-200 text-opacity-50': disabled
+      }
+    )}
   >
     {#if Icon}
-      <div class="ml-4 text-gray-700">
+      <div class="ml-4">
         <svelte:component this={Icon} width={32} height={32} />
       </div>
     {/if}
     <label
       for={name}
-      class={cx('text-gray-700 font-semibold absolute left-6 transform', {
+      class={cx('font-semibold absolute left-6 transform', {
         'top-1 scale-90': isTouched,
         'top-4': !isTouched,
         'left-16': !!Icon

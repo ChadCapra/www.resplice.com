@@ -8,11 +8,14 @@ export function returnPromise<T>({
   rejectPromise?: boolean
 }): Promise<T> {
   return new Promise((resolve, reject) => {
-    setTimeout(
-      () =>
-        rejectPromise ? reject(new Error('Network Error')) : resolve(data),
-      timeout
-    )
+    setTimeout(() => {
+      if (rejectPromise) {
+        reject(new Error('Network Error'))
+        return
+      }
+      console.trace(data)
+      resolve(data)
+    }, timeout)
   })
 }
 

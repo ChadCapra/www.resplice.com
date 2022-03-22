@@ -6,18 +6,17 @@ import {
   sessionVerifiedBoth,
   authenticatedSession
 } from '$services/mocks/state/sessions'
-import { user } from '$services/mocks/state/user'
 
 function mockAuthClientFactory(..._args: any): AuthClient {
   return {
     submitRecaptchaToken: (_token) => returnPromise({ data: false }),
     createSession: async (_params) =>
-      returnPromise({ data: session, timeout: 3000 }),
-    createUser: (_params) => returnPromise({ data: user }),
+      returnPromise({ data: session, timeout: 1000 }),
+    createAccount: (_params) => returnPromise({ data: authenticatedSession }),
     getActiveSession: () =>
       returnPromise({
-        data: authenticatedSession,
-        rejectPromise: true
+        data: session,
+        rejectPromise: false
       }),
     verifyEmail: (_params) => returnPromise({ data: sessionVerifiedEmail }),
     verifyPhone: (_params) => returnPromise({ data: sessionVerifiedBoth })

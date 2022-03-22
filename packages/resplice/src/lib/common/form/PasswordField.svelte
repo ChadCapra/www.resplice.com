@@ -16,9 +16,10 @@
 
 <div class="w-full">
   <div
-    class="relative rounded-2xl w-full text-left h-14 flex items-center"
-    class:bg-white={!disabled}
-    class:bg-gray-200={disabled}
+    class={cx('relative rounded-2xl w-full text-left h-14 flex items-center', {
+      'bg-white': !disabled,
+      'bg-gray-200': disabled
+    })}
   >
     {#if Icon}
       <div class="ml-4 text-gray-700">

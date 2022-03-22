@@ -26,9 +26,16 @@
     sessionPromise = new Promise(async (resolve) => {
       try {
         const session = await client.getActiveSession()
-        authStore.set({ session, aesKey: {} as any })
+        const loginValues = {
+          email: session.email,
+          phone: {
+            value: session.phone,
+            countryCallingCode: 'US'
+          }
+        }
+        authStore.set({ session, loginValues })
       } catch (err) {
-        authStore.set({ session: null, aesKey: null })
+        authStore.set({ session: null })
       }
       resolve(true)
     })

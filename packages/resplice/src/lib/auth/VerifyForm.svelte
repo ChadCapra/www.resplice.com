@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CountryCode, parsePhoneNumber } from 'libphonenumber-js'
+  import { parsePhoneNumber } from 'libphonenumber-js'
   import authStore from '$stores/auth'
   import useAuthClient from '$lib/hooks/useAuthClient'
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
@@ -8,6 +8,7 @@
   import ShieldCheckmarkIcon from '$lib/icons/ShieldCheckmarkIcon.svelte'
   import Spinner from '$lib/common/skeleton/Spinner.svelte'
   import { AttributeType } from '$types/attribute'
+  import type { CountryCode } from 'libphonenumber-js'
   import type { Email, Phone } from '$types/attribute'
 
   const CODE_LENGTH = 6
@@ -44,8 +45,8 @@
   let phoneCode = ''
   let phonePromise: Promise<Date>
 
-  async function submitEmailCode(code: string): Promise<Date> {
-    const session = await client.verifyEmail({ code })
+  async function submitEmailCode(verification_token: string): Promise<Date> {
+    const session = await client.verifyEmail({ verification_token })
     if (!session.email_verified_at)
       throw Error('Verification code did not work')
 
@@ -53,8 +54,8 @@
     return session.email_verified_at
   }
 
-  async function submitPhoneCode(code: string): Promise<Date> {
-    const session = await client.verifyPhone({ code })
+  async function submitPhoneCode(verification_token: string): Promise<Date> {
+    const session = await client.verifyPhone({ verification_token })
     if (!session.phone_verified_at)
       throw Error('Verification code did not work')
 

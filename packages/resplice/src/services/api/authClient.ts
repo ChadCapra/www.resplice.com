@@ -1,4 +1,4 @@
-import reproto from '@resplice/proto'
+import * as reproto from '$lib/reproto'
 import {
   encode,
   decode,
@@ -14,8 +14,6 @@ import {
 } from '$services/crypto'
 import mockAuthClientFactory from '$services/mocks/authClient'
 
-// Needs the full path of import to import interface only
-import type { ApiRequest } from '@resplice/proto/dist/api_request'
 import type { Api } from './http'
 import type { Session } from '$types/session'
 
@@ -106,7 +104,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: params
       })
       const encryptedMessage = await encrypt(aesKey, createAccountBytes)
-      const clientMessage: ApiRequest = {
+      const clientMessage: reproto.api_request.ApiRequest = {
         requestType: ClientMessageType.ACCOUNT_CREATE,
         requestId: latestTransactionId,
         iv: encryptedMessage.iv,
@@ -168,7 +166,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: params
       })
       const encryptedMessage = await encrypt(aesKey, verifyEmailBytes)
-      const clientMessage: ApiRequest = {
+      const clientMessage: reproto.api_request.ApiRequest = {
         requestType: ClientMessageType.SESSION_VERIFY_EMAIL,
         requestId: latestTransactionId,
         iv: encryptedMessage.iv,
@@ -205,7 +203,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: params
       })
       const encryptedMessage = await encrypt(aesKey, verifyEmailBytes)
-      const clientMessage: ApiRequest = {
+      const clientMessage: reproto.api_request.ApiRequest = {
         requestType: ClientMessageType.SESSION_VERIFY_PHONE,
         requestId: latestTransactionId,
         iv: encryptedMessage.iv,

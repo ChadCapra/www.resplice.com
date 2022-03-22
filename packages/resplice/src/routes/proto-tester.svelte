@@ -17,8 +17,7 @@
     clientMessage && encodeClientMessageWrapper(clientMessage)
 
   $: {
-    console.log(clientMessage)
-    console.log(clientMessageEncoded)
+    console.log(bytesToB64(clientMessageEncoded))
   }
 
   onMount(async () => {
@@ -27,7 +26,7 @@
   })
 
   function bytesToB64(bytes: ArrayBuffer) {
-    // NOTE: This won't work for large buffers, should be fine for keys
+    // NOTE: This won't work for large buffers, should be fine for keys and small messages
     return btoa(String.fromCharCode(...new Uint8Array(bytes)))
   }
 
@@ -71,8 +70,9 @@
           <td>{bytesToB64(clientMessage.iv.buffer)}</td>
         </tr>
       </table>
-
-      <Code>{bytesToB64(clientMessageEncoded)}</Code>
+      <div class="max-w-4xl p-4 overflow-auto">
+        <Code>{bytesToB64(clientMessageEncoded)}</Code>
+      </div>
     {/if}
   {:else}
     <p>Generating AES key</p>
