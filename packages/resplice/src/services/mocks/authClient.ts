@@ -16,7 +16,7 @@ function mockAuthClientFactory(..._args: any): AuthClient {
     getActiveSession: () =>
       returnPromise({
         data: session,
-        rejectPromise: false
+        rejectPromise: true
       }),
     verifyEmail: (_params) => returnPromise({ data: sessionVerifiedEmail }),
     verifyPhone: (_params) => returnPromise({ data: sessionVerifiedBoth })

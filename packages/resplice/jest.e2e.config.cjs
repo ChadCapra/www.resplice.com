@@ -1,7 +1,0 @@
-module.exports = {
-  preset: 'jest-playwright-preset',
-  transform: {
-    '^.+\\.ts?$': 'ts-jest'
-  },
-  roots: ['tests/e2e']
-}

@@ -44,7 +44,7 @@ export async function generateAesKey() {
   const key = await crypto.subtle.generateKey(
     {
       name: 'AES-GCM',
-      length: 256
+      length: 128
     },
     true,
     ['encrypt', 'decrypt']
@@ -65,13 +65,13 @@ export async function encrypt(
   const encryptedBuffer: ArrayBuffer = await crypto.subtle.encrypt(
     {
       name: 'AES-GCM',
-      // Recommended to use 12 bytes length for iv
+      // Recommended to use at least 12 bytes length for iv
       iv
       // Additional authentication data (optional)
       // additionalData: ArrayBuffer,
     },
     key,
-    data.buffer
+    data
   )
 
   const bytes = new Uint8Array(encryptedBuffer)
