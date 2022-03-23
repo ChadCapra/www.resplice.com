@@ -10,6 +10,7 @@ class Chrome {
 
   async createContext(options?: import('playwright').BrowserContextOptions) {
     this.ctx = await this.instance.newContext(options)
+    this.ctx.setDefaultTimeout(5000)
   }
 
   async newPage(url: string) {
