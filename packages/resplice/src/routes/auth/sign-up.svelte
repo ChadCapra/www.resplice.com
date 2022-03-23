@@ -12,6 +12,10 @@
 >
   <header class="flex-none w-full mb-8">
     <RespliceWide width="100%" />
+    <p class="text-lg font-semibold mt-4">
+      Optionally upload your avatar and enter your full name to create your
+      account!
+    </p>
   </header>
 
   <SignupForm />

@@ -5,6 +5,7 @@
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import Button from '$lib/common/Button.svelte'
   import authStore from '$stores/auth'
+  import Link from '$lib/common/Link.svelte'
 
   const client = useAuthClient()
 
@@ -15,7 +16,7 @@
   let formErrs: Record<string, string> = {}
   let isLoading = false
 
-  async function createUser() {
+  async function createAccount() {
     formErrs = {}
     const errs: Record<string, string> = {}
     if (!fullName) errs.fullName = 'Full name is required'
@@ -25,7 +26,11 @@
     }
     try {
       isLoading = true
-      const user = await client.createUser({ name: fullName, avatar })
+      const user = await client.createAccount({
+        name: fullName,
+        avatar,
+        handle: ''
+      })
       authStore.update((auth) => ({
         ...auth,
         session: { ...auth.session, user_uuid: user.uuid }
@@ -37,7 +42,7 @@
   }
 </script>
 
-<div class="flex-1 space-y-6 flex flex-col justify-between overflow-scroll">
+<div class="flex-1 space-y-6 flex flex-col justify-between overflow-auto">
   <div>
     <UserAvatar
       user={{
@@ -50,6 +55,7 @@
       <TextField
         name="full-name"
         label="Full Name"
+        autoComplete="name"
         bind:value={fullName}
         Icon={PeopleIcon}
         error={formErrs.fullName}
@@ -58,12 +64,9 @@
   </div>
 
   <div class="flex-none flex flex-col items-center p-2">
-    <a
-      class="underline underline-offset-4 decoration-brand-primary decoration-2 mb-4 text-gray-600"
-      href="/auth/verify-existing"
-    >
+    <Link class="mb-4" href="/auth/verify-existing">
       I already have an account
-    </a>
-    <Button color="brand" {isLoading} on:click={createUser}>Continue</Button>
+    </Link>
+    <Button color="brand" {isLoading} on:click={createAccount}>Continue</Button>
   </div>
 </div>

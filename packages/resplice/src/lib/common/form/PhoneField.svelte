@@ -61,11 +61,13 @@
     <!-- TODO: Add country code selector -->
     <input
       type="text"
+      id={name}
       class="appearance-none absolute top-0 left-0 w-full h-14 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 font-semibold text-lg text-gray-900 ring-2 focus:ring-gray-800"
       class:pl-16={!!Icon}
       class:ring-gray-600={!error}
       class:ring-red-600={!!error}
       {name}
+      autocomplete="tel"
       value={phone.value}
       on:input|preventDefault={onPhoneChange}
       on:focus={() => (isTouched = true)}

@@ -20,9 +20,9 @@
     {label}
   </label>
   <input
-    class="hidden appearence-none outline-none border-none"
     type="checkbox"
     id={name}
+    class="hidden appearence-none outline-none border-none"
     {name}
     bind:this={checkbox}
     bind:checked={isChecked}

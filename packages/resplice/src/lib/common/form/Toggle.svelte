@@ -47,6 +47,7 @@
 
   <input
     type="checkbox"
+    id={name}
     class="hidden"
     bind:this={toggleElement}
     {name}

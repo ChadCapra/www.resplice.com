@@ -102,6 +102,7 @@
     <TextField
       name="email"
       label="Enter Email"
+      autoComplete="email"
       bind:value={email}
       Icon={MailIcon}
       error={formErrs.email}
