@@ -82,7 +82,7 @@ export async function encrypt(
 export async function decrypt(
   key: CryptoKey,
   iv: Uint8Array,
-  data: ArrayBuffer
+  data: Uint8Array
 ): Promise<Uint8Array> {
   return await crypto.subtle.decrypt(
     {
@@ -95,26 +95,32 @@ export async function decrypt(
   )
 }
 
-export function sign(key: CryptoKey, data: ArrayBuffer) {
+export function sign(key: CryptoKey, data: Uint8Array) {
   return crypto.subtle.sign('HMAC', key, data)
 }
 
 export function verify(
   key: CryptoKey,
-  signature: ArrayBuffer,
-  data: ArrayBuffer
+  signature: Uint8Array,
+  data: Uint8Array
 ) {
   return crypto.subtle.verify('HMAC', key, signature, data)
 }
 
-export function importPublicKey(rawKey: ArrayBuffer) {
+export function importPublicKey(rawKey: Uint8Array) {
   return crypto.subtle.importKey('raw', rawKey, 'RSA-OAEP', false, ['encrypt'])
 }
 
-export function publicKeyEncrypt(key: CryptoKey, data: ArrayBuffer) {
+export function publicKeyEncrypt(key: CryptoKey, data: Uint8Array) {
   return crypto.subtle.encrypt({ name: 'RSA-OAEP' }, key, data)
 }
 
-export function generateIV() {
+const BASE_IV = ''
+
+export function generateClientIV(counter: number) {
   return crypto.getRandomValues(new Uint8Array(12))
+}
+
+export function deriveServerIV(counter: number) {
+  console.log('')
 }

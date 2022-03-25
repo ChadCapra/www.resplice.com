@@ -10,7 +10,7 @@ enum Command {
 }
 interface OpenCommand {
   type: Command.OPEN
-  url: string | URL
+  ws_endpoint: string | URL
   handshake: any
 }
 interface SendCommand {
@@ -109,8 +109,8 @@ async function onMessage(ev: MessageEvent<any>) {
   ctx.postMessage({ type: ConnMessageType.RECEIVED, message })
 }
 
-function open(url: string | URL, handshake: any) {
-  socket = new WebSocket(url)
+function open(ws_endpoint: string | URL, handshake: any) {
+  socket = new WebSocket(ws_endpoint)
   socket.binaryType = 'arraybuffer'
 
   socket.onopen = () => {
@@ -186,7 +186,7 @@ function close(statusCode = 1000, reason?: string) {
 ctx.onmessage = ({ data: cmd }) => {
   switch (cmd.type) {
     case Command.OPEN:
-      open(cmd.url, cmd.handshake)
+      open(cmd.ws_endpoint, cmd.handshake)
       break
     case Command.SEND:
       send(cmd.message)

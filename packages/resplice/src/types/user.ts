@@ -9,7 +9,11 @@ export type User = {
   user_registered_at: Date
 }
 
-export type Attribute = BaseAttribute
+export type Attribute = BaseAttribute & {
+  groupId: number
+  verifiedAt: number
+  verifyExpiry: number
+}
 
 export type Chat = BaseChat
 

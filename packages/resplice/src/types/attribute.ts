@@ -18,12 +18,11 @@ export type AttributeValue =
   | SocialValue
   | TextValue
 interface BaseAttribute {
-  uuid: string
+  id: string
   type: AttributeType
   name: string
   value: AttributeValue
-  expiry?: Date
-  sort_order: number
+  sortOrder: number
 }
 
 export interface Address extends BaseAttribute {

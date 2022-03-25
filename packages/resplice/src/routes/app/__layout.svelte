@@ -1,7 +1,6 @@
 <script context="module">
   /** @type {import('@sveltejs/kit').Load} */
   export async function load({ url }) {
-    console.log(url)
     return {
       props: {
         path: url.path
@@ -23,7 +22,7 @@
   import PageTransition from '$lib/common/skeleton/PageTransition.svelte'
   import ToastProvider from '$lib/common/ToastProvider.svelte'
 
-  export let path: string
+  // export let path: string
 
   const config = useConfig()
 
@@ -46,7 +45,6 @@
         clientContext.client = client
         resolve(true)
       } catch (err) {
-        console.log(err)
         reject(err)
       }
     })
@@ -57,7 +55,7 @@
   <AppLoad />
 {:then isLoaded}
   {#if isLoaded}
-    <PageTransition refresh={path}>
+    <PageTransition>
       <ToastProvider>
         <slot />
       </ToastProvider>

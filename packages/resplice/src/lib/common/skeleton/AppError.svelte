@@ -1,5 +1,6 @@
 <script lang="ts">
   export let error: Error
+  console.log(error)
 </script>
 
 <div class="w-full h-full flex flex-col items-center justify-center">

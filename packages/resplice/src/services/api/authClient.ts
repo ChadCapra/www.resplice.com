@@ -38,11 +38,11 @@ type VerifyRequest = {
 
 export interface AuthClient {
   submitRecaptchaToken: (token: string) => Promise<boolean>
-  createSession: (params: CreateSessionRequest) => Promise<Session>
-  createAccount: (params: CreateAccountRequest) => Promise<Session>
   getActiveSession: () => Promise<Session | null>
+  createSession: (params: CreateSessionRequest) => Promise<Session>
   verifyEmail: (params: VerifyRequest) => Promise<Session>
   verifyPhone: (params: VerifyRequest) => Promise<Session>
+  createAccount: (params: CreateAccountRequest) => Promise<Session>
 }
 
 // TODO: There is a lot of repeated code, could be cleaned up
@@ -59,24 +59,24 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: token,
         useBinary: false
       }),
-    createSession: async (params) => {
-      const publicKey = await fetchServerPublicKey(api)
-      const { key: aesCryptoKey, raw: aesKeyRaw } = await generateAesKey()
-      aesKey = aesCryptoKey
-
-      const createSessionBytes = encode({
-        type: ClientMessageType.SESSION_CREATE,
-        data: { ...params, aesKey: aesKeyRaw }
+    createAccount: async (params) => {
+      checkAesKey(aesKey)
+      const createAccountBytes = encode({
+        type: ClientMessageType.ACCOUNT_CREATE,
+        data: params
       })
-
-      const encryptedMessage = await publicKeyEncrypt(
-        publicKey,
-        createSessionBytes
-      )
+      const encryptedMessage = await encrypt(aesKey, createAccountBytes)
+      const clientMessage: reproto.api_request.ApiRequest = {
+        requestType: ClientMessageType.ACCOUNT_CREATE,
+        requestId: latestTransactionId,
+        iv: encryptedMessage.iv,
+        encryptedParameters: encryptedMessage.bytes
+      }
+      const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
 
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/session/create',
-        data: encryptedMessage
+        endpoint: '/user/create',
+        data: clientMessageBytes
       })
 
       const serverMessage = decodeServerMessageWrapper(
@@ -97,24 +97,24 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
 
       return session
     },
-    createAccount: async (params) => {
-      checkAesKey(aesKey)
-      const createAccountBytes = encode({
-        type: ClientMessageType.ACCOUNT_CREATE,
-        data: params
+    createSession: async (params) => {
+      const publicKey = await fetchServerPublicKey(api)
+      const { key: aesCryptoKey, raw: aesKeyRaw } = await generateAesKey()
+      aesKey = aesCryptoKey
+
+      const createSessionBytes = encode({
+        type: ClientMessageType.SESSION_CREATE,
+        data: { ...params, aesKey: aesKeyRaw }
       })
-      const encryptedMessage = await encrypt(aesKey, createAccountBytes)
-      const clientMessage: reproto.api_request.ApiRequest = {
-        requestType: ClientMessageType.ACCOUNT_CREATE,
-        requestId: latestTransactionId,
-        iv: encryptedMessage.iv,
-        encryptedParameters: encryptedMessage.bytes
-      }
-      const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
+
+      const encryptedMessage = await publicKeyEncrypt(
+        publicKey,
+        createSessionBytes
+      )
 
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/user/create',
-        data: clientMessageBytes
+        endpoint: '/session/create',
+        data: encryptedMessage
       })
 
       const serverMessage = decodeServerMessageWrapper(
@@ -242,7 +242,7 @@ function checkAesKey(aesKey: CryptoKey | null) {
 
 async function fetchServerPublicKey(api: Api) {
   const key: ArrayBuffer = await api.get({ endpoint: '/pub-key' })
-  return importPublicKey(key)
+  return importPublicKey(new Uint8Array(key))
 }
 
 export const contextKey = 'AuthClient'

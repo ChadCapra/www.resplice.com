@@ -7,8 +7,6 @@ import contactsClientFactory from './contacts'
 import type { ContactsClient } from './contacts'
 import invitesClientFactory from './invites'
 import type { InvitesClient } from './invites'
-import sessionsClientFactory from './sessions'
-import type { SessionsClient } from './sessions'
 import userClientFactory from './user'
 import type { UserClient } from './user'
 
@@ -16,7 +14,6 @@ export interface AppClient {
   // chat: ChatClient
   contacts: ContactsClient
   invites: InvitesClient
-  sessions: SessionsClient
   user: UserClient
 }
 
@@ -28,7 +25,7 @@ enum MessageType {
 }
 
 async function clientFactory(
-  url: string,
+  ws_endpoint: string,
   conn: Worker,
   cache: AppCache,
   stores: Stores
@@ -36,8 +33,10 @@ async function clientFactory(
   // const chat = chatClientFactory(conn, cache as any, stores.chat)
   const contacts = contactsClientFactory(conn, cache, stores.contacts)
   const invites = invitesClientFactory(conn, cache)
-  const sessions = sessionsClientFactory(conn, cache as any, stores.auth)
-  const user = userClientFactory(conn, cache, stores.user)
+  const user = userClientFactory(conn, cache, {
+    user: stores.user,
+    attributes: stores.attributes
+  })
 
   return new Promise<AppClient>((resolve, reject) => {
     stores.conn.set({
@@ -96,7 +95,7 @@ async function clientFactory(
       }
     }
 
-    conn.postMessage({ type: MessageType.OPEN, url })
+    conn.postMessage({ type: MessageType.OPEN, ws_endpoint })
   })
 }
 

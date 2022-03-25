@@ -1,65 +1,161 @@
 import type { AppCache } from '$services/cache'
 import type { UserStore } from '$stores/user'
+import type { AttributeStore } from '$stores/attributes'
+import processRecords from '$stores/utils'
 import type { Attribute, User } from '$types/user'
-import proto from '$services/resplice-pb'
+import * as reproto from '$lib/reproto'
 
-const MessageType = proto.resplice.util.ServerMessageType
-export type Message = {
-  type: proto.resplice.util.ServerMessageType
+const ServerMessageType = reproto.api_response.ResponseType
+// TODO: Type data based on ResponseType
+export type ServerMessage = {
+  type: reproto.api_response.ResponseType
   data: any
 }
+const ClientMessageType = reproto.api_request.RequestType
 
 export interface UserClient {
-  handleMessage: (message: Message) => void
-  updateName: (user: Pick<User, 'name'>) => void
-  updateHandle: ({ handle }) => void
-  updateAvatar: (user: Pick<User, 'avatar'>) => void
-  delete: (user: Pick<User, 'name'>) => void
-  addAttribute: (attribute: Attribute) => void
-  getAttribute: (attributeUUID: string) => void
-  getAllAttributes: () => void
-  updateAttribute: (attribute: Attribute) => void
-  verifyAttribute: (attributeUUID: string, code: string) => void
-  resendAttributeVerification: (attributeUUID: string) => void
-  deleteAttribute: (attributeUUID: string) => void
-  generateQrInvite: () => void
+  handleMessage: (message: ServerMessage) => void
+  editName: (name: User['name']) => void
+  editHandle: (handle: User['handle']) => void
+  editAvatar: (avatar: Blob) => void
+  deleteAccount: (handle: User['handle'], removeAllData: boolean) => void
+  addAttribute: (attribute: Omit<Attribute, 'id'>) => void
+  editAttributeName: (params: Pick<Attribute, 'id' | 'name'>) => void
+  editAttributeValue: (params: Pick<Attribute, 'id' | 'value'>) => void
+  editAttributeSort: (params: Pick<Attribute, 'id' | 'sortOrder'>) => void
+  sendAttributeVerification: (attributeID: Attribute['id']) => void
+  verifyAttribute: (attributeID: Attribute['id'], code: string) => void
+  deleteAttribute: (attributeID: Attribute['id']) => void
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function userClientFactory(
   conn: Worker,
   cache: AppCache,
-  store: UserStore
+  stores: { user: UserStore; attributes: AttributeStore }
 ): UserClient {
   return {
     handleMessage: (message) => {
       switch (message.type) {
-        case MessageType.USER:
+        case ServerMessageType.USER_PROFILE:
           cache.addUser(message.data)
-          store.update((state) => ({ ...state, ...message.data }))
+          stores.user.update((state) => ({ ...state, ...message.data }))
           break
+        case ServerMessageType.USER_ATTRIBUTES:
+          stores.attributes.update((state) =>
+            processRecords(
+              state,
+              'id',
+              message.data.contacts,
+              message.data.expiredIds
+            )
+          )
+          break
+        case ServerMessageType.USER_ATTRIBUTE_GROUPS: // TODO
+        case ServerMessageType.USER_SESSIONS: // TODO
+        default:
+          console.log(message.type, message.data)
       }
     },
-    updateName: ({ name }) => {
+    editName: (name) => {
       conn.postMessage({
         type: 'SEND',
         message: {
-          type: proto.resplice.util.ClientMessageType.EDIT_ATTRIBUTE_NAME,
+          type: ClientMessageType.USER_PROFILE_EDIT_NAME,
           data: { name }
         }
       })
     },
-    updateHandle: ({ handle }) => 0,
-    updateAvatar: ({ avatar }) => 0,
-    delete: ({ name }) => 0,
-    addAttribute: (attribute) => 0,
-    getAttribute: (attributeUUID) => 0,
-    getAllAttributes: () => 0,
-    updateAttribute: (attribute) => 0,
-    verifyAttribute: (attributeUUID, code) => 0,
-    resendAttributeVerification: (attributeUUID) => 0,
-    deleteAttribute: (attributeUUID) => 0,
-    generateQrInvite: () => 0
+    editHandle: (handle) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
+          data: { handle }
+        }
+      })
+    },
+    editAvatar: (avatar) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
+          data: { avatar }
+        }
+      })
+    },
+    deleteAccount: (handle, removeAllData) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.ACCOUNT_DELETE,
+          data: { handle, removeAllData }
+        }
+      })
+    },
+    addAttribute: (attribute) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_ATTRIBUTE_CREATE,
+          data: { attribute }
+        }
+      })
+    },
+    editAttributeName: (params) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_ATTRIBUTE_EDIT_NAME,
+          data: params
+        }
+      })
+    },
+    editAttributeValue: (params) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_ATTRIBUTE_EDIT_VALUE,
+          data: params
+        }
+      })
+    },
+    editAttributeSort: (params) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_ATTRIBUTE_SORT,
+          data: params
+        }
+      })
+    },
+    sendAttributeVerification: (attributeID) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_ATTRIBUTE_SEND_VERIFICATION,
+          data: { attributeID }
+        }
+      })
+    },
+    verifyAttribute: (attributeID, code) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_ATTRIBUTE_VERIFY,
+          data: { attributeID, code }
+        }
+      })
+    },
+    deleteAttribute: (attributeID) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.USER_ATTRIBUTE_DELETE,
+          data: { attributeID }
+        }
+      })
+    }
   }
 }
 

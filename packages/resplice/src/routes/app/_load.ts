@@ -33,21 +33,29 @@ import type { Stores } from '$stores/index'
 // }
 
 async function load(
-  url: string,
+  ws_endpoint: string,
   stores: Stores,
   useMocks = false
 ): Promise<{ cache: AppCache; client: AppClient }> {
-  if (useMocks)
-    return {
-      cache: {} as any,
-      client: {} as any
-    }
+  let indexedDB: Worker
+  let conn: Worker
 
-  const indexedDB = new IndexedDBWorker()
-  const conn = new ConnWorker()
+  if (useMocks) {
+    const mockIndexedDB = (await import(
+      '$services/mocks/indexedDb?worker'
+    )) as unknown as new () => Worker
+    const mockConnWorker = (await import(
+      '$services/mocks/conn?worker'
+    )) as unknown as new () => Worker
+    indexedDB = new mockIndexedDB()
+    conn = new mockConnWorker()
+  } else {
+    indexedDB = new IndexedDBWorker()
+    conn = new ConnWorker()
+  }
 
   const cache = await cacheFactory(indexedDB)
-  const client = await clientFactory(url, conn, cache, stores)
+  const client = await clientFactory(ws_endpoint, conn, cache, stores)
 
   // await client.sessions.authenticate()
 

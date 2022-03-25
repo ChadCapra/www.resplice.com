@@ -1,49 +1,53 @@
-import type { Attribute as BaseAttribute } from './attribute'
+import type {
+  Attribute as BaseAttribute,
+  EmailValue,
+  PhoneValue
+} from './attribute'
 import type { Chat as BaseChat } from './chat'
 
-export enum ContactType {
-  CONTACT = 'CONTACT',
-  PENDING = 'PENDING'
-}
-export type Contact = {
-  uuid: string
-  type: ContactType
+type BaseContact = {
+  id: number
   name: string
-  avatar_url?: string
-  handle?: string
+  avatarUrl?: string
+  handle: string
+}
+
+export type Contact = BaseContact & {
   alias?: string
   description?: string
   isFavored: boolean
-  connected_at: Date
+  isMuted: boolean
+  isArchived: boolean
+  connectedAt: number
 }
 
-export type PendingContact = {
-  uuid: string
-  type: ContactType
-  name: string
-  avatar_url?: string
-  handle?: string
+enum InviteType {
+  NOT_SET = 'NOT_SET',
+  HANDLE = 'HANDLE',
+  PHONE = 'PHONE',
+  EMAIL = 'EMAIL',
+  COMMON_SPLICE = 'COMMON_SPLICE',
+  QR_INVITE = 'QR_INVITE'
+}
+
+export type PendingContact = BaseContact & {
+  inviteType: InviteType
+  phone: PhoneValue // Should these be in the pending attributes instead?
+  email: EmailValue // Should these be in the pending attributes instead?
+  commonSplice?: string // Does this make sense here?
   expiry: Date
-}
-
-export type ContactDetail = {
-  uuid: string
-  attributes: Attribute[]
-  pending_attributes: PendingAttribute[]
-  common_splices: string[]
-  chats: Chat[]
 }
 
 export type Attribute = BaseAttribute & {
-  contact_uuid: string
+  contactId: string
+  sharedOn: number
 }
 
-// TODO: Create pending attribute
-export type PendingAttribute = {
-  expiry: Date
-  required_share_uuids: string[]
+// TODO: Compare to proto file
+export type PendingAttribute = BaseAttribute & {
+  pendingContactId: number
 }
 
 export type Chat = BaseChat & {
-  contact_uuid: string
+  contactID: string
 }

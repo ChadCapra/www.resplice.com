@@ -1,3 +1,5 @@
+import type { AppCache } from '$services/cache'
+import type { ContactStore } from '$stores/contacts'
 import type { Invite } from '$types/invite'
 
 export interface InvitesClient {
@@ -14,23 +16,27 @@ export interface InvitesClient {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function invitesClientFactory(api: any, cache: any): InvitesClient {
+function invitesClientFactory(
+  conn: Worker,
+  cache: AppCache,
+  store: ContactStore
+): InvitesClient {
   return {
     create: (attributeUUIDs, invite) =>
-      api.createInvite(attributeUUIDs, {
+      conn.createInvite(attributeUUIDs, {
         name: invite.name,
         value: invite.value
       }),
     update: (inviteUUID, invite) =>
-      api.updateInvite(inviteUUID, { name: invite.name }),
+      conn.updateInvite(inviteUUID, { name: invite.name }),
     accept: (inviteUUID, attributeUUIDs) =>
-      api.acceptInvite(inviteUUID, attributeUUIDs),
-    delete: (inviteUUID) => api.deleteInvite(inviteUUID),
+      conn.acceptInvite(inviteUUID, attributeUUIDs),
+    delete: (inviteUUID) => conn.deleteInvite(inviteUUID),
     addAttribute: (inviteUUID, attributeUUID) =>
-      api.add_invite_attribute(inviteUUID, attributeUUID),
+      conn.add_invite_attribute(inviteUUID, attributeUUID),
     removeAttribute: (inviteUUID, attributeUUID) =>
-      api.remove_invite_attribute(inviteUUID, attributeUUID),
-    generateQrCode: () => api.generate_qr_invite()
+      conn.remove_invite_attribute(inviteUUID, attributeUUID),
+    generateQrCode: () => conn.generate_qr_invite()
   }
 }
 
