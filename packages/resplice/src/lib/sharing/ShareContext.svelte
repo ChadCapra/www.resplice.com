@@ -18,14 +18,14 @@
   $: {
     // TODO: Find a better way to set initial shares
     if (attributes && !initialSharesSet) {
-      shares = new Set([sortedAttributes[0].uuid, sortedAttributes[1].uuid])
+      shares = new Set([sortedAttributes[0].id, sortedAttributes[1].id])
       initialSharesSet = true
     }
   }
 
-  function toggleShare(uuid: string) {
-    if (shares.has(uuid)) shares.delete(uuid)
-    else shares.add(uuid)
+  function toggleShare(id: string) {
+    if (shares.has(id)) shares.delete(id)
+    else shares.add(id)
     // Need to do this so svelte will rerender
     shares = shares
   }
@@ -43,10 +43,10 @@
 
   {#if attributes}
     <div class="w-full flex-1 flex flex-col space-y-4 overflow-scroll">
-      {#each [...shares] as uuid}
+      {#each [...shares] as id}
         <AttributeItem
           itemType="user"
-          attribute={attributes[uuid]}
+          attribute={attributes[id]}
           disableActions
         />
       {/each}
@@ -69,9 +69,9 @@
           <div class="flex justify-between w-full">
             <AttributeItem itemType="user" {attribute} disableActions />
             <Toggle
-              name="share-toggle-{attribute.uuid}"
-              isActive={shares.has(attribute.uuid)}
-              on:toggle={() => toggleShare(attribute.uuid)}
+              name="share-toggle-{attribute.id}"
+              isActive={shares.has(attribute.id)}
+              on:toggle={() => toggleShare(attribute.id)}
             />
           </div>
         {/each}

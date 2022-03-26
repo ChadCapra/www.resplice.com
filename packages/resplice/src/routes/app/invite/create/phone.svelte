@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { CountryCode, isValidPhoneNumber } from 'libphonenumber-js'
+  import { isValidPhoneNumber } from 'libphonenumber-js'
   import Button from '$lib/common/Button.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneIcon from '$lib/icons/PhoneIcon.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import ShareContext from '$lib/sharing/ShareContext.svelte'
+  import type { CountryCode } from 'libphonenumber-js'
 
   let name: string
   let phone = {
