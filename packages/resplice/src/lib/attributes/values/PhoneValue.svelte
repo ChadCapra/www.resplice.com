@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { PhoneValue } from '$types/attribute'
   import parsePhoneNumber from 'libphonenumber-js'
-  import type { CountryCode } from 'libphonenumber-js'
+  import attributeTypes from '$lib/attributes/attributeTypes'
+  import { AttributeType, type PhoneValue } from '$types/attribute'
 
   export let value: PhoneValue
 
@@ -9,8 +9,7 @@
     if (!value?.number) return ''
 
     const parsed = parsePhoneNumber(
-      value.number,
-      value.countryCallingCode as CountryCode
+      attributeTypes[AttributeType.PHONE].valueToString(value)
     )
 
     if (!parsed) return value.number
