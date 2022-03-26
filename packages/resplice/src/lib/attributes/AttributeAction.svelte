@@ -30,21 +30,27 @@
       case AttributeAction.Calendar:
         switch (attribute.type) {
           case AttributeType.DATE:
-            openCalendar()
+            openCalendar(
+              attributeTypes[AttributeType.DATE].valueToString(attribute.value)
+            )
             break
           default:
-            break
+            throw new Error(
+              `Cannot add an attribute with type ${attribute.type} to a calendar`
+            )
         }
         break
       case AttributeAction.Call:
         switch (attribute.type) {
           case AttributeType.PHONE:
             callPhone(
-              attribute.value.countryCallingCode + attribute.value.number
+              attributeTypes[AttributeType.PHONE].valueToString(attribute.value)
             )
             break
           default:
-            break
+            throw new Error(
+              `Cannot call an attribute with type ${attribute.type}`
+            )
         }
         break
       case AttributeAction.Copy:
@@ -56,7 +62,9 @@
             email(attribute.value.email)
             break
           default:
-            break
+            throw new Error(
+              `Cannot email an attribute with type ${attribute.type}`
+            )
         }
         break
       case AttributeAction.Link:
@@ -65,7 +73,9 @@
             goto(attribute.value.url)
             break
           default:
-            break
+            throw new Error(
+              `Cannot link to an attribute with type ${attribute.type}`
+            )
         }
         break
       case AttributeAction.Locate:
@@ -81,7 +91,9 @@
           case AttributeType.COORDINATE:
             locate({ locationType: 'coordinate', location: attribute.value })
           default:
-            break
+            throw new Error(
+              `Cannot geolocate an attribute with type ${attribute.type}`
+            )
         }
         break
       case AttributeAction.Navigate:
@@ -104,16 +116,22 @@
             )
             break
           default:
-            break
+            throw new Error(
+              `Cannot navigate an attribute with type ${attribute.type}`
+            )
         }
         break
       case AttributeAction.Sms:
         switch (attribute.type) {
           case AttributeType.PHONE:
-            openSms(attribute.value.countryCallingCode + attribute.value.number)
+            openSms(
+              attributeTypes[AttributeType.PHONE].valueToString(attribute.value)
+            )
             break
           default:
-            break
+            throw new Error(
+              `Cannot text an attribute with type ${attribute.type}`
+            )
         }
         break
     }

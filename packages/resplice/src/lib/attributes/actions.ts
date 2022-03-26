@@ -1,7 +1,7 @@
 import { getOperatingSystem } from '$lib/utils'
 
-export function openCalendar(): void {
-  console.log('Opening Calendar')
+export function openCalendar(date: string): void {
+  console.log('Opening Calendar', date)
   // Example Google Calendar Link:
   // https://calendar.google.com/calendar/r/eventedit?text=My+Custom+Event&dates=20180512T230000Z/20180513T030000Z&details=For+details,+link+here:+https://example.com/tickets-43251101208&location=Garage+Boston+-+20+Linden+Street+-+Allston,+MA+02134
 }

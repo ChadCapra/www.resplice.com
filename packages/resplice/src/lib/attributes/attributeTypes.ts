@@ -5,6 +5,7 @@ import type {
   CredentialValue,
   DateValue,
   EmailValue,
+  LinkValue,
   PhoneValue,
   SocialValue,
   TextValue
@@ -20,11 +21,9 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
       AttributeAction.Copy
     ],
     valueToString: (value: AddressValue) =>
-      `${value.street_address_1}\n${
-        value.street_address_2 ? value.street_address_2 + '\n' : ''
-      }${value.locality}, ${value.region} ${value.postal_code}\n${
-        value.country
-      }`
+      `${value.streetAddress1}\n${
+        value.streetAddress2 ? value.streetAddress2 + '\n' : ''
+      }${value.locality}, ${value.region} ${value.postalCode}\n${value.country}`
   },
   [AttributeType.COORDINATE]: {
     name: 'Coordinate',
@@ -53,11 +52,16 @@ const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
     actions: [AttributeAction.Email, AttributeAction.Copy],
     valueToString: (value: EmailValue) => value.email
   },
+  [AttributeType.LINK]: {
+    name: 'Link',
+    actions: [AttributeAction.Link, AttributeAction.Copy],
+    valueToString: (value: LinkValue) => value.url
+  },
   [AttributeType.PHONE]: {
     name: 'Phone',
     actions: [AttributeAction.Call, AttributeAction.Sms, AttributeAction.Copy],
     valueToString: (value: PhoneValue) =>
-      `+${value.countryCallingCode} ${value.number}
+      `+${value.number}
       ${value.extension ? `x${value.extension}` : ''}`
   },
   [AttributeType.SOCIAL]: {
