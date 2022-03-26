@@ -21,7 +21,7 @@ export type AttributeValue =
   | SocialValue
   | TextValue
 interface BaseAttribute {
-  id: string
+  id: number
   type: AttributeType
   name: string
   value: AttributeValue

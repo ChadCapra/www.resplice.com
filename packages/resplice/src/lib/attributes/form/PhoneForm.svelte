@@ -11,9 +11,8 @@
   const dispatch = createEventDispatcher()
 
   export let name = ''
-  export let countryCallingCode = ''
-  export let number = ''
-  export let extension = ''
+  export let number: number | null
+  export let extension: number | null
   export let isSms = true
 
   let formErrs: any = {}
@@ -22,7 +21,7 @@
   function onSave() {
     formErrs = {}
     if (!name) formErrs.name = 'A name is required'
-    if (!isValidPhoneNumber(number))
+    if (!isValidPhoneNumber(`+${number}`))
       formErrs.phone = 'Please enter a valid phone number'
 
     if (!Object.keys(formErrs).length) {
@@ -38,14 +37,12 @@
         phone.countryCallingCode as CountryCode
       )
       if (ph) {
-        countryCallingCode = ph.countryCallingCode.toString()
-        number = ph.number.toString()
-        extension = ph.ext?.toString()
+        number = parseInt(ph.number, 10)
+        extension = ph.ext ? parseInt(ph.ext, 10) : null
       }
     } else {
-      countryCallingCode = ''
-      number = ''
-      extension = ''
+      number = null
+      extension = null
     }
   }
 </script>

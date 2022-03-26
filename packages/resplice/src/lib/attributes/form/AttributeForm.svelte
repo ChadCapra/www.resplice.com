@@ -18,15 +18,20 @@
   export let attributeTypeConfig: AttributeTypeConfig
 
   let newAttribute: Attribute = {
+    id: 0,
     type: attributeType,
-    uuid: 'new-attribute',
     name: '',
     value: {} as any,
-    sort_order: 0
+    sortOrder: 0
   }
 
   function saveAttribute() {
-    appClient.user.addAttribute(newAttribute)
+    appClient.user.addAttribute({
+      type: newAttribute.type,
+      name: newAttribute.name,
+      value: newAttribute.value,
+      sortOrder: newAttribute.sortOrder
+    })
   }
 
   function throwInvalidType() {
@@ -42,11 +47,11 @@
   {#if newAttribute.type === AttributeType.ADDRESS}
     <AddressForm
       bind:name={newAttribute.name}
-      bind:address1={newAttribute.value.street_address_1}
-      bind:address2={newAttribute.value.street_address_2}
+      bind:address1={newAttribute.value.streetAddress1}
+      bind:address2={newAttribute.value.streetAddress2}
       bind:locality={newAttribute.value.locality}
       bind:region={newAttribute.value.region}
-      bind:postalCode={newAttribute.value.postal_code}
+      bind:postalCode={newAttribute.value.postalCode}
       bind:country={newAttribute.value.country}
       on:save={saveAttribute}
     />
@@ -81,7 +86,6 @@
   {:else if newAttribute.type === AttributeType.PHONE}
     <PhoneForm
       bind:name={newAttribute.name}
-      bind:countryCallingCode={newAttribute.value.countryCallingCode}
       bind:number={newAttribute.value.number}
       bind:extension={newAttribute.value.extension}
       bind:isSms={newAttribute.value.isSms}

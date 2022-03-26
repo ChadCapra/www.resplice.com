@@ -2,7 +2,8 @@ import type { AppCache } from '$services/cache'
 import type { UserStore } from '$stores/user'
 import type { AttributeStore } from '$stores/attributes'
 import processRecords from '$stores/utils'
-import type { Attribute, User } from '$types/user'
+import type { Attribute } from '$types/attribute'
+import type { User } from '$types/user'
 import * as reproto from '$lib/reproto'
 
 const ServerMessageType = reproto.api_response.ResponseType
