@@ -1,9 +1,11 @@
-export enum AttributeType {
+export enum AttributeType { // TODO: Check against proto files
   ADDRESS = 'ADDRESS',
   COORDINATE = 'COORDINATE',
   CREDENTIAL = 'CREDENTIAL',
   DATE = 'DATE',
   EMAIL = 'EMAIL',
+  // FILE = 'FILE', // probably future feature
+  LINK = 'LINK',
   PHONE = 'PHONE',
   SOCIAL = 'SOCIAL',
   TEXT = 'TEXT'
@@ -14,6 +16,7 @@ export type AttributeValue =
   | CredentialValue
   | DateValue
   | EmailValue
+  | LinkValue
   | PhoneValue
   | SocialValue
   | TextValue
@@ -30,11 +33,11 @@ export interface Address extends BaseAttribute {
   value: AddressValue
 }
 export type AddressValue = {
-  street_address_1: string
-  street_address_2?: string
+  streetAddress1: string
+  streetAddress2?: string
   locality: string
   region: string
-  postal_code: string
+  postalCode: string
   country: string
 }
 
@@ -74,14 +77,21 @@ export type EmailValue = {
   email: string
 }
 
+export interface Link extends BaseAttribute {
+  type: AttributeType.LINK
+  value: LinkValue
+}
+export type LinkValue = {
+  url: string
+}
+
 export interface Phone extends BaseAttribute {
   type: AttributeType.PHONE
   value: PhoneValue
 }
 export type PhoneValue = {
-  countryCallingCode: string
-  number: string
-  extension?: string
+  number: number
+  extension?: number
   isSms: boolean
 }
 
@@ -108,6 +118,7 @@ export type Attribute =
   | Credential
   | Date
   | Email
+  | Link
   | Phone
   | Social
   | Text

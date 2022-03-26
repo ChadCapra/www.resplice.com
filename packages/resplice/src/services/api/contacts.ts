@@ -1,9 +1,8 @@
+import * as reproto from '$lib/reproto'
+import processRecords from '$stores/utils'
 import type { AppCache } from '$services/cache'
 import type { ContactStore } from '$stores/contacts'
-import processRecords from '$stores/utils'
-import * as reproto from '$lib/reproto'
-import type { Contact, PendingContact } from '$types/contact'
-import type { Attribute as UserAttribute } from '$types/user'
+import type { Contact, Invite } from '$types/contact'
 
 const ServerMessageType = reproto.api_response.ResponseType
 export type ServerMessage = {
@@ -25,17 +24,15 @@ export interface ContactsClient {
   delete: (id: Contact['id']) => void
   // requestAttributeType: (id: Contact['id']) => void
   // removeAttribute: (id: Contact['id']) => void
-  addShare: (id: Contact['id'], attributeId: UserAttribute['id']) => void
-  removeShare: (id: Contact['id'], attributeId: UserAttribute['id']) => void
   createPending: () => void // TODO: Talk about what this is
-  acceptPending: (id: PendingContact['id']) => void
-  declinePending: (id: PendingContact['id']) => void
+  acceptPending: (id: Invite['id']) => void
+  declinePending: (id: Invite['id']) => void
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function contactsClientFactory(
   conn: Worker,
-  cache: AppCache,
+  _cache: AppCache,
   store: ContactStore
 ): ContactsClient {
   return {
@@ -63,7 +60,7 @@ function contactsClientFactory(
           )
           break
         case ServerMessageType.PENDING_CONTACTS:
-          store.pendingContacts.update((state) =>
+          store.invites.update((state) =>
             processRecords(
               state,
               'id',
@@ -73,7 +70,7 @@ function contactsClientFactory(
           )
           break
         case ServerMessageType.PENDING_CONTACT_ATTRIBUTES:
-          store.pendingContactAttributes.update((state) =>
+          store.inviteAttributes.update((state) =>
             processRecords(
               state,
               'id',
@@ -126,24 +123,6 @@ function contactsClientFactory(
         message: {
           type: ClientMessageType.CONTACT_DELETE,
           data: { id }
-        }
-      })
-    },
-    addShare: (id, attributeId) => {
-      conn.postMessage({
-        type: 'SEND',
-        message: {
-          type: ClientMessageType.CONTACT_ADD_SHARE,
-          data: { id, attributeId }
-        }
-      })
-    },
-    removeShare: (id, attributeId) => {
-      conn.postMessage({
-        type: 'SEND',
-        message: {
-          type: ClientMessageType.CONTACT_REMOVE_SHARE,
-          data: { id, attributeId }
         }
       })
     },

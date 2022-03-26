@@ -2,8 +2,8 @@ import { writable, derived } from 'svelte/store'
 import type {
   Contact,
   Attribute,
-  PendingContact,
-  PendingAttribute
+  Invite,
+  InviteAttribute
 } from '$types/contact'
 
 // import { contacts } from '$services/mocks/state/contacts'
@@ -25,36 +25,30 @@ const contactAttributesDict = derived(contactAttributes, ($ca, set) => {
   set(dict)
 })
 
-type PendingContactRecord = Map<number, PendingContact>
-const pendingContacts = writable<PendingContactRecord | null>(null)
+type InviteRecord = Map<number, Invite>
+const invites = writable<InviteRecord | null>(null)
 
-type PendingContactAttributeRecord = Map<number, PendingAttribute>
-const pendingContactAttributes = writable<PendingContactAttributeRecord | null>(
-  null
-)
-const pendingContactAttributesDict = derived(
-  pendingContactAttributes,
-  ($pca, set) => {
-    const dict = {}
-    $pca.forEach((pca) => {
-      if (dict[pca.pendingContactId]) {
-        dict[pca.pendingContactId].push(pca)
-      } else {
-        dict[pca.pendingContactId] = [pca]
-      }
-    })
-    set(dict)
-  }
-)
+type InviteAttributeRecord = Map<number, InviteAttribute>
+const inviteAttributes = writable<InviteAttributeRecord | null>(null)
+const inviteAttributesDict = derived(inviteAttributes, ($ia, set) => {
+  const dict = {}
+  $ia.forEach((ia) => {
+    if (dict[ia.pendingContactId]) {
+      dict[ia.pendingContactId].push(ia)
+    } else {
+      dict[ia.pendingContactId] = [ia]
+    }
+  })
+  set(dict)
+})
 
-// Export Stores
 const contactStores = {
   contacts,
   contactAttributes,
   contactAttributesDict,
-  pendingContacts,
-  pendingContactAttributes,
-  pendingContactAttributesDict
+  invites,
+  inviteAttributes,
+  inviteAttributesDict
 }
 
 export type ContactStore = typeof contactStores

@@ -32,7 +32,7 @@ async function clientFactory(
 ): Promise<AppClient> {
   // const chat = chatClientFactory(conn, cache as any, stores.chat)
   const contacts = contactsClientFactory(conn, cache, stores.contacts)
-  const invites = invitesClientFactory(conn, cache)
+  const invites = invitesClientFactory(conn, cache, stores.invites)
   const user = userClientFactory(conn, cache, {
     user: stores.user,
     attributes: stores.attributes
@@ -66,7 +66,6 @@ async function clientFactory(
             // chat,
             contacts,
             invites,
-            sessions,
             user
           })
           break
@@ -89,7 +88,8 @@ async function clientFactory(
           break
         case MessageType.MESSAGE:
           // chat.handleMessage(cmd.data)
-          sessions.handleMessage(cmd.data)
+          contacts.handleMessage(cmd.data)
+          invites.handleMessage(cmd.data)
           user.handleMessage(cmd.data)
           break
       }
