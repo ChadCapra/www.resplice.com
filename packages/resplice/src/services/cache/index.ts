@@ -38,7 +38,7 @@ async function cacheFactory(indexedDB: Worker): Promise<AppCache> {
           console.log(cmd)
       }
     }
-    indexedDB.postMessage({ type: 'CONNECT' })
+    indexedDB.postMessage({ type: MessageType.CONNECT })
   })
 }
 

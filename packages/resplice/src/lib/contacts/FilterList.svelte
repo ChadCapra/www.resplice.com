@@ -1,6 +1,6 @@
 <script lang="ts">
   import cx from 'classnames'
-  const filters: string[] = ['Recent', 'Contacts']
+  const filters: string[] = ['Favorites', 'Contacts']
   export let selectedFilter: string
 </script>
 

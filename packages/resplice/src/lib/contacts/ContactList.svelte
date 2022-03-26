@@ -1,12 +1,13 @@
 <script lang="ts">
   import VirtualList from '@sveltejs/svelte-virtual-list/VirtualList.svelte'
   import { goto } from '$app/navigation'
-
   import ContactItem from '$lib/contacts/ContactItem.svelte'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
-  import contactsStore from '$stores/contacts'
+  import contactStores from '$stores/contacts'
 
-  $: contactList = $contactsStore && Object.values($contactsStore)
+  const contactsStore = contactStores.contacts
+
+  $: contactList = $contactsStore && [...$contactsStore.values()]
 </script>
 
 <!-- TODO: Implement Alphabet slider -->

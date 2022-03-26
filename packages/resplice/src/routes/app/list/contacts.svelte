@@ -2,12 +2,12 @@
   import SearchHeader from '$lib/common/SearchHeader.svelte'
   import FilterList from '$lib/contacts/FilterList.svelte'
   import ContactList from '$lib/contacts/ContactList.svelte'
-  import RecentList from '$lib/contacts/RecentList.svelte'
+  import FavoritesList from '$lib/contacts/FavoritesList.svelte'
 
   let selectedFilter: string = 'Contacts'
 
   const filterListMap = {
-    Recent: RecentList,
+    Favorites: FavoritesList,
     Contacts: ContactList
   }
 

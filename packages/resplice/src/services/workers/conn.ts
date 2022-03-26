@@ -78,37 +78,6 @@ type Authentication = {
 }
 let auth: Authentication | null = null
 
-// TODO: Type ev
-async function onMessage(ev: MessageEvent<any>) {
-  console.log(ev)
-  const serverPush = proto.resplice.util.ServerPush.decode(ev.data)
-  // TODO: Do I need to encode server message back to verify the hmac from server
-  const serverMessageBuffer = proto.resplice.util.ServerMessage.encode(
-    serverPush.message
-  ).finish().buffer
-
-  // TODO: convert messageHmac into arraybuffer so I can verify it
-  const isValid = verify(
-    auth.keys.hmac,
-    serverPush.messageHmac as any,
-    serverMessageBuffer
-  )
-  if (!isValid) throw new Error('Message from server was not valid')
-
-  const decryptedMessage = await decrypt(
-    auth.keys.aes,
-    crypto.getRandomValues(new Uint8Array(12)),
-    serverPush.message.encryptedPayload
-  )
-  const message = decode({
-    type: serverPush.message.messageType,
-    data: decryptedMessage
-  })
-  // TODO: Should probably just send the plain JS object,
-  // not protobuf class
-  ctx.postMessage({ type: ConnMessageType.RECEIVED, message })
-}
-
 function open(ws_endpoint: string | URL, handshake: any) {
   socket = new WebSocket(ws_endpoint)
   socket.binaryType = 'arraybuffer'
@@ -129,7 +98,7 @@ function open(ws_endpoint: string | URL, handshake: any) {
     const error = new Error('Something went wrong')
     ctx.postMessage({ type: ConnMessageType.ERROR, error })
   }
-  socket.onmessage = onMessage
+  socket.onmessage = handleMessage
   socket.onclose = (ev) => {
     console.log('Closing')
     console.log(ev)
@@ -173,6 +142,37 @@ async function send(message: Message) {
 
   socket.send(clientRequestBuffer)
   ctx.postMessage({ type: ConnMessageType.SENT, requestId })
+}
+
+// TODO: Type ev
+async function handleMessage(ev: MessageEvent<any>) {
+  console.log(ev)
+  const serverPush = proto.resplice.util.ServerPush.decode(ev.data)
+  // TODO: Do I need to encode server message back to verify the hmac from server
+  const serverMessageBuffer = proto.resplice.util.ServerMessage.encode(
+    serverPush.message
+  ).finish().buffer
+
+  // TODO: convert messageHmac into arraybuffer so I can verify it
+  const isValid = verify(
+    auth.keys.hmac,
+    serverPush.messageHmac as any,
+    serverMessageBuffer
+  )
+  if (!isValid) throw new Error('Message from server was not valid')
+
+  const decryptedMessage = await decrypt(
+    auth.keys.aes,
+    crypto.getRandomValues(new Uint8Array(12)),
+    serverPush.message.encryptedPayload
+  )
+  const message = decode({
+    type: serverPush.message.messageType,
+    data: decryptedMessage
+  })
+  // TODO: Should probably just send the plain JS object,
+  // not protobuf class
+  ctx.postMessage({ type: ConnMessageType.RECEIVED, message })
 }
 
 function close(statusCode = 1000, reason?: string) {

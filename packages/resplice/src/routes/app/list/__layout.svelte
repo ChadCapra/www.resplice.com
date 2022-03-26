@@ -5,8 +5,8 @@
   import ChatBubbles from '$lib/icons/ChatBubblesIcon.svelte'
   import NavActions from '$lib/common/NavActions.svelte'
 
-  $: isOnContacts = $page.path.includes('/app/list/contacts')
-  $: isOnChats = $page.path.includes('/app/list/chats')
+  $: isOnContacts = $page.url.pathname.includes('/app/list/contacts')
+  $: isOnChats = $page.url.pathname.includes('/app/list/chats')
 </script>
 
 <!-- <MockWorker> -->

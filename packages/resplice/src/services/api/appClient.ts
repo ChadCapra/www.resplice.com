@@ -17,11 +17,18 @@ export interface AppClient {
   user: UserClient
 }
 
-enum MessageType {
+enum ConnCommand {
   OPEN = 'OPEN',
   CLOSE = 'CLOSE',
   MESSAGE = 'MESSAGE',
   ERROR = 'ERROR'
+}
+enum ConnMessageType {
+  CLOSED = 'CLOSED',
+  ERROR = 'ERROR',
+  RECEIVED = 'RECEIVED',
+  OPENED = 'OPENED',
+  SENT = 'SENT'
 }
 
 async function clientFactory(
@@ -50,8 +57,8 @@ async function clientFactory(
         ...state,
         messages: [...state.messages, cmd]
       }))
-      switch (cmd.type as MessageType) {
-        case MessageType.OPEN:
+      switch (cmd.type as ConnMessageType) {
+        case ConnMessageType.OPENED:
           stores.conn.update((state) => ({
             ...state,
             status: ConnStatus.CONNECTED,
@@ -69,14 +76,14 @@ async function clientFactory(
             user
           })
           break
-        case MessageType.CLOSE:
+        case ConnMessageType.CLOSED:
           stores.conn.update((state) => ({
             ...state,
             status: ConnStatus.DISCONNECTED,
             error: null
           }))
           break
-        case MessageType.ERROR:
+        case ConnMessageType.ERROR:
           stores.conn.update((state) => ({
             ...state,
             status: ConnStatus.DISCONNECTED,
@@ -86,7 +93,7 @@ async function clientFactory(
           // was not resolved previously by a successful connection
           reject(cmd.reason)
           break
-        case MessageType.MESSAGE:
+        case ConnMessageType.RECEIVED:
           // chat.handleMessage(cmd.data)
           contacts.handleMessage(cmd.data)
           invites.handleMessage(cmd.data)
@@ -95,7 +102,7 @@ async function clientFactory(
       }
     }
 
-    conn.postMessage({ type: MessageType.OPEN, ws_endpoint })
+    conn.postMessage({ type: ConnCommand.OPEN, ws_endpoint })
   })
 }
 

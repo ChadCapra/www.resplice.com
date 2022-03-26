@@ -3,7 +3,7 @@
   export async function load({ url }) {
     return {
       props: {
-        path: url.path
+        path: url.pathname
       }
     }
   }
