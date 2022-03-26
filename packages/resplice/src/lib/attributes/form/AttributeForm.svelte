@@ -6,6 +6,7 @@
   import CoordinateForm from './CoordinateForm.svelte'
   import CredentialForm from './CredentialForm.svelte'
   import EmailForm from './EmailForm.svelte'
+  import LinkForm from './LinkForm.svelte'
   import PhoneForm from './PhoneForm.svelte'
   import SocialForm from './SocialForm.svelte'
   import DateForm from './DateForm.svelte'
@@ -81,6 +82,12 @@
     <EmailForm
       bind:name={newAttribute.name}
       bind:email={newAttribute.value.email}
+      on:save={saveAttribute}
+    />
+  {:else if newAttribute.type === AttributeType.LINK}
+    <LinkForm
+      bind:name={newAttribute.name}
+      bind:url={newAttribute.value.url}
       on:save={saveAttribute}
     />
   {:else if newAttribute.type === AttributeType.PHONE}

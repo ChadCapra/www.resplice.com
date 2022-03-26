@@ -7,17 +7,17 @@
 <!-- Can potentially localize this format per country, will use US format for now -->
 <div class="flex flex-col">
   <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
-    {value.street_address_1}
+    {value.streetAddress1}
   </span>
-  {#if !!value.street_address_2}
+  {#if !!value.streetAddress2}
     <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
-      {value.street_address_2}
+      {value.streetAddress2}
     </span>
   {/if}
   <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
     {value.locality
-      ? `${value.locality}, ${value.region} ${value.postal_code}`
-      : `${value.region} ${value.postal_code}`}
+      ? `${value.locality}, ${value.region} ${value.postalCode}`
+      : `${value.region} ${value.postalCode}`}
   </span>
   <span class="overflow-hidden text-ellipsis whitespace-pre-line h-6">
     {value.country}

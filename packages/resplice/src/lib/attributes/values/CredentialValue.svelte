@@ -31,7 +31,7 @@
         on:click={togglePassword}
       />
     {:else}
-      <p class="p-2 text-sm filter blur-sm">kdBA@9NNeMSx</p>
+      <p class="p-2 text-sm filter blur-sm">placeholder</p>
       <IconButton
         Icon={EyeIcon}
         width={18}

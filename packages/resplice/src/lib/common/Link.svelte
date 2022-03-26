@@ -2,15 +2,29 @@
   import cx from 'classnames'
 
   export let href: string = '#'
-  console.log(href)
+  export let useNewWindow: boolean = false
 </script>
 
-<a
-  class={cx(
-    $$props.class,
-    'underline underline-offset-4 decoration-brand-primary decoration-2 text-gray-600'
-  )}
-  {href}
->
-  <slot>link</slot>
-</a>
+{#if useNewWindow}
+  <a
+    class={cx(
+      $$props.class,
+      'underline underline-offset-4 decoration-brand-primary decoration-2 text-gray-600'
+    )}
+    {href}
+    target="_blank"
+    rel="noopener"
+  >
+    <slot>link</slot>
+  </a>
+{:else}
+  <a
+    class={cx(
+      $$props.class,
+      'underline underline-offset-4 decoration-brand-primary decoration-2 text-gray-600'
+    )}
+    {href}
+  >
+    <slot>link</slot>
+  </a>
+{/if}

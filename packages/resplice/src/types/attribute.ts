@@ -135,7 +135,9 @@ export enum AttributeAction {
 }
 
 export type AttributeTypeConfig = {
+  type: AttributeType
   name: string
   actions: AttributeAction[]
+  handleAction: (action: AttributeAction, value: AttributeValue) => void
   valueToString: (value: AttributeValue) => string
 }

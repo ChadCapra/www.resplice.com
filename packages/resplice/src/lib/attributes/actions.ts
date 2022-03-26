@@ -22,8 +22,8 @@ export function email(email: string, subject = '', body = ''): void {
   window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank')
 }
 
-export function goto(link: string): void {
-  window.open(link, '_blank')
+export function goto(url: string): void {
+  window.open(url, '_blank')
 }
 
 type locateParams =

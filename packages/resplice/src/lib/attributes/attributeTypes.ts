@@ -1,79 +1,25 @@
-import type {
-  AddressValue,
-  AttributeTypeConfig,
-  CoordinateValue,
-  CredentialValue,
-  DateValue,
-  EmailValue,
-  LinkValue,
-  PhoneValue,
-  SocialValue,
-  TextValue
-} from '$types/attribute'
-import { AttributeType, AttributeAction } from '$types/attribute'
+import addressType from '$lib/attributes/attributeTypes/address'
+import coordinateType from '$lib/attributes/attributeTypes/coordinate'
+import credentialType from '$lib/attributes/attributeTypes/credential'
+import dateType from '$lib/attributes/attributeTypes/date'
+import emailType from '$lib/attributes/attributeTypes/email'
+import linkType from '$lib/attributes/attributeTypes/link'
+import phoneType from '$lib/attributes/attributeTypes/phone'
+import socialType from '$lib/attributes/attributeTypes/social'
+import textType from '$lib/attributes/attributeTypes/text'
+import { AttributeType } from '$types/attribute'
+import type { AttributeTypeConfig } from '$types/attribute'
 
 const attributeTypes: Record<AttributeType, AttributeTypeConfig> = {
-  [AttributeType.ADDRESS]: {
-    name: 'Address',
-    actions: [
-      AttributeAction.Navigate,
-      AttributeAction.Locate,
-      AttributeAction.Copy
-    ],
-    valueToString: (value: AddressValue) =>
-      `${value.streetAddress1}\n${
-        value.streetAddress2 ? value.streetAddress2 + '\n' : ''
-      }${value.locality}, ${value.region} ${value.postalCode}\n${value.country}`
-  },
-  [AttributeType.COORDINATE]: {
-    name: 'Coordinate',
-    actions: [
-      AttributeAction.Locate,
-      AttributeAction.Navigate,
-      AttributeAction.Copy
-    ],
-    valueToString: (value: CoordinateValue) =>
-      `${value.latitude}, ${value.longitude}`
-  },
-  [AttributeType.CREDENTIAL]: {
-    name: 'Credential',
-    actions: [AttributeAction.Copy],
-    valueToString: (value: CredentialValue) =>
-      `${value.identity}\n${value.passcode}`
-  },
-  [AttributeType.DATE]: {
-    name: 'Date',
-    actions: [AttributeAction.Calendar, AttributeAction.Copy],
-    valueToString: (value: DateValue) =>
-      `${value.month} ${value.day} ${value.year}`
-  },
-  [AttributeType.EMAIL]: {
-    name: 'Email',
-    actions: [AttributeAction.Email, AttributeAction.Copy],
-    valueToString: (value: EmailValue) => value.email
-  },
-  [AttributeType.LINK]: {
-    name: 'Link',
-    actions: [AttributeAction.Link, AttributeAction.Copy],
-    valueToString: (value: LinkValue) => value.url
-  },
-  [AttributeType.PHONE]: {
-    name: 'Phone',
-    actions: [AttributeAction.Call, AttributeAction.Sms, AttributeAction.Copy],
-    valueToString: (value: PhoneValue) =>
-      `+${value.number}
-      ${value.extension ? `x${value.extension}` : ''}`
-  },
-  [AttributeType.SOCIAL]: {
-    name: 'Social',
-    actions: [AttributeAction.Link, AttributeAction.Copy],
-    valueToString: (value: SocialValue) => `${value.handle}\n${value.url}`
-  },
-  [AttributeType.TEXT]: {
-    name: 'Text',
-    actions: [AttributeAction.Copy],
-    valueToString: (value: TextValue) => value.text
-  }
+  [AttributeType.ADDRESS]: addressType,
+  [AttributeType.COORDINATE]: coordinateType,
+  [AttributeType.CREDENTIAL]: credentialType,
+  [AttributeType.DATE]: dateType,
+  [AttributeType.EMAIL]: emailType,
+  [AttributeType.LINK]: linkType,
+  [AttributeType.PHONE]: phoneType,
+  [AttributeType.SOCIAL]: socialType,
+  [AttributeType.TEXT]: textType
 }
 
 export default attributeTypes
