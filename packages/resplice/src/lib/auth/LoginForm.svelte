@@ -1,7 +1,7 @@
 <script lang="ts">
   import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
-  import authStore from '$stores/auth'
-  import useAuthClient from '$lib/hooks/useAuthClient'
+  import authStore from '$lib/auth/store'
+  import useAuthClient from '$lib/auth/useAuthClient'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
@@ -28,6 +28,18 @@
     currentTarget: EventTarget & HTMLFormElement
   }
   async function onSubmit(_e: SubmitEvent) {
+    const isValid = validate()
+    if (!isValid) return
+
+    isLoading = true
+
+    const isBot = await checkBot()
+    if (isBot) return
+
+    createSession()
+  }
+
+  function validate(): boolean {
     formErrs = {}
     const errs: Record<string, string> = {}
     if (!isValidPhoneNumber(phone.value, phone.countryCallingCode))
@@ -35,25 +47,32 @@
     if (!validateEmail(email)) errs.email = 'Invalid Email'
     if (Object.keys(errs).length) {
       formErrs = errs
-      return
+      return false
     }
-    isLoading = true
+    return true
+  }
+
+  function checkBot(): Promise<boolean> {
     const grecaptcha: any = (window as any).grecaptcha
-    grecaptcha.ready(async () => {
-      const token = await grecaptcha.execute(
-        '6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG',
-        { action: 'auth' }
-      )
-      const isBot = await client.submitRecaptchaToken(token)
-      if (isBot) {
-        networkErr = new Error(
-          'We detected some bot behavior, you must be a robot?'
+    return new Promise((resolve) => {
+      grecaptcha.ready(async () => {
+        const token = await grecaptcha.execute(
+          '6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG',
+          { action: 'auth' }
         )
-      } else {
-        createSession()
-      }
+        const isBot = await client.submitRecaptchaToken(token)
+        if (isBot) {
+          networkErr = new Error(
+            'We detected some bot behavior, you must be a robot?'
+          )
+          resolve(true)
+        } else {
+          resolve(false)
+        }
+      })
     })
   }
+
   async function createSession() {
     try {
       const phoneNumber = parsePhoneNumber(

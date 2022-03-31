@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createAvatar } from '@dicebear/avatars'
   import * as style from '@dicebear/avatars-gridy-sprites'
-  export let uuid: string
+  export let id: number
   export let src = ''
   export let size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' = 'md'
 
@@ -21,12 +21,13 @@
     xl: 144,
     '2xl': 256
   }
-  const svg = createAvatar(style, { seed: uuid, width: svgWidthMap[size] })
+  const seed = Number(id).toString()
+  const svg = createAvatar(style, { seed, width: svgWidthMap[size] })
 </script>
 
 <div class="bg-gray-100 rounded-full w-max" class:p-2={!src} on:click>
   {#if src}
-    <img {src} loading="lazy" width={imageWidthMap[size]} alt={uuid} />
+    <img {src} loading="lazy" width={imageWidthMap[size]} alt={seed} />
   {:else}
     {@html svg}
   {/if}

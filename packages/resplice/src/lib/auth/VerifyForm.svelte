@@ -1,7 +1,7 @@
 <script lang="ts">
   import { parsePhoneNumber } from 'libphonenumber-js'
-  import authStore from '$stores/auth'
-  import useAuthClient from '$lib/hooks/useAuthClient'
+  import authStore from '$lib/auth/store'
+  import useAuthClient from '$lib/auth/useAuthClient'
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import LockClosedIcon from '$lib/icons/LockClosedIcon.svelte'
@@ -20,14 +20,15 @@
     $authStore.loginValues.phone.countryCallingCode as CountryCode
   )
   const email: Email = {
-    uuid: 'email',
+    id: 0,
     type: AttributeType.EMAIL,
     name: 'Email',
     value: { email: $authStore.loginValues.email },
-    sort_order: 1
+    sortOrder: 1
   }
+  // TODO: Fix phone type
   const phone: Phone = {
-    uuid: 'phone',
+    id: 1,
     type: AttributeType.PHONE,
     name: 'Phone',
     value: {
@@ -35,7 +36,7 @@
       number: parsedPhone.nationalNumber as string,
       isSms: true
     },
-    sort_order: 2
+    sortOrder: 2
   }
 
   let emailCode = ''

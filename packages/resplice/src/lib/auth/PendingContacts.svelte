@@ -3,7 +3,7 @@
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
   import ContactItem from '$lib/auth/ContactItem.svelte'
 
-  export let pendingContactsPromise: Promise<Pick<Contact, 'name' | 'uuid'>[]>
+  export let pendingContactsPromise: Promise<Pick<Contact, 'name' | 'id'>[]>
 </script>
 
 <div class="flex-1 overflow-scroll">

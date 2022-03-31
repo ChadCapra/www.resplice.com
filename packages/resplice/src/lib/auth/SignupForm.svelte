@@ -1,10 +1,10 @@
 <script lang="ts">
-  import useAuthClient from '$lib/hooks/useAuthClient'
+  import useAuthClient from '$lib/auth/useAuthClient'
   import UserAvatar from '$lib/user/UserAvatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import Button from '$lib/common/Button.svelte'
-  import authStore from '$stores/auth'
+  import authStore from '$lib/auth/store'
   import Link from '$lib/common/Link.svelte'
 
   const client = useAuthClient()
@@ -14,16 +14,22 @@
   let fullName = ''
   let avatar: Blob | null = null
   let formErrs: Record<string, string> = {}
+  let networkErr: Error
   let isLoading = false
 
+  type SubmitEvent = Event & {
+    currentTarget: EventTarget & HTMLFormElement
+  }
+  async function onSubmit(_e: SubmitEvent) {
+    const isValid = validate()
+    if (!isValid) return
+
+    isLoading = true
+
+    createAccount()
+  }
+
   async function createAccount() {
-    formErrs = {}
-    const errs: Record<string, string> = {}
-    if (!fullName) errs.fullName = 'Full name is required'
-    if (Object.keys(errs).length) {
-      formErrs = errs
-      return
-    }
     try {
       isLoading = true
       const user = await client.createAccount({
@@ -36,22 +42,33 @@
         session: { ...auth.session, user_uuid: user.uuid }
       }))
     } catch (err) {
-      console.log(err)
+      networkErr = err
       isLoading = false
     }
+  }
+
+  function validate(): boolean {
+    formErrs = {}
+    const errs: Record<string, string> = {}
+    if (!fullName) errs.fullName = 'Full name is required'
+    if (Object.keys(errs).length) {
+      formErrs = errs
+      return false
+    }
+    return true
   }
 </script>
 
 <div class="flex-1 space-y-6 flex flex-col justify-between overflow-auto">
   <div>
     <UserAvatar
-      user={{
+      profile={{
         uuid: RAND_UUID,
         avatar: avatar ? URL.createObjectURL(avatar) : null
       }}
       on:crop={(e) => (avatar = e.detail)}
     />
-    <div class="mt-8 px-2">
+    <form class="mt-8 px-2" on:submit|preventDefault={onSubmit}>
       <TextField
         name="full-name"
         label="Full Name"
@@ -60,13 +77,16 @@
         Icon={PeopleIcon}
         error={formErrs.fullName}
       />
-    </div>
+    </form>
   </div>
 
   <div class="flex-none flex flex-col items-center p-2">
     <Link class="mb-4" href="/auth/verify-existing">
       I already have an account
     </Link>
-    <Button color="brand" {isLoading} on:click={createAccount}>Continue</Button>
+    <Button type="submit" {isLoading}>Continue</Button>
+    {#if networkErr}
+      <p>{networkErr.message}</p>
+    {/if}
   </div>
 </div>

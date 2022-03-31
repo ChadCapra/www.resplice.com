@@ -2,11 +2,11 @@
   import { onMount, setContext } from 'svelte'
   import { browser } from '$app/env'
   import { goto } from '$app/navigation'
-  import authStore from '$stores/auth'
+  import authStore from '$lib/auth/store'
   import apiFactory from '$services/api/http'
   import authClientFactory, {
     contextKey as authContextKey
-  } from '$services/api/authClient'
+  } from '$lib/auth/authClient'
   import type { Session } from '$types/session'
   import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
   import useConfig from '$lib/hooks/useConfig'
