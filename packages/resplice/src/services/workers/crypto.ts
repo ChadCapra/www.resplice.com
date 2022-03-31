@@ -1,41 +1,38 @@
 import * as crypto from '$services/crypto'
 
 export enum Command {
-  GENERATE_KEYS = 'GENERATE_KEYS',
+  GENERATE_AES_KEY = 'GENERATE_AES_KEY',
   ENCRYPT = 'ENCRYPT',
   DECRYPT = 'DECRYPT'
 }
 interface GenerateCommand {
-  type: Command.GENERATE_KEYS
+  type: Command.GENERATE_AES_KEY
 }
 interface EncryptCommand {
   type: Command.ENCRYPT
-  derived_key: CryptoKey
-  data: ArrayBuffer
+  key: CryptoKey
+  data: Uint8Array
 }
 interface DecryptCommand {
   type: Command.DECRYPT
-  derived_key: CryptoKey
-  data: ArrayBuffer
+  key: CryptoKey
   iv: Uint8Array
+  data: Uint8Array
 }
 type CryptoCommand = GenerateCommand | EncryptCommand | DecryptCommand
 
 enum CryptoMessageType {
-  GENERATED = 'GENERATED',
+  GENERATED_AES_KEY = 'GENERATED_AES_KEY',
   ENCRYPTED = 'ENCRYPTED',
   DECRYPTED = 'DECRYPTED'
 }
 interface GeneratedMessage {
-  type: CryptoMessageType.GENERATED
-  keys: {
-    jwk: { aes: string; hmac: string }
-    keys: { aes: CryptoKey; hmac: CryptoKey }
-  }
+  type: CryptoMessageType.GENERATED_AES_KEY
+  aesKey: { key: CryptoKey; raw: ArrayBuffer }
 }
 interface EncryptedMessage {
   type: CryptoMessageType.ENCRYPTED
-  data: ArrayBuffer
+  data: { iv: Uint8Array; cipherText: Uint8Array }
 }
 interface DecryptedMessage {
   type: CryptoMessageType.DECRYPTED
@@ -54,27 +51,25 @@ interface CryptoWorker extends Worker {
 
 const ctx: CryptoWorker = self as any
 
-async function generateKeys() {
-  const keys = await crypto.generateKeys()
+async function generateKey() {
+  const aesKey = await crypto.generateAesKey()
   ctx.postMessage({
-    type: CryptoMessageType.GENERATED,
-    keys
+    type: CryptoMessageType.GENERATED_AES_KEY,
+    aesKey
   })
 }
 
-async function encrypt(key: CryptoKey, data: ArrayBuffer) {
+async function encrypt(key: CryptoKey, data: Uint8Array) {
   if (!key) throw new ReferenceError('Key must exist to encrypt data')
 
-  const encryptedData = data
-    ? await crypto.encrypt(key, data)
-    : new ArrayBuffer(0)
+  const encryptedData = await crypto.encrypt(key, data)
   return ctx.postMessage({
     type: CryptoMessageType.ENCRYPTED,
     data: encryptedData
   })
 }
 
-async function decrypt(key: CryptoKey, data: ArrayBuffer, iv: Uint8Array) {
+async function decrypt(key: CryptoKey, data: Uint8Array, iv: Uint8Array) {
   if (!key) throw new ReferenceError('Key must exist to decrypt data')
 
   const decryptedData = data ? await crypto.decrypt(key, data, iv) : ''
@@ -86,14 +81,16 @@ async function decrypt(key: CryptoKey, data: ArrayBuffer, iv: Uint8Array) {
 
 ctx.onmessage = ({ data: cmd }) => {
   switch (cmd.type) {
-    case Command.GENERATE_KEYS:
-      generateKeys()
+    case Command.GENERATE_AES_KEY:
+      generateKey()
       break
     case Command.ENCRYPT:
-      encrypt(cmd.derived_key, cmd.data)
+      if (!cmd.data) throw new Error('Data cannot be null')
+      encrypt(cmd.key, cmd.data)
       break
     case Command.DECRYPT:
-      decrypt(cmd.derived_key, cmd.data, cmd.iv)
+      if (!cmd.data || cmd.iv) throw new Error('Data cannot be null')
+      decrypt(cmd.key, cmd.data, cmd.iv)
       break
     default:
       throw new Error('Invalid command for Crypto worker')

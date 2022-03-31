@@ -2,13 +2,14 @@ import * as reproto from '$lib/reproto'
 import processRecords from '$stores/utils'
 import type { AppCache } from '$services/cache'
 import type { InviteStore } from '$stores/invites'
-import type { Invite } from '$types/invite'
+import type { Invite, QrInvite } from '$types/invite'
 import type {
   EmailValue,
   PhoneValue,
   Attribute as UserAttribute
 } from '$types/attribute'
 import type { Contact } from '$types/contact'
+import type { Attribute } from '$types/user'
 
 const ServerMessageType = reproto.api_response.ResponseType
 export type ServerMessage = {
@@ -19,14 +20,26 @@ const ClientMessageType = reproto.api_request.RequestType
 
 export interface InvitesClient {
   handleMessage: (message: ServerMessage) => void
-  inviteViaHandle: (handle: Contact['handle']) => void
-  inviteViaPhone: (phone: PhoneValue) => void
-  inviteViaEmail: (email: EmailValue) => void
+  inviteViaHandle: (
+    name: string,
+    handle: Contact['handle'],
+    attributeIds: Attribute['id'][]
+  ) => void
+  inviteViaPhone: (
+    name: string,
+    phone: PhoneValue,
+    attributeIds: Attribute['id'][]
+  ) => void
+  inviteViaEmail: (
+    name: string,
+    email: EmailValue,
+    attributeIds: Attribute['id'][]
+  ) => void
   delete: (id: Invite['id']) => void
-  addAttribute: (id: Invite['id'], attributeId: UserAttribute['id']) => void
-  removeAttribute: (id: Invite['id'], attributeId: UserAttribute['id']) => void
-  addShare: (id: Contact['id'], attributeId: UserAttribute['id']) => void
-  removeShare: (id: Contact['id'], attributeId: UserAttribute['id']) => void
+  createQr: () => void
+  deleteQr: (id: QrInvite['id']) => void
+  addShare: (id: Invite['id'], attributeId: UserAttribute['id']) => void
+  removeShare: (id: Invite['id'], attributeId: UserAttribute['id']) => void
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
@@ -59,42 +72,35 @@ function invitesClientFactory(
             )
           )
           break
-        case ServerMessageType.CONTACT_SHARES:
-          store.shares.update((state) =>
-            processRecords(
-              state,
-              'id',
-              message.data.contactShares,
-              message.data.expiredIds
-            )
-          )
+        case ServerMessageType.QR_INVITES:
+          store.activeQrInvite.set(message.data)
           break
       }
     },
-    inviteViaHandle: (handle) => {
+    inviteViaHandle: (name, handle, attributeIds) => {
       conn.postMessage({
         type: 'SEND',
         message: {
           type: ClientMessageType.CONTACT_INVITE_VIA_HANDLE,
-          data: { handle }
+          data: { name, handle, attributeIds }
         }
       })
     },
-    inviteViaPhone: (phone) => {
+    inviteViaPhone: (name, phone, attributeIds) => {
       conn.postMessage({
         type: 'SEND',
         message: {
           type: ClientMessageType.CONTACT_INVITE_VIA_PHONE,
-          data: { phone }
+          data: { name, phone, attributeIds }
         }
       })
     },
-    inviteViaEmail: (email) => {
+    inviteViaEmail: (name, email, attributeIds) => {
       conn.postMessage({
         type: 'SEND',
         message: {
           type: ClientMessageType.CONTACT_INVITE_VIA_EMAIL,
-          data: { email }
+          data: { name, email, attributeIds }
         }
       })
     },
@@ -107,7 +113,25 @@ function invitesClientFactory(
         }
       })
     },
-    addAttribute: (id, attributeId) => {
+    createQr: () => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.QR_CONTACT_INVITE_CREATE,
+          data: {}
+        }
+      })
+    },
+    deleteQr: (id) => {
+      conn.postMessage({
+        type: 'SEND',
+        message: {
+          type: ClientMessageType.QR_CONTACT_INVITE_DELETE,
+          data: { id }
+        }
+      })
+    },
+    addShare: (id, attributeId) => {
       conn.postMessage({
         type: 'SEND',
         message: {
@@ -116,29 +140,11 @@ function invitesClientFactory(
         }
       })
     },
-    removeAttribute: (id, attributeId) => {
-      conn.postMessage({
-        type: 'SEND',
-        message: {
-          type: ClientMessageType.CONTACT_INVITE_REMOVE_ATTRIBUTE,
-          data: { id, attributeId }
-        }
-      })
-    },
-    addShare: (id, attributeId) => {
-      conn.postMessage({
-        type: 'SEND',
-        message: {
-          type: ClientMessageType.CONTACT_ADD_SHARE,
-          data: { id, attributeId }
-        }
-      })
-    },
     removeShare: (id, attributeId) => {
       conn.postMessage({
         type: 'SEND',
         message: {
-          type: ClientMessageType.CONTACT_REMOVE_SHARE,
+          type: ClientMessageType.CONTACT_INVITE_REMOVE_ATTRIBUTE,
           data: { id, attributeId }
         }
       })

@@ -1,45 +1,3 @@
-export async function generateKeys() {
-  // Public Private Key generation
-  // const keys = await crypto.subtle.generateKey(
-  //   {
-  //     name: 'ECDH',
-  //     namedCurve: 'P-256'
-  //   },
-  //   true,
-  //   ['deriveKey', 'deriveBits']
-  // )
-  // const derivedKey = await crypto.subtle.deriveKey(
-  //   { name: 'ECDH', public: keys.publicKey },
-  //   keys.privateKey,
-  //   { name: 'AES-GCM', length: 256 },
-  //   true,
-  //   ['encrypt', 'decrypt']
-  // )
-  // TODO: 128 or 256
-  const aesKey = await crypto.subtle.generateKey(
-    {
-      name: 'AES-GCM',
-      length: 256
-    },
-    true,
-    ['encrypt', 'decrypt']
-  )
-  const hmacKey = await crypto.subtle.generateKey(
-    {
-      name: 'HMAC',
-      hash: 'SHA-256'
-    },
-    true,
-    ['sign', 'verify']
-  )
-  const aesJwk = await crypto.subtle.exportKey('jwk', aesKey)
-  const hmacJwk = await crypto.subtle.exportKey('jwk', hmacKey)
-  return {
-    keys: { aes: aesKey, hmac: hmacKey },
-    jwk: { aes: aesJwk.k, hmac: hmacJwk.k }
-  }
-}
-
 export async function generateAesKey() {
   const key = await crypto.subtle.generateKey(
     {
@@ -59,7 +17,7 @@ export async function generateAesKey() {
 export async function encrypt(
   key: CryptoKey,
   data: Uint8Array
-): Promise<{ iv: Uint8Array; bytes: Uint8Array }> {
+): Promise<{ iv: Uint8Array; cipherText: Uint8Array }> {
   // The IV should change everytime encryption happens
   const iv = crypto.getRandomValues(new Uint8Array(12))
   const encryptedBuffer: ArrayBuffer = await crypto.subtle.encrypt(
@@ -74,9 +32,9 @@ export async function encrypt(
     data
   )
 
-  const bytes = new Uint8Array(encryptedBuffer)
+  const cipherText = new Uint8Array(encryptedBuffer)
 
-  return { iv, bytes }
+  return { iv, cipherText }
 }
 
 export async function decrypt(

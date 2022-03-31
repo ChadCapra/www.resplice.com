@@ -2,7 +2,7 @@ import type { Attribute as BaseAttribute } from './attribute'
 import type { Chat as BaseChat } from './chat'
 import type { Invite as BaseInvite } from './invite'
 
-export type User = {
+export type Profile = {
   uuid: string
   name: string
   avatar: string | null

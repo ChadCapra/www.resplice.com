@@ -1,4 +1,4 @@
-import type { User } from '$types/user'
+import type { User } from '$types/profile'
 
 export const user: User = {
   uuid: 'bastilla-shan',

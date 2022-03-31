@@ -6,9 +6,9 @@
   import IconButton from '$lib/common/IconButton.svelte'
   import SettingsIcon from '$lib/icons/SettingsIcon.svelte'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
-  import type { User } from '$types/user'
+  import type { Profile } from '$types/user'
 
-  export let user: User | null
+  export let profile: Profile | null
   export let showUser = false
 </script>
 
@@ -20,9 +20,9 @@
         class="flex items-center ml-4"
         transition:fade={{ delay: 50, duration: 150 }}
       >
-        {#if !!user}
-          <Avatar uuid={user.uuid} src={user.avatar} size="sm" />
-          <h2 class="ml-2 font-semibold text-xl">{user.name}</h2>
+        {#if !!profile}
+          <Avatar uuid={profile.uuid} src={profile.avatar} size="sm" />
+          <h2 class="ml-2 font-semibold text-xl">{profile.name}</h2>
         {:else}
           <Skeleton variant="circle" height="1em" width="1em" />
           <Skeleton variant="rect" height="1em" width="100%" />

@@ -1,63 +1,64 @@
-import type { EmailValue, PhoneValue } from './attribute'
+import type {
+  EmailValue,
+  PhoneValue,
+  Share as BaseShare,
+  Attribute as BaseAttribute
+} from './attribute'
 
 export enum InviteType {
   HANDLE = 'HANDLE',
   PHONE = 'PHONE',
   EMAIL = 'EMAIL',
-  SPLICE = 'SPLICE',
-  QR_CODE = 'QR_CODE' // TODO: Check with proto schema
+  SPLICE = 'SPLICE'
 }
 
 interface BaseInvite {
   id: number
   type: InviteType
-  name: string
-  value: PhoneValue | EmailValue | string | number
   expiry: number
 }
 
 interface HandleInvite extends BaseInvite {
   type: InviteType.HANDLE
-  value: string
+  name: string
+  handle: string
 }
 
 interface PhoneInvite extends BaseInvite {
   type: InviteType.PHONE
-  value: PhoneValue
+  name: string
+  phone: PhoneValue
 }
 
 interface EmailInvite extends BaseInvite {
   type: InviteType.EMAIL
-  value: EmailValue
+  name: string
+  email: EmailValue
 }
 
-interface SpliceInvite extends BaseInvite {
+interface CommonSpliceInvite extends BaseInvite {
   type: InviteType.SPLICE
-  value: string
-}
-
-interface QrCodeInvite extends BaseInvite {
-  type: InviteType.QR_CODE
-  value: number
+  splice_name: string
 }
 
 export type Invite =
   | HandleInvite
   | PhoneInvite
   | EmailInvite
-  | SpliceInvite
-  | QrCodeInvite // TODO: Think more about QrCode Invites
+  | CommonSpliceInvite
 
-export type InviteAttribute = {
+export type QrInvite = {
   id: number
-  inviteId: number
-  attributeId: number
+  unlock_code: number
+  expiry: number
+  attributeIds: number[]
 }
 
-// TODO: Figure out if this belongs here.
-export type Share = {
-  id: number
-  contactId: number
-  attributeId: number
+export type Attribute = BaseAttribute & {
+  inviteId: number
   sharedOn: number
+}
+
+export type Share = BaseShare & {
+  inviteId: number
 }

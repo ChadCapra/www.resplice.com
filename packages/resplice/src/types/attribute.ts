@@ -141,3 +141,8 @@ export type AttributeTypeConfig = {
   handleAction: (action: AttributeAction, value: AttributeValue) => void
   valueToString: (value: AttributeValue) => string
 }
+
+export type Share = {
+  id: number
+  attributeId: number
+}

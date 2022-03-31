@@ -14,7 +14,7 @@ import {
 } from '$services/crypto'
 import mockAuthClientFactory from '$services/mocks/authClient'
 
-import type { Api } from './http'
+import type { Api } from '$services/api/http'
 import type { Session } from '$types/session'
 
 const ServerMessageType = reproto.api_response.ResponseType
@@ -70,7 +70,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         requestType: ClientMessageType.ACCOUNT_CREATE,
         requestId: latestTransactionId,
         iv: encryptedMessage.iv,
-        encryptedParameters: encryptedMessage.bytes
+        encryptedParameters: encryptedMessage.cipherText
       }
       const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
 
@@ -170,7 +170,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         requestType: ClientMessageType.SESSION_VERIFY_EMAIL,
         requestId: latestTransactionId,
         iv: encryptedMessage.iv,
-        encryptedParameters: encryptedMessage.bytes
+        encryptedParameters: encryptedMessage.cipherText
       }
       const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
       const resBuffer: ArrayBuffer = await api.post({
@@ -207,7 +207,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         requestType: ClientMessageType.SESSION_VERIFY_PHONE,
         requestId: latestTransactionId,
         iv: encryptedMessage.iv,
-        encryptedParameters: encryptedMessage.bytes
+        encryptedParameters: encryptedMessage.cipherText
       }
       const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
       const resBuffer: ArrayBuffer = await api.post({

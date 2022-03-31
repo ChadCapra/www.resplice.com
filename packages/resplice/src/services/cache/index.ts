@@ -1,4 +1,4 @@
-import type { User } from '$types/user'
+import type { User } from '$types/profile'
 
 export interface AppCache {
   addUser: (user: User) => void

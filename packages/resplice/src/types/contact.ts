@@ -1,4 +1,7 @@
-import type { Attribute as BaseAttribute } from './attribute'
+import type {
+  Attribute as BaseAttribute,
+  Share as BaseShare
+} from './attribute'
 import type { Chat as BaseChat } from './chat'
 import type { Invite as BaseInvite } from './invite'
 
@@ -20,17 +23,21 @@ export type Attribute = BaseAttribute & {
   sharedOn: number
 }
 
-export type Chat = BaseChat & {
-  contactID: string
+export type Share = BaseShare & {
+  contactId: number
 }
 
-export type Invite = BaseInvite & {
+export type PendingContact = BaseInvite & {
   avatarUrl: string
 }
 
-export type InviteAttribute = {
+export type PendingContactAttribute = {
   id: BaseAttribute['id']
   pendingContactId: number
   name: BaseAttribute['name']
   type: BaseAttribute['type']
+}
+
+export type Chat = BaseChat & {
+  contactID: string
 }

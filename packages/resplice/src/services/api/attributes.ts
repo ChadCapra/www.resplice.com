@@ -1,10 +1,10 @@
-import type { AppCache } from '$services/cache'
-import type { UserStore } from '$stores/user'
-import type { AttributeStore } from '$stores/attributes'
-import processRecords from '$stores/utils'
-import type { Attribute } from '$types/attribute'
-import type { User } from '$types/user'
 import * as reproto from '$lib/reproto'
+import { ConnCommand } from '$services/api/appClient'
+import processRecords from '$stores/utils'
+
+import type { AppCache } from '$services/cache'
+import type { AttributeStore } from '$stores/attributes'
+import type { Attribute } from '$types/user'
 
 const ServerMessageType = reproto.api_response.ResponseType
 // TODO: Type data based on ResponseType
@@ -14,12 +14,8 @@ export type ServerMessage = {
 }
 const ClientMessageType = reproto.api_request.RequestType
 
-export interface UserClient {
+export interface AttributesClient {
   handleMessage: (message: ServerMessage) => void
-  editName: (name: User['name']) => void
-  editHandle: (handle: User['handle']) => void
-  editAvatar: (avatar: Blob) => void
-  deleteAccount: (handle: User['handle'], removeAllData: boolean) => void
   addAttribute: (attribute: Omit<Attribute, 'id'>) => void
   editAttributeName: (params: Pick<Attribute, 'id' | 'name'>) => void
   editAttributeValue: (params: Pick<Attribute, 'id' | 'value'>) => void
@@ -29,74 +25,32 @@ export interface UserClient {
   deleteAttribute: (attributeID: Attribute['id']) => void
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-function userClientFactory(
+function attributesClientFactory(
   conn: Worker,
-  cache: AppCache,
-  stores: { user: UserStore; attributes: AttributeStore }
-): UserClient {
+  _cache: AppCache, // TODO: Implement cache
+  store: AttributeStore
+): AttributesClient {
   return {
     handleMessage: (message) => {
       switch (message.type) {
-        case ServerMessageType.USER_PROFILE:
-          cache.addUser(message.data)
-          stores.user.update((state) => ({ ...state, ...message.data }))
-          break
         case ServerMessageType.USER_ATTRIBUTES:
-          stores.attributes.update((state) =>
+          store.update((state) =>
             processRecords(
               state,
               'id',
-              message.data.contacts,
+              message.data.attributes,
               message.data.expiredIds
             )
           )
           break
         case ServerMessageType.USER_ATTRIBUTE_GROUPS: // TODO
-        case ServerMessageType.USER_SESSIONS: // TODO
         default:
           console.log(message.type, message.data)
       }
     },
-    editName: (name) => {
-      conn.postMessage({
-        type: 'SEND',
-        message: {
-          type: ClientMessageType.USER_PROFILE_EDIT_NAME,
-          data: { name }
-        }
-      })
-    },
-    editHandle: (handle) => {
-      conn.postMessage({
-        type: 'SEND',
-        message: {
-          type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
-          data: { handle }
-        }
-      })
-    },
-    editAvatar: (avatar) => {
-      conn.postMessage({
-        type: 'SEND',
-        message: {
-          type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
-          data: { avatar }
-        }
-      })
-    },
-    deleteAccount: (handle, removeAllData) => {
-      conn.postMessage({
-        type: 'SEND',
-        message: {
-          type: ClientMessageType.ACCOUNT_DELETE,
-          data: { handle, removeAllData }
-        }
-      })
-    },
     addAttribute: (attribute) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_CREATE,
           data: { attribute }
@@ -105,7 +59,7 @@ function userClientFactory(
     },
     editAttributeName: (params) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_EDIT_NAME,
           data: params
@@ -114,7 +68,7 @@ function userClientFactory(
     },
     editAttributeValue: (params) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_EDIT_VALUE,
           data: params
@@ -123,7 +77,7 @@ function userClientFactory(
     },
     editAttributeSort: (params) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_SORT,
           data: params
@@ -132,7 +86,7 @@ function userClientFactory(
     },
     sendAttributeVerification: (attributeID) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_SEND_VERIFICATION,
           data: { attributeID }
@@ -141,7 +95,7 @@ function userClientFactory(
     },
     verifyAttribute: (attributeID, code) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_VERIFY,
           data: { attributeID, code }
@@ -150,7 +104,7 @@ function userClientFactory(
     },
     deleteAttribute: (attributeID) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_DELETE,
           data: { attributeID }
@@ -160,4 +114,4 @@ function userClientFactory(
   }
 }
 
-export default userClientFactory
+export default attributesClientFactory

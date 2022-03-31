@@ -1,29 +1,37 @@
-import type { Contact } from './contact'
-import type { Attribute as BaseAttribute } from './attribute'
+import type {
+  Attribute as BaseAttribute,
+  Share as BaseShare
+} from './attribute'
 import type { Chat as BaseChat } from './chat'
 
 export type Splice = {
-  uuid: string
+  id: number
   name: string
-  members: Contact[]
+  members: Member[]
   latest_message: Chat
   latest_attribute: Attribute
   missed_chats: number
 }
 
-export type SpliceDetail = Splice & {
-  chats: Chat[]
-  attributes: Attribute[]
+// TODO: Complete member, can I join type with Contact type
+export type Member = {
+  id: number
+  name: string
 }
 
 export type Attribute = BaseAttribute & {
-  splice_uuid: string
+  spliceId: number
+  sharedOn: number
+}
+
+export type Share = BaseShare & {
+  spliceId: number
 }
 
 export type Chat = BaseChat & {
-  splice_uuid: string
+  spliceId: number
 }
 
-export type Plan = {
-  uuid: string
-}
+// export type Plan = {
+//   id: number
+// }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import userStore from '$stores/user'
+  import profileStore from '$stores/profile'
   import Avatar from '$lib/common/Avatar.svelte'
   import SearchIcon from '$lib/icons/SearchIcon.svelte'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
@@ -16,11 +16,11 @@
     </div>
     <p class="text-gray-500 font-semibold">Search</p>
   </button>
-  {#if $userStore}
+  {#if $profileStore}
     <Avatar
       size="md"
-      uuid={$userStore.uuid}
-      src={$userStore.avatar}
+      uuid={$profileStore.uuid}
+      src={$profileStore.avatar}
       on:click={() => goto('/app/user')}
     />
   {:else}

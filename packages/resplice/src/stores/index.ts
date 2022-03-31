@@ -1,19 +1,21 @@
-import auth from './auth'
 import attributes from './attributes'
 import chat from './chat'
 import conn from './conn'
 import contacts from './contacts'
 import invites from './invites'
-import user from './user'
+import profile from './profile'
+import session from './session'
+import toasts from './toasts'
 
 const stores = {
-  auth,
   attributes,
   chat,
   conn,
   contacts,
   invites,
-  user
+  profile,
+  session,
+  toasts
 }
 
 export type Stores = typeof stores

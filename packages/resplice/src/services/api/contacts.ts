@@ -1,8 +1,11 @@
 import * as reproto from '$lib/reproto'
+import { ConnCommand } from '$services/api/appClient'
 import processRecords from '$stores/utils'
+
 import type { AppCache } from '$services/cache'
 import type { ContactStore } from '$stores/contacts'
-import type { Contact, Invite } from '$types/contact'
+import type { Contact, PendingContact } from '$types/contact'
+import type { Attribute as UserAttribute } from '$types/user'
 
 const ServerMessageType = reproto.api_response.ResponseType
 export type ServerMessage = {
@@ -22,21 +25,18 @@ export interface ContactsClient {
   // archive: (id: Contact['id']) => void
   // unarchive: (id: Contact['id']) => void
   delete: (id: Contact['id']) => void
-  // requestAttributeType: (id: Contact['id']) => void
-  // removeAttribute: (id: Contact['id']) => void
-  createPending: () => void // TODO: Talk about what this is
-  acceptPending: (id: Invite['id']) => void
-  declinePending: (id: Invite['id']) => void
+  addShare: (id: Contact['id'], attributeId: UserAttribute['id']) => void
+  removeShare: (id: Contact['id'], attributeId: UserAttribute['id']) => void
+  acceptPending: (id: PendingContact['id']) => void
+  declinePending: (id: PendingContact['id']) => void
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function contactsClientFactory(
   conn: Worker,
-  _cache: AppCache,
+  _cache: AppCache, // TODO: Implement cache
   store: ContactStore
 ): ContactsClient {
   return {
-    // TODO: Implement cache
     handleMessage: (message) => {
       switch (message.type) {
         case ServerMessageType.CONTACTS:
@@ -59,8 +59,18 @@ function contactsClientFactory(
             )
           )
           break
+        case ServerMessageType.CONTACT_SHARES:
+          store.contactShares.update((state) =>
+            processRecords(
+              state,
+              'id',
+              message.data.contactShares,
+              message.data.expiredIds
+            )
+          )
+          break
         case ServerMessageType.PENDING_CONTACTS:
-          store.invites.update((state) =>
+          store.pendingContacts.update((state) =>
             processRecords(
               state,
               'id',
@@ -70,7 +80,7 @@ function contactsClientFactory(
           )
           break
         case ServerMessageType.PENDING_CONTACT_ATTRIBUTES:
-          store.inviteAttributes.update((state) =>
+          store.pendingContactAttributes.update((state) =>
             processRecords(
               state,
               'id',
@@ -83,7 +93,7 @@ function contactsClientFactory(
     },
     editAlias: (params) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.CONTACT_EDIT_ALIAS,
           data: params
@@ -92,7 +102,7 @@ function contactsClientFactory(
     },
     editDescription: (params) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.CONTACT_EDIT_DESCRIPTION,
           data: params
@@ -101,7 +111,7 @@ function contactsClientFactory(
     },
     favor: (id) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.CONTACT_FAVOR,
           data: { id }
@@ -110,7 +120,7 @@ function contactsClientFactory(
     },
     unfavor: (id) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.CONTACT_UNFAVOR,
           data: { id }
@@ -119,26 +129,34 @@ function contactsClientFactory(
     },
     delete: (id) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.CONTACT_DELETE,
           data: { id }
         }
       })
     },
-    createPending: () => {
-      // TODO
-      // conn.postMessage({
-      //   type: 'SEND',
-      //   message: {
-      //     type: ClientMessageType.PENDING_CONTACT_CREATE_VIA_QR,
-      //     data: { id }
-      //   }
-      // })
+    addShare: (id, attributeId) => {
+      conn.postMessage({
+        type: ConnCommand.SEND,
+        message: {
+          type: ClientMessageType.CONTACT_ADD_SHARE,
+          data: { id, attributeId }
+        }
+      })
+    },
+    removeShare: (id, attributeId) => {
+      conn.postMessage({
+        type: ConnCommand.SEND,
+        message: {
+          type: ClientMessageType.CONTACT_REMOVE_SHARE,
+          data: { id, attributeId }
+        }
+      })
     },
     acceptPending: (id) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.PENDING_CONTACT_ACCEPT,
           data: { id }
@@ -147,7 +165,7 @@ function contactsClientFactory(
     },
     declinePending: (id) => {
       conn.postMessage({
-        type: 'SEND',
+        type: ConnCommand.SEND,
         message: {
           type: ClientMessageType.PENDING_CONTACT_DECLINE,
           data: { id }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
-  import type { User } from '$types/user'
+  import type { Profile } from '$types/user'
   import Avatar from '$lib/common/Avatar.svelte'
   import UploadIcon from '$lib/icons/UploadIcon.svelte'
   import Modal from '$lib/common/Modal.svelte'
@@ -8,7 +8,7 @@
 
   const dispatch = createEventDispatcher()
 
-  export let user: Pick<User, 'uuid' | 'avatar'>
+  export let profile: Pick<Profile, 'uuid' | 'avatar'>
 
   let imageInput: HTMLInputElement
   let rawImage: File | null = null
@@ -21,7 +21,7 @@
 
 <div class="w-full flex flex-col items-center">
   <div class="relative active:scale-95" on:click={() => imageInput.click()}>
-    <Avatar uuid={user.uuid} src={user.avatar} size="xl" />
+    <Avatar uuid={profile.uuid} src={profile.avatar} size="xl" />
     <div
       class="absolute right-2 bottom-0 bg-white rounded-full p-2 text-gray-600"
     >

@@ -1,6 +1,6 @@
 <script lang="ts">
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
-  import { sortAttributes } from '$lib/attributes/utils'
+  import { sortUserAttributes } from '$lib/attributes/utils'
   import Button from '$lib/common/Button.svelte'
   import Toggle from '$lib/common/form/Toggle.svelte'
   import Modal from '$lib/common/Modal.svelte'
@@ -8,12 +8,12 @@
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
   import attributeStore from '$stores/attributes'
 
-  export let shares = new Set<string>()
+  export let shares = new Set<number>()
   let isEditing = false
   let initialSharesSet = false
 
   $: attributes = $attributeStore
-  $: sortedAttributes = attributes ? sortAttributes(attributes) : []
+  $: sortedAttributes = attributes ? sortUserAttributes(attributes) : []
 
   $: {
     // TODO: Find a better way to set initial shares
@@ -23,7 +23,7 @@
     }
   }
 
-  function toggleShare(id: string) {
+  function toggleShare(id: number) {
     if (shares.has(id)) shares.delete(id)
     else shares.add(id)
     // Need to do this so svelte will rerender
