@@ -11,12 +11,12 @@ import type {
 import type { Contact } from '$types/contact'
 import type { Attribute } from '$types/user'
 
-const ServerMessageType = reproto.api_response.ResponseType
+const ServerMessageType = reproto.server_message.ServerMessageType
 export type ServerMessage = {
-  type: reproto.api_response.ResponseType
+  type: reproto.server_message.ServerMessageType
   data: any
 }
-const ClientMessageType = reproto.api_request.RequestType
+const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface InvitesClient {
   handleMessage: (message: ServerMessage) => void

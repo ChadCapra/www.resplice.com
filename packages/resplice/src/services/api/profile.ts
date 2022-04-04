@@ -3,16 +3,16 @@ import type { ProfileStore } from '$stores/profile'
 import type { AttributeStore } from '$stores/attributes'
 import processRecords from '$stores/utils'
 import type { Attribute } from '$types/attribute'
-import type { Profile } from '$types/profile'
+import type { Profile } from '$types/user'
 import * as reproto from '$lib/reproto'
 
-const ServerMessageType = reproto.api_response.ResponseType
+const ServerMessageType = reproto.server_message.ServerMessageType
 // TODO: Type data based on ResponseType
 export type ServerMessage = {
-  type: reproto.api_response.ResponseType
+  type: reproto.server_message.ServerMessageType
   data: any
 }
-const ClientMessageType = reproto.api_request.RequestType
+const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface ProfileClient {
   handleMessage: (message: ServerMessage) => void

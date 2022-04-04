@@ -7,12 +7,12 @@ import type { ContactStore } from '$stores/contacts'
 import type { Contact, PendingContact } from '$types/contact'
 import type { Attribute as UserAttribute } from '$types/user'
 
-const ServerMessageType = reproto.api_response.ResponseType
+const ServerMessageType = reproto.server_message.ServerMessageType
 export type ServerMessage = {
-  type: reproto.api_response.ResponseType
+  type: reproto.server_message.ServerMessageType
   data: any
 }
-const ClientMessageType = reproto.api_request.RequestType
+const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface ContactsClient {
   handleMessage: (message: ServerMessage) => void

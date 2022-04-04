@@ -6,13 +6,13 @@ import type { AppCache } from '$services/cache'
 import type { AttributeStore } from '$stores/attributes'
 import type { Attribute } from '$types/user'
 
-const ServerMessageType = reproto.api_response.ResponseType
+const ServerMessageType = reproto.server_message.ServerMessageType
 // TODO: Type data based on ResponseType
 export type ServerMessage = {
-  type: reproto.api_response.ResponseType
+  type: reproto.server_message.ServerMessageType
   data: any
 }
-const ClientMessageType = reproto.api_request.RequestType
+const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface AttributesClient {
   handleMessage: (message: ServerMessage) => void

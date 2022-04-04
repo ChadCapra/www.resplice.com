@@ -4,10 +4,10 @@ import { ConnCommand } from '$services/api/appClient'
 import type { ChatStore } from '$stores/chat'
 // import type { Chat } from '$types/user'
 
-const ServerMessageType = reproto.api_response.ResponseType
+const ServerMessageType = reproto.server_message.ServerMessageType
 // TODO: Type data based on ResponseType
 export type ServerMessage = {
-  type: reproto.api_response.ResponseType
+  type: reproto.server_message.ServerMessageType
   data: any
 }
 

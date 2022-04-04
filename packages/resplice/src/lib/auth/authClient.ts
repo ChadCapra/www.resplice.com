@@ -17,8 +17,8 @@ import mockAuthClientFactory from '$services/mocks/authClient'
 import type { Api } from '$services/api/http'
 import type { Session } from '$types/session'
 
-const ServerMessageType = reproto.api_response.ResponseType
-const ClientMessageType = reproto.api_request.RequestType
+const ServerMessageType = reproto.server_message.ServerMessageType
+const ClientMessageType = reproto.client_request.ClientRequestType
 
 type CreateSessionRequest = {
   phone: string
@@ -66,11 +66,11 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: params
       })
       const encryptedMessage = await encrypt(aesKey, createAccountBytes)
-      const clientMessage: reproto.api_request.ApiRequest = {
+      const clientMessage: reproto.client_request.ClientRequest = {
         requestType: ClientMessageType.ACCOUNT_CREATE,
         requestId: latestTransactionId,
-        iv: encryptedMessage.iv,
-        encryptedParameters: encryptedMessage.cipherText
+        // TODO: Fix encrypted payload
+        encryptedPayload: encryptedMessage.cipherText + encryptedMessage.iv
       }
       const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
 
@@ -166,11 +166,11 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: params
       })
       const encryptedMessage = await encrypt(aesKey, verifyEmailBytes)
-      const clientMessage: reproto.api_request.ApiRequest = {
+      const clientMessage: reproto.client_request.ClientRequest = {
         requestType: ClientMessageType.SESSION_VERIFY_EMAIL,
         requestId: latestTransactionId,
-        iv: encryptedMessage.iv,
-        encryptedParameters: encryptedMessage.cipherText
+        // TODO: Fix encrypted payload
+        encryptedPayload: encryptedMessage.cipherText + encryptedMessage.iv
       }
       const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
       const resBuffer: ArrayBuffer = await api.post({
@@ -203,11 +203,11 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: params
       })
       const encryptedMessage = await encrypt(aesKey, verifyEmailBytes)
-      const clientMessage: reproto.api_request.ApiRequest = {
+      const clientMessage: reproto.client_request.ClientRequest = {
         requestType: ClientMessageType.SESSION_VERIFY_PHONE,
         requestId: latestTransactionId,
-        iv: encryptedMessage.iv,
-        encryptedParameters: encryptedMessage.cipherText
+        // TODO: Fix encrypted payload
+        encryptedPayload: encryptedMessage.cipherText + encryptedMessage.iv
       }
       const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
       const resBuffer: ArrayBuffer = await api.post({

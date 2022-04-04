@@ -7,10 +7,10 @@
 
   let aesKey: { key: CryptoKey; raw: ArrayBuffer }
 
-  let clientMessage: reproto.api_request.ApiRequest
+  let clientMessage: reproto.client_request.ClientRequest
 
-  // const ServerMessageType = reproto.api_response.ResponseType
-  const ClientMessageType = reproto.api_request.RequestType
+  // const ServerMessageType = reproto.server_message.ServerMessageType
+  const ClientMessageType = reproto.client_request.ClientRequestType
 
   $: clientMessageEncoded =
     clientMessage && encodeClientMessageWrapper(clientMessage)
