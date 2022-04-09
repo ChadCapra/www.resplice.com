@@ -2,10 +2,10 @@ export type Session = {
   id: number
   email: string
   phone: string
-  email_verified_at: number | null
-  phone_verified_at: number | null
-  authenticated_at: number | null
-  remember_me: boolean
+  emailVerifiedAt: number | null
+  phoneVerifiedAt: number | null
+  authenticatedAt: number | null
+  rememberMe: boolean
   expiry: number
 }
 

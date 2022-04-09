@@ -13,7 +13,7 @@
 
   const config = useConfig()
 
-  const api = apiFactory(config.http_endpoint)
+  const api = apiFactory(config.httpEndpoint)
   const client = authClientFactory(api, true)
 
   let sessionPromise: Promise<boolean> = Promise.resolve(false)
@@ -48,8 +48,8 @@
       return
     }
 
-    if (session.email_verified_at && session.phone_verified_at) {
-      if (session.authenticated_at) {
+    if (session.emailVerifiedAt && session.phoneVerifiedAt) {
+      if (session.authenticatedAt) {
         goto('/app/list/contacts')
         return
       } else {
