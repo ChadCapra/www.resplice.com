@@ -112,7 +112,7 @@
 
 <svelte:head>
   <script
-    src="https://www.google.com/recaptcha/api.js?render=6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG"
+    src={`https://www.google.com/recaptcha/api.js?render=${config.recaptchaToken}`}
     async
     defer>
   </script>
