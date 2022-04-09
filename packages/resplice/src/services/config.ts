@@ -2,23 +2,25 @@ type ENV = 'local' | 'development' | 'production'
 
 export type RespliceConfig = {
   env: ENV
-  http_endpoint: string
-  ws_endpoint: string
-  apm_endpoint: string
+  httpEndpoint: string
+  wsEndpoint: string
+  telemetryEndpoint: string
+  recaptchaToken: string
 }
 
 export const contextKey = 'CONFIG'
 
-export const default_config: RespliceConfig = {
+export const defaultConfig: RespliceConfig = {
   env: 'local',
-  http_endpoint: 'http://localhost:4000',
-  ws_endpoint: 'ws://localhost:8080',
-  apm_endpoint: 'localhost:4000'
+  httpEndpoint: 'http://localhost:4000',
+  wsEndpoint: 'ws://localhost:8080',
+  telemetryEndpoint: 'localhost:4000',
+  recaptchaToken: '6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG'
 }
 
 function getConfig(): RespliceConfig {
   const error = new Error('Config is not defined or is missing properties')
-  if (!window) return default_config
+  if (!window) return defaultConfig
   const config = (window as any).resplice_config as RespliceConfig
   // TODO: Check for null properties
   if (Object.values(config).includes('')) throw error

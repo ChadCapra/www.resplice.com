@@ -8,8 +8,8 @@
   export let label: string
   export let phone: { value: string; countryCallingCode: CountryCode }
   export let error: string = ''
-  // TODO: Figure out how to type svelte component prop
-  export let Icon: any = null
+  // TODO: Type svelte component
+  export let Icon: any
   let isTouched = !!phone.value
 
   function resetError() {

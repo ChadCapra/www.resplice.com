@@ -1,12 +1,12 @@
 export type Session = {
-  uuid: string // TODO: Is this an id: number or uuid: string
-  user_uuid: string | null
-  remember_me: boolean
+  id: number
   email: string
   phone: string
-  email_verified_at: Date | null
-  phone_verified_at: Date | null
-  expiry: Date
+  email_verified_at: number | null
+  phone_verified_at: number | null
+  authenticated_at: number | null
+  remember_me: boolean
+  expiry: number
 }
 
 // TODO: Come up with better name

@@ -1,5 +1,7 @@
-export async function generateAesKey() {
-  const key = await crypto.subtle.generateKey(
+const LARGEST_INT_32 = 4294967295
+
+export function generateAesKey() {
+  return crypto.subtle.generateKey(
     {
       name: 'AES-GCM',
       length: 128
@@ -7,26 +9,26 @@ export async function generateAesKey() {
     true,
     ['encrypt', 'decrypt']
   )
-  const raw = await crypto.subtle.exportKey('raw', key)
-  return {
-    key,
-    raw
-  }
+}
+
+export function generateBaseIV() {
+  return crypto.getRandomValues(new Uint8Array(8))
+}
+
+export async function exportKey(key: CryptoKey) {
+  const rawBuf = await crypto.subtle.exportKey('raw', key)
+  return new Uint8Array(rawBuf)
 }
 
 export async function encrypt(
   key: CryptoKey,
+  iv: Uint8Array,
   data: Uint8Array
-): Promise<{ iv: Uint8Array; cipherText: Uint8Array }> {
-  // The IV should change everytime encryption happens
-  const iv = crypto.getRandomValues(new Uint8Array(12))
+): Promise<Uint8Array> {
   const encryptedBuffer: ArrayBuffer = await crypto.subtle.encrypt(
     {
       name: 'AES-GCM',
-      // Recommended to use at least 12 bytes length for iv
       iv
-      // Additional authentication data (optional)
-      // additionalData: ArrayBuffer,
     },
     key,
     data
@@ -34,13 +36,13 @@ export async function encrypt(
 
   const cipherText = new Uint8Array(encryptedBuffer)
 
-  return { iv, cipherText }
+  return cipherText
 }
 
 export async function decrypt(
   key: CryptoKey,
   iv: Uint8Array,
-  data: Uint8Array
+  cipherText: Uint8Array
 ): Promise<Uint8Array> {
   return await crypto.subtle.decrypt(
     {
@@ -49,7 +51,7 @@ export async function decrypt(
       // additionalData: ArrayBuffer, // The additionalData you used to encrypt (if any)
     },
     key,
-    data
+    cipherText
   )
 }
 
@@ -73,12 +75,78 @@ export function publicKeyEncrypt(key: CryptoKey, data: Uint8Array) {
   return crypto.subtle.encrypt({ name: 'RSA-OAEP' }, key, data)
 }
 
-const BASE_IV = ''
+export function calculateClientIV(
+  baseIV: Uint8Array,
+  counter: number
+): Uint8Array {
+  const ivBuf = new ArrayBuffer(12)
+  const ivArr = new Uint8Array(ivBuf)
 
-export function generateClientIV(counter: number) {
-  return crypto.getRandomValues(new Uint8Array(12))
+  // set first 8 bytes of buffer with base
+  ivArr.set(baseIV)
+  // set last 4 bytes of buffer with message id int32
+  new DataView(ivBuf).setUint32(8, counter)
+
+  return ivArr
 }
 
-export function deriveServerIV(counter: number) {
-  console.log('')
+export function calculateServerIV(
+  baseIV: Uint8Array,
+  counter: number
+): Uint8Array {
+  const ivBuf = new ArrayBuffer(12)
+  const ivArr = new Uint8Array(ivBuf)
+
+  // set first 8 bytes of buffer with base
+  ivArr.set(baseIV)
+  // set last 4 bytes of buffer with message id int32
+  new DataView(ivBuf).setUint32(8, LARGEST_INT_32 - counter)
+
+  return ivArr
 }
+
+export function parseServerCipher(cipher: Uint8Array): {
+  iv: Uint8Array
+  cipherText: Uint8Array
+} {
+  console.log(cipher)
+  const iv = cipher.slice(0, 4) // TODO: Add base IV
+  const cipherText = cipher.slice(4)
+
+  return {
+    iv,
+    cipherText
+  }
+}
+
+export function combineBufferArrays(
+  arr1: Uint8Array,
+  arr2: Uint8Array
+): Uint8Array {
+  const newBuf = new ArrayBuffer(arr1.byteLength + arr2.byteLength)
+  const newBufArr = new Uint8Array(newBuf)
+  newBufArr.set(arr1)
+  newBufArr.set(arr2, arr1.byteLength)
+  return newBufArr
+}
+
+// const baseIV = crypto.getRandomValues(new Uint8Array(8))
+
+// function getInt64Bytes(x) {
+//   let y= Math.floor(x/2**32);
+//   return [y,(y<<8),(y<<16),(y<<24), x,(x<<8),(x<<16),(x<<24)].map(z=> z>>>24)
+// }
+
+// function intFromBytes(byteArr) {
+//     return byteArr.reduce((a,c,i)=> a+c*2**(56-i*8),0)
+// }
+
+// // TEST
+
+// let n = 40*2**40 + 245*2**32 + 194*2**24 + 143*2**16 + 92*2**8 + 40;
+// let b = getInt64Bytes(n);
+// let i = intFromBytes(b);
+
+// console.log(`number      : ${n}`);
+// console.log(`int to bytes: [${b}]`);
+// console.log(`bytes to int: ${i}`);

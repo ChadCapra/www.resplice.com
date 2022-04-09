@@ -17,7 +17,7 @@
     "@resplice/proto": "github:ChadCapra/resplice.proto-ts#0.1.1",
     "@sveltejs/adapter-node": "next",
     "@sveltejs/adapter-static": "1.0.0-next.29",
-    "@sveltejs/kit": "^1.0.0-next.301",
+    "@sveltejs/kit": "^1.0.0-next.307",
     "@sveltejs/svelte-virtual-list": "^3.0.1",
     "@testing-library/svelte": "^3.0.3",
     "@types/croppie": "^2.6.1",

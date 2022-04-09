@@ -2,6 +2,7 @@
   import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
   import authStore from '$lib/auth/store'
   import useAuthClient from '$lib/auth/useAuthClient'
+  import useConfig from '$lib/hooks/useConfig'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
@@ -11,7 +12,9 @@
   import Toggle from '$lib/common/form/Toggle.svelte'
 
   import type { CountryCode } from 'libphonenumber-js'
+  import type { PhoneValue } from '$types/attribute'
 
+  const config = useConfig()
   const client = useAuthClient()
 
   let phone = {
@@ -53,13 +56,13 @@
   }
 
   function checkBot(): Promise<boolean> {
+    if (config.env !== 'production') return Promise.resolve(false)
     const grecaptcha: any = (window as any).grecaptcha
     return new Promise((resolve) => {
       grecaptcha.ready(async () => {
-        const token = await grecaptcha.execute(
-          '6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG',
-          { action: 'auth' }
-        )
+        const token = await grecaptcha.execute(config.recaptchaToken, {
+          action: 'auth'
+        })
         const isBot = await client.submitRecaptchaToken(token)
         if (isBot) {
           networkErr = new Error(
@@ -75,14 +78,23 @@
 
   async function createSession() {
     try {
-      const phoneNumber = parsePhoneNumber(
+      const parsedPhone = parsePhoneNumber(
         phone.value,
         phone.countryCallingCode
-      ).number as string
+      )
+      const phoneValue: PhoneValue = {
+        number: parseInt((parsedPhone.number as string).slice(1), 10),
+        extension: parsedPhone.ext
+          ? parseInt((parsedPhone.ext as string).slice(1), 10)
+          : undefined,
+        smsEnabled: true
+      }
+      // TODO: Check extension triming
+      console.log(phoneValue)
       const session = await client.createSession({
-        phone: phoneNumber,
-        email,
-        remember_me: rememberMe
+        phone: phoneValue,
+        email: { email },
+        rememberMe
       })
       authStore.set({
         loginValues: {

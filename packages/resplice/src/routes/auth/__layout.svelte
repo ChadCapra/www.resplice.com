@@ -49,7 +49,7 @@
     }
 
     if (session.email_verified_at && session.phone_verified_at) {
-      if (session.user_uuid) {
+      if (session.authenticated_at) {
         goto('/app/list/contacts')
         return
       } else {
@@ -65,6 +65,7 @@
 
   $: {
     // I don't love this, I might move route guard logic into the pages they protect.
+    // TODO: Explore moving the routeGuard logic into the Load function
     if (browser) routeGuard($authStore?.session)
   }
 </script>

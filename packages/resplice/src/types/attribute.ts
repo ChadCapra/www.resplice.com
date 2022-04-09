@@ -92,7 +92,7 @@ export interface Phone extends BaseAttribute {
 export type PhoneValue = {
   number: number
   extension?: number
-  isSms: boolean
+  smsEnabled: boolean
 }
 
 export interface Social extends BaseAttribute {

@@ -6,7 +6,7 @@ const ClientMessageType = reproto.client_request.ClientRequestType
 // TODO: Type the `data` attribute on ClientMessage (big union type)
 type ClientMessage = {
   type: reproto.client_request.ClientRequestType
-  data: any
+  msg: any
 }
 
 type ServerMessage = {
@@ -26,24 +26,24 @@ export function encodeClientMessageWrapper(
 export function encode(m: ClientMessage): Uint8Array {
   switch (m.type) {
     case ClientMessageType.SESSION_CREATE:
-      return reproto.auth.request.session.CreateSession.encode(m.data).finish()
+      return reproto.auth.request.session.CreateSession.encode(m.msg).finish()
     case ClientMessageType.SESSION_VERIFY_EMAIL:
       return reproto.auth.request.session.VerifySessionEmail.encode(
-        m.data
+        m.msg
       ).finish()
     case ClientMessageType.SESSION_VERIFY_PHONE:
       return reproto.auth.request.session.VerifySessionPhone.encode(
-        m.data
+        m.msg
       ).finish()
     case ClientMessageType.ACCOUNT_CREATE:
-      return reproto.user.request.account.CreateAccount.encode(m.data).finish()
+      return reproto.user.request.account.CreateAccount.encode(m.msg).finish()
     default:
       throw Error(`Client Message ${m.type} is not supported`)
   }
 }
 
 export function decodeServerMessageWrapper(data: Uint8Array) {
-  return reproto.client_request.ClientRequest.decode(data)
+  return reproto.server_message.ServerMessage.decode(data)
 }
 
 // Maybe we use a mapper here instead if we just call decode everytime

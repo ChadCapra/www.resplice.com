@@ -1,4 +1,4 @@
-import type { AuthClient } from '$services/api/authClient'
+import type { AuthClient } from '$lib/auth/authClient'
 import { returnPromise } from '$services/mocks/utils'
 import {
   session,
@@ -10,16 +10,16 @@ import {
 function mockAuthClientFactory(..._args: any): AuthClient {
   return {
     submitRecaptchaToken: (_token) => returnPromise({ data: false }),
-    createSession: async (_params) =>
-      returnPromise({ data: session, timeout: 1000 }),
-    createAccount: (_params) => returnPromise({ data: authenticatedSession }),
     getActiveSession: () =>
       returnPromise({
         data: session,
         rejectPromise: true
       }),
+    createAccount: (_params) => returnPromise({ data: authenticatedSession }),
     verifyEmail: (_params) => returnPromise({ data: sessionVerifiedEmail }),
-    verifyPhone: (_params) => returnPromise({ data: sessionVerifiedBoth })
+    verifyPhone: (_params) => returnPromise({ data: sessionVerifiedBoth }),
+    createSession: async (_params) =>
+      returnPromise({ data: session, timeout: 1000 })
   }
 }
 
