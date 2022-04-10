@@ -1,4 +1,4 @@
-import { utcToZonedTime, format } from 'date-fns-tz'
+import { formatInTimeZone } from 'date-fns-tz'
 import { copyText, openCalendar } from '$lib/attributes/actions'
 import {
   AttributeType,
@@ -9,11 +9,8 @@ import {
 
 function valueToString(value: DateValue) {
   const date = new Date(value.year, value.month - 1, value.day)
-  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone
-  const zonedDate = utcToZonedTime(date, timeZone)
-  return format(zonedDate, "MMMM dd',' yyyy", {
-    timeZone
-  })
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+  return formatInTimeZone(date, tz, "MMMM dd',' yyyy")
 }
 
 function handleAction(action: AttributeAction, value: DateValue) {

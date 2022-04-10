@@ -9,10 +9,11 @@
   }
 
   onMount(async () => {
-    const res = await fetch(url, { mode: 'no-cors' })
-    console.log(res)
-    const html = await res.text()
-    console.log(html)
+    // TODO: Cannot fetch html from another site because of CORS
+    // We should create a simple linkpreview service that scrapes
+    // sites and returns some metadata about them that we can then
+    // show in a preview
+    url
   })
 </script>
 

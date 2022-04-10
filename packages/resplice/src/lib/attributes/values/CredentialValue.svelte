@@ -31,7 +31,9 @@
         on:click={togglePassword}
       />
     {:else}
-      <p class="p-2 text-sm filter blur-sm">placeholder</p>
+      <p class="p-2 text-sm filter blur-sm">
+        {Array(value.passcode.length).fill('*').join('')}
+      </p>
       <IconButton
         Icon={EyeIcon}
         width={18}

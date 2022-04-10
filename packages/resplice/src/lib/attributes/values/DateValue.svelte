@@ -1,9 +1,10 @@
 <script lang="ts">
+  import dateType from '$lib/attributes/attributeTypes/date'
   import type { DateValue } from '$types/attribute'
 
   export let value: DateValue
 
-  $: formattedDate = value
+  $: formattedDate = dateType.valueToString(value)
 </script>
 
 <!-- Can potentially localize this format per country, will use US format for now -->
