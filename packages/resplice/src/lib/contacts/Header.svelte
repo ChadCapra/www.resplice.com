@@ -1,14 +1,16 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
-  import type { Contact } from '$types/contact'
   import Avatar from '$lib/common/Avatar.svelte'
   import BackIcon from '$lib/icons/BackIcon.svelte'
   import EllipsisHorizontalIcon from '$lib/icons/EllipsisHorizontalIcon.svelte'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
   import IconButton from '$lib/common/IconButton.svelte'
+  import ContextMenu from '$lib/contacts/ContextMenu.svelte'
+  import type { Contact } from '$types/contact'
 
   export let contact: Contact | null
   export let showContact = false
+  let showContextMenu = false
 </script>
 
 <nav class="flex-none flex items-center justify-between p-4">
@@ -29,5 +31,14 @@
       </div>
     {/if}
   </div>
-  <IconButton Icon={EllipsisHorizontalIcon} />
+  <IconButton
+    Icon={EllipsisHorizontalIcon}
+    on:click={() => (showContextMenu = true)}
+  />
+  {#if showContextMenu}
+    <ContextMenu
+      contactId={contact.id}
+      on:close={() => (showContextMenu = false)}
+    />
+  {/if}
 </nav>

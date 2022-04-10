@@ -40,6 +40,20 @@ const contactAttributesDict = derived<
 
 type ContactShareRecord = Map<number, Share>
 const contactShares = writable<ContactShareRecord | null>(mockContactShares)
+const contactSharesDict = derived<
+  Writable<ContactShareRecord | null>,
+  Record<number, Share[]>
+>(contactShares, ($cs, set) => {
+  const dict: Record<number, Share[]> = {}
+  $cs.forEach((cs) => {
+    if (dict[cs.contactId]) {
+      dict[cs.contactId].push(cs)
+    } else {
+      dict[cs.contactId] = [cs]
+    }
+  })
+  set(dict)
+})
 
 type PendingContactRecord = Map<number, PendingContact>
 const pendingContacts = writable<PendingContactRecord | null>(
@@ -70,6 +84,7 @@ const contactStores = {
   contactAttributes,
   contactAttributesDict,
   contactShares,
+  contactSharesDict,
   pendingContacts,
   pendingContactAttributes,
   pendingContactAttributesDict

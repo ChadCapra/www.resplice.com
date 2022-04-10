@@ -182,6 +182,38 @@ export const contactShares = new Map<number, Share>([
       contactId: 1,
       attributeId: 1
     }
+  ],
+  [
+    2,
+    {
+      id: 2,
+      contactId: 2,
+      attributeId: 1
+    }
+  ],
+  [
+    3,
+    {
+      id: 3,
+      contactId: 2,
+      attributeId: 2
+    }
+  ],
+  [
+    4,
+    {
+      id: 4,
+      contactId: 2,
+      attributeId: 3
+    }
+  ],
+  [
+    5,
+    {
+      id: 5,
+      contactId: 2,
+      attributeId: 5
+    }
   ]
 ])
 

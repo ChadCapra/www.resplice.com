@@ -10,7 +10,7 @@
 </script>
 
 {#if attributes}
-  <div class="flex-1 flex flex-col space-y-4 w-full p-8">
+  <div class="flex-1 flex flex-col space-y-4 w-full px-8 py-4">
     {#each attributes as attribute}
       <AttributeItem itemType="contact" {attribute} />
     {/each}

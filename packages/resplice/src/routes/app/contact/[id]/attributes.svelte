@@ -13,9 +13,9 @@
   import { goto } from '$app/navigation'
   import contactStores from '$stores/contacts'
   import Avatar from '$lib/common/Avatar.svelte'
-  import ContactAttributes from '$lib/contacts/ContactAttributes.svelte'
   import Header from '$lib/contacts/Header.svelte'
   import ContactName from '$lib/contacts/ContactName.svelte'
+  import ContactAttributes from '$lib/contacts/ContactAttributes.svelte'
 
   export let id: number
   const contactStore = contactStores.contacts
@@ -27,16 +27,14 @@
   <main
     class="bg-white rounded-t-3xl flex-1 flex flex-col items-center overflow-auto space-y-4"
   >
-    <h1 class="text-2xl font-semibold text-gray-700 w-full px-8 pt-8 pb-4">
-      Contact Attributes
-    </h1>
     <div
-      class="w-full flex flex-col items-center justify-center space-y-2"
+      class="w-full flex flex-col items-center justify-center space-y-2 mt-8"
       on:click={() => goto(`/app/contact/${id}/edit`)}
     >
       <Avatar {id} src={contact.avatarUrl} size="xl" />
       <ContactName {contact} />
     </div>
+    <h1 class="text-xl font-semibold text-gray-700 w-full px-8">Attributes</h1>
     <ContactAttributes contactId={contact.id} />
   </main>
 </div>

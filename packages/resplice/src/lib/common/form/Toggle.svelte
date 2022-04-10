@@ -6,9 +6,9 @@
   const dispatch = createEventDispatcher()
 
   export let float: 'left' | 'right' = 'right'
-  export let isActive: boolean
   export let name: string
   export let label: string = ''
+  export let isActive: boolean
 
   let toggleElement: HTMLInputElement
 

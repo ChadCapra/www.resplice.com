@@ -3,14 +3,14 @@
   export async function load({ params }) {
     return {
       props: {
-        uuid: params.uuid
+        id: parseInt(params.id, 10)
       }
     }
   }
 </script>
 
 <script lang="ts">
-  import contactsStore from '$stores/contacts'
+  import contactStores from '$stores/contacts'
   import ContactChat from '$lib/contacts/Chat.svelte'
   import IconButton from '$lib/common/IconButton.svelte'
   import BackIcon from '$lib/icons/BackIcon.svelte'
@@ -18,9 +18,9 @@
   import ChatField from '$lib/chat/ChatField.svelte'
   import ComingSoon from '$lib/common/ComingSoon.svelte'
 
-  export let uuid: string
-
-  $: contact = $contactsStore ? $contactsStore[uuid] : null
+  export let id: number
+  const contactStore = contactStores.contacts
+  $: contact = $contactStore ? $contactStore.get(id) : null
   const enableChat = false
 
   function onSend(e: CustomEvent<{ content: string }>) {
@@ -31,11 +31,11 @@
 <div class="flex flex-col w-full h-full bg-gray-100">
   <nav class="flex-none flex items-center justify-start p-4">
     <IconButton Icon={BackIcon} />
-    <h1 class="ml-4 font-semibold text-xl">{uuid}</h1>
+    <h1 class="ml-4 font-semibold text-xl">{contact.name}</h1>
   </nav>
   <main class="bg-white rounded-t-3xl flex-1 flex flex-col overflow-auto">
     {#if enableChat}
-      <ContactChat contact={contact.profile} />
+      <ContactChat {contact} />
     {:else}
       <ComingSoon title="Chat" />
     {/if}
