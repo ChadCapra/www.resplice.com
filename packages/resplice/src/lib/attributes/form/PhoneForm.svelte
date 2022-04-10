@@ -13,7 +13,7 @@
   export let name = ''
   export let number: number | null
   export let extension: number | null
-  export let isSms = true
+  export let smsEnabled = true
 
   let formErrs: any = {}
   let phone = { countryCallingCode: 'US' as CountryCode, value: '' }
@@ -56,7 +56,12 @@
       error={formErrs.name}
     />
     <PhoneField name="phone" label="Phone" bind:phone error={formErrs.phone} />
-    <Toggle name="isSms" label="Allow SMS" bind:isActive={isSms} />
+    <Toggle
+      name="smsEnabled"
+      label="Allow SMS"
+      bind:isActive={smsEnabled}
+      on:toggle={() => (smsEnabled = !smsEnabled)}
+    />
   </div>
 
   <FormButtons on:save={onSave} />

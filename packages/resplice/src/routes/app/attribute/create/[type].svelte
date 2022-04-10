@@ -1,7 +1,5 @@
 <script context="module">
-  /**
-   * @type {import('@sveltejs/kit').Load}
-   */
+  /** @type {import('./[type]').Load} */
   export async function load({ params }) {
     return {
       props: {

@@ -16,7 +16,7 @@
       {#each typeConfigs as [type, config]}
         <AttributeTypeItem
           attributeTypeConfig={config}
-          on:click={() => goto(`create-attribute/${type.toLowerCase()}`)}
+          on:click={() => goto(`create/${type.toLowerCase()}`)}
         />
       {/each}
     </div>

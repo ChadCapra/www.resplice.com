@@ -9,7 +9,7 @@
   export let phone: { value: string; countryCallingCode: CountryCode }
   export let error: string = ''
   // TODO: Type svelte component
-  export let Icon: any
+  export let Icon: any = null
   let isTouched = !!phone.value
 
   function resetError() {

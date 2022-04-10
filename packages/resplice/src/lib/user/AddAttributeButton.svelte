@@ -5,10 +5,7 @@
 </script>
 
 <div class="w-full flex items-center justify-center my-4">
-  <Button
-    color="brand-light"
-    on:click={() => goto('/app/user/create-attribute')}
-  >
+  <Button color="brand-light" on:click={() => goto('/app/attribute/create')}>
     <div class="flex items-center justify-center w-full">
       <AddIcon width={36} height={36} />
       <p class="ml-2">Add Attribute</p>
