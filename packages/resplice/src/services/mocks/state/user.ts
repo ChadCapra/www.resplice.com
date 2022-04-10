@@ -1,6 +1,6 @@
 import type { Profile } from '$types/user'
 
-export const user: Profile = {
+export const profile: Profile = {
   uuid: 'bastilla-shan',
   name: 'Bastilla Shan',
   avatar:
@@ -9,7 +9,7 @@ export const user: Profile = {
   userRegisteredAt: 1638893210
 }
 
-export const userNoAvatar: Profile = {
+export const profileNoAvatar: Profile = {
   uuid: 'han-solo',
   name: 'Han Solo',
   avatar: null,

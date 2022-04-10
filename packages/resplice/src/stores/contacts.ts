@@ -7,13 +7,21 @@ import type {
   PendingContactAttribute
 } from '$types/contact'
 
-// import { contacts } from '$services/mocks/state/contacts'
+import {
+  contacts as mockContacts,
+  contactAttributes as mockContactAttributes,
+  contactShares as mockContactShares,
+  pendingContacts as mockPendingContacts,
+  pendingContactAttributes as mockPendingContactAttributes
+} from '$services/mocks/state/contacts'
 
 type ContactRecord = Map<number, Contact>
-const contacts = writable<ContactRecord | null>(null)
+const contacts = writable<ContactRecord | null>(mockContacts)
 
 type ContactAttributeRecord = Map<number, Attribute>
-const contactAttributes = writable<ContactAttributeRecord | null>(null)
+const contactAttributes = writable<ContactAttributeRecord | null>(
+  mockContactAttributes
+)
 const contactAttributesDict = derived(contactAttributes, ($ca, set) => {
   const dict = {}
   $ca.forEach((ca) => {
@@ -27,14 +35,16 @@ const contactAttributesDict = derived(contactAttributes, ($ca, set) => {
 })
 
 type ContactShareRecord = Map<number, Share>
-const contactShares = writable<ContactShareRecord | null>(null)
+const contactShares = writable<ContactShareRecord | null>(mockContactShares)
 
 type PendingContactRecord = Map<number, PendingContact>
-const pendingContacts = writable<PendingContactRecord | null>(null)
+const pendingContacts = writable<PendingContactRecord | null>(
+  mockPendingContacts
+)
 
 type PendingContactAttributeRecord = Map<number, PendingContactAttribute>
 const pendingContactAttributes = writable<PendingContactAttributeRecord | null>(
-  null
+  mockPendingContactAttributes
 )
 const pendingContactAttributesDict = derived(
   pendingContactAttributes,

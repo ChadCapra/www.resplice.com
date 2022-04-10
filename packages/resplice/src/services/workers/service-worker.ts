@@ -1,7 +1,4 @@
-import { build, timestamp } from '$service-worker'
-
-// Export an empty object to satisfy the isolated modules TS requirement.
-export {}
+import { build } from '$service-worker'
 
 const ctx: ServiceWorker = self as any
 

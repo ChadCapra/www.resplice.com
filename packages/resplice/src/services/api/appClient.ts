@@ -35,7 +35,7 @@ enum ConnMessageType {
 }
 
 async function clientFactory(
-  ws_endpoint: string,
+  wsEndpoint: string,
   conn: Worker,
   cache: AppCache,
   stores: Stores
@@ -110,7 +110,7 @@ async function clientFactory(
       }
     }
 
-    conn.postMessage({ type: ConnCommand.OPEN, ws_endpoint })
+    conn.postMessage({ type: ConnCommand.OPEN, wsEndpoint })
   })
 }
 

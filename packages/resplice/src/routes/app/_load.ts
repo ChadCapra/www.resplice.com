@@ -10,7 +10,7 @@ import type { AppClient } from '$services/api/appClient'
 import type { Stores } from '$stores/index'
 
 async function load(
-  ws_endpoint: string,
+  wsEndpoint: string,
   stores: Stores,
   useMocks = false
 ): Promise<{ cache: AppCache; client: AppClient }> {
@@ -26,9 +26,7 @@ async function load(
   }
 
   const cache = await cacheFactory(indexedDB)
-  const client = await clientFactory(ws_endpoint, conn, cache, stores)
-
-  // await client.sessions.authenticate()
+  const client = await clientFactory(wsEndpoint, conn, cache, stores)
 
   return {
     cache,

@@ -1,8 +1,13 @@
 import { writable } from 'svelte/store'
 import type { Session, OtherSession } from '$types/session'
 
-const activeSession = writable<Session | null>(null)
-const sessions = writable<OtherSession[] | null>(null)
+import {
+  authenticatedSession as mockSession,
+  otherSessions as mockOtherSessions
+} from '$services/mocks/state/sessions'
+
+const activeSession = writable<Session | null>(mockSession)
+const sessions = writable<OtherSession[] | null>(mockOtherSessions)
 
 const sessionStores = {
   activeSession,

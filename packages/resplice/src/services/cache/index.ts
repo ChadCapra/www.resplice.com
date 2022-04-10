@@ -1,7 +1,7 @@
-import type { User } from '$types/profile'
+import type { Profile } from '$types/user'
 
 export interface AppCache {
-  addUser: (user: User) => void
+  addUser: (user: Profile) => void
 }
 
 enum MessageType {
