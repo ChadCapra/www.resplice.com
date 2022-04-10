@@ -16,7 +16,7 @@ const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface AttributesClient {
   handleMessage: (message: ServerMessage) => void
-  addAttribute: (attribute: Omit<Attribute, 'id'>) => void
+  addAttribute: (attribute: Pick<Attribute, 'name' | 'type' | 'value'>) => void
   editAttributeName: (params: Pick<Attribute, 'id' | 'name'>) => void
   editAttributeValue: (params: Pick<Attribute, 'id' | 'value'>) => void
   editAttributeSort: (params: Pick<Attribute, 'id' | 'sortOrder'>) => void

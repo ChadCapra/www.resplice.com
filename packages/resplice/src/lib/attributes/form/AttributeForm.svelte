@@ -27,11 +27,10 @@
   }
 
   function saveAttribute() {
-    appClient.user.addAttribute({
+    appClient.attributes.addAttribute({
       type: newAttribute.type,
       name: newAttribute.name,
-      value: newAttribute.value,
-      sortOrder: newAttribute.sortOrder
+      value: newAttribute.value
     })
   }
 
@@ -95,7 +94,7 @@
       bind:name={newAttribute.name}
       bind:number={newAttribute.value.number}
       bind:extension={newAttribute.value.extension}
-      bind:isSms={newAttribute.value.isSms}
+      bind:smsEnabled={newAttribute.value.smsEnabled}
       on:save={saveAttribute}
     />
   {:else if newAttribute.type === AttributeType.SOCIAL}
