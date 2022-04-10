@@ -15,11 +15,11 @@ function mockAuthClientFactory(..._args: any): AuthClient {
         data: session,
         rejectPromise: true
       }),
-    createAccount: (_params) => returnPromise({ data: authenticatedSession }),
+    createSession: async (_params) =>
+      returnPromise({ data: session, timeout: 1000 }),
     verifyEmail: (_params) => returnPromise({ data: sessionVerifiedEmail }),
     verifyPhone: (_params) => returnPromise({ data: sessionVerifiedBoth }),
-    createSession: async (_params) =>
-      returnPromise({ data: session, timeout: 1000 })
+    createAccount: (_params) => returnPromise({ data: authenticatedSession })
   }
 }
 

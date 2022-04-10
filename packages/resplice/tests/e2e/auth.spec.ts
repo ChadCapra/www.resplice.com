@@ -44,8 +44,8 @@ test.describe('Auth Flow', () => {
     const verifyText = page.locator('text=Verify your phone and email')
     await expect(verifyText).toBeVisible()
 
-    await page.fill('#email-code', '01234')
-    await page.fill('#phone-code', '01234')
+    await page.fill('#email-code', '012345')
+    await page.fill('#phone-code', '012345')
 
     // Create Account
     const createAccountText = page.locator('text=create your account')
@@ -54,6 +54,8 @@ test.describe('Auth Flow', () => {
     await page.fill('#full-name', 'Marcus Virginia')
     await continueBtnLocator.click()
 
-    // TODO: expect app page to be visible
+    // Check logged in
+    const contactsListHeader = page.locator('h2:has-text("Contacts")')
+    await expect(contactsListHeader).toBeVisible()
   })
 })

@@ -26,54 +26,51 @@
     value: { email: $authStore.loginValues.email },
     sortOrder: 1
   }
-  // TODO: Fix phone type
+
   const phone: Phone = {
     id: 1,
     type: AttributeType.PHONE,
     name: 'Phone',
     value: {
-      countryCallingCode: parsedPhone.countryCallingCode as string,
-      number: parsedPhone.nationalNumber as string,
-      isSms: true
+      number: parseInt((parsedPhone.number as string).slice(1), 10),
+      smsEnabled: true
     },
     sortOrder: 2
   }
 
   let emailCode = ''
-  let emailPromise: Promise<Date>
-  $: emailVerified = !!$authStore.session.email_verified_at
+  let emailPromise: Promise<number>
+  $: emailVerified = !!$authStore.session.emailVerifiedAt
 
   let phoneCode = ''
-  let phonePromise: Promise<Date>
+  let phonePromise: Promise<number>
 
-  async function submitEmailCode(verification_token: string): Promise<Date> {
-    const session = await client.verifyEmail({ verification_token })
-    if (!session.email_verified_at)
-      throw Error('Verification code did not work')
+  async function submitEmailCode(verificationToken: number): Promise<number> {
+    const session = await client.verifyEmail({ verificationToken })
+    if (!session.emailVerifiedAt) throw Error('Verification code did not work')
 
     authStore.update((auth) => ({ ...auth, session }))
-    return session.email_verified_at
+    return session.emailVerifiedAt
   }
 
-  async function submitPhoneCode(verification_token: string): Promise<Date> {
-    const session = await client.verifyPhone({ verification_token })
-    if (!session.phone_verified_at)
-      throw Error('Verification code did not work')
+  async function submitPhoneCode(verificationToken: number): Promise<number> {
+    const session = await client.verifyPhone({ verificationToken })
+    if (!session.phoneVerifiedAt) throw Error('Verification code did not work')
 
     authStore.update((auth) => ({ ...auth, session }))
-    return session.phone_verified_at
+    return session.phoneVerifiedAt
   }
 
   $: {
     emailCode = emailCode.toUpperCase().substring(0, CODE_LENGTH)
     if (emailCode.length >= CODE_LENGTH) {
-      emailPromise = submitEmailCode(emailCode)
+      emailPromise = submitEmailCode(parseInt(emailCode, 10))
     }
   }
   $: {
     phoneCode = phoneCode.toUpperCase().substring(0, CODE_LENGTH)
     if (phoneCode.length >= CODE_LENGTH) {
-      phonePromise = submitPhoneCode(phoneCode)
+      phonePromise = submitPhoneCode(parseInt(emailCode, 10))
     }
   }
 </script>

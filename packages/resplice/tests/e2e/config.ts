@@ -9,6 +9,9 @@ const config: PlaywrightTestConfig = {
     ignoreHTTPSErrors: true,
     video: 'off',
     colorScheme: 'dark'
+    // launchOptions: {
+    //   slowMo: 100
+    // }
   }
 }
 

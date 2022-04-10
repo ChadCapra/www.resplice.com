@@ -9,7 +9,7 @@
 
   const client = useAuthClient()
 
-  const RAND_UUID = Math.random().toString(36)
+  const RAND_ID = Math.random().toString(36)
 
   let fullName = ''
   let avatar: Blob | null = null
@@ -17,10 +17,7 @@
   let networkErr: Error
   let isLoading = false
 
-  type SubmitEvent = Event & {
-    currentTarget: EventTarget & HTMLFormElement
-  }
-  async function onSubmit(_e: SubmitEvent) {
+  async function handleSubmit() {
     const isValid = validate()
     if (!isValid) return
 
@@ -32,14 +29,14 @@
   async function createAccount() {
     try {
       isLoading = true
-      const user = await client.createAccount({
+      const session = await client.createAccount({
         name: fullName,
         avatar,
         handle: ''
       })
       authStore.update((auth) => ({
         ...auth,
-        session: { ...auth.session, user_uuid: user.uuid }
+        session
       }))
     } catch (err) {
       networkErr = err
@@ -63,12 +60,12 @@
   <div>
     <UserAvatar
       profile={{
-        uuid: RAND_UUID,
+        uuid: RAND_ID,
         avatar: avatar ? URL.createObjectURL(avatar) : null
       }}
       on:crop={(e) => (avatar = e.detail)}
     />
-    <form class="mt-8 px-2" on:submit|preventDefault={onSubmit}>
+    <form class="mt-8 px-2" on:submit|preventDefault={handleSubmit}>
       <TextField
         name="full-name"
         label="Full Name"
@@ -84,7 +81,7 @@
     <Link class="mb-4" href="/auth/verify-existing">
       I already have an account
     </Link>
-    <Button type="submit" {isLoading}>Continue</Button>
+    <Button {isLoading} on:click={() => handleSubmit()}>Continue</Button>
     {#if networkErr}
       <p>{networkErr.message}</p>
     {/if}
