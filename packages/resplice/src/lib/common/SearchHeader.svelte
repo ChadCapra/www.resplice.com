@@ -19,7 +19,7 @@
   {#if $profileStore}
     <Avatar
       size="md"
-      uuid={$profileStore.uuid}
+      id={0}
       src={$profileStore.avatar}
       on:click={() => goto('/app/user')}
     />

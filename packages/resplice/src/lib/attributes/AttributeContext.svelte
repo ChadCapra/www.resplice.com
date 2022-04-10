@@ -24,7 +24,7 @@
         on:click={() => attributeType.handleAction(action, attribute.value)}
       >
         <div
-          class="bg-indigo-400 text-indigo-600 outline-none border-none p-3 bg-opacity-20 rounded-lg focus:outline-none"
+          class="bg-brand-primary text-brand-primary outline-none border-none p-3 bg-opacity-20 rounded-lg focus:outline-none"
         >
           <ActionIcon attributeAction={action} />
         </div>

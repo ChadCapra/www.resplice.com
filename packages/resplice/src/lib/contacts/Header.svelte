@@ -20,7 +20,7 @@
         transition:fade={{ delay: 50, duration: 150 }}
       >
         {#if !!contact}
-          <Avatar uuid={contact.uuid} src={contact.avatar_url} size="sm" />
+          <Avatar id={contact.id} src={contact.avatarUrl} size="sm" />
           <h2 class="ml-2 font-semibold text-xl">{contact.name}</h2>
         {:else}
           <Skeleton variant="circle" height="1em" width="1em" />

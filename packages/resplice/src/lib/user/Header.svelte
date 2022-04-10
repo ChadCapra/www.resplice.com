@@ -21,7 +21,7 @@
         transition:fade={{ delay: 50, duration: 150 }}
       >
         {#if !!profile}
-          <Avatar uuid={profile.uuid} src={profile.avatar} size="sm" />
+          <Avatar id={0} src={profile.avatar} size="sm" />
           <h2 class="ml-2 font-semibold text-xl">{profile.name}</h2>
         {:else}
           <Skeleton variant="circle" height="1em" width="1em" />

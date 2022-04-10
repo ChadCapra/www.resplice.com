@@ -13,7 +13,8 @@
   let description = contact.description
 
   function onSubmit() {
-    appClient.contacts.update(contact.uuid, { alias, description })
+    appClient.contacts.editAlias({ id: contact.id, alias })
+    appClient.contacts.editDescription({ id: contact.id, description })
   }
 </script>
 

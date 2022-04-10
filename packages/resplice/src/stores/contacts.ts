@@ -6,6 +6,7 @@ import type {
   PendingContact,
   PendingContactAttribute
 } from '$types/contact'
+import type { Writable } from 'svelte/store'
 
 import {
   contacts as mockContacts,
@@ -22,8 +23,11 @@ type ContactAttributeRecord = Map<number, Attribute>
 const contactAttributes = writable<ContactAttributeRecord | null>(
   mockContactAttributes
 )
-const contactAttributesDict = derived(contactAttributes, ($ca, set) => {
-  const dict = {}
+const contactAttributesDict = derived<
+  Writable<ContactAttributeRecord | null>,
+  Record<number, Attribute[]>
+>(contactAttributes, ($ca, set) => {
+  const dict: Record<number, Attribute[]> = {}
   $ca.forEach((ca) => {
     if (dict[ca.contactId]) {
       dict[ca.contactId].push(ca)
@@ -46,20 +50,20 @@ type PendingContactAttributeRecord = Map<number, PendingContactAttribute>
 const pendingContactAttributes = writable<PendingContactAttributeRecord | null>(
   mockPendingContactAttributes
 )
-const pendingContactAttributesDict = derived(
-  pendingContactAttributes,
-  ($ia, set) => {
-    const dict = {}
-    $ia.forEach((ia) => {
-      if (dict[ia.pendingContactId]) {
-        dict[ia.pendingContactId].push(ia)
-      } else {
-        dict[ia.pendingContactId] = [ia]
-      }
-    })
-    set(dict)
-  }
-)
+const pendingContactAttributesDict = derived<
+  Writable<PendingContactAttributeRecord | null>,
+  Record<number, PendingContactAttribute[]>
+>(pendingContactAttributes, ($ia, set) => {
+  const dict = {}
+  $ia.forEach((ia) => {
+    if (dict[ia.pendingContactId]) {
+      dict[ia.pendingContactId].push(ia)
+    } else {
+      dict[ia.pendingContactId] = [ia]
+    }
+  })
+  set(dict)
+})
 
 const contactStores = {
   contacts,

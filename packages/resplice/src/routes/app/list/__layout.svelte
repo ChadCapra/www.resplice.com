@@ -9,7 +9,6 @@
   $: isOnChats = $page.url.pathname.includes('/app/list/chats')
 </script>
 
-<!-- <MockWorker> -->
 <main class="flex flex-col w-full h-full overflow-auto">
   <div class="flex-1 overflow-auto"><slot /></div>
   <nav
@@ -24,4 +23,3 @@
     </NavItem>
   </nav>
 </main>
-<!-- </MockWorker> -->

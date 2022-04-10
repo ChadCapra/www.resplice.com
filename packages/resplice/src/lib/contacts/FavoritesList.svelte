@@ -16,9 +16,9 @@
   {#if contactList}
     <VirtualList items={contactList} itemHeight={64} let:item>
       <ContactItem
-        contact={item.profile}
+        contact={item}
         on:click={() => {
-          goto(`/app/contact/${item.profile.uuid}/shares`)
+          goto(`/app/contact/${item.id}/attributes`)
         }}
       />
     </VirtualList>
