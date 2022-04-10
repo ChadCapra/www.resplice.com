@@ -1,28 +1,28 @@
 import type { Session } from '$types/session'
 
 export const session: Session = {
-  uuid: 'mockUUID',
-  user_uuid: null,
-  remember_me: true,
+  id: 12345,
+  rememberMe: true,
   email: 'marcusvirg345@gmail.com',
   phone: '2185910657',
-  email_verified_at: null,
-  phone_verified_at: null,
-  expiry: new Date('2023-10-22T00:16:19.301Z')
+  emailVerifiedAt: null,
+  phoneVerifiedAt: null,
+  authenticatedAt: null,
+  expiry: 1697933779
 }
 
 export const sessionVerifiedEmail: Session = {
   ...session,
-  email_verified_at: new Date('2021-10-22T00:16:19.301Z')
+  emailVerifiedAt: 1634861779
 }
 
 export const sessionVerifiedBoth: Session = {
   ...session,
-  email_verified_at: new Date('2021-10-22T00:16:19.301Z'),
-  phone_verified_at: new Date('2021-10-22T00:16:19.301Z')
+  emailVerifiedAt: 1634861779,
+  phoneVerifiedAt: 1634861779
 }
 
 export const authenticatedSession: Session = {
   ...sessionVerifiedBoth,
-  user_uuid: 'bastilla-shan'
+  authenticatedAt: 1634861779
 }

@@ -1,160 +1,215 @@
-import type { Contact, ContactDetail } from '$types/contact'
-import { ContactType } from '$types/contact'
+import type {
+  Contact,
+  Attribute,
+  Share,
+  PendingContact,
+  PendingContactAttribute
+} from '$types/contact'
 import { AttributeType } from '$types/attribute'
+import { InviteType } from '$types/invite'
 
-export const contacts: Record<
-  string,
-  { profile: Contact; detail: ContactDetail }
-> = {
-  'darth-vader': {
-    profile: {
-      uuid: 'darth-vader',
-      type: ContactType.CONTACT,
+export const contacts = new Map<number, Contact>([
+  [
+    1,
+    {
+      id: 1,
       name: 'Darth Vader',
-      avatar_url:
+      handle: 'darth-vader',
+      avatarUrl:
         'https://res.cloudinary.com/capabit-solutions/image/upload/v1529421479/Resplice/ncf3iws37vcg6tdofrgh.png',
-      handle: null,
       alias: 'Dark Lord',
       description: 'You do NOT want to mess with this guy',
       isFavored: false,
-      connected_at: new Date('2021-12-07T16:06:50.271Z')
-    },
-    detail: {
-      uuid: 'darth-vader',
-      attributes: [
-        {
-          contact_uuid: 'darth-vader',
-          uuid: 'darth-phone-uuid',
-          type: AttributeType.PHONE,
-          name: 'Personal Phone',
-          value: {
-            countryCallingCode: 'US',
-            number: '6654781136',
-            extension: null,
-            isSms: true
-          },
-          sort_order: 1
-        },
-        {
-          contact_uuid: 'darth-vader',
-          uuid: 'darth-address-uuid',
-          type: AttributeType.ADDRESS,
-          name: 'Mustafar Castle',
-          value: {
-            street_address_1: 'Facility #25',
-            locality: 'Divine Rift',
-            region: 'Astra Region',
-            postal_code: '66666',
-            country: 'Mustafar'
-          },
-          sort_order: 2
-        }
-      ],
-      pending_attributes: [],
-      common_splices: [],
-      chats: []
+      isMuted: false,
+      isArchived: false,
+      connectedAt: 1638893210
     }
-  },
-  'obi-wan': {
-    profile: {
-      uuid: 'obi-wan',
-      type: ContactType.CONTACT,
-      name: 'Obi-wan Kenobi',
-      avatar_url:
+  ],
+  [
+    2,
+    {
+      id: 2,
+      name: 'Obi-Wan Kenobi',
+      handle: 'obi-wan',
+      avatarUrl:
         'https://res.cloudinary.com/capabit-solutions/image/upload/v1529422158/Resplice/m3ifzpxcjmwnhl4d4gmi.png',
-      handle: null,
       alias: 'Ben Kenobi',
-      description: 'Old Ben',
+      description: 'He lives on Tatooine',
       isFavored: true,
-      connected_at: new Date('2021-12-07T16:06:50.271Z')
-    },
-    detail: {
-      uuid: 'obi-wan',
-      attributes: [
-        {
-          contact_uuid: 'obi-wan',
-          uuid: 'obi-email-uuid',
-          type: AttributeType.EMAIL,
-          name: 'Jedi Email',
-          value: {
-            email: 'obi@jedi.com'
-          },
-          sort_order: 1
-        },
-        {
-          contact_uuid: 'obi-wan',
-          uuid: 'obi-credential-uuid',
-          type: AttributeType.CREDENTIAL,
-          name: 'Holocron Passcode',
-          value: {
-            identity: 'ben-kenobi',
-            passcode: 'hellothere123'
-          },
-          sort_order: 2
-        },
-        {
-          contact_uuid: 'obi-wan',
-          uuid: 'obi-address-uuid',
-          type: AttributeType.ADDRESS,
-          name: 'Home',
-          value: {
-            street_address_1: '1211 N 11th Ave',
-            locality: 'Minneapolis',
-            region: 'Minnesota',
-            postal_code: '55411',
-            country: 'USA'
-          },
-          sort_order: 2
-        }
-      ],
-      pending_attributes: [],
-      common_splices: [],
-      chats: []
+      isMuted: false,
+      isArchived: false,
+      connectedAt: 1638893210
     }
-  },
-  'luke-skywalker': {
-    profile: {
-      uuid: 'luke-skywalker',
-      type: ContactType.CONTACT,
+  ],
+  [
+    3,
+    {
+      id: 3,
       name: 'Luke Skywalker',
-      avatar_url:
+      handle: 'master-luke',
+      avatarUrl:
         'https://res.cloudinary.com/capabit-solutions/image/upload/v1533236856/Resplice/bxs2g8ciuk7nipbngiep.png',
-      handle: null,
       alias: 'Luke',
       description: null,
       isFavored: true,
-      connected_at: new Date('2021-12-07T16:06:50.271Z')
-    },
-    detail: {
-      uuid: 'luke-skywalker',
-      attributes: [
-        {
-          contact_uuid: 'luke-skywalker',
-          uuid: 'luke-date-uuid',
-          type: AttributeType.DATE,
-          name: 'Council Meeting',
-          value: {
-            year: 2167,
-            month: 1,
-            day: 12
-          },
-          sort_order: 1
-        },
-        {
-          contact_uuid: 'luke-skywalker',
-          uuid: 'luke-coordinate-uuid',
-          type: AttributeType.COORDINATE,
-          name: 'Secret Temple',
-          value: {
-            latitude: 28.353914,
-            longitude: -81.56194
-          },
-          sort_order: 2
-        }
-      ],
-      pending_attributes: [],
-      common_splices: [],
-      chats: []
+      isMuted: false,
+      isArchived: false,
+      connectedAt: 1638893210
     }
-  }
-}
+  ]
+])
+
+export const contactAttributes = new Map<number, Attribute>([
+  [
+    1,
+    {
+      id: 1,
+      contactId: 1,
+      type: AttributeType.PHONE,
+      name: 'Personal Phone',
+      value: {
+        number: 6654781136,
+        extension: null,
+        smsEnabled: true
+      },
+      sortOrder: 1,
+      sharedOn: 1638893210
+    }
+  ],
+  [
+    2,
+    {
+      id: 2,
+      contactId: 1,
+      type: AttributeType.ADDRESS,
+      name: 'Mustafar Castle',
+      value: {
+        streetAddress1: 'Facility #25',
+        locality: 'Divine Rift',
+        region: 'Astra Region',
+        postalCode: '66666',
+        country: 'Mustafar'
+      },
+      sortOrder: 2,
+      sharedOn: 1638893210
+    }
+  ],
+  [
+    3,
+    {
+      id: 3,
+      contactId: 2,
+      type: AttributeType.EMAIL,
+      name: 'Jedi Email',
+      value: {
+        email: 'obi@jedi.com'
+      },
+      sortOrder: 1,
+      sharedOn: 1638893210
+    }
+  ],
+  [
+    4,
+    {
+      id: 4,
+      contactId: 2,
+      type: AttributeType.CREDENTIAL,
+      name: 'Holocron Passcode',
+      value: {
+        identity: 'ben-kenobi',
+        passcode: 'hellothere123'
+      },
+      sortOrder: 2,
+      sharedOn: 1638893210
+    }
+  ],
+  [
+    5,
+    {
+      id: 5,
+      contactId: 2,
+      type: AttributeType.ADDRESS,
+      name: 'Home',
+      value: {
+        streetAddress1: '1211 N 11th Ave',
+        locality: 'Minneapolis',
+        region: 'Minnesota',
+        postalCode: '55411',
+        country: 'USA'
+      },
+      sortOrder: 3,
+      sharedOn: 1638893210
+    }
+  ],
+  [
+    6,
+    {
+      id: 6,
+      contactId: 3,
+      type: AttributeType.DATE,
+      name: 'Council Meeting',
+      value: {
+        year: 2167,
+        month: 1,
+        day: 12
+      },
+      sortOrder: 1,
+      sharedOn: 1638893210
+    }
+  ],
+  [
+    7,
+    {
+      id: 7,
+      contactId: 3,
+      type: AttributeType.COORDINATE,
+      name: 'Secret Temple',
+      value: {
+        latitude: 28.353914,
+        longitude: -81.56194
+      },
+      sortOrder: 2,
+      sharedOn: 1638893210
+    }
+  ]
+])
+
+export const contactShares = new Map<number, Share>([
+  [
+    1,
+    {
+      id: 1,
+      contactId: 1,
+      attributeId: 1
+    }
+  ]
+])
+
+export const pendingContacts = new Map<number, PendingContact>([
+  [
+    1,
+    {
+      id: 1,
+      type: InviteType.EMAIL,
+      name: 'Finn',
+      avatarUrl: null,
+      email: { email: 'finn@firstorder.com' },
+      expiry: 1697933779
+    }
+  ]
+])
+
+export const pendingContactAttributes = new Map<
+  number,
+  PendingContactAttribute
+>([
+  [
+    1,
+    {
+      id: 1,
+      pendingContactId: 1,
+      type: AttributeType.PHONE,
+      name: 'Finn Phone'
+    }
+  ]
+])

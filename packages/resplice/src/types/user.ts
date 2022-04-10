@@ -7,13 +7,13 @@ export type Profile = {
   name: string
   avatar: string | null
   handle: string | null
-  user_registered_at: Date
+  userRegisteredAt: number
 }
 
 export type Attribute = BaseAttribute & {
-  groupId: number
-  verifiedAt: number
-  verifyExpiry: number
+  groupId: number | null
+  verifiedAt: number | null
+  verifyExpiry: number | null
 }
 
 export type Chat = BaseChat

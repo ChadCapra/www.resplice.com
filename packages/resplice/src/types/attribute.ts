@@ -34,7 +34,7 @@ export interface Address extends BaseAttribute {
 }
 export type AddressValue = {
   streetAddress1: string
-  streetAddress2?: string
+  streetAddress2?: string | null
   locality: string
   region: string
   postalCode: string

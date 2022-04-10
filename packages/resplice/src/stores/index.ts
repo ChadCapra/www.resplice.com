@@ -1,5 +1,5 @@
 import attributes from './attributes'
-import chat from './chat'
+import chats from './chats'
 import conn from './conn'
 import contacts from './contacts'
 import invites from './invites'
@@ -9,7 +9,7 @@ import toasts from './toasts'
 
 const stores = {
   attributes,
-  chat,
+  chats,
   conn,
   contacts,
   invites,

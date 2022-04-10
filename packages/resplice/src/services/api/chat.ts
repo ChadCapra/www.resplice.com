@@ -1,7 +1,7 @@
 import * as reproto from '$lib/reproto'
 import { ConnCommand } from '$services/api/appClient'
 
-import type { ChatStore } from '$stores/chat'
+import type { ChatStore } from '$stores/chats'
 // import type { Chat } from '$types/user'
 
 const ServerMessageType = reproto.server_message.ServerMessageType

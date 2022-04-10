@@ -1,13 +1,13 @@
 <script lang="ts">
   // import VirtualList from 'svelte-tiny-virtual-list'
-  import chatStore from '$stores/chat'
+  import chatStore from '$stores/chats'
   import Chat from '$lib/chat/Chat.svelte'
   import SkeletonList from '$lib/common/skeleton/SkeletonList.svelte'
   import type { Contact } from '$types/contact'
 
   export let contact: Contact | null
 
-  $: chats = contact && $chatStore && $chatStore[contact.uuid]
+  $: chats = contact && $chatStore && $chatStore[contact.id]
 </script>
 
 <div class="flex flex-col w-full h-full p-8 overflow-auto">

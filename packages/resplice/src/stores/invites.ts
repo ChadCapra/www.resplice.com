@@ -6,7 +6,7 @@ const invites = writable<InviteRecord | null>(null)
 
 const activeQrInvite = writable<QrInvite | null>(null)
 
-type InviteAttributeRecord = Map<number, Attribute> // TODO: Do invites have attributes?
+type InviteAttributeRecord = Map<number, Attribute>
 const inviteAttributes = writable<InviteAttributeRecord | null>(null)
 const inviteAttributesDict = derived(inviteAttributes, ($ia, set) => {
   const dict = {}

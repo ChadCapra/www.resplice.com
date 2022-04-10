@@ -1,20 +1,18 @@
-import type { User } from '$types/profile'
+import type { Profile } from '$types/user'
 
-export const user: User = {
+export const user: Profile = {
   uuid: 'bastilla-shan',
   name: 'Bastilla Shan',
   avatar:
     'https://res.cloudinary.com/capabit-solutions/image/upload/v1529002384/Resplice/lydkw9phbpozik3t8bus.png',
   handle: 'bastilla-shan',
-  public_access_enabled: false,
-  user_registered_at: new Date('2021-12-07T16:06:50.271Z')
+  userRegisteredAt: 1638893210
 }
 
-export const userNoAvatar: User = {
+export const userNoAvatar: Profile = {
   uuid: 'han-solo',
   name: 'Han Solo',
   avatar: null,
   handle: 'han-solo',
-  public_access_enabled: true,
-  user_registered_at: new Date('2021-12-07T16:06:50.271Z')
+  userRegisteredAt: 1638893210
 }

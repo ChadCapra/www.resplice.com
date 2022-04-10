@@ -8,10 +8,10 @@ import type { Invite as BaseInvite } from './invite'
 export type Contact = {
   id: number
   name: string
-  avatarUrl?: string
   handle: string
-  alias?: string
-  description?: string
+  avatarUrl: string | null
+  alias: string | null
+  description: string | null
   isFavored: boolean
   isMuted: boolean
   isArchived: boolean
@@ -19,7 +19,7 @@ export type Contact = {
 }
 
 export type Attribute = BaseAttribute & {
-  contactId: string
+  contactId: number
   sharedOn: number
 }
 
@@ -28,14 +28,14 @@ export type Share = BaseShare & {
 }
 
 export type PendingContact = BaseInvite & {
-  avatarUrl: string
+  avatarUrl: string | null
 }
 
 export type PendingContactAttribute = {
   id: BaseAttribute['id']
   pendingContactId: number
-  name: BaseAttribute['name']
   type: BaseAttribute['type']
+  name: BaseAttribute['name']
 }
 
 export type Chat = BaseChat & {
