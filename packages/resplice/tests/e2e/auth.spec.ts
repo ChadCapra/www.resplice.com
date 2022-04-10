@@ -44,8 +44,8 @@ test.describe('Auth Flow', () => {
     const verifyText = page.locator('text=Verify your phone and email')
     await expect(verifyText).toBeVisible()
 
-    await page.fill('#email-code', 'TESTER')
-    await page.fill('#phone-code', 'TESTER')
+    await page.fill('#email-code', '01234')
+    await page.fill('#phone-code', '01234')
 
     // Create Account
     const createAccountText = page.locator('text=create your account')
