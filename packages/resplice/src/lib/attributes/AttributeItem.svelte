@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Attribute } from '$types/attribute'
   import AttributeAction from '$lib/attributes/AttributeAction.svelte'
+  import AttributeContext from '$lib/attributes/AttributeContext.svelte'
   import AttributeValue from '$lib/attributes/AttributeValue.svelte'
   import Modal from '$lib/common/Modal.svelte'
   import attributeTypes from '$lib/attributes/attributeTypes'
@@ -57,15 +58,6 @@
 
 {#if showContextModal}
   <Modal on:close={() => (showContextModal = false)}>
-    <div class="w-full p-4">
-      <div class="flex flex-col overflow-hidden">
-        <span
-          class="font-semibold text-gray-800 overflow-hidden text-ellipsis text-lg"
-        >
-          {attribute.name}
-        </span>
-        <AttributeValue {attribute} />
-      </div>
-    </div>
+    <AttributeContext {attribute} {attributeType} />
   </Modal>
 {/if}
