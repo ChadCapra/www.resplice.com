@@ -8,12 +8,17 @@ const config = {
   // for more information about preprocessors
   preprocess: sveltePreprocess(),
   kit: {
-    // By default, `npm run build` will create a standard Node app.
-    // You can create optimized builds for different platforms by
-    // specifying a different adapter
     adapter: adapter({
-      fallback: '200.html'
+      pages: 'build',
+      assets: 'build',
+      fallback: null,
+      precompress: false
     }),
+
+    prerender: {
+      // This can be false if you're using a fallback (i.e. SPA mode)
+      default: true
+    },
 
     vite: {
       resolve: {
