@@ -1,10 +1,9 @@
-export enum AttributeType { // TODO: Check against proto files
+export enum AttributeType {
   ADDRESS = 'ADDRESS',
   COORDINATE = 'COORDINATE',
   CREDENTIAL = 'CREDENTIAL',
   DATE = 'DATE',
   EMAIL = 'EMAIL',
-  // FILE = 'FILE', // probably future feature
   LINK = 'LINK',
   PHONE = 'PHONE',
   SOCIAL = 'SOCIAL',
