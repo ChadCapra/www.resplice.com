@@ -1,3 +1,0 @@
-# ReComponents
-
-Storybook project here
