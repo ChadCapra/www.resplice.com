@@ -2,11 +2,6 @@
   "name": "@resplice/components",
   "version": "0.1.0",
   "description": "Common components for Resplice web applications",
-  "keywords": [
-    "svelte",
-    "components",
-    "resplice"
-  ],
   "author": "marcus@resplice.com",
   "license": "UNLICENSED",
   "private": true,

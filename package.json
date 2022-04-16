@@ -1,19 +1,20 @@
 {
-  "name": "@resplice/ui-monorepo",
+  "name": "@resplice/web",
   "version": "1.0.0",
-  "description": "Monorepo for all ReSplice UI products",
+  "description": "Monorepo for all Resplice web products",
+  "author": "marcus@resplice.com",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
-    "build-libs": "npm run --prefix packages/common/components build && npm run --prefix packages/common/utils build",
-    "resplice": "npm run --prefix packages/resplice dev",
-    "protoc": "protoc -I=./packages/api-client/proto *.proto --js_out=import_style=commonjs,binary:./packages/api-client/binary --grpc-web_out=import_style=typescript,mode=grpcwebtext:./packages/api-client/web",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-libs": "npm run build --workspace=re-components --workspace=re-utils",
+    "reauth": "npm run dev --workspace=reauth",
+    "resplice": "npm run dev --workspace=resplice",
+    "protoc": "protoc -I=./packages/api-client/proto *.proto --js_out=import_style=commonjs,binary:./packages/api-client/binary --grpc-web_out=import_style=typescript,mode=grpcwebtext:./packages/api-client/web"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ChadCapra/www.resplice.com.git"
   },
-  "author": "marcus@resplice.com",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/ChadCapra/www.resplice.com/issues"
   },

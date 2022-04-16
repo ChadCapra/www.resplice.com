@@ -1,7 +1,7 @@
 {
-  "name": "@resplice/utils",
+  "name": "@resplice/proto",
   "version": "0.1.0",
-  "description": "Common utility functions for Resplice web applications",
+  "description": "Protobuf lib for Resplice web applications",
   "author": "marcus@resplice.com",
   "license": "UNLICENSED",
   "private": true,
@@ -10,11 +10,11 @@
     "dist",
     "package.json"
   ],
-  "module": "./dist/re-utils.es.js",
-  "types": "./dist/re-utils.d.ts",
+  "module": "./dist/re-proto.es.js",
+  "types": "./dist/re-proto.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/re-utils.es.js"
+      "import": "./dist/re-proto.es.js"
     }
   },
   "scripts": {
