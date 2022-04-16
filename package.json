@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/ChadCapra/www.resplice.com#readme",
   "workspaces": [
-    "packages/*",
-    "r-apps/*"
+    "libs/*",
+    "apps/*"
   ]
 }
