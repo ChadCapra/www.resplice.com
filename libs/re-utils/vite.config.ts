@@ -1,4 +1,5 @@
 /// <reference types="vitest/config" />
+import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
 
@@ -29,6 +30,11 @@ export default defineConfig({
   },
   define: {
     'import.meta.vitest': 'undefined'
+  },
+  resolve: {
+    alias: {
+      $utils: resolve('./src')
+    }
   },
   test: {
     includeSource: ['src/**/*.ts']
