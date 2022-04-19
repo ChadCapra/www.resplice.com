@@ -9,3 +9,22 @@ export function arrToRecord<V extends Record<string, any>>(
   })
   return record
 }
+
+if (import.meta.vitest) {
+  const { test, expect } = import.meta.vitest
+  test('transforms record array to record', () => {
+    const arr = [
+      { id: '1', name: 'Bastilla' },
+      { id: '2', name: 'Han' }
+    ]
+    const expected = arrToRecord(arr, 'id')
+    expect(expected).toBeTypeOf('object')
+    expect(expected['2']).toMatchObject({
+      id: '2',
+      name: 'Han'
+    })
+  })
+  test('handles empty array', () => {
+    expect(arrToRecord([], 'id')).toMatchObject({})
+  })
+}
