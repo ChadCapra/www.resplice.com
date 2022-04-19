@@ -11,7 +11,7 @@
     "package.json"
   ],
   "module": "./dist/re-proto.es.js",
-  "types": "./dist/re-proto.d.ts",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "import": "./dist/re-proto.es.js"
