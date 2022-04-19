@@ -8,20 +8,10 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       name: 're-proto',
+      formats: ['es'],
       fileName: (format) => `re-proto.${format}.js`
     },
-    rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
-      external: ['svelte'],
-      output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        globals: {
-          svelte: 'svelte'
-        }
-      }
-    },
+    rollupOptions: {},
     sourcemap: true,
     // Reduce bloat from legacy polyfills.
     target: 'esnext',
