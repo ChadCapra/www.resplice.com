@@ -7,14 +7,15 @@
   "private": true,
   "type": "module",
   "files": [
-    "dist",
-    "package.json"
+    "dist"
   ],
+  "main": "./dist/re-utils.umn.js",
   "module": "./dist/re-utils.es.js",
   "types": "./dist/re-utils.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/re-utils.es.js"
+      "import": "./dist/re-utils.es.js",
+      "require": "./dist/re-utils.umd.js"
     }
   },
   "scripts": {

@@ -7,7 +7,7 @@ export default defineConfig({
     lib: {
       entry: path.resolve(__dirname, 'lib/main.js'),
       name: 're-components',
-      fileName: (format) => `my-lib.${format}.js`
+      fileName: (format) => `re-components.${format}.js`
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled

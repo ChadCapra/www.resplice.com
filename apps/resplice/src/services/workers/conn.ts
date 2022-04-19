@@ -1,7 +1,9 @@
 import { encrypt, decrypt, sign, verify } from '$services/crypto'
 import { encode, decode } from '$services/proto'
-import type { Message } from '$services/proto'
-import proto from '$services/resplice-pb'
+
+// TODO: Fix this file
+const proto: any = {}
+type Message = any
 
 enum Command {
   OPEN = 'OPEN',
@@ -122,7 +124,11 @@ async function send(message: Message) {
 
   // TODO: Should we sign before we encrypt
   const encodedMessage = encode(message)
-  const encryptedMessage = await encrypt(auth.keys.aes, encodedMessage)
+  const encryptedMessage = await encrypt(
+    auth.keys.aes,
+    encodedMessage,
+    encodedMessage
+  )
   const clientMessage = proto.resplice.util.ClientMessage.create({
     messageType: message.type,
     requestId,

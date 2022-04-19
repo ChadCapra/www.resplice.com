@@ -9,7 +9,8 @@ RUN npm ci
 COPY . .
 
 ENV NODE_ENV production
-RUN npm run build
+RUN npm run build:libs
+RUN npm run build:apps
 
 
 FROM node:17-alpine
