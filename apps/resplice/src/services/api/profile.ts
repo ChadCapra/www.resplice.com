@@ -1,10 +1,10 @@
+import * as reproto from '@resplice/proto'
 import type { AppCache } from '$services/cache'
 import type { ProfileStore } from '$stores/profile'
 import type { AttributeStore } from '$stores/attributes'
 import processRecords from '$stores/utils'
 import type { Attribute } from '$types/attribute'
 import type { Profile } from '$types/user'
-import * as reproto from '$lib/reproto'
 
 const ServerMessageType = reproto.server_message.ServerMessageType
 // TODO: Type data based on ResponseType

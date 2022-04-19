@@ -1,4 +1,4 @@
-import * as reproto from '$lib/reproto'
+import * as reproto from '@resplice/proto'
 import processRecords from '$stores/utils'
 import type { AppCache } from '$services/cache'
 import type { InviteStore } from '$stores/invites'
@@ -72,7 +72,7 @@ function invitesClientFactory(
             )
           )
           break
-        case ServerMessageType.QR_INVITES:
+        case ServerMessageType.QR_CONTACT_INVITES:
           store.activeQrInvite.set(message.data)
           break
       }

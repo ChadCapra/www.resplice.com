@@ -1,4 +1,4 @@
-import * as reproto from '$lib/reproto'
+import * as reproto from '@resplice/proto'
 import { ConnCommand } from '$services/api/appClient'
 
 import type { ChatStore } from '$stores/chats'

@@ -1,11 +1,11 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import * as reproto from '$lib/reproto'
+  import * as reproto from '@resplice/proto'
   import { encrypt, generateAesKey } from '$services/crypto'
   import { encode, encodeClientMessageWrapper } from '$services/proto'
   import Code from '$lib/common/Code.svelte'
 
-  let aesKey: { key: CryptoKey; raw: ArrayBuffer }
+  let aesKey: CryptoKey
 
   let clientMessage: reproto.client_request.ClientRequest
 
@@ -21,7 +21,7 @@
 
   onMount(async () => {
     aesKey = await generateAesKey()
-    console.log(aesKey.key)
+    console.log(aesKey)
   })
 
   function bytesToB64(bytes: ArrayBuffer) {
@@ -32,13 +32,13 @@
   async function handleClick() {
     const encodedMessage = encode({
       type: ClientMessageType.ACCOUNT_CREATE,
-      data: {
+      msg: {
         name: 'Chad Capra',
         avatar: new Uint8Array(),
         handle: 'hockey4life'
       }
     })
-    const encryptedMessage = await encrypt(aesKey.key, encodedMessage)
+    const encryptedMessage = await encrypt(aesKey, encodedMessage)
 
     console.log('Encoded Message:', encodedMessage)
     console.log('Encrypted Message:', encryptedMessage.bytes)
@@ -64,7 +64,7 @@
         <tr>
           <th class="font-semibold">Request Type</th>
           <td>
-            {reproto.api_request.requestTypeToJSON(clientMessage.requestType)}
+            {reproto.client_request.clientRequestTypeToJSON(clientMessage.requestType)}
           </td>
         </tr>
         <tr>

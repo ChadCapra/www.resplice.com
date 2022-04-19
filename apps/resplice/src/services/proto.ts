@@ -1,4 +1,4 @@
-import * as reproto from '$lib/reproto'
+import * as reproto from '@resplice/proto'
 
 const ServerMessageType = reproto.server_message.ServerMessageType
 const ClientMessageType = reproto.client_request.ClientRequestType
