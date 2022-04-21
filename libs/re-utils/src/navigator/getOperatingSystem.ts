@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export type OS = 'Android' | 'iOS' | 'MacOS' | 'Windows' | 'unknown'
+export type OS = 'Android' | 'iOS' | 'Linux' | 'MacOS' | 'Windows' | 'unknown'
 export function getOperatingSystem(): OS {
   // Use new userAgentData if possible
   // TODO: Remove any type when lib.dom is updated
@@ -8,6 +8,18 @@ export function getOperatingSystem(): OS {
     (navigator as any).userAgentData.platform
   ) {
     return (navigator as any).userAgentData.platform
+  }
+
+  if (navigator.platform) {
+    switch (navigator.platform) {
+      case 'Win32':
+      case 'Win64':
+        return 'Windows'
+      case 'MacIntel':
+        return 'MacOS'
+      case 'Linux x86_64':
+        return 'Linux'
+    }
   }
 
   // Fallback to userAgent parsing
