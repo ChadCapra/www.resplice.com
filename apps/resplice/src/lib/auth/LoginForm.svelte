@@ -1,5 +1,7 @@
 <script lang="ts">
   import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
+  import { validateEmail, getNavigatorCountry } from '@resplice/utils'
+  import { phoneNumberToValue } from '$lib/attributes/utils'
   import authStore from '$lib/auth/store'
   import useAuthClient from '$lib/auth/useAuthClient'
   import useConfig from '$lib/hooks/useConfig'
@@ -7,19 +9,16 @@
   import TextField from '$lib/common/form/TextField.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
   import MailIcon from '$lib/icons/MailIcon.svelte'
-  import PhoneIcon from '$lib/icons/PhoneIcon.svelte'
-  import { validateEmail } from '$lib/utils'
   import Toggle from '$lib/common/form/Toggle.svelte'
 
   import type { CountryCode } from 'libphonenumber-js'
-  import type { PhoneValue } from '$types/attribute'
 
   const config = useConfig()
   const client = useAuthClient()
 
   let phone = {
     value: '',
-    countryCallingCode: 'US' as CountryCode
+    countryCode: (getNavigatorCountry() as CountryCode) || ('US' as CountryCode)
   }
   let email = ''
   let rememberMe = false
@@ -45,7 +44,7 @@
   function validate(): boolean {
     formErrs = {}
     const errs: Record<string, string> = {}
-    if (!isValidPhoneNumber(phone.value, phone.countryCallingCode))
+    if (!isValidPhoneNumber(phone.value, phone.countryCode))
       errs.phone = 'Invalid Phone'
     if (!validateEmail(email)) errs.email = 'Invalid Email'
     if (Object.keys(errs).length) {
@@ -78,21 +77,9 @@
 
   async function createSession() {
     try {
-      const parsedPhone = parsePhoneNumber(
-        phone.value,
-        phone.countryCallingCode
-      )
-      const phoneValue: PhoneValue = {
-        number: parseInt((parsedPhone.number as string).slice(1), 10),
-        extension: parsedPhone.ext
-          ? parseInt((parsedPhone.ext as string).slice(1), 10)
-          : undefined,
-        smsEnabled: true
-      }
-      // TODO: Check extension triming
-      console.log(phoneValue)
+      const phoneNumber = parsePhoneNumber(phone.value, phone.countryCode)
       const session = await client.createSession({
-        phone: phoneValue,
+        phone: phoneNumberToValue(phoneNumber),
         email: { email },
         rememberMe
       })
@@ -127,7 +114,6 @@
       name="phone"
       label="Enter Phone"
       bind:phone
-      Icon={PhoneIcon}
       error={formErrs.phone}
     />
     <TextField
@@ -153,7 +139,7 @@
         <p>{networkErr.message}</p>
       {/if}
     </div>
-    <!-- We have to have this text according to google :( -->
+    <!-- We have to include this text according to google :( -->
     <!-- https://developers.google.com/recaptcha/docs/faq#id-like-to-hide-the-recaptcha-badge.-what-is-allowed -->
     <p class="text-xs text-gray-400 mt-4 w-full">
       This site is protected by reCAPTCHA and the Google

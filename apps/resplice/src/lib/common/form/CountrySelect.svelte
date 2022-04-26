@@ -1,6 +1,7 @@
 <script lang="ts">
   import cx from 'classnames'
   import countries from '$lib/common/countries'
+  import FlagIcon from '$lib/common/FlagIcon.svelte'
 
   export let name: string
   export let label: string
@@ -25,6 +26,10 @@
     {#if Icon}
       <div class="ml-4 text-gray-700">
         <svelte:component this={Icon} width={32} height={32} />
+      </div>
+    {:else}
+      <div class="ml-4 text-gray-700">
+        <FlagIcon countryCode={value} />
       </div>
     {/if}
     <label
