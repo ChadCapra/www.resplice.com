@@ -40,6 +40,7 @@
     <TextField
       name="url"
       label="Social URL"
+      autoComplete="url"
       bind:value={url}
       error={formErrs.url}
     />

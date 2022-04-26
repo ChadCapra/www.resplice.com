@@ -3,7 +3,7 @@
   export let name: string
   export let label: string
   export let value: string
-  export let autoComplete = ''
+  export let autoComplete = 'on'
   export let error = ''
   export let disabled = false
   // TODO: Figure out how to type svelte component prop

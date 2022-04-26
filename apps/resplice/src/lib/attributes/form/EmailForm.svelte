@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import FormButtons from '$lib/attributes/form/FormButtons.svelte'
-  import { validateEmail } from '$lib/utils'
+  import { validateEmail } from '@resplice/utils'
 
   const dispatch = createEventDispatcher()
 
@@ -34,6 +34,7 @@
     <TextField
       name="email"
       label="Email"
+      autoComplete="email"
       bind:value={email}
       error={formErrs.email}
     />

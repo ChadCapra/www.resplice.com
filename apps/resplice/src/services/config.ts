@@ -19,11 +19,11 @@ export const defaultConfig: RespliceConfig = {
 }
 
 function getConfig(): RespliceConfig {
-  const error = new Error('Config is not defined or is missing properties')
   if (!window) return defaultConfig
   const config = (window as any).resplice_config as RespliceConfig
   // TODO: Check for null properties
-  if (Object.values(config).includes('')) throw error
+  if (Object.values(config).includes(''))
+    throw new Error('Config is not defined or is missing properties')
 
   return config
 }

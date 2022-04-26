@@ -38,18 +38,21 @@
     <TextField
       name="address1"
       label="Address 1"
+      autoComplete="address-line1"
       bind:value={address1}
       error={formErrs.address1}
     />
     <TextField
       name="address2"
       label="Address 2"
+      autoComplete="address-line2"
       bind:value={address2}
       error={formErrs.address2}
     />
     <TextField
       name="locality"
       label="City"
+      autoComplete="address-level2"
       bind:value={locality}
       error={formErrs.locality}
     />
@@ -57,12 +60,14 @@
       <TextField
         name="region"
         label="State"
+        autoComplete="address-level1"
         bind:value={region}
         error={formErrs.region}
       />
       <TextField
         name="postal-code"
         label="Postal Code"
+        autoComplete="postal-code"
         bind:value={postalCode}
         error={formErrs.postalCode}
       />

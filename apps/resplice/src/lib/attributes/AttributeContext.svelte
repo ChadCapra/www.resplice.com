@@ -1,7 +1,7 @@
 <script lang="ts">
+  import { capitalize } from '@resplice/utils'
   import AttributeValue from '$lib/attributes/AttributeValue.svelte'
   import ActionIcon from '$lib/attributes/ActionIcon.svelte'
-  import { capitalize } from '$lib/utils'
   import type { Attribute, AttributeTypeConfig } from '$types/attribute'
 
   export let attribute: Attribute
