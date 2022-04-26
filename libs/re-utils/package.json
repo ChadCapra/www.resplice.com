@@ -24,6 +24,12 @@
     "test:coverage": "vitest run --coverage",
     "lint": "eslint --cache . && prettier --check ."
   },
+  "peerDependencies": {
+    "libphonenumber-js": "^1.9.52"
+  },
+  "dependencies": {
+    "libphonenumber-js": "^1.9.52"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.19.0",
     "@typescript-eslint/parser": "^5.19.0",

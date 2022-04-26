@@ -1,5 +1,9 @@
 <script lang="ts">
-  import { isValidPhoneNumber } from 'libphonenumber-js'
+  import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js'
+  import { goto } from '$app/navigation'
+
+  import useAppClient from '$lib/hooks/useAppClient'
+  import { phoneNumberToValue } from '$lib/attributes/utils'
   import Button from '$lib/common/Button.svelte'
   import PhoneField from '$lib/common/form/PhoneField.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
@@ -8,12 +12,14 @@
   import ShareContext from '$lib/sharing/ShareContext.svelte'
   import type { CountryCode } from 'libphonenumber-js'
 
+  const client = useAppClient()
+
   let name: string
   let phone = {
     value: '',
     countryCallingCode: 'US' as CountryCode
   }
-  let shares: Set<string>
+  let shares: Set<number>
   let formErrs: Record<string, string> = {}
 
   function onInvite(_e: Event) {
@@ -28,7 +34,10 @@
       formErrs = errs
       return
     }
-    console.log(name, phone, shares)
+    const phoneNumber = parsePhoneNumber(phone.value, phone.countryCallingCode)
+    client.invites.inviteViaPhone(name, phoneNumberToValue(phoneNumber), [...shares])
+    // TODO: Dispatch Toast
+    goto('/app/list/contacts', { replaceState: true })
   }
 </script>
 

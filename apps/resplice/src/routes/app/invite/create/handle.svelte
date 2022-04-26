@@ -1,9 +1,9 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
 
+  import useAppClient from '$lib/hooks/useAppClient'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
-  import useAppClient from '$lib/hooks/useAppClient'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import ShareContext from '$lib/sharing/ShareContext.svelte'
 
@@ -11,7 +11,7 @@
 
   let name: string
   let handle: string
-  let shares: Set<string>
+  let shares: Set<number>
   let formErrs: Record<string, string> = {}
 
   function onInvite(_e: Event) {
@@ -25,7 +25,8 @@
       formErrs = errs
       return
     }
-    client.invites.create(Array.from(shares), { name, value: handle })
+    client.invites.inviteViaHandle(name, handle, [...shares])
+    // TODO: Dispatch Toast
     goto('/app/list/contacts', { replaceState: true })
   }
 </script>

@@ -1,4 +1,4 @@
-import { getOperatingSystem } from '$lib/utils'
+import { getOperatingSystem } from '@resplice/utils'
 
 export function openCalendar(date: string): void {
   console.log('Opening Calendar', date)

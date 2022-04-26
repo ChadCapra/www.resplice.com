@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
+
+  import useAppClient from '$lib/hooks/useAppClient'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import MailIcon from '$lib/icons/MailIcon.svelte'
@@ -6,9 +9,11 @@
   import ShareContext from '$lib/sharing/ShareContext.svelte'
   import { validateEmail } from '$lib/utils'
 
+  const client = useAppClient()
+
   let name: string
   let email: string
-  let shares: Set<string>
+  let shares: Set<number>
   let formErrs: Record<string, string> = {}
 
   function onInvite(_e: Event) {
@@ -22,7 +27,9 @@
       formErrs = errs
       return
     }
-    console.log(name, email, shares)
+    client.invites.inviteViaEmail(name, { email }, [...shares])
+    // TODO: Dispatch Toast
+    goto('/app/list/contacts', { replaceState: true })
   }
 </script>
 

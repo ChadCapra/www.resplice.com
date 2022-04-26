@@ -2,6 +2,7 @@ export * from '$utils/data-structures/arrToMap'
 export * from '$utils/data-structures/arrToRecord'
 export * from '$utils/navigator/getOperatingSystem'
 export * from '$utils/number/clamp'
+export * from '$utils/parsers/phone'
 export * from '$utils/text/capitalize'
 export * from '$utils/validation/validateEmail'
 

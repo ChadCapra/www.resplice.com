@@ -24,10 +24,10 @@
   }
 
   function toggleShare(id: number) {
-    if (shares.has(id)) shares.delete(id)
-    else shares.add(id)
-    // Need to do this so svelte will rerender
-    shares = shares
+    const newShares = new Set(shares)
+    if (newShares.has(id)) newShares.delete(id)
+    else newShares.add(id)
+    shares = newShares
   }
 </script>
 
@@ -46,7 +46,7 @@
       {#each [...shares] as id}
         <AttributeItem
           itemType="user"
-          attribute={attributes[id]}
+          attribute={attributes.get(id)}
           disableActions
         />
       {/each}
