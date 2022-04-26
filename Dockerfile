@@ -1,7 +1,7 @@
 FROM node:17-alpine as builder
 ARG BUILD_CONTEXT
 
-WORKDIR /app
+WORKDIR /web
 
 COPY package.json .
 COPY package-lock.json .
@@ -21,8 +21,8 @@ RUN npm run build:apps
 
 FROM node:17-alpine
 
-WORKDIR /app
+WORKDIR /web
 
-COPY --from=builder /app/apps/resplice/build .
+COPY --from=builder /web/apps/$BUILD_CONTEXT/build .
 
 CMD ["npx", "serve", "-p", "3000"]
