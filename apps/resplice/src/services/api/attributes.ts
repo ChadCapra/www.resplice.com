@@ -1,21 +1,19 @@
 import * as reproto from '@resplice/proto'
-import { ConnCommand } from '$services/api/appClient'
+import {
+  ConnCommandType,
+  onlyRecievedMessages
+} from '$services/commuters/connCommuter'
 import processRecords from '$stores/utils'
 
+import type { ConnCommuter } from '$services/commuters/connCommuter'
 import type { AppCache } from '$services/cache'
 import type { AttributeStore } from '$stores/attributes'
 import type { Attribute } from '$types/user'
 
 const ServerMessageType = reproto.server_message.ServerMessageType
-// TODO: Type data based on ResponseType
-export type ServerMessage = {
-  type: reproto.server_message.ServerMessageType
-  data: any
-}
 const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface AttributesClient {
-  handleMessage: (message: ServerMessage) => void
   addAttribute: (attribute: Pick<Attribute, 'name' | 'type' | 'value'>) => void
   editAttributeName: (params: Pick<Attribute, 'id' | 'name'>) => void
   editAttributeValue: (params: Pick<Attribute, 'id' | 'value'>) => void
@@ -26,31 +24,25 @@ export interface AttributesClient {
 }
 
 function attributesClientFactory(
-  conn: Worker,
-  _cache: AppCache, // TODO: Implement cache
+  commuter: ConnCommuter,
+  _cache: AppCache,
   store: AttributeStore
 ): AttributesClient {
+  commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
+    switch (m.type) {
+      case ServerMessageType.USER_ATTRIBUTES:
+        store.update((state) =>
+          processRecords(state, 'id', m.data.attributes, m.data.expiredIds)
+        )
+        break
+      case ServerMessageType.USER_ATTRIBUTE_GROUPS: // TODO
+    }
+  })
+
   return {
-    handleMessage: (message) => {
-      switch (message.type) {
-        case ServerMessageType.USER_ATTRIBUTES:
-          store.update((state) =>
-            processRecords(
-              state,
-              'id',
-              message.data.attributes,
-              message.data.expiredIds
-            )
-          )
-          break
-        case ServerMessageType.USER_ATTRIBUTE_GROUPS: // TODO
-        default:
-          console.log(message.type, message.data)
-      }
-    },
     addAttribute: (attribute) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_CREATE,
           data: { attribute }
@@ -58,8 +50,8 @@ function attributesClientFactory(
       })
     },
     editAttributeName: (params) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_EDIT_NAME,
           data: params
@@ -67,8 +59,8 @@ function attributesClientFactory(
       })
     },
     editAttributeValue: (params) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_EDIT_VALUE,
           data: params
@@ -76,8 +68,8 @@ function attributesClientFactory(
       })
     },
     editAttributeSort: (params) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_SORT,
           data: params
@@ -85,8 +77,8 @@ function attributesClientFactory(
       })
     },
     sendAttributeVerification: (attributeID) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_SEND_VERIFICATION,
           data: { attributeID }
@@ -94,8 +86,8 @@ function attributesClientFactory(
       })
     },
     verifyAttribute: (attributeID, code) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_VERIFY,
           data: { attributeID, code }
@@ -103,8 +95,8 @@ function attributesClientFactory(
       })
     },
     deleteAttribute: (attributeID) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.USER_ATTRIBUTE_DELETE,
           data: { attributeID }

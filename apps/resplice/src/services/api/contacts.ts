@@ -1,21 +1,20 @@
 import * as reproto from '@resplice/proto'
-import { ConnCommand } from '$services/api/appClient'
+import {
+  ConnCommandType,
+  onlyRecievedMessages
+} from '$services/commuters/connCommuter'
 import processRecords from '$stores/utils'
 
+import type { ConnCommuter } from '$services/commuters/connCommuter'
 import type { AppCache } from '$services/cache'
 import type { ContactStore } from '$stores/contacts'
 import type { Contact, PendingContact } from '$types/contact'
 import type { Attribute as UserAttribute } from '$types/user'
 
 const ServerMessageType = reproto.server_message.ServerMessageType
-export type ServerMessage = {
-  type: reproto.server_message.ServerMessageType
-  data: any
-}
 const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface ContactsClient {
-  handleMessage: (message: ServerMessage) => void
   editAlias: (params: Pick<Contact, 'id' | 'alias'>) => void
   editDescription: (params: Pick<Contact, 'id' | 'description'>) => void
   favor: (id: Contact['id']) => void
@@ -32,68 +31,54 @@ export interface ContactsClient {
 }
 
 function contactsClientFactory(
-  conn: Worker,
+  commuter: ConnCommuter,
   _cache: AppCache, // TODO: Implement cache
   store: ContactStore
 ): ContactsClient {
+  commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
+    switch (m.type) {
+      case ServerMessageType.CONTACTS:
+        store.contacts.update((state) =>
+          processRecords(state, 'id', m.data.contacts, m.data.expiredIds)
+        )
+        break
+      case ServerMessageType.CONTACT_ATTRIBUTES:
+        store.contactAttributes.update((state) =>
+          processRecords(
+            state,
+            'id',
+            m.data.contactAttributes,
+            m.data.expiredIds
+          )
+        )
+        break
+      case ServerMessageType.CONTACT_SHARES:
+        store.contactShares.update((state) =>
+          processRecords(state, 'id', m.data.contactShares, m.data.expiredIds)
+        )
+        break
+      case ServerMessageType.PENDING_CONTACTS:
+        store.pendingContacts.update((state) =>
+          processRecords(state, 'id', m.data.pendingContacts, m.data.expiredIds)
+        )
+        break
+      case ServerMessageType.PENDING_CONTACT_ATTRIBUTES:
+        store.pendingContactAttributes.update((state) =>
+          processRecords(
+            state,
+            'id',
+            m.data.pendingContactAttributes,
+            m.data.expiredIds
+          )
+        )
+        break
+    }
+  })
+
   return {
-    handleMessage: (message) => {
-      switch (message.type) {
-        case ServerMessageType.CONTACTS:
-          store.contacts.update((state) =>
-            processRecords(
-              state,
-              'id',
-              message.data.contacts,
-              message.data.expiredIds
-            )
-          )
-          break
-        case ServerMessageType.CONTACT_ATTRIBUTES:
-          store.contactAttributes.update((state) =>
-            processRecords(
-              state,
-              'id',
-              message.data.contactAttributes,
-              message.data.expiredIds
-            )
-          )
-          break
-        case ServerMessageType.CONTACT_SHARES:
-          store.contactShares.update((state) =>
-            processRecords(
-              state,
-              'id',
-              message.data.contactShares,
-              message.data.expiredIds
-            )
-          )
-          break
-        case ServerMessageType.PENDING_CONTACTS:
-          store.pendingContacts.update((state) =>
-            processRecords(
-              state,
-              'id',
-              message.data.pendingContacts,
-              message.data.expiredIds
-            )
-          )
-          break
-        case ServerMessageType.PENDING_CONTACT_ATTRIBUTES:
-          store.pendingContactAttributes.update((state) =>
-            processRecords(
-              state,
-              'id',
-              message.data.pendingContactAttributes,
-              message.data.expiredIds
-            )
-          )
-          break
-      }
-    },
     editAlias: (params) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.CONTACT_EDIT_ALIAS,
           data: params
@@ -101,8 +86,8 @@ function contactsClientFactory(
       })
     },
     editDescription: (params) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.CONTACT_EDIT_DESCRIPTION,
           data: params
@@ -110,8 +95,8 @@ function contactsClientFactory(
       })
     },
     favor: (id) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.CONTACT_FAVOR,
           data: { id }
@@ -119,8 +104,8 @@ function contactsClientFactory(
       })
     },
     unfavor: (id) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.CONTACT_UNFAVOR,
           data: { id }
@@ -128,8 +113,8 @@ function contactsClientFactory(
       })
     },
     delete: (id) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.CONTACT_DELETE,
           data: { id }
@@ -137,8 +122,8 @@ function contactsClientFactory(
       })
     },
     addShare: (id, attributeId) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.CONTACT_ADD_SHARE,
           data: { id, attributeId }
@@ -146,8 +131,8 @@ function contactsClientFactory(
       })
     },
     removeShare: (id, attributeId) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.CONTACT_REMOVE_SHARE,
           data: { id, attributeId }
@@ -155,8 +140,8 @@ function contactsClientFactory(
       })
     },
     acceptPending: (id) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.PENDING_CONTACT_ACCEPT,
           data: { id }
@@ -164,8 +149,8 @@ function contactsClientFactory(
       })
     },
     declinePending: (id) => {
-      conn.postMessage({
-        type: ConnCommand.SEND,
+      commuter.postMessage({
+        type: ConnCommandType.SEND,
         message: {
           type: ClientMessageType.PENDING_CONTACT_DECLINE,
           data: { id }

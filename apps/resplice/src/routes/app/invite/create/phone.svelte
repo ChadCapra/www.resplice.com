@@ -17,7 +17,7 @@
   let name: string
   let phone = {
     value: '',
-    countryCallingCode: 'US' as CountryCode
+    countryCode: 'US' as CountryCode
   }
   let shares: Set<number>
   let formErrs: Record<string, string> = {}
@@ -26,7 +26,7 @@
     formErrs = {}
     const errs: Record<string, string> = {}
     if (!name) errs.name = 'Please enter your full name'
-    if (!isValidPhoneNumber(phone.value, phone.countryCallingCode))
+    if (!isValidPhoneNumber(phone.value, phone.countryCode))
       errs.phone = 'Please enter a valid phone number'
     if (!shares.size)
       errs.shares = 'Please share at least one attribute before inviting'
@@ -34,8 +34,10 @@
       formErrs = errs
       return
     }
-    const phoneNumber = parsePhoneNumber(phone.value, phone.countryCallingCode)
-    client.invites.inviteViaPhone(name, phoneNumberToValue(phoneNumber), [...shares])
+    const phoneNumber = parsePhoneNumber(phone.value, phone.countryCode)
+    client.invites.inviteViaPhone(name, phoneNumberToValue(phoneNumber), [
+      ...shares
+    ])
     // TODO: Dispatch Toast
     goto('/app/list/contacts', { replaceState: true })
   }

@@ -23,7 +23,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      $utils: resolve('./src')
+      $proto: resolve('./src')
     }
   },
   test: {

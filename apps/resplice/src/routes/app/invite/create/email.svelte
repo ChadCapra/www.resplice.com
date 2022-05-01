@@ -7,7 +7,7 @@
   import MailIcon from '$lib/icons/MailIcon.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import ShareContext from '$lib/sharing/ShareContext.svelte'
-  import { validateEmail } from '$lib/utils'
+  import { validateEmail } from '@resplice/utils'
 
   const client = useAppClient()
 

@@ -1,4 +1,4 @@
-const LARGEST_INT_32 = 4294967295
+// const LARGEST_INT_32 = 4294967295
 
 export function generateAesKey() {
   return crypto.subtle.generateKey(
@@ -71,7 +71,10 @@ export function importPublicKey(rawKey: Uint8Array) {
   return crypto.subtle.importKey('raw', rawKey, 'RSA-OAEP', false, ['encrypt'])
 }
 
-export function publicKeyEncrypt(key: CryptoKey, data: Uint8Array) {
+export function publicKeyEncrypt(
+  key: CryptoKey,
+  data: Uint8Array
+): Promise<Uint8Array> {
   return crypto.subtle.encrypt({ name: 'RSA-OAEP' }, key, data)
 }
 
@@ -85,7 +88,7 @@ export function calculateClientIV(
   // set first 8 bytes of buffer with base
   ivArr.set(baseIV)
   // set last 4 bytes of buffer with message id int32
-  new DataView(ivBuf).setUint32(8, counter)
+  new DataView(ivBuf).setUint32(8, counter * 2)
 
   return ivArr
 }
@@ -100,7 +103,7 @@ export function calculateServerIV(
   // set first 8 bytes of buffer with base
   ivArr.set(baseIV)
   // set last 4 bytes of buffer with message id int32
-  new DataView(ivBuf).setUint32(8, LARGEST_INT_32 - counter)
+  new DataView(ivBuf).setUint32(8, counter * 2 + 1)
 
   return ivArr
 }
@@ -128,6 +131,38 @@ export function combineBufferArrays(
   newBufArr.set(arr1)
   newBufArr.set(arr2, arr1.byteLength)
   return newBufArr
+}
+
+export class ReCrypto {
+  key: CryptoKey
+  rawKey: Uint8Array
+  baseIV: Uint8Array
+  #counter: number
+
+  constructor(
+    key: CryptoKey,
+    rawKey: Uint8Array,
+    baseIV: Uint8Array,
+    counter?: number
+  ) {
+    this.key = key
+    this.rawKey = rawKey
+    this.baseIV = baseIV
+    this.#counter = counter || 0
+  }
+
+  static async generateAesKey(): Promise<ReCrypto> {
+    // TODO: Cache this in IndexDB (not localStorage) to support
+    // page refreshing during auth
+    const key = await generateAesKey()
+    const rawKey = await exportKey(key)
+    const baseIV = generateBaseIV()
+    return new ReCrypto(key, rawKey, baseIV)
+  }
+
+  get counter() {
+    return this.#counter++
+  }
 }
 
 // const baseIV = crypto.getRandomValues(new Uint8Array(8))

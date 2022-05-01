@@ -17,10 +17,7 @@ export interface SplicesClient {
   getMembers: (spliceUUID: string) => Promise<Contact[]>
   getAllMembers: () => Promise<Contact[]>
   removeMember: (spliceUUID: string, contactUUID: string) => Promise<void>
-  createInvite: (
-    spliceUUID: string,
-    invite: Pick<Invite, 'name' | 'value'>
-  ) => Promise<Invite>
+  createInvite: (spliceUUID: string) => Promise<Invite>
   getShare: (spliceUUID: string, shareUUID: string) => Promise<any>
   getShares: (spliceUUID: string) => Promise<any>
   getAllShares: () => Promise<any>
@@ -28,6 +25,7 @@ export interface SplicesClient {
   removeShare: (spliceUUID: string, shareUUID: string) => Promise<any>
 }
 
+// TODO: Change to reactive model
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 function splicesClientFactory(api: any): SplicesClient {
   return {
@@ -42,8 +40,7 @@ function splicesClientFactory(api: any): SplicesClient {
     getAllMembers: () => api.getAllMembers(),
     removeMember: (spliceUUID, memberUUID) =>
       api.removeSpliceMember(spliceUUID, memberUUID),
-    createInvite: (spliceUUID, invite) =>
-      api.createMemberInvite(spliceUUID, invite),
+    createInvite: (spliceUUID) => api.createMemberInvite(spliceUUID),
     getShare: (spliceUUID, shareUUID) =>
       api.getSpliceShare(spliceUUID, shareUUID),
     getShares: (spliceUUID) => api.getSpliceShares(spliceUUID),

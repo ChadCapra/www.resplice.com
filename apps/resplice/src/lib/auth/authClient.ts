@@ -3,8 +3,8 @@ import type {
   CreateSession,
   VerifySessionEmail,
   VerifySessionPhone
-} from '$lib/reproto/auth/request/session'
-import type { CreateAccount } from '$lib/reproto/user/request/account'
+} from '@resplice/proto/dist/auth/request/session'
+import type { CreateAccount } from '@resplice/proto/dist/user/request/account'
 import {
   encode,
   decode,
@@ -12,9 +12,7 @@ import {
   decodeServerMessageWrapper
 } from '$services/proto'
 import {
-  generateAesKey,
-  generateBaseIV,
-  exportKey,
+  ReCrypto,
   importPublicKey,
   encrypt,
   decrypt,
@@ -28,33 +26,6 @@ import mockAuthClientFactory from '$services/mocks/authClient'
 import type { Api } from '$services/api/http'
 import type { Session } from '$types/session'
 import type { PhoneValue, EmailValue } from '$types/attribute'
-
-class ReCrypto {
-  key: CryptoKey
-  rawKey: Uint8Array
-  baseIV: Uint8Array
-  #counter: number
-
-  private constructor(key: CryptoKey, rawKey: Uint8Array, baseIV: Uint8Array) {
-    this.key = key
-    this.rawKey = rawKey
-    this.baseIV = baseIV
-    this.#counter = 0
-  }
-
-  static async generateAesKey(): Promise<ReCrypto> {
-    // TODO: Cache this in IndexDB (not localStorage) to support
-    // page refreshing during auth
-    const key = await generateAesKey()
-    const rawKey = await exportKey(key)
-    const baseIV = generateBaseIV()
-    return new ReCrypto(key, rawKey, baseIV)
-  }
-
-  get counter() {
-    return this.#counter++
-  }
-}
 
 const ServerMessageType = reproto.server_message.ServerMessageType
 const ClientMessageType = reproto.client_request.ClientRequestType
@@ -96,6 +67,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: token,
         useBinary: false
       }),
+    // TODO: This can probably go away
     getActiveSession: async () => {
       try {
         checkAesKey(recrypto)
@@ -132,9 +104,17 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         createSessionBytes
       )
 
+      const clientMessage: reproto.client_request.ClientRequest = {
+        requestId: recrypto.counter,
+        requestType: ClientMessageType.SESSION_CREATE,
+        encryptedPayload: encryptedMessage
+      }
+      const clientMessageBytes =
+        reproto.client_request.ClientRequest.encode(clientMessage).finish()
+
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/session/create',
-        data: encryptedMessage // TODO: Is this a client message or just a session?
+        endpoint: '/do',
+        data: clientMessageBytes
       })
 
       return handleServerMessage({
@@ -143,7 +123,6 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: new Uint8Array(resBuffer)
       })
     },
-
     verifyEmail: async (params) => {
       checkAesKey(recrypto)
 
@@ -157,7 +136,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       })
 
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/session/verify-email',
+        endpoint: '/do',
         data: clientMessageBytes
       })
 
@@ -180,7 +159,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       })
 
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/session/verify-phone',
+        endpoint: '/do',
         data: clientMessageBytes
       })
 
@@ -205,7 +184,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       })
 
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/user/create',
+        endpoint: '/do',
         data: clientMessageBytes
       })
 

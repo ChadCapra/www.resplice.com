@@ -1,119 +1,96 @@
 import { ConnStatus } from '$stores/conn'
-import attributesClientFactory from './attributes'
-// import chatClientFactory from './chat'
-import contactsClientFactory from './contacts'
-import invitesClientFactory from './invites'
-import profileClientFactory from './profile'
+import { ConnCommandType } from '$services/commuters/connCommuter'
+import attributesClientFactory from '$services/api/attributes'
+import contactsClientFactory from '$services/api/contacts'
+import invitesClientFactory from '$services/api/invites'
+import profileClientFactory from '$services/api/profile'
 
-import type { Stores } from '$stores/index'
+import {
+  ConnMessageType,
+  type ConnCommuter
+} from '$services/commuters/connCommuter'
+import type { AttributesClient } from '$services/api/attributes'
+// import type { ChatClient } from '$services/api/chat'
+import type { ContactsClient } from '$services/api/contacts'
+import type { InvitesClient } from '$services/api/invites'
+import type { ProfileClient } from '$services/api/profile'
 import type { AppCache } from '$services/cache'
-import type { AttributesClient } from './attributes'
-// import type { ChatClient } from './chat'
-import type { ContactsClient } from './contacts'
-import type { InvitesClient } from './invites'
-import type { ProfileClient } from './profile'
+import type { Stores } from '$stores/index'
 
-export interface AppClient {
+class AppClient {
   attributes: AttributesClient
   // chat: ChatClient
   contacts: ContactsClient
   invites: InvitesClient
   profile: ProfileClient
-}
 
-export enum ConnCommand {
-  OPEN = 'OPEN',
-  CLOSE = 'CLOSE',
-  SEND = 'SEND'
-}
-enum ConnMessageType {
-  CLOSED = 'CLOSED',
-  ERRORED = 'ERRORED',
-  RECEIVED = 'RECEIVED',
-  OPENED = 'OPENED',
-  SENT = 'SENT'
-}
-
-async function clientFactory(
-  wsEndpoint: string,
-  conn: Worker,
-  cache: AppCache,
-  stores: Stores
-): Promise<AppClient> {
-  const attributes = attributesClientFactory(conn, cache, stores.attributes)
-  // const chat = chatClientFactory(conn, cache, stores.chat)
-  const contacts = contactsClientFactory(conn, cache, stores.contacts)
-  const invites = invitesClientFactory(conn, cache, stores.invites)
-  const profile = profileClientFactory(conn, cache, {
-    profile: stores.profile,
-    attributes: stores.attributes
-  })
-
-  return new Promise<AppClient>((resolve, reject) => {
+  constructor(
+    wsEndpoint: string,
+    connCommuter: ConnCommuter,
+    cache: AppCache,
+    stores: Stores
+  ) {
+    // Set state in app as connecting
     stores.conn.set({
       status: ConnStatus.CONNECTING,
       error: null,
       messages: []
     })
 
-    conn.onmessage = ({ data: cmd }) => {
-      stores.conn.update((state) => ({
-        ...state,
-        messages: [...state.messages, cmd]
-      }))
-      switch (cmd.type as ConnMessageType) {
+    // Subscribe to conn worker events
+    connCommuter.messages$.subscribe((m) => {
+      switch (m.type) {
         case ConnMessageType.OPENED:
-          stores.conn.update((state) => ({
-            ...state,
+          stores.conn.update(() => ({
             status: ConnStatus.CONNECTED,
-            error: null
+            error: null,
+            messages: [m]
           }))
-          // conn.postMessage({ type: '', data: {} }) // Need to send a handshake here.
-          // This feels weird because resolve may be called multiple times
-          // if the socket connects, disconnects, then connects again.
-          // This might be okay because only the first resolve is processed
-          // subsequent calls are basically ignored.
-          resolve({
-            attributes,
-            // chat,
-            contacts,
-            invites,
-            profile
-          })
+          break
+        // TODO: Move to toasts store
+        case ConnMessageType.ERRORED:
+          stores.conn.update((state) => ({
+            status: state.status,
+            error: m.error,
+            messages: [...state.messages, m]
+          }))
           break
         case ConnMessageType.CLOSED:
           stores.conn.update((state) => ({
-            ...state,
             status: ConnStatus.DISCONNECTED,
-            error: null
+            error: null,
+            // Might reset messages in this case
+            messages: [...state.messages, m]
           }))
           break
-        case ConnMessageType.ERRORED:
+        default:
           stores.conn.update((state) => ({
-            ...state,
-            status: ConnStatus.DISCONNECTED,
-            error: cmd.reason
+            status: state.status,
+            error: null,
+            messages: [...state.messages, m]
           }))
-          // This will only actually reject if the promise
-          // was not resolved previously by a successful connection
-          reject(cmd.reason)
-          break
-        case ConnMessageType.RECEIVED:
-          // This can be moved if we can have multiple
-          // events listeners on the worker `onmessage` event
-          attributes.handleMessage(cmd.data)
-          // chat.handleMessage(cmd.data)
-          contacts.handleMessage(cmd.data)
-          invites.handleMessage(cmd.data)
-          profile.handleMessage(cmd.data)
-          break
       }
-    }
+    })
 
-    conn.postMessage({ type: ConnCommand.OPEN, wsEndpoint })
-  })
+    // initialize clients
+    this.attributes = attributesClientFactory(
+      connCommuter,
+      cache,
+      stores.attributes
+    )
+    this.contacts = contactsClientFactory(connCommuter, cache, stores.contacts)
+    this.invites = invitesClientFactory(connCommuter, cache, stores.invites)
+    this.profile = profileClientFactory(connCommuter, cache, stores.profile)
+
+    // Send open command
+    connCommuter.postMessage({
+      type: ConnCommandType.OPEN,
+      wsEndpoint,
+      // TODO: Pass real reCrypto class
+      reCrypto: {} as any,
+      handshake: {}
+    })
+  }
 }
 
-export const contextKey = 'Client'
-
-export default clientFactory
+export default AppClient

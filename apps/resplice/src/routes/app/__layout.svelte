@@ -36,7 +36,12 @@
   onMount(() => {
     appLoadPromise = new Promise(async (resolve, reject) => {
       try {
-        const { cache, client } = await loadApp(config.wsEndpoint, stores, true)
+        const useMocks = !config.wsEndpoint
+        const { cache, client } = await loadApp(
+          config.wsEndpoint,
+          stores,
+          useMocks
+        )
         cacheContext.cache = cache
         clientContext.client = client
         resolve(true)

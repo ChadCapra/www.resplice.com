@@ -14,7 +14,8 @@
   const config = useConfig()
 
   const api = apiFactory(config.httpEndpoint)
-  const client = authClientFactory(api, true)
+  const useMocks = !config.httpEndpoint
+  const client = authClientFactory(api, useMocks)
 
   let sessionPromise: Promise<boolean> = Promise.resolve(false)
 
@@ -30,7 +31,7 @@
           email: session.email,
           phone: {
             value: session.phone,
-            countryCallingCode: 'US'
+            countryCode: 'US'
           }
         }
         authStore.set({ session, loginValues })

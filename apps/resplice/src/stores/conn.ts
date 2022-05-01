@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
 
 export enum ConnStatus {
   DISCONNECTED = 'DISCONNECTED',
@@ -7,7 +7,7 @@ export enum ConnStatus {
 }
 type ConnState = {
   status: ConnStatus
-  error: null
+  error: Error | null
   messages: any[]
 }
 
@@ -16,6 +16,14 @@ const connStore = writable<ConnState>({
   error: null,
   messages: []
 })
+
+export const isOnline = derived<typeof connStore, boolean>(
+  connStore,
+  ($c, set) => {
+    if ($c.status === ConnStatus.DISCONNECTED) set(false)
+    else set(true)
+  }
+)
 
 export type ConnStore = typeof connStore
 
