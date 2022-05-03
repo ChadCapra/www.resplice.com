@@ -152,7 +152,7 @@ export class ReCrypto {
   }
 
   static async generateAesKey(): Promise<ReCrypto> {
-    // TODO: Cache this in IndexDB (not localStorage) to support
+    // TODO: Cache this in IndexedDB (not localStorage) to support
     // page refreshing during auth
     const key = await generateAesKey()
     const rawKey = await exportKey(key)

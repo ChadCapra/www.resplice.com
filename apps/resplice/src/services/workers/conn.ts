@@ -2,18 +2,9 @@ import * as reproto from '@resplice/proto'
 import { filter, first, fromEvent, pluck } from 'rxjs'
 import { webSocket, type WebSocketSubject } from 'rxjs/webSocket'
 import {
-  ReCrypto,
-  encrypt,
-  decrypt,
-  calculateServerIV,
-  calculateClientIV
-} from '$services/crypto'
-import {
-  encode,
-  decode,
-  decodeServerMessageWrapper,
-  encodeClientMessageWrapper
-} from '$services/proto'
+  serializeClientMessage,
+  deserializeServerMessage
+} from '$services/serde'
 import {
   ConnCommandType,
   type ConnCommand,
@@ -21,6 +12,7 @@ import {
   type ConnMessage,
   type ClientMessage
 } from '$services/commuters/connCommuter'
+import type { ReCrypto } from '$services/crypto'
 
 const ClientMessageType = reproto.client_request.ClientRequestType
 
@@ -100,40 +92,6 @@ function handleError(error: Error) {
 
 function handleClose() {
   ctx.postMessage({ type: ConnMessageType.CLOSED })
-}
-
-async function deserializeServerMessage(bytes: Uint8Array, crypto: ReCrypto) {
-  const serverWrapper = decodeServerMessageWrapper(bytes)
-  const iv = calculateServerIV(crypto.baseIV, serverWrapper.messageId)
-
-  const serverMessageBytes = await decrypt(
-    crypto.key,
-    iv,
-    serverWrapper.encryptedPayload
-  )
-
-  return decode({
-    type: serverWrapper.messageType,
-    data: serverMessageBytes
-  })
-}
-
-async function serializeClientMessage(
-  message: ClientMessage,
-  crypto: ReCrypto
-) {
-  const messageBytes = encode(message)
-
-  const counter = crypto.counter
-  const iv = calculateClientIV(crypto.baseIV, counter)
-
-  const encryptedPayload = await encrypt(crypto.key, iv, messageBytes)
-
-  return encodeClientMessageWrapper({
-    requestType: ClientMessageType.SOCKET_AUTHORIZE,
-    requestId: counter,
-    encryptedPayload
-  })
 }
 
 async function send(message: ClientMessage) {

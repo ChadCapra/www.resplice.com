@@ -1,8 +1,8 @@
 import format from 'date-fns/esm/format'
 import formatInTimeZone from 'date-fns-tz/esm/formatInTimeZone'
 
-// TODO: Get correct seconds since 2000?
-const RESPLICE_EPOCH = 435242 * 1000
+// TODO: Get correct seconds from 1970 - 2000?
+const RESPLICE_EPOCH = 946684800 * 1000
 
 export function respliceDatetimeToDatetime(datetime: number) {
   const ms = datetime * 1000
