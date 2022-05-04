@@ -22,7 +22,6 @@ import type { Api } from '$services/api/http'
 import type { Session } from '$types/session'
 import type { PhoneValue, EmailValue } from '$types/attribute'
 
-const ServerMessageType = reproto.server_message.ServerMessageType
 const ClientMessageType = reproto.client_request.ClientRequestType
 
 type CreateSessionRequest = {

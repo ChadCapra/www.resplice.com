@@ -26,7 +26,7 @@
 
   function bytesToB64(bytes: ArrayBuffer) {
     // NOTE: This won't work for large buffers, should be fine for keys and small messages
-    return btoa(String.fromCharCode(...new Uint8Array(bytes)))
+    return Buffer.from(bytes).toString('base64')
   }
 
   async function handleClick() {
@@ -64,7 +64,9 @@
         <tr>
           <th class="font-semibold">Request Type</th>
           <td>
-            {reproto.client_request.clientRequestTypeToJSON(clientMessage.requestType)}
+            {reproto.client_request.clientRequestTypeToJSON(
+              clientMessage.requestType
+            )}
           </td>
         </tr>
         <tr>
