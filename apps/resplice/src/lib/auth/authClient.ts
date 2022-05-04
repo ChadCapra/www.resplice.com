@@ -94,6 +94,8 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         createSessionBytes
       )
 
+      console.log(Buffer.from(encryptedMessage).toString('base64'))
+
       const clientMessage: reproto.client_request.ClientRequest = {
         requestId: recrypto.counter,
         requestType: ClientMessageType.SESSION_CREATE,
@@ -182,7 +184,7 @@ function checkAesKey(recrypto: ReCrypto | null) {
 
 async function fetchServerPublicKey(api: Api) {
   const key: ArrayBuffer = await api.get({ endpoint: '/pub-key' })
-  return importPublicKey(new Uint8Array(key))
+  return importPublicKey(key)
 }
 
 export const contextKey = 'AuthClient'

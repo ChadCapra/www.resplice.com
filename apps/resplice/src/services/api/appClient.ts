@@ -93,4 +93,6 @@ class AppClient {
   }
 }
 
+export const contextKey = 'Client'
+
 export default AppClient

@@ -67,8 +67,12 @@ export function verify(
   return crypto.subtle.verify('HMAC', key, signature, data)
 }
 
-export function importPublicKey(rawKey: Uint8Array) {
-  return crypto.subtle.importKey('raw', rawKey, 'RSA-OAEP', false, ['encrypt'])
+export function importPublicKey(rawKey: ArrayBuffer) {
+  console.log(rawKey)
+  return crypto.subtle.importKey('raw', rawKey, {
+    name: 'RSA-OAEP',
+    hash: 'SHA-256'
+  }, false, ['encrypt'])
 }
 
 export function publicKeyEncrypt(

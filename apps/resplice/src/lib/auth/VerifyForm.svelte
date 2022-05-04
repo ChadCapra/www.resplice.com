@@ -17,7 +17,7 @@
 
   const parsedPhone = parsePhoneNumber(
     $authStore.loginValues.phone.value,
-    $authStore.loginValues.phone.countryCallingCode as CountryCode
+    $authStore.loginValues.phone.countryCode as CountryCode
   )
   const email: Email = {
     id: 0,

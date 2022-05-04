@@ -90,8 +90,8 @@ async function commonFetch({
   if (!res.ok) throw res
   if (res.status === 204) return
 
-  const parser = useBinary ? res.arrayBuffer : res.json
-  return parser()
+  const parsedBody = useBinary ? res.arrayBuffer() : res.json()
+  return parsedBody
 }
 
 export default apiFactory
