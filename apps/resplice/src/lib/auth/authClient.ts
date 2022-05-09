@@ -94,8 +94,6 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         createSessionBytes
       )
 
-      console.log(Buffer.from(encryptedMessage).toString('base64'))
-
       const clientMessage: reproto.client_request.ClientRequest = {
         requestId: recrypto.counter,
         requestType: ClientMessageType.SESSION_CREATE,

@@ -1,13 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import * as reproto from '@resplice/proto'
-  import { encrypt, generateAesKey } from '$services/crypto'
+  import { btob64 } from '@resplice/utils'
+  import { calculateClientIV, encrypt, ReCrypto } from '$services/crypto'
   import { encode, encodeClientMessageWrapper } from '$services/proto'
   import Code from '$lib/common/Code.svelte'
+  import Button from '$lib/common/Button.svelte'
 
-  let aesKey: CryptoKey
+  let recrypto: ReCrypto | null = null
 
   let clientMessage: reproto.client_request.ClientRequest
+  let iv: Uint8Array | null = null
 
   // const ServerMessageType = reproto.server_message.ServerMessageType
   const ClientMessageType = reproto.client_request.ClientRequestType
@@ -15,48 +18,42 @@
   $: clientMessageEncoded =
     clientMessage && encodeClientMessageWrapper(clientMessage)
 
-  $: {
-    clientMessageEncoded && console.log('Client Message:', clientMessageEncoded)
-  }
-
   onMount(async () => {
-    aesKey = await generateAesKey()
-    console.log(aesKey)
+    recrypto = await ReCrypto.generateAesKey()
   })
-
-  function bytesToB64(bytes: ArrayBuffer) {
-    // NOTE: This won't work for large buffers, should be fine for keys and small messages
-    return Buffer.from(bytes).toString('base64')
-  }
 
   async function handleClick() {
     const encodedMessage = encode({
       type: ClientMessageType.ACCOUNT_CREATE,
-      msg: {
+      data: {
         name: 'Chad Capra',
         avatar: new Uint8Array(),
         handle: 'hockey4life'
       }
     })
-    const encryptedMessage = await encrypt(aesKey, encodedMessage)
+    const counter = recrypto.counter
+    iv = calculateClientIV(recrypto.baseIV, counter)
+    const encryptedMessage = await encrypt(recrypto.key, iv, encodedMessage)
 
     console.log('Encoded Message:', encodedMessage)
-    console.log('Encrypted Message:', encryptedMessage.bytes)
+    console.log('Encrypted Message:', encryptedMessage)
+
     clientMessage = {
       requestType: ClientMessageType.ACCOUNT_CREATE,
       requestId: 0,
-      iv: encryptedMessage.iv,
-      encryptedParameters: encryptedMessage.bytes
+      encryptedPayload: encryptedMessage
     }
   }
 </script>
 
 <div class="flex flex-col items-center p-8">
-  {#if !!aesKey}
+  {#if !!recrypto}
     <h3 class="font-semibold text-lg">Base64 Encoded AES Key</h3>
-    <Code>{bytesToB64(aesKey.raw)}</Code>
+    <Code>{btob64(recrypto.rawKey)}</Code>
 
-    <button on:click={handleClick}>Test Create Message</button>
+    <Button class="mt-8" on:click={handleClick}
+      >Test Create Account Message</Button
+    >
 
     {#if !!clientMessage}
       <h3 class="font-semibold text-lg mt-8">Client Message Result</h3>
@@ -75,14 +72,14 @@
         </tr>
         <tr>
           <th class="font-semibold">IV</th>
-          <td>{bytesToB64(clientMessage.iv.buffer)}</td>
+          <td><Code>{btob64(iv)}</Code></td>
         </tr>
       </table>
       <div class="max-w-4xl p-4 overflow-auto">
         <h3 class="font-semibold text-lg mb-6">
           Base64 Encoded Client Message
         </h3>
-        <Code>{bytesToB64(clientMessageEncoded)}</Code>
+        <Code>{btob64(clientMessageEncoded)}</Code>
       </div>
     {/if}
   {:else}
