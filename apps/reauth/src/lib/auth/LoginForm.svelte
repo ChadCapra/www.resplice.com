@@ -1,5 +1,6 @@
 <script lang="ts">
   import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
+  import { validateEmail } from '@resplice/utils'
   import authStore from '$lib/auth/store'
   import useAuthClient from '$lib/auth/useAuthClient'
   import useConfig from '$lib/hooks/useConfig'
@@ -8,7 +9,6 @@
   import PhoneField from '$lib/common/form/PhoneField.svelte'
   import MailIcon from '$lib/icons/MailIcon.svelte'
   import PhoneIcon from '$lib/icons/PhoneIcon.svelte'
-  import { validateEmail } from '$lib/utils'
   import Toggle from '$lib/common/form/Toggle.svelte'
 
   import type { CountryCode } from 'libphonenumber-js'

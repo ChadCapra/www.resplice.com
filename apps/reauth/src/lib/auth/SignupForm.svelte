@@ -1,6 +1,6 @@
 <script lang="ts">
   import useAuthClient from '$lib/auth/useAuthClient'
-  import UserAvatar from '$lib/user/UserAvatar.svelte'
+  // import UserAvatar from '$lib/user/UserAvatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import Button from '$lib/common/Button.svelte'
@@ -58,13 +58,13 @@
 
 <div class="flex-1 space-y-6 flex flex-col justify-between overflow-auto">
   <div>
-    <UserAvatar
+    <!-- <UserAvatar
       profile={{
         uuid: RAND_ID,
         avatar: avatar ? URL.createObjectURL(avatar) : null
       }}
       on:crop={(e) => (avatar = e.detail)}
-    />
+    /> -->
     <form class="mt-8 px-2" on:submit|preventDefault={handleSubmit}>
       <TextField
         name="full-name"

@@ -6,9 +6,8 @@
   import apiFactory from '$services/api/http'
   import authClientFactory, {
     contextKey as authContextKey
-  } from '$lib/auth/authClient'
+  } from '$services/api/authClient'
   import type { Session } from '$types/session'
-  import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
   import useConfig from '$lib/hooks/useConfig'
 
   const config = useConfig()
@@ -71,7 +70,9 @@
 </script>
 
 {#await sessionPromise}
-  <AppLoad />
+  <div class="w-full h-full flex items-center justify-center">
+    <p>Loading...</p>
+  </div>
 {:then isLoaded}
   {#if isLoaded}
     <slot />
