@@ -1,8 +1,8 @@
 <script lang="ts">
   import { parsePhoneNumber } from 'libphonenumber-js'
   import authStore from '$lib/auth/store'
-  import useAuthClient from '$lib/auth/useAuthClient'
-  import AttributeItem from '$lib/attributes/AttributeItem.svelte'
+  import useAuthClient from '$lib/hooks/useAuthClient'
+  // import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import LockClosedIcon from '$lib/icons/LockClosedIcon.svelte'
   import ShieldCheckmarkIcon from '$lib/icons/ShieldCheckmarkIcon.svelte'
@@ -17,7 +17,7 @@
 
   const parsedPhone = parsePhoneNumber(
     $authStore.loginValues.phone.value,
-    $authStore.loginValues.phone.countryCallingCode as CountryCode
+    $authStore.loginValues.phone.countryCode as CountryCode
   )
   const email: Email = {
     id: 0,
@@ -77,11 +77,11 @@
 
 <div class="flex-1 space-y-16">
   <div class="flex flex-col space-y-4 items-center">
-    <AttributeItem
+    <!-- <AttributeItem
       attribute={email}
       itemType="disabled"
       showSecondAction={false}
-    />
+    /> -->
     <div class="w-full flex items-center">
       <div class="w-full mr-4">
         <TextField
@@ -105,11 +105,11 @@
     </div>
   </div>
   <div class="flex flex-col space-y-4 items-center">
-    <AttributeItem
+    <!-- <AttributeItem
       attribute={phone}
       itemType="disabled"
       showSecondAction={false}
-    />
+    /> -->
     <div class="w-full flex items-center">
       <div class="w-full mr-4">
         <TextField

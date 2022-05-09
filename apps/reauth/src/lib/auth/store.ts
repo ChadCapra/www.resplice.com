@@ -3,7 +3,7 @@ import type { Session } from '$types/session'
 
 type LoginValues = {
   phone: {
-    countryCallingCode: string
+    countryCode: string
     value: string
   }
   email: string

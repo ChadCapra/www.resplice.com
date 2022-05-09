@@ -1,6 +1,6 @@
 import { getContext } from 'svelte'
-import type { AuthClient } from '$lib/auth/authClient'
-import { contextKey } from '$lib/auth/authClient'
+import type { AuthClient } from '$services/api/authClient'
+import { contextKey } from '$services/api/authClient'
 
 type AuthClientContext = { client: AuthClient | null }
 

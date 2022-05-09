@@ -2,7 +2,7 @@
   import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
   import { validateEmail } from '@resplice/utils'
   import authStore from '$lib/auth/store'
-  import useAuthClient from '$lib/auth/useAuthClient'
+  import useAuthClient from '$lib/hooks/useAuthClient'
   import useConfig from '$lib/hooks/useConfig'
   import Button from '$lib/common/Button.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
@@ -19,7 +19,7 @@
 
   let phone = {
     value: '',
-    countryCallingCode: 'US' as CountryCode
+    countryCode: 'US' as CountryCode
   }
   let email = ''
   let rememberMe = false
@@ -45,7 +45,7 @@
   function validate(): boolean {
     formErrs = {}
     const errs: Record<string, string> = {}
-    if (!isValidPhoneNumber(phone.value, phone.countryCallingCode))
+    if (!isValidPhoneNumber(phone.value, phone.countryCode))
       errs.phone = 'Invalid Phone'
     if (!validateEmail(email)) errs.email = 'Invalid Email'
     if (Object.keys(errs).length) {
@@ -78,10 +78,7 @@
 
   async function createSession() {
     try {
-      const parsedPhone = parsePhoneNumber(
-        phone.value,
-        phone.countryCallingCode
-      )
+      const parsedPhone = parsePhoneNumber(phone.value, phone.countryCode)
       const phoneValue: PhoneValue = {
         number: parseInt((parsedPhone.number as string).slice(1), 10),
         extension: parsedPhone.ext

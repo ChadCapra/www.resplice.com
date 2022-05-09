@@ -1,7 +1,7 @@
 <script lang="ts">
   import cx from 'classnames'
   import countries from '$lib/common/countries'
-  import FlagIcon from '$lib/common/FlagIcon.svelte'
+  import FlagIcon from '$lib/icons/FlagIcon.svelte'
 
   export let name: string
   export let label: string

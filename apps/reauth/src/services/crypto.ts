@@ -1,4 +1,5 @@
-const LARGEST_INT_32 = 4294967295
+import { btob64, b64tob64u } from '@resplice/utils'
+// const LARGEST_INT_32 = 4294967295
 
 export function generateAesKey() {
   return crypto.subtle.generateKey(
@@ -67,11 +68,23 @@ export function verify(
   return crypto.subtle.verify('HMAC', key, signature, data)
 }
 
-export function importPublicKey(rawKey: Uint8Array) {
-  return crypto.subtle.importKey('raw', rawKey, 'RSA-OAEP', false, ['encrypt'])
+export function importPublicKey(rawKey: ArrayBuffer): Promise<CryptoKey> {
+  return crypto.subtle.importKey(
+    'jwk',
+    buildJwk(rawKey),
+    {
+      name: 'RSA-OAEP',
+      hash: 'SHA-256'
+    },
+    false,
+    ['encrypt']
+  )
 }
 
-export function publicKeyEncrypt(key: CryptoKey, data: Uint8Array) {
+export function publicKeyEncrypt(
+  key: CryptoKey,
+  data: Uint8Array
+): Promise<Uint8Array> {
   return crypto.subtle.encrypt({ name: 'RSA-OAEP' }, key, data)
 }
 
@@ -85,7 +98,7 @@ export function calculateClientIV(
   // set first 8 bytes of buffer with base
   ivArr.set(baseIV)
   // set last 4 bytes of buffer with message id int32
-  new DataView(ivBuf).setUint32(8, counter)
+  new DataView(ivBuf).setUint32(8, counter * 2)
 
   return ivArr
 }
@@ -100,7 +113,7 @@ export function calculateServerIV(
   // set first 8 bytes of buffer with base
   ivArr.set(baseIV)
   // set last 4 bytes of buffer with message id int32
-  new DataView(ivBuf).setUint32(8, LARGEST_INT_32 - counter)
+  new DataView(ivBuf).setUint32(8, counter * 2 + 1)
 
   return ivArr
 }
@@ -109,7 +122,6 @@ export function parseServerCipher(cipher: Uint8Array): {
   iv: Uint8Array
   cipherText: Uint8Array
 } {
-  console.log(cipher)
   const iv = cipher.slice(0, 4) // TODO: Add base IV
   const cipherText = cipher.slice(4)
 
@@ -130,23 +142,47 @@ export function combineBufferArrays(
   return newBufArr
 }
 
-// const baseIV = crypto.getRandomValues(new Uint8Array(8))
+function buildJwk(rawKey: ArrayBuffer) {
+  // NOTE: 'AQAB' = base64(65537)
+  const b64Key = btob64(rawKey)
+  const b64UrlKey = b64tob64u(b64Key)
+  return {
+    kty: 'RSA',
+    e: 'AQAB',
+    n: b64UrlKey,
+    alg: 'RSA-OAEP-256',
+    ext: true
+  }
+}
 
-// function getInt64Bytes(x) {
-//   let y= Math.floor(x/2**32);
-//   return [y,(y<<8),(y<<16),(y<<24), x,(x<<8),(x<<16),(x<<24)].map(z=> z>>>24)
-// }
+export class ReCrypto {
+  key: CryptoKey
+  rawKey: Uint8Array
+  baseIV: Uint8Array
+  #counter: number
 
-// function intFromBytes(byteArr) {
-//     return byteArr.reduce((a,c,i)=> a+c*2**(56-i*8),0)
-// }
+  constructor(
+    key: CryptoKey,
+    rawKey: Uint8Array,
+    baseIV: Uint8Array,
+    counter?: number
+  ) {
+    this.key = key
+    this.rawKey = rawKey
+    this.baseIV = baseIV
+    this.#counter = counter || 0
+  }
 
-// // TEST
+  static async generateAesKey(): Promise<ReCrypto> {
+    // TODO: Cache this in IndexedDB (not localStorage) to support
+    // page refreshing during auth
+    const key = await generateAesKey()
+    const rawKey = await exportKey(key)
+    const baseIV = generateBaseIV()
+    return new ReCrypto(key, rawKey, baseIV)
+  }
 
-// let n = 40*2**40 + 245*2**32 + 194*2**24 + 143*2**16 + 92*2**8 + 40;
-// let b = getInt64Bytes(n);
-// let i = intFromBytes(b);
-
-// console.log(`number      : ${n}`);
-// console.log(`int to bytes: [${b}]`);
-// console.log(`bytes to int: ${i}`);
+  get counter() {
+    return this.#counter++
+  }
+}

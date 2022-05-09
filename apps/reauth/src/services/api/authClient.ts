@@ -1,62 +1,27 @@
-import * as reproto from '$lib/reproto'
+import * as reproto from '@resplice/proto'
 import type {
   CreateSession,
   VerifySessionEmail,
   VerifySessionPhone
-} from '$lib/reproto/auth/request/session'
-import type { CreateAccount } from '$lib/reproto/user/request/account'
+} from '@resplice/proto/dist/auth/request/session'
+import type { CreateAccount } from '@resplice/proto/dist/user/request/account'
+import { encode, encodeClientMessageWrapper } from '$services/proto'
 import {
-  encode,
-  decode,
-  encodeClientMessageWrapper,
-  decodeServerMessageWrapper
-} from '$services/proto'
-import {
-  generateAesKey,
-  generateBaseIV,
-  exportKey,
+  ReCrypto,
   importPublicKey,
-  encrypt,
-  decrypt,
-  calculateClientIV,
-  calculateServerIV,
   publicKeyEncrypt,
   combineBufferArrays
 } from '$services/crypto'
+import {
+  deserializeServerMessage,
+  serializeClientMessage
+} from '$services/serde'
 import mockAuthClientFactory from '$services/mocks/authClient'
 
 import type { Api } from '$services/api/http'
 import type { Session } from '$types/session'
 import type { PhoneValue, EmailValue } from '$types/attribute'
 
-class ReCrypto {
-  key: CryptoKey
-  rawKey: Uint8Array
-  baseIV: Uint8Array
-  #counter: number
-
-  private constructor(key: CryptoKey, rawKey: Uint8Array, baseIV: Uint8Array) {
-    this.key = key
-    this.rawKey = rawKey
-    this.baseIV = baseIV
-    this.#counter = 0
-  }
-
-  static async generateAesKey(): Promise<ReCrypto> {
-    // TODO: Cache this in IndexDB (not localStorage) to support
-    // page refreshing during auth
-    const key = await generateAesKey()
-    const rawKey = await exportKey(key)
-    const baseIV = generateBaseIV()
-    return new ReCrypto(key, rawKey, baseIV)
-  }
-
-  get counter() {
-    return this.#counter++
-  }
-}
-
-const ServerMessageType = reproto.server_message.ServerMessageType
 const ClientMessageType = reproto.client_request.ClientRequestType
 
 type CreateSessionRequest = {
@@ -96,17 +61,14 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: token,
         useBinary: false
       }),
+    // TODO: This can probably go away
     getActiveSession: async () => {
       try {
         checkAesKey(recrypto)
         const resBuffer: ArrayBuffer = await api.get({
           endpoint: '/session/active'
         })
-        return handleServerMessage({
-          recrypto,
-          messageType: ServerMessageType.CURRENT_SESSION,
-          data: new Uint8Array(resBuffer)
-        })
+        return deserializeServerMessage(new Uint8Array(resBuffer), recrypto)
       } catch {
         return null
       }
@@ -124,7 +86,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
 
       const createSessionBytes = encode({
         type: ClientMessageType.SESSION_CREATE,
-        msg: createSessionMessage
+        data: createSessionMessage
       })
 
       const encryptedMessage = await publicKeyEncrypt(
@@ -132,40 +94,40 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         createSessionBytes
       )
 
+      const clientMessage: reproto.client_request.ClientRequest = {
+        requestId: recrypto.counter,
+        requestType: ClientMessageType.SESSION_CREATE,
+        encryptedPayload: encryptedMessage
+      }
+      const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
+
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/session/create',
-        data: encryptedMessage // TODO: Is this a client message or just a session?
+        endpoint: '/do',
+        data: clientMessageBytes
       })
 
-      return handleServerMessage({
-        recrypto,
-        messageType: ServerMessageType.CURRENT_SESSION,
-        data: new Uint8Array(resBuffer)
-      })
+      return deserializeServerMessage(new Uint8Array(resBuffer), recrypto)
     },
-
     verifyEmail: async (params) => {
       checkAesKey(recrypto)
 
       const msg: VerifySessionEmail = {
         verificationToken: params.verificationToken
       }
-      const clientMessageBytes = await prepareClientMessage({
-        recrypto,
-        messageType: ClientMessageType.SESSION_VERIFY_EMAIL,
-        msg
-      })
+      const clientMessageBytes = await serializeClientMessage(
+        {
+          type: ClientMessageType.SESSION_VERIFY_EMAIL,
+          data: msg
+        },
+        recrypto
+      )
 
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/session/verify-email',
+        endpoint: '/do',
         data: clientMessageBytes
       })
 
-      return handleServerMessage({
-        recrypto,
-        messageType: ServerMessageType.CURRENT_SESSION,
-        data: new Uint8Array(resBuffer)
-      })
+      return deserializeServerMessage(new Uint8Array(resBuffer), recrypto)
     },
     verifyPhone: async (params) => {
       checkAesKey(recrypto)
@@ -173,22 +135,20 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       const msg: VerifySessionPhone = {
         verificationToken: params.verificationToken
       }
-      const clientMessageBytes = await prepareClientMessage({
-        recrypto,
-        messageType: ClientMessageType.SESSION_VERIFY_PHONE,
-        msg
-      })
+      const clientMessageBytes = await serializeClientMessage(
+        {
+          type: ClientMessageType.SESSION_VERIFY_PHONE,
+          data: msg
+        },
+        recrypto
+      )
 
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/session/verify-phone',
+        endpoint: '/do',
         data: clientMessageBytes
       })
 
-      return handleServerMessage({
-        recrypto,
-        messageType: ServerMessageType.CURRENT_SESSION,
-        data: new Uint8Array(resBuffer)
-      })
+      return deserializeServerMessage(new Uint8Array(resBuffer), recrypto)
     },
     createAccount: async (params) => {
       checkAesKey(recrypto)
@@ -198,72 +158,22 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         handle: params.handle,
         avatar: new Uint8Array(await params.avatar.arrayBuffer())
       }
-      const clientMessageBytes = await prepareClientMessage({
-        recrypto,
-        messageType: ClientMessageType.ACCOUNT_CREATE,
-        msg
-      })
+      const clientMessageBytes = await serializeClientMessage(
+        {
+          type: ClientMessageType.ACCOUNT_CREATE,
+          data: msg
+        },
+        recrypto
+      )
 
       const resBuffer: ArrayBuffer = await api.post({
-        endpoint: '/user/create',
+        endpoint: '/do',
         data: clientMessageBytes
       })
 
-      return handleServerMessage({
-        recrypto,
-        messageType: ServerMessageType.CURRENT_SESSION,
-        data: new Uint8Array(resBuffer)
-      })
+      return deserializeServerMessage(new Uint8Array(resBuffer), recrypto)
     }
   }
-}
-
-type PrepareParams = {
-  recrypto: ReCrypto
-  messageType: reproto.client_request.ClientRequestType
-  msg: unknown
-}
-async function prepareClientMessage({
-  recrypto,
-  messageType,
-  msg
-}: PrepareParams) {
-  const counter = recrypto.counter
-  const msgBytes = encode({
-    type: messageType,
-    msg
-  })
-  const clientIV = calculateClientIV(recrypto.baseIV, counter)
-  const encryptedPayload = await encrypt(recrypto.key, clientIV, msgBytes)
-  const clientMessage: reproto.client_request.ClientRequest = {
-    requestId: counter,
-    requestType: messageType,
-    encryptedPayload
-  }
-  return encodeClientMessageWrapper(clientMessage)
-}
-
-type HandleParams = {
-  recrypto: ReCrypto
-  messageType: reproto.server_message.ServerMessageType
-  data: Uint8Array
-}
-async function handleServerMessage({
-  recrypto,
-  messageType,
-  data
-}: HandleParams) {
-  const serverMessage = decodeServerMessageWrapper(data)
-  const serverIV = calculateServerIV(recrypto.baseIV, serverMessage.messageId)
-  const decryptedMessage = await decrypt(
-    recrypto.key,
-    serverIV,
-    serverMessage.encryptedPayload
-  )
-  return decode({
-    type: messageType,
-    data: decryptedMessage
-  })
 }
 
 function checkAesKey(recrypto: ReCrypto | null) {
@@ -272,7 +182,7 @@ function checkAesKey(recrypto: ReCrypto | null) {
 
 async function fetchServerPublicKey(api: Api) {
   const key: ArrayBuffer = await api.get({ endpoint: '/pub-key' })
-  return importPublicKey(new Uint8Array(key))
+  return importPublicKey(key)
 }
 
 export const contextKey = 'AuthClient'

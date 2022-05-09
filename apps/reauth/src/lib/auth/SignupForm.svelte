@@ -1,5 +1,5 @@
 <script lang="ts">
-  import useAuthClient from '$lib/auth/useAuthClient'
+  import useAuthClient from '$lib/hooks/useAuthClient'
   // import UserAvatar from '$lib/user/UserAvatar.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'

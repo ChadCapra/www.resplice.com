@@ -1,6 +1,6 @@
 <script lang="ts">
   import countries from '$lib/common/countries'
-  import FlagIcon from '$lib/common/FlagIcon.svelte'
+  import FlagIcon from '$lib/icons/FlagIcon.svelte'
   import ChevronDownIcon from '$lib/icons/ChevronDownIcon.svelte'
 
   export let name: string
