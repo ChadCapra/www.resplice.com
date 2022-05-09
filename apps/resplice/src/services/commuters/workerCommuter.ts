@@ -1,4 +1,4 @@
-import { fromEvent, map, Observable } from 'rxjs'
+import { fromEvent, map, type Observable } from 'rxjs'
 
 export interface Commuter<WM, CM> {
   messages$: Observable<WM>

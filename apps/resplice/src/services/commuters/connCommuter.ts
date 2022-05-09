@@ -1,6 +1,7 @@
 import { filter, map, pipe } from 'rxjs'
 import workerCommuterFactory from '$services/commuters/workerCommuter'
-import ConnWorker from '$workers/conn?worker'
+// import ConnWorker from '$workers/conn?worker'
+// import ConnWorker from '$services/mocks/conn?worker'
 
 import type * as reproto from '@resplice/proto'
 import type { ReCrypto } from '$services/crypto'
@@ -79,9 +80,11 @@ export function onlyRecievedMessages() {
   )
 }
 
-const connCommuter = workerCommuterFactory<ConnMessage, ConnCommand>(
-  new ConnWorker()
+const connWorker = new Worker(
+  new URL('../../services/mocks/conn', import.meta.url),
+  { type: 'module' }
 )
+const connCommuter = workerCommuterFactory<ConnMessage, ConnCommand>(connWorker)
 
 export type ConnCommuter = typeof connCommuter
 
