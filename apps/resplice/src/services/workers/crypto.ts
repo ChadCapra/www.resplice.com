@@ -11,6 +11,7 @@ interface GenerateCommand {
 interface EncryptCommand {
   type: Command.ENCRYPT
   key: CryptoKey
+  iv: Uint8Array
   data: Uint8Array
 }
 interface DecryptCommand {
@@ -28,11 +29,11 @@ enum CryptoMessageType {
 }
 interface GeneratedMessage {
   type: CryptoMessageType.GENERATED_AES_KEY
-  aesKey: { key: CryptoKey; raw: ArrayBuffer }
+  aesKey: CryptoKey
 }
 interface EncryptedMessage {
   type: CryptoMessageType.ENCRYPTED
-  data: { iv: Uint8Array; cipherText: Uint8Array }
+  data: Uint8Array
 }
 interface DecryptedMessage {
   type: CryptoMessageType.DECRYPTED
@@ -59,10 +60,10 @@ async function generateKey() {
   })
 }
 
-async function encrypt(key: CryptoKey, data: Uint8Array) {
+async function encrypt(key: CryptoKey, iv: Uint8Array, data: Uint8Array) {
   if (!key) throw new ReferenceError('Key must exist to encrypt data')
 
-  const encryptedData = await crypto.encrypt(key, data)
+  const encryptedData = await crypto.encrypt(key, iv, data)
   return ctx.postMessage({
     type: CryptoMessageType.ENCRYPTED,
     data: encryptedData
@@ -86,7 +87,7 @@ ctx.onmessage = ({ data: cmd }) => {
       break
     case Command.ENCRYPT:
       if (!cmd.data) throw new Error('Data cannot be null')
-      encrypt(cmd.key, cmd.data)
+      encrypt(cmd.key, cmd.iv, cmd.data)
       break
     case Command.DECRYPT:
       if (!cmd.data || cmd.iv) throw new Error('Data cannot be null')
