@@ -15,30 +15,28 @@ export enum InviteType {
 interface BaseInvite {
   id: number
   type: InviteType
+  name: string
   expiry: number
 }
 
 interface HandleInvite extends BaseInvite {
   type: InviteType.HANDLE
-  name: string
   handle: string
 }
 
 interface PhoneInvite extends BaseInvite {
   type: InviteType.PHONE
-  name: string
   phone: PhoneValue
 }
 
 interface EmailInvite extends BaseInvite {
   type: InviteType.EMAIL
-  name: string
   email: EmailValue
 }
 
 interface CommonSpliceInvite extends BaseInvite {
   type: InviteType.SPLICE
-  splice_name: string
+  spliceName: string
 }
 
 export type Invite =

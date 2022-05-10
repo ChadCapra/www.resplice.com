@@ -1,5 +1,4 @@
 <script lang="ts">
-  import SearchHeader from '$lib/common/SearchHeader.svelte'
   import FilterList from '$lib/contacts/FilterList.svelte'
   import ContactList from '$lib/contacts/ContactList.svelte'
   import FavoritesList from '$lib/contacts/FavoritesList.svelte'
@@ -19,7 +18,6 @@
 </svelte:head>
 
 <div class="w-full h-full flex flex-col overflow-auto">
-  <SearchHeader />
   <FilterList bind:selectedFilter />
   <div class="mt-2 px-2">
     <h2 class="text-2xl font-gray-700 px-2 my-2">

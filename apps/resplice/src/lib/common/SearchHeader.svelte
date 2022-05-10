@@ -6,7 +6,7 @@
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
 </script>
 
-<div class="flex justify-between w-full p-4 items-center space-x-4">
+<div class="flex-none flex justify-between w-full p-4 items-center space-x-4">
   <button
     class="flex items-center flex-1 rounded-2xl text-left h-12 text-gray-900 ring-2 ring-gray-600 focus:ring-gray-800 bg-white outline-none border-none"
     on:click={() => goto('/app/search')}

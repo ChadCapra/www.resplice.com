@@ -1,5 +1,7 @@
 import { filter, map, pipe } from 'rxjs'
-import workerCommuterFactory from '$services/commuters/workerCommuter'
+import workerCommuterFactory, {
+  type Commuter
+} from '$services/commuters/workerCommuter'
 // import ConnWorker from '$workers/conn?worker'
 // import ConnWorker from '$services/mocks/conn?worker'
 
@@ -80,12 +82,24 @@ export function onlyRecievedMessages() {
   )
 }
 
-const connWorker = new Worker(
-  new URL('../../services/mocks/conn', import.meta.url),
-  { type: 'module' }
-)
-const connCommuter = workerCommuterFactory<ConnMessage, ConnCommand>(connWorker)
+export type ConnCommuter = Commuter<ConnMessage, ConnCommand>
 
-export type ConnCommuter = typeof connCommuter
+function startCommuter(useMocks = false) {
+  let connWorker: Worker
 
-export default connCommuter
+  if (useMocks) {
+    connWorker = new Worker(
+      new URL('../../services/mocks/conn', import.meta.url),
+      { type: 'module' }
+    )
+  } else {
+    connWorker = new Worker(
+      new URL('../../services/mocks/conn', import.meta.url),
+      { type: 'module' }
+    )
+  }
+
+  return workerCommuterFactory<ConnMessage, ConnCommand>(connWorker)
+}
+
+export default startCommuter
