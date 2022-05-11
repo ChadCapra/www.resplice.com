@@ -1,4 +1,4 @@
-import { derived } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
 import attributes from './attributes'
 import contacts from './contacts'
 import invites from './invites'
@@ -6,7 +6,12 @@ import attributeTypes from '$lib/attributes/attributeTypes'
 
 import type { RespliceIndex } from '$services/search'
 
-const searchStore = derived(
+type SearchHistoryType = 'attribute' | 'contact' | 'contactAttribute' | 'invite'
+
+const queryStore = writable<string>('')
+const historyStore = writable<{ type: SearchHistoryType; id: number }>()
+
+const indexStore = derived(
   [attributes, contacts.contacts, contacts.contactAttributes, invites.invites],
   ([$attributes, $contacts, $contactAttributes, $invites]): RespliceIndex => {
     const attributesIndex = []
@@ -44,4 +49,10 @@ const searchStore = derived(
   }
 )
 
-export default searchStore
+const searchStores = {
+  query: queryStore,
+  history: historyStore,
+  index: indexStore
+}
+
+export default searchStores

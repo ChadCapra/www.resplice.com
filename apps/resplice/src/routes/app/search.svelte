@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import searchStore from '$stores/search'
+  import searchStores from '$stores/search'
   import SearchService, { type SearchResult } from '$services/search'
   import SearchField from '$lib/common/form/SearchField.svelte'
   import Spinner from '$lib/common/skeleton/Spinner.svelte'
@@ -8,23 +8,25 @@
   import ContactResults from '$lib/search/ContactResults.svelte'
   import ContactAttributeResults from '$lib/search/ContactAttributeResults.svelte'
 
-  let query = ''
+  const index = searchStores.index
+  const query = searchStores.query
+
   let searchService: SearchService | null = null
   let buildingIndex: Promise<void> = Promise.resolve()
   let searching: Promise<SearchResult | null> = Promise.resolve(null)
 
   $: {
     if (!!searchService) {
-      buildingIndex = searchService.buildIndex($searchStore)
+      buildingIndex = searchService.buildIndex($index)
     }
   }
 
   $: {
-    if (!!searchService && !!query) {
+    if (!!searchService && !!$query) {
       console.log(searchService)
-      searching = searchService.query(query)
+      searching = searchService.query($query)
     }
-    if (!query) {
+    if (!$query) {
       searching = Promise.resolve(null)
     }
   }
@@ -35,7 +37,7 @@
 </script>
 
 <main class="w-full h-full flex flex-col">
-  <SearchField name="search" label="Search" bind:query />
+  <SearchField name="search" label="Search" bind:query={$query} />
 
   <div class="flex-1 overflow-auto pt-8 pb-4 px-4">
     {#await buildingIndex}
