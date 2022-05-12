@@ -77,7 +77,7 @@ function read<T = Record<Store, any>>(store: Store | Store[]) {
   })
 }
 
-function getById<T = any>(store: Store, id: number): Promise<T> {
+function getById<T = any>(store: Store, id: number): Promise<T | null> {
   return new Promise((resolve, reject) => {
     if (!db || db.version !== DB_VERSION) {
       reject('Please open the database before using it.')

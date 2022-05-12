@@ -50,7 +50,11 @@ export interface AuthClient {
   createAccount: (params: CreateAccountRequest) => Promise<Session>
 }
 
-function authClientFactory(api: Api, db: DB, returnMock = false): AuthClient {
+function authClientFactory(
+  api: Api,
+  cache: DB,
+  returnMock = false
+): AuthClient {
   if (returnMock) return mockAuthClientFactory()
 
   let recrypto: ReCrypto | null = null
@@ -66,24 +70,21 @@ function authClientFactory(api: Api, db: DB, returnMock = false): AuthClient {
       const publicKey = await fetchServerPublicKey(api)
       recrypto = await buildReCrypto()
 
-      const createSessionMessage: CreateSession = {
-        email: params.email.email,
-        phone: { ...params.phone, extension: params.phone.extension || 0 },
-        rememberMe: params.rememberMe,
-        aesKeyIvBase: combineBufferArrays(recrypto.baseIV, recrypto.rawKey)
+      const message = {
+        type: ClientMessageType.SESSION_CREATE,
+        data: {
+          email: params.email.email,
+          phone: { ...params.phone, extension: params.phone.extension || 0 },
+          rememberMe: params.rememberMe,
+          aesKeyIvBase: combineBufferArrays(recrypto.baseIV, recrypto.rawKey)
+        } as CreateSession
       }
 
-      const [counter] = await db.insert('events', createSessionMessage)
+      const [counter] = await cache.insert('events', message)
 
-      const createSessionBytes = encode({
-        type: ClientMessageType.SESSION_CREATE,
-        data: createSessionMessage
-      })
+      const msgBytes = encode(message)
 
-      const encryptedMessage = await publicKeyEncrypt(
-        publicKey,
-        createSessionBytes
-      )
+      const encryptedMessage = await publicKeyEncrypt(publicKey, msgBytes)
 
       const clientMessage: reproto.client_request.ClientRequest = {
         requestId: counter,
@@ -102,16 +103,17 @@ function authClientFactory(api: Api, db: DB, returnMock = false): AuthClient {
     verifyEmail: async (params) => {
       checkAesKey(recrypto)
 
-      const msg: VerifySessionEmail = {
-        verificationToken: params.verificationToken
+      const message = {
+        type: ClientMessageType.SESSION_VERIFY_EMAIL,
+        data: {
+          verificationToken: params.verificationToken
+        } as VerifySessionEmail
       }
-      const [counter] = await db.insert('events', msg)
+
+      const [counter] = await cache.insert('events', message)
+
       const clientMessageBytes = await serializeClientMessage(
-        {
-          type: ClientMessageType.SESSION_VERIFY_EMAIL,
-          data: msg
-        },
-        counter,
+        { ...message, counter },
         recrypto
       )
 
@@ -125,16 +127,17 @@ function authClientFactory(api: Api, db: DB, returnMock = false): AuthClient {
     verifyPhone: async (params) => {
       checkAesKey(recrypto)
 
-      const msg: VerifySessionPhone = {
-        verificationToken: params.verificationToken
+      const message = {
+        type: ClientMessageType.SESSION_VERIFY_PHONE,
+        data: {
+          verificationToken: params.verificationToken
+        } as VerifySessionPhone
       }
-      const [counter] = await db.insert('events', msg)
+
+      const [counter] = await cache.insert('events', message)
+
       const clientMessageBytes = await serializeClientMessage(
-        {
-          type: ClientMessageType.SESSION_VERIFY_PHONE,
-          data: msg
-        },
-        counter,
+        { ...message, counter },
         recrypto
       )
 
@@ -148,18 +151,19 @@ function authClientFactory(api: Api, db: DB, returnMock = false): AuthClient {
     createAccount: async (params) => {
       checkAesKey(recrypto)
 
-      const msg: CreateAccount = {
-        name: params.name,
-        handle: params.handle,
-        avatar: new Uint8Array(await params.avatar.arrayBuffer())
+      const message = {
+        type: ClientMessageType.ACCOUNT_CREATE,
+        data: {
+          name: params.name,
+          handle: params.handle,
+          avatar: new Uint8Array(await params.avatar.arrayBuffer())
+        } as CreateAccount
       }
-      const [counter] = await db.insert('events', msg)
+
+      const [counter] = await cache.insert('events', message)
+
       const clientMessageBytes = await serializeClientMessage(
-        {
-          type: ClientMessageType.ACCOUNT_CREATE,
-          data: msg
-        },
-        counter,
+        { ...message, counter },
         recrypto
       )
 

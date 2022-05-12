@@ -8,7 +8,10 @@
   import sessionStores from '$stores/session'
   import AppLoading from '$lib/common/skeleton/AppLoading.svelte'
   import '../global.css'
+
   import type { Session } from '$types/session'
+  import type { ReCrypto } from '$services/crypto'
+  import { goto } from '$app/navigation'
 
   let isLoading = true
   let error: Error | null = null
@@ -26,9 +29,22 @@
       await initializeIntl()
       await db.open()
       // 0 will always be the active session
-      const activeSession = await db.getById<Session>('session', 0)
-      authStore.set({ session: activeSession })
-      activeSessionStore.set(activeSession)
+      const activeSession = await db.getById<{
+        session: Session
+        crypto: ReCrypto
+      }>('session', 0)
+      if (activeSession) {
+        authStore.set(activeSession)
+        activeSessionStore.set(activeSession)
+      }
+
+      if (
+        !activeSession ||
+        !activeSession.crypto ||
+        !activeSession.session?.authenticatedAt
+      ) {
+        goto('/auth')
+      }
 
       isLoading = false
     } catch (err) {

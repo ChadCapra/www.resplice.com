@@ -1,4 +1,3 @@
-import * as reproto from '@resplice/proto'
 import { filter, first, fromEvent, pluck } from 'rxjs'
 import { webSocket, type WebSocketSubject } from 'rxjs/webSocket'
 import {
@@ -13,8 +12,6 @@ import {
   type ClientMessage
 } from '$services/commuters/connCommuter'
 import type { ReCrypto } from '$services/crypto'
-
-const ClientMessageType = reproto.client_request.ClientRequestType
 
 interface ConnWorker extends Worker {
   socket$: WebSocketSubject<Uint8Array> | null
@@ -35,7 +32,7 @@ const commands$ = fromEvent<MessageEvent<ConnCommand>>(ctx, 'message').pipe(
 commands$
   .pipe(first((cmd) => cmd.type === ConnCommandType.OPEN))
   .subscribe((cmd: Extract<ConnCommand, { type: ConnCommandType.OPEN }>) =>
-    initializeSocket(cmd.wsEndpoint, cmd.reCrypto)
+    initializeSocket(cmd.wsEndpoint, cmd.crypto, cmd.handshake)
   )
 
 commands$
@@ -44,8 +41,12 @@ commands$
     send(cmd.message)
   )
 
-async function initializeSocket(wsEndpoint: string, reCrypto: ReCrypto) {
-  ctx.crypto = reCrypto
+async function initializeSocket(
+  wsEndpoint: string,
+  crypto: ReCrypto,
+  handshake: ClientMessage
+) {
+  ctx.crypto = crypto
   ctx.socket$ = webSocket({
     url: wsEndpoint,
     serializer: (m) => m,
@@ -58,27 +59,7 @@ async function initializeSocket(wsEndpoint: string, reCrypto: ReCrypto) {
     complete: handleClose
   })
 
-  ctx.socket$.next(await createHandshake())
-}
-
-async function createHandshake(): Promise<Uint8Array> {
-  const handshakeMessage = {
-    type: ClientMessageType.SOCKET_AUTHORIZE,
-    data: {
-      // TODO: Pull these from cache
-      authenticated_at: 1,
-      user_attributes_since: 2,
-      user_attribute_groups_since: 3,
-      contacts_since: 4,
-      contact_attributes_since: 5,
-      contact_shares_since: 6,
-      splices_since: 7,
-      splice_members_since: 8,
-      splice_shares_since: 9
-    }
-  }
-
-  return serializeClientMessage(handshakeMessage, ctx.crypto)
+  return send(handshake)
 }
 
 async function handleMessage(bytes: Uint8Array) {

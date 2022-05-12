@@ -17,6 +17,7 @@ export type ServerMessage = {
 // TODO: Type data based on ResponseType
 export type ClientMessage = {
   type: reproto.client_request.ClientRequestType
+  counter: number
   data: any
 }
 
@@ -28,8 +29,8 @@ export enum ConnCommandType {
 type OpenCommand = {
   type: ConnCommandType.OPEN
   wsEndpoint: string
-  reCrypto: ReCrypto
-  handshake: any
+  crypto: ReCrypto
+  handshake: ClientMessage
 }
 type SendCommand = {
   type: ConnCommandType.SEND

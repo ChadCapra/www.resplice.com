@@ -1,3 +1,4 @@
+import * as reproto from '@resplice/proto'
 import { ConnStatus } from '$stores/events'
 import { ConnCommandType } from '$services/commuters/connCommuter'
 import attributesClientFactory from '$services/api/attributes'
@@ -14,8 +15,11 @@ import type { AttributesClient } from '$services/api/attributes'
 import type { ContactsClient } from '$services/api/contacts'
 import type { InvitesClient } from '$services/api/invites'
 import type { ProfileClient } from '$services/api/profile'
-import type { AppCache } from '$services/cache'
+import type { DB } from '$services/db'
+import type { ReCrypto } from '$services/crypto'
 import type { Stores } from '$stores/index'
+
+const ClientMessageType = reproto.client_request.ClientRequestType
 
 class AppClient {
   attributes: AttributesClient
@@ -27,7 +31,7 @@ class AppClient {
   constructor(
     wsEndpoint: string,
     connCommuter: ConnCommuter,
-    cache: AppCache,
+    cache: DB,
     stores: Stores
   ) {
     // Set state in app as connecting
@@ -82,13 +86,34 @@ class AppClient {
     this.invites = invitesClientFactory(connCommuter, cache, stores.invites)
     this.profile = profileClientFactory(connCommuter, cache, stores.profile)
 
+    let crypto: ReCrypto
+    // Subscribes, sets crypto, then unsubscribes
+    stores.session.activeSession.subscribe((val) => (crypto = val.crypto))()
+
+    // Get latest dates for cache stores and build handshake message
+    const handshake = {
+      type: ClientMessageType.SOCKET_AUTHORIZE,
+      counter: 0,
+      data: {
+        // TODO: Pull these from cache
+        authenticated_at: 1,
+        user_attributes_since: 2,
+        user_attribute_groups_since: 3,
+        contacts_since: 4,
+        contact_attributes_since: 5,
+        contact_shares_since: 6,
+        splices_since: 7,
+        splice_members_since: 8,
+        splice_shares_since: 9
+      }
+    }
+
     // Send open command
     connCommuter.postMessage({
       type: ConnCommandType.OPEN,
       wsEndpoint,
-      // TODO: Pass real reCrypto class
-      reCrypto: {} as any,
-      handshake: {}
+      crypto,
+      handshake
     })
   }
 }

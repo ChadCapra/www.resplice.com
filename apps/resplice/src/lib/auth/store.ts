@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store'
 import type { Session } from '$types/session'
+import type { ReCrypto } from '$services/crypto'
 
 type LoginValues = {
   phone: {
@@ -11,6 +12,7 @@ type LoginValues = {
 type Auth = {
   loginValues?: LoginValues
   session: Session | null
+  crypto: ReCrypto
 }
 
 const authStore = writable<Auth | null>(null)

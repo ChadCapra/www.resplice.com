@@ -6,7 +6,7 @@ import {
 import processRecords from '$stores/utils'
 
 import type { ConnCommuter } from '$services/commuters/connCommuter'
-import type { AppCache } from '$services/cache'
+import type { DB } from '$services/db'
 import type { AttributeStore } from '$stores/attributes'
 import type { Attribute } from '$types/user'
 
@@ -14,18 +14,22 @@ const ServerMessageType = reproto.server_message.ServerMessageType
 const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface AttributesClient {
-  addAttribute: (attribute: Pick<Attribute, 'name' | 'type' | 'value'>) => void
-  editAttributeName: (params: Pick<Attribute, 'id' | 'name'>) => void
-  editAttributeValue: (params: Pick<Attribute, 'id' | 'value'>) => void
-  editAttributeSort: (params: Pick<Attribute, 'id' | 'sortOrder'>) => void
-  sendAttributeVerification: (attributeID: Attribute['id']) => void
-  verifyAttribute: (attributeID: Attribute['id'], code: string) => void
-  deleteAttribute: (attributeID: Attribute['id']) => void
+  addAttribute: (
+    attribute: Pick<Attribute, 'name' | 'type' | 'value'>
+  ) => Promise<void>
+  editAttributeName: (params: Pick<Attribute, 'id' | 'name'>) => Promise<void>
+  editAttributeValue: (params: Pick<Attribute, 'id' | 'value'>) => Promise<void>
+  editAttributeSort: (
+    params: Pick<Attribute, 'id' | 'sortOrder'>
+  ) => Promise<void>
+  sendAttributeVerification: (attributeID: Attribute['id']) => Promise<void>
+  verifyAttribute: (attributeID: Attribute['id'], code: string) => Promise<void>
+  deleteAttribute: (attributeID: Attribute['id']) => Promise<void>
 }
 
 function attributesClientFactory(
   commuter: ConnCommuter,
-  _cache: AppCache,
+  cache: DB,
   store: AttributeStore
 ): AttributesClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
@@ -39,68 +43,84 @@ function attributesClientFactory(
     }
   })
 
+  // TODO: We should do optimistic updates
   return {
-    addAttribute: (attribute) => {
+    addAttribute: async (attribute) => {
+      const message = {
+        type: ClientMessageType.USER_ATTRIBUTE_CREATE,
+        data: { attribute }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_ATTRIBUTE_CREATE,
-          data: { attribute }
-        }
+        message: { ...message, counter }
       })
     },
-    editAttributeName: (params) => {
+    editAttributeName: async (params) => {
+      const message = {
+        type: ClientMessageType.USER_ATTRIBUTE_EDIT_NAME,
+        data: params
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_ATTRIBUTE_EDIT_NAME,
-          data: params
-        }
+        message: { ...message, counter }
       })
     },
-    editAttributeValue: (params) => {
+    editAttributeValue: async (params) => {
+      const message = {
+        type: ClientMessageType.USER_ATTRIBUTE_EDIT_VALUE,
+        counter: 0,
+        data: params
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_ATTRIBUTE_EDIT_VALUE,
-          data: params
-        }
+        message: { ...message, counter }
       })
     },
-    editAttributeSort: (params) => {
+    editAttributeSort: async (params) => {
+      const message = {
+        type: ClientMessageType.USER_ATTRIBUTE_SORT,
+        data: params
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_ATTRIBUTE_SORT,
-          data: params
-        }
+        message: { ...message, counter }
       })
     },
-    sendAttributeVerification: (attributeID) => {
+    sendAttributeVerification: async (attributeID) => {
+      const message = {
+        type: ClientMessageType.USER_ATTRIBUTE_SEND_VERIFICATION,
+        data: { attributeID }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_ATTRIBUTE_SEND_VERIFICATION,
-          data: { attributeID }
-        }
+        message: { ...message, counter }
       })
     },
-    verifyAttribute: (attributeID, code) => {
+    verifyAttribute: async (attributeID, code) => {
+      const message = {
+        type: ClientMessageType.USER_ATTRIBUTE_VERIFY,
+        data: { attributeID, code }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_ATTRIBUTE_VERIFY,
-          data: { attributeID, code }
-        }
+        message: { ...message, counter }
       })
     },
-    deleteAttribute: (attributeID) => {
+    deleteAttribute: async (attributeID) => {
+      const message = {
+        type: ClientMessageType.USER_ATTRIBUTE_DELETE,
+        data: { attributeID }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_ATTRIBUTE_DELETE,
-          data: { attributeID }
-        }
+        message: { ...message, counter }
       })
     }
   }

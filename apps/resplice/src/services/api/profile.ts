@@ -5,7 +5,7 @@ import {
 } from '$services/commuters/connCommuter'
 
 import type { ConnCommuter } from '$services/commuters/connCommuter'
-import type { AppCache } from '$services/cache'
+import type { DB } from '$services/db'
 import type { ProfileStore } from '$stores/profile'
 import type { Profile } from '$types/user'
 
@@ -13,21 +13,23 @@ const ServerMessageType = reproto.server_message.ServerMessageType
 const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface ProfileClient {
-  editName: (name: Profile['name']) => void
-  editHandle: (handle: Profile['handle']) => void
-  editAvatar: (avatar: Blob) => void
-  deleteAccount: (handle: Profile['handle'], removeAllData: boolean) => void
+  editName: (name: Profile['name']) => Promise<void>
+  editHandle: (handle: Profile['handle']) => Promise<void>
+  editAvatar: (avatar: Blob) => Promise<void>
+  deleteAccount: (
+    handle: Profile['handle'],
+    removeAllData: boolean
+  ) => Promise<void>
 }
 
 function profileClientFactory(
   commuter: ConnCommuter,
-  cache: AppCache,
+  cache: DB,
   store: ProfileStore
 ): ProfileClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
     switch (m.type) {
       case ServerMessageType.USER_PROFILE:
-        cache.addUser(m.data)
         store.update((state) => ({ ...state, ...m.data }))
         break
       case ServerMessageType.USER_SESSIONS: // TODO
@@ -35,40 +37,48 @@ function profileClientFactory(
   })
 
   return {
-    editName: (name) => {
+    editName: async (name) => {
+      const message = {
+        type: ClientMessageType.USER_PROFILE_EDIT_NAME,
+        data: { name }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_PROFILE_EDIT_NAME,
-          data: { name }
-        }
+        message: { ...message, counter }
       })
     },
-    editHandle: (handle) => {
+    editHandle: async (handle) => {
+      const message = {
+        type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
+        data: { handle }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
-          data: { handle }
-        }
+        message: { ...message, counter }
       })
     },
-    editAvatar: (avatar) => {
+    editAvatar: async (avatar) => {
+      const message = {
+        type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
+        data: { avatar }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
-          data: { avatar }
-        }
+        message: { ...message, counter }
       })
     },
-    deleteAccount: (handle, removeAllData) => {
+    deleteAccount: async (handle, removeAllData) => {
+      const message = {
+        type: ClientMessageType.ACCOUNT_DELETE,
+        data: { handle, removeAllData }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.ACCOUNT_DELETE,
-          data: { handle, removeAllData }
-        }
+        message: { ...message, counter }
       })
     }
   }

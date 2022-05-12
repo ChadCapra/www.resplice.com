@@ -34,18 +34,17 @@ export async function deserializeServerMessage(
 
 export async function serializeClientMessage(
   message: ClientMessage,
-  counter: number,
   crypto: ReCrypto
 ) {
   const messageBytes = encode(message)
 
-  const iv = calculateClientIV(crypto.baseIV, counter)
+  const iv = calculateClientIV(crypto.baseIV, message.counter)
 
   const encryptedPayload = await encrypt(crypto.key, iv, messageBytes)
 
   return encodeClientMessageWrapper({
     requestType: message.type,
-    requestId: counter,
+    requestId: message.counter,
     encryptedPayload
   })
 }

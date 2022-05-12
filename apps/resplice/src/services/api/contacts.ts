@@ -6,7 +6,7 @@ import {
 import processRecords from '$stores/utils'
 
 import type { ConnCommuter } from '$services/commuters/connCommuter'
-import type { AppCache } from '$services/cache'
+import type { DB } from '$services/db'
 import type { ContactStore } from '$stores/contacts'
 import type { Contact, PendingContact } from '$types/contact'
 import type { Attribute as UserAttribute } from '$types/user'
@@ -15,24 +15,32 @@ const ServerMessageType = reproto.server_message.ServerMessageType
 const ClientMessageType = reproto.client_request.ClientRequestType
 
 export interface ContactsClient {
-  editAlias: (params: Pick<Contact, 'id' | 'alias'>) => void
-  editDescription: (params: Pick<Contact, 'id' | 'description'>) => void
-  favor: (id: Contact['id']) => void
-  unfavor: (id: Contact['id']) => void
-  // mute: (id: Contact['id']) => void
-  // unmute: (id: Contact['id']) => void
-  // archive: (id: Contact['id']) => void
-  // unarchive: (id: Contact['id']) => void
-  delete: (id: Contact['id']) => void
-  addShare: (id: Contact['id'], attributeId: UserAttribute['id']) => void
-  removeShare: (id: Contact['id'], attributeId: UserAttribute['id']) => void
-  acceptPending: (id: PendingContact['id']) => void
-  declinePending: (id: PendingContact['id']) => void
+  editAlias: (params: Pick<Contact, 'id' | 'alias'>) => Promise<void>
+  editDescription: (
+    params: Pick<Contact, 'id' | 'description'>
+  ) => Promise<void>
+  favor: (id: Contact['id']) => Promise<void>
+  unfavor: (id: Contact['id']) => Promise<void>
+  // mute: (id: Contact['id']) => Promise<void>
+  // unmute: (id: Contact['id']) => Promise<void>
+  // archive: (id: Contact['id']) => Promise<void>
+  // unarchive: (id: Contact['id']) => Promise<void>
+  delete: (id: Contact['id']) => Promise<void>
+  addShare: (
+    id: Contact['id'],
+    attributeId: UserAttribute['id']
+  ) => Promise<void>
+  removeShare: (
+    id: Contact['id'],
+    attributeId: UserAttribute['id']
+  ) => Promise<void>
+  acceptPending: (id: PendingContact['id']) => Promise<void>
+  declinePending: (id: PendingContact['id']) => Promise<void>
 }
 
 function contactsClientFactory(
   commuter: ConnCommuter,
-  _cache: AppCache, // TODO: Implement cache
+  cache: DB,
   store: ContactStore
 ): ContactsClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
@@ -76,85 +84,103 @@ function contactsClientFactory(
   })
 
   return {
-    editAlias: (params) => {
+    editAlias: async (params) => {
+      const message = {
+        type: ClientMessageType.CONTACT_EDIT_ALIAS,
+        data: params
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_EDIT_ALIAS,
-          data: params
-        }
+        message: { ...message, counter }
       })
     },
-    editDescription: (params) => {
+    editDescription: async (params) => {
+      const message = {
+        type: ClientMessageType.CONTACT_EDIT_DESCRIPTION,
+        data: params
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_EDIT_DESCRIPTION,
-          data: params
-        }
+        message: { ...message, counter }
       })
     },
-    favor: (id) => {
+    favor: async (id) => {
+      const message = {
+        type: ClientMessageType.CONTACT_FAVOR,
+        data: { id }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_FAVOR,
-          data: { id }
-        }
+        message: { ...message, counter }
       })
     },
-    unfavor: (id) => {
+    unfavor: async (id) => {
+      const message = {
+        type: ClientMessageType.CONTACT_UNFAVOR,
+        data: { id }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_UNFAVOR,
-          data: { id }
-        }
+        message: { ...message, counter }
       })
     },
-    delete: (id) => {
+    delete: async (id) => {
+      const message = {
+        type: ClientMessageType.CONTACT_DELETE,
+        data: { id }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_DELETE,
-          data: { id }
-        }
+        message: { ...message, counter }
       })
     },
-    addShare: (id, attributeId) => {
+    addShare: async (id, attributeId) => {
+      const message = {
+        type: ClientMessageType.CONTACT_ADD_SHARE,
+        data: { id, attributeId }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_ADD_SHARE,
-          data: { id, attributeId }
-        }
+        message: { ...message, counter }
       })
     },
-    removeShare: (id, attributeId) => {
+    removeShare: async (id, attributeId) => {
+      const message = {
+        type: ClientMessageType.CONTACT_REMOVE_SHARE,
+        data: { id, attributeId }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_REMOVE_SHARE,
-          data: { id, attributeId }
-        }
+        message: { ...message, counter }
       })
     },
-    acceptPending: (id) => {
+    acceptPending: async (id) => {
+      const message = {
+        type: ClientMessageType.PENDING_CONTACT_ACCEPT,
+        data: { id }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.PENDING_CONTACT_ACCEPT,
-          data: { id }
-        }
+        message: { ...message, counter }
       })
     },
-    declinePending: (id) => {
+    declinePending: async (id) => {
+      const message = {
+        type: ClientMessageType.PENDING_CONTACT_DECLINE,
+        data: { id }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.PENDING_CONTACT_DECLINE,
-          data: { id }
-        }
+        message: { ...message, counter }
       })
     }
   }

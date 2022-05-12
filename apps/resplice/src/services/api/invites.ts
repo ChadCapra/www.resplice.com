@@ -6,7 +6,7 @@ import {
 import processRecords from '$stores/utils'
 
 import type { ConnCommuter } from '$services/commuters/connCommuter'
-import type { AppCache } from '$services/cache'
+import type { DB } from '$services/db'
 import type { InviteStore } from '$stores/invites'
 import type { Invite, QrInvite } from '$types/invite'
 import type {
@@ -25,27 +25,33 @@ export interface InvitesClient {
     name: string,
     handle: Contact['handle'],
     attributeIds: Attribute['id'][]
-  ) => void
+  ) => Promise<void>
   inviteViaPhone: (
     name: string,
     phone: PhoneValue,
     attributeIds: Attribute['id'][]
-  ) => void
+  ) => Promise<void>
   inviteViaEmail: (
     name: string,
     email: EmailValue,
     attributeIds: Attribute['id'][]
-  ) => void
-  delete: (id: Invite['id']) => void
-  createQr: () => void
-  deleteQr: (id: QrInvite['id']) => void
-  addShare: (id: Invite['id'], attributeId: UserAttribute['id']) => void
-  removeShare: (id: Invite['id'], attributeId: UserAttribute['id']) => void
+  ) => Promise<void>
+  delete: (id: Invite['id']) => Promise<void>
+  createQr: () => Promise<void>
+  deleteQr: (id: QrInvite['id']) => Promise<void>
+  addShare: (
+    id: Invite['id'],
+    attributeId: UserAttribute['id']
+  ) => Promise<void>
+  removeShare: (
+    id: Invite['id'],
+    attributeId: UserAttribute['id']
+  ) => Promise<void>
 }
 
 function invitesClientFactory(
   commuter: ConnCommuter,
-  _cache: AppCache,
+  cache: DB,
   store: InviteStore
 ): InvitesClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
@@ -72,76 +78,92 @@ function invitesClientFactory(
   })
 
   return {
-    inviteViaHandle: (name, handle, attributeIds) => {
+    inviteViaHandle: async (name, handle, attributeIds) => {
+      const message = {
+        type: ClientMessageType.CONTACT_INVITE_VIA_HANDLE,
+        data: { name, handle, attributeIds }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_INVITE_VIA_HANDLE,
-          data: { name, handle, attributeIds }
-        }
+        message: { ...message, counter }
       })
     },
-    inviteViaPhone: (name, phone, attributeIds) => {
+    inviteViaPhone: async (name, phone, attributeIds) => {
+      const message = {
+        type: ClientMessageType.CONTACT_INVITE_VIA_PHONE,
+        data: { name, phone, attributeIds }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_INVITE_VIA_PHONE,
-          data: { name, phone, attributeIds }
-        }
+        message: { ...message, counter }
       })
     },
-    inviteViaEmail: (name, email, attributeIds) => {
+    inviteViaEmail: async (name, email, attributeIds) => {
+      const message = {
+        type: ClientMessageType.CONTACT_INVITE_VIA_EMAIL,
+        data: { name, email, attributeIds }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_INVITE_VIA_EMAIL,
-          data: { name, email, attributeIds }
-        }
+        message: { ...message, counter }
       })
     },
-    delete: (id) => {
+    delete: async (id) => {
+      const message = {
+        type: ClientMessageType.CONTACT_INVITE_DELETE,
+        data: { id }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_INVITE_DELETE,
-          data: { id }
-        }
+        message: { ...message, counter }
       })
     },
-    createQr: () => {
+    createQr: async () => {
+      const message = {
+        type: ClientMessageType.QR_CONTACT_INVITE_CREATE,
+        data: {}
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.QR_CONTACT_INVITE_CREATE,
-          data: {}
-        }
+        message: { ...message, counter }
       })
     },
-    deleteQr: (id) => {
+    deleteQr: async (id) => {
+      const message = {
+        type: ClientMessageType.QR_CONTACT_INVITE_DELETE,
+        data: { id }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.QR_CONTACT_INVITE_DELETE,
-          data: { id }
-        }
+        message: { ...message, counter }
       })
     },
-    addShare: (id, attributeId) => {
+    addShare: async (id, attributeId) => {
+      const message = {
+        type: ClientMessageType.CONTACT_INVITE_ADD_ATTRIBUTE,
+        data: { id, attributeId }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_INVITE_ADD_ATTRIBUTE,
-          data: { id, attributeId }
-        }
+        message: { ...message, counter }
       })
     },
-    removeShare: (id, attributeId) => {
+    removeShare: async (id, attributeId) => {
+      const message = {
+        type: ClientMessageType.CONTACT_INVITE_REMOVE_ATTRIBUTE,
+        data: { id, attributeId }
+      }
+      const [counter] = await cache.insert('events', message)
       commuter.postMessage({
         type: ConnCommandType.SEND,
-        message: {
-          type: ClientMessageType.CONTACT_INVITE_REMOVE_ATTRIBUTE,
-          data: { id, attributeId }
-        }
+        message: { ...message, counter }
       })
     }
   }
