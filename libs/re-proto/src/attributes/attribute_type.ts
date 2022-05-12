@@ -1,6 +1,6 @@
 /* eslint-disable */
-import Long from "long";
-import * as _m0 from "protobufjs/minimal";
+import Long from 'long'
+import * as _m0 from 'protobufjs/minimal'
 
 export enum AttributeType {
   NO_TYPE = 0,
@@ -12,67 +12,67 @@ export enum AttributeType {
   CREDENTIAL = 6,
   URL = 7,
   TEXT = 8,
-  UNRECOGNIZED = -1,
+  UNRECOGNIZED = -1
 }
 
 export function attributeTypeFromJSON(object: any): AttributeType {
   switch (object) {
     case 0:
-    case "NO_TYPE":
-      return AttributeType.NO_TYPE;
+    case 'NO_TYPE':
+      return AttributeType.NO_TYPE
     case 1:
-    case "PHONE":
-      return AttributeType.PHONE;
+    case 'PHONE':
+      return AttributeType.PHONE
     case 2:
-    case "EMAIL":
-      return AttributeType.EMAIL;
+    case 'EMAIL':
+      return AttributeType.EMAIL
     case 3:
-    case "ADDRESS":
-      return AttributeType.ADDRESS;
+    case 'ADDRESS':
+      return AttributeType.ADDRESS
     case 4:
-    case "COORDINATE":
-      return AttributeType.COORDINATE;
+    case 'COORDINATE':
+      return AttributeType.COORDINATE
     case 5:
-    case "SOCIAL":
-      return AttributeType.SOCIAL;
+    case 'SOCIAL':
+      return AttributeType.SOCIAL
     case 6:
-    case "CREDENTIAL":
-      return AttributeType.CREDENTIAL;
+    case 'CREDENTIAL':
+      return AttributeType.CREDENTIAL
     case 7:
-    case "URL":
-      return AttributeType.URL;
+    case 'URL':
+      return AttributeType.URL
     case 8:
-    case "TEXT":
-      return AttributeType.TEXT;
+    case 'TEXT':
+      return AttributeType.TEXT
     case -1:
-    case "UNRECOGNIZED":
+    case 'UNRECOGNIZED':
     default:
-      return AttributeType.UNRECOGNIZED;
+      return AttributeType.UNRECOGNIZED
   }
 }
 
 export function attributeTypeToJSON(object: AttributeType): string {
   switch (object) {
     case AttributeType.NO_TYPE:
-      return "NO_TYPE";
+      return 'NO_TYPE'
     case AttributeType.PHONE:
-      return "PHONE";
+      return 'PHONE'
     case AttributeType.EMAIL:
-      return "EMAIL";
+      return 'EMAIL'
     case AttributeType.ADDRESS:
-      return "ADDRESS";
+      return 'ADDRESS'
     case AttributeType.COORDINATE:
-      return "COORDINATE";
+      return 'COORDINATE'
     case AttributeType.SOCIAL:
-      return "SOCIAL";
+      return 'SOCIAL'
     case AttributeType.CREDENTIAL:
-      return "CREDENTIAL";
+      return 'CREDENTIAL'
     case AttributeType.URL:
-      return "URL";
+      return 'URL'
     case AttributeType.TEXT:
-      return "TEXT";
+      return 'TEXT'
     default:
-      return "UNKNOWN";
+      return 'UNKNOWN'
   }
 }
 
@@ -105,162 +105,162 @@ export enum SocialNetwork {
   LINE = 25,
   TWITCH = 26,
   MEDIUM = 27,
-  UNRECOGNIZED = -1,
+  UNRECOGNIZED = -1
 }
 
 export function socialNetworkFromJSON(object: any): SocialNetwork {
   switch (object) {
     case 0:
-    case "NO_NETWORK":
-      return SocialNetwork.NO_NETWORK;
+    case 'NO_NETWORK':
+      return SocialNetwork.NO_NETWORK
     case 1:
-    case "CUSTOM_NETWORK":
-      return SocialNetwork.CUSTOM_NETWORK;
+    case 'CUSTOM_NETWORK':
+      return SocialNetwork.CUSTOM_NETWORK
     case 2:
-    case "WEBSITE":
-      return SocialNetwork.WEBSITE;
+    case 'WEBSITE':
+      return SocialNetwork.WEBSITE
     case 3:
-    case "FACEBOOK":
-      return SocialNetwork.FACEBOOK;
+    case 'FACEBOOK':
+      return SocialNetwork.FACEBOOK
     case 4:
-    case "YOUTUBE":
-      return SocialNetwork.YOUTUBE;
+    case 'YOUTUBE':
+      return SocialNetwork.YOUTUBE
     case 5:
-    case "WHATSAPP":
-      return SocialNetwork.WHATSAPP;
+    case 'WHATSAPP':
+      return SocialNetwork.WHATSAPP
     case 6:
-    case "MESSENGER":
-      return SocialNetwork.MESSENGER;
+    case 'MESSENGER':
+      return SocialNetwork.MESSENGER
     case 7:
-    case "WECHAT":
-      return SocialNetwork.WECHAT;
+    case 'WECHAT':
+      return SocialNetwork.WECHAT
     case 8:
-    case "INSTAGRAM":
-      return SocialNetwork.INSTAGRAM;
+    case 'INSTAGRAM':
+      return SocialNetwork.INSTAGRAM
     case 9:
-    case "TIKTOK":
-      return SocialNetwork.TIKTOK;
+    case 'TIKTOK':
+      return SocialNetwork.TIKTOK
     case 10:
-    case "QQ":
-      return SocialNetwork.QQ;
+    case 'QQ':
+      return SocialNetwork.QQ
     case 11:
-    case "QZONE":
-      return SocialNetwork.QZONE;
+    case 'QZONE':
+      return SocialNetwork.QZONE
     case 12:
-    case "SINA_WEIBO":
-      return SocialNetwork.SINA_WEIBO;
+    case 'SINA_WEIBO':
+      return SocialNetwork.SINA_WEIBO
     case 13:
-    case "PINTEREST":
-      return SocialNetwork.PINTEREST;
+    case 'PINTEREST':
+      return SocialNetwork.PINTEREST
     case 14:
-    case "TUMBLR":
-      return SocialNetwork.TUMBLR;
+    case 'TUMBLR':
+      return SocialNetwork.TUMBLR
     case 15:
-    case "REDDIT":
-      return SocialNetwork.REDDIT;
+    case 'REDDIT':
+      return SocialNetwork.REDDIT
     case 16:
-    case "TWITTER":
-      return SocialNetwork.TWITTER;
+    case 'TWITTER':
+      return SocialNetwork.TWITTER
     case 17:
-    case "LINKEDIN":
-      return SocialNetwork.LINKEDIN;
+    case 'LINKEDIN':
+      return SocialNetwork.LINKEDIN
     case 18:
-    case "DOUBAN":
-      return SocialNetwork.DOUBAN;
+    case 'DOUBAN':
+      return SocialNetwork.DOUBAN
     case 19:
-    case "BAIDU_TIEBA":
-      return SocialNetwork.BAIDU_TIEBA;
+    case 'BAIDU_TIEBA':
+      return SocialNetwork.BAIDU_TIEBA
     case 20:
-    case "SNAPCHAT":
-      return SocialNetwork.SNAPCHAT;
+    case 'SNAPCHAT':
+      return SocialNetwork.SNAPCHAT
     case 21:
-    case "VIBER":
-      return SocialNetwork.VIBER;
+    case 'VIBER':
+      return SocialNetwork.VIBER
     case 22:
-    case "DISCORD":
-      return SocialNetwork.DISCORD;
+    case 'DISCORD':
+      return SocialNetwork.DISCORD
     case 23:
-    case "VIMEO":
-      return SocialNetwork.VIMEO;
+    case 'VIMEO':
+      return SocialNetwork.VIMEO
     case 24:
-    case "TELEGRAM":
-      return SocialNetwork.TELEGRAM;
+    case 'TELEGRAM':
+      return SocialNetwork.TELEGRAM
     case 25:
-    case "LINE":
-      return SocialNetwork.LINE;
+    case 'LINE':
+      return SocialNetwork.LINE
     case 26:
-    case "TWITCH":
-      return SocialNetwork.TWITCH;
+    case 'TWITCH':
+      return SocialNetwork.TWITCH
     case 27:
-    case "MEDIUM":
-      return SocialNetwork.MEDIUM;
+    case 'MEDIUM':
+      return SocialNetwork.MEDIUM
     case -1:
-    case "UNRECOGNIZED":
+    case 'UNRECOGNIZED':
     default:
-      return SocialNetwork.UNRECOGNIZED;
+      return SocialNetwork.UNRECOGNIZED
   }
 }
 
 export function socialNetworkToJSON(object: SocialNetwork): string {
   switch (object) {
     case SocialNetwork.NO_NETWORK:
-      return "NO_NETWORK";
+      return 'NO_NETWORK'
     case SocialNetwork.CUSTOM_NETWORK:
-      return "CUSTOM_NETWORK";
+      return 'CUSTOM_NETWORK'
     case SocialNetwork.WEBSITE:
-      return "WEBSITE";
+      return 'WEBSITE'
     case SocialNetwork.FACEBOOK:
-      return "FACEBOOK";
+      return 'FACEBOOK'
     case SocialNetwork.YOUTUBE:
-      return "YOUTUBE";
+      return 'YOUTUBE'
     case SocialNetwork.WHATSAPP:
-      return "WHATSAPP";
+      return 'WHATSAPP'
     case SocialNetwork.MESSENGER:
-      return "MESSENGER";
+      return 'MESSENGER'
     case SocialNetwork.WECHAT:
-      return "WECHAT";
+      return 'WECHAT'
     case SocialNetwork.INSTAGRAM:
-      return "INSTAGRAM";
+      return 'INSTAGRAM'
     case SocialNetwork.TIKTOK:
-      return "TIKTOK";
+      return 'TIKTOK'
     case SocialNetwork.QQ:
-      return "QQ";
+      return 'QQ'
     case SocialNetwork.QZONE:
-      return "QZONE";
+      return 'QZONE'
     case SocialNetwork.SINA_WEIBO:
-      return "SINA_WEIBO";
+      return 'SINA_WEIBO'
     case SocialNetwork.PINTEREST:
-      return "PINTEREST";
+      return 'PINTEREST'
     case SocialNetwork.TUMBLR:
-      return "TUMBLR";
+      return 'TUMBLR'
     case SocialNetwork.REDDIT:
-      return "REDDIT";
+      return 'REDDIT'
     case SocialNetwork.TWITTER:
-      return "TWITTER";
+      return 'TWITTER'
     case SocialNetwork.LINKEDIN:
-      return "LINKEDIN";
+      return 'LINKEDIN'
     case SocialNetwork.DOUBAN:
-      return "DOUBAN";
+      return 'DOUBAN'
     case SocialNetwork.BAIDU_TIEBA:
-      return "BAIDU_TIEBA";
+      return 'BAIDU_TIEBA'
     case SocialNetwork.SNAPCHAT:
-      return "SNAPCHAT";
+      return 'SNAPCHAT'
     case SocialNetwork.VIBER:
-      return "VIBER";
+      return 'VIBER'
     case SocialNetwork.DISCORD:
-      return "DISCORD";
+      return 'DISCORD'
     case SocialNetwork.VIMEO:
-      return "VIMEO";
+      return 'VIMEO'
     case SocialNetwork.TELEGRAM:
-      return "TELEGRAM";
+      return 'TELEGRAM'
     case SocialNetwork.LINE:
-      return "LINE";
+      return 'LINE'
     case SocialNetwork.TWITCH:
-      return "TWITCH";
+      return 'TWITCH'
     case SocialNetwork.MEDIUM:
-      return "MEDIUM";
+      return 'MEDIUM'
     default:
-      return "UNKNOWN";
+      return 'UNKNOWN'
   }
 }
 
@@ -501,1206 +501,1206 @@ export enum Country {
   NIUE = 233,
   TOKELAU = 234,
   HOLY_SEE = 235,
-  UNRECOGNIZED = -1,
+  UNRECOGNIZED = -1
 }
 
 export function countryFromJSON(object: any): Country {
   switch (object) {
     case 0:
-    case "NO_COUNTRY":
-      return Country.NO_COUNTRY;
+    case 'NO_COUNTRY':
+      return Country.NO_COUNTRY
     case 1:
-    case "UNITED_STATES":
-      return Country.UNITED_STATES;
+    case 'UNITED_STATES':
+      return Country.UNITED_STATES
     case 2:
-    case "CANADA":
-      return Country.CANADA;
+    case 'CANADA':
+      return Country.CANADA
     case 3:
-    case "MEXICO":
-      return Country.MEXICO;
+    case 'MEXICO':
+      return Country.MEXICO
     case 4:
-    case "CHINA":
-      return Country.CHINA;
+    case 'CHINA':
+      return Country.CHINA
     case 5:
-    case "INDIA":
-      return Country.INDIA;
+    case 'INDIA':
+      return Country.INDIA
     case 6:
-    case "INDONESIA":
-      return Country.INDONESIA;
+    case 'INDONESIA':
+      return Country.INDONESIA
     case 7:
-    case "PAKISTAN":
-      return Country.PAKISTAN;
+    case 'PAKISTAN':
+      return Country.PAKISTAN
     case 8:
-    case "BRAZIL":
-      return Country.BRAZIL;
+    case 'BRAZIL':
+      return Country.BRAZIL
     case 9:
-    case "NIGERIA":
-      return Country.NIGERIA;
+    case 'NIGERIA':
+      return Country.NIGERIA
     case 10:
-    case "BANGLADESH":
-      return Country.BANGLADESH;
+    case 'BANGLADESH':
+      return Country.BANGLADESH
     case 11:
-    case "RUSSIA":
-      return Country.RUSSIA;
+    case 'RUSSIA':
+      return Country.RUSSIA
     case 12:
-    case "JAPAN":
-      return Country.JAPAN;
+    case 'JAPAN':
+      return Country.JAPAN
     case 13:
-    case "ETHIOPIA":
-      return Country.ETHIOPIA;
+    case 'ETHIOPIA':
+      return Country.ETHIOPIA
     case 14:
-    case "PHILIPPINES":
-      return Country.PHILIPPINES;
+    case 'PHILIPPINES':
+      return Country.PHILIPPINES
     case 15:
-    case "EGYPT":
-      return Country.EGYPT;
+    case 'EGYPT':
+      return Country.EGYPT
     case 16:
-    case "VIETNAM":
-      return Country.VIETNAM;
+    case 'VIETNAM':
+      return Country.VIETNAM
     case 17:
-    case "DR_CONGO":
-      return Country.DR_CONGO;
+    case 'DR_CONGO':
+      return Country.DR_CONGO
     case 18:
-    case "TURKEY":
-      return Country.TURKEY;
+    case 'TURKEY':
+      return Country.TURKEY
     case 19:
-    case "IRAN":
-      return Country.IRAN;
+    case 'IRAN':
+      return Country.IRAN
     case 20:
-    case "GERMANY":
-      return Country.GERMANY;
+    case 'GERMANY':
+      return Country.GERMANY
     case 21:
-    case "THAILAND":
-      return Country.THAILAND;
+    case 'THAILAND':
+      return Country.THAILAND
     case 22:
-    case "UNITED_KINGDOM":
-      return Country.UNITED_KINGDOM;
+    case 'UNITED_KINGDOM':
+      return Country.UNITED_KINGDOM
     case 23:
-    case "FRANCE":
-      return Country.FRANCE;
+    case 'FRANCE':
+      return Country.FRANCE
     case 24:
-    case "ITALY":
-      return Country.ITALY;
+    case 'ITALY':
+      return Country.ITALY
     case 25:
-    case "TANZANIA":
-      return Country.TANZANIA;
+    case 'TANZANIA':
+      return Country.TANZANIA
     case 26:
-    case "SOUTH_AFRICA":
-      return Country.SOUTH_AFRICA;
+    case 'SOUTH_AFRICA':
+      return Country.SOUTH_AFRICA
     case 27:
-    case "MYANMAR":
-      return Country.MYANMAR;
+    case 'MYANMAR':
+      return Country.MYANMAR
     case 28:
-    case "KENYA":
-      return Country.KENYA;
+    case 'KENYA':
+      return Country.KENYA
     case 29:
-    case "SOUTH_KOREA":
-      return Country.SOUTH_KOREA;
+    case 'SOUTH_KOREA':
+      return Country.SOUTH_KOREA
     case 30:
-    case "COLOMBIA":
-      return Country.COLOMBIA;
+    case 'COLOMBIA':
+      return Country.COLOMBIA
     case 31:
-    case "SPAIN":
-      return Country.SPAIN;
+    case 'SPAIN':
+      return Country.SPAIN
     case 32:
-    case "UGANDA":
-      return Country.UGANDA;
+    case 'UGANDA':
+      return Country.UGANDA
     case 33:
-    case "ARGENTINA":
-      return Country.ARGENTINA;
+    case 'ARGENTINA':
+      return Country.ARGENTINA
     case 34:
-    case "ALGERIA":
-      return Country.ALGERIA;
+    case 'ALGERIA':
+      return Country.ALGERIA
     case 35:
-    case "SUDAN":
-      return Country.SUDAN;
+    case 'SUDAN':
+      return Country.SUDAN
     case 36:
-    case "UKRAINE":
-      return Country.UKRAINE;
+    case 'UKRAINE':
+      return Country.UKRAINE
     case 37:
-    case "IRAQ":
-      return Country.IRAQ;
+    case 'IRAQ':
+      return Country.IRAQ
     case 38:
-    case "AFGHANISTAN":
-      return Country.AFGHANISTAN;
+    case 'AFGHANISTAN':
+      return Country.AFGHANISTAN
     case 39:
-    case "POLAND":
-      return Country.POLAND;
+    case 'POLAND':
+      return Country.POLAND
     case 40:
-    case "MOROCCO":
-      return Country.MOROCCO;
+    case 'MOROCCO':
+      return Country.MOROCCO
     case 41:
-    case "SAUDI_ARABIA":
-      return Country.SAUDI_ARABIA;
+    case 'SAUDI_ARABIA':
+      return Country.SAUDI_ARABIA
     case 42:
-    case "UZBEKISTAN":
-      return Country.UZBEKISTAN;
+    case 'UZBEKISTAN':
+      return Country.UZBEKISTAN
     case 43:
-    case "PERU":
-      return Country.PERU;
+    case 'PERU':
+      return Country.PERU
     case 44:
-    case "ANGOLA":
-      return Country.ANGOLA;
+    case 'ANGOLA':
+      return Country.ANGOLA
     case 45:
-    case "MALAYSIA":
-      return Country.MALAYSIA;
+    case 'MALAYSIA':
+      return Country.MALAYSIA
     case 46:
-    case "MOZAMBIQUE":
-      return Country.MOZAMBIQUE;
+    case 'MOZAMBIQUE':
+      return Country.MOZAMBIQUE
     case 47:
-    case "GHANA":
-      return Country.GHANA;
+    case 'GHANA':
+      return Country.GHANA
     case 48:
-    case "YEMEN":
-      return Country.YEMEN;
+    case 'YEMEN':
+      return Country.YEMEN
     case 49:
-    case "NEPAL":
-      return Country.NEPAL;
+    case 'NEPAL':
+      return Country.NEPAL
     case 50:
-    case "VENEZUELA":
-      return Country.VENEZUELA;
+    case 'VENEZUELA':
+      return Country.VENEZUELA
     case 51:
-    case "MADAGASCAR":
-      return Country.MADAGASCAR;
+    case 'MADAGASCAR':
+      return Country.MADAGASCAR
     case 52:
-    case "CAMEROON":
-      return Country.CAMEROON;
+    case 'CAMEROON':
+      return Country.CAMEROON
     case 53:
-    case "COTE_DIVOIRE":
-      return Country.COTE_DIVOIRE;
+    case 'COTE_DIVOIRE':
+      return Country.COTE_DIVOIRE
     case 54:
-    case "NORTH_KOREA":
-      return Country.NORTH_KOREA;
+    case 'NORTH_KOREA':
+      return Country.NORTH_KOREA
     case 55:
-    case "AUSTRALIA":
-      return Country.AUSTRALIA;
+    case 'AUSTRALIA':
+      return Country.AUSTRALIA
     case 56:
-    case "NIGER":
-      return Country.NIGER;
+    case 'NIGER':
+      return Country.NIGER
     case 57:
-    case "TAIWAN":
-      return Country.TAIWAN;
+    case 'TAIWAN':
+      return Country.TAIWAN
     case 58:
-    case "SRI_LANKA":
-      return Country.SRI_LANKA;
+    case 'SRI_LANKA':
+      return Country.SRI_LANKA
     case 59:
-    case "BURKINA_FASO":
-      return Country.BURKINA_FASO;
+    case 'BURKINA_FASO':
+      return Country.BURKINA_FASO
     case 60:
-    case "MALI":
-      return Country.MALI;
+    case 'MALI':
+      return Country.MALI
     case 61:
-    case "ROMANIA":
-      return Country.ROMANIA;
+    case 'ROMANIA':
+      return Country.ROMANIA
     case 62:
-    case "MALAWI":
-      return Country.MALAWI;
+    case 'MALAWI':
+      return Country.MALAWI
     case 63:
-    case "CHILE":
-      return Country.CHILE;
+    case 'CHILE':
+      return Country.CHILE
     case 64:
-    case "KAZAKHSTAN":
-      return Country.KAZAKHSTAN;
+    case 'KAZAKHSTAN':
+      return Country.KAZAKHSTAN
     case 65:
-    case "ZAMBIA":
-      return Country.ZAMBIA;
+    case 'ZAMBIA':
+      return Country.ZAMBIA
     case 66:
-    case "GUATEMALA":
-      return Country.GUATEMALA;
+    case 'GUATEMALA':
+      return Country.GUATEMALA
     case 67:
-    case "ECUADOR":
-      return Country.ECUADOR;
+    case 'ECUADOR':
+      return Country.ECUADOR
     case 68:
-    case "SYRIA":
-      return Country.SYRIA;
+    case 'SYRIA':
+      return Country.SYRIA
     case 69:
-    case "NETHERLANDS":
-      return Country.NETHERLANDS;
+    case 'NETHERLANDS':
+      return Country.NETHERLANDS
     case 70:
-    case "SENEGAL":
-      return Country.SENEGAL;
+    case 'SENEGAL':
+      return Country.SENEGAL
     case 71:
-    case "CAMBODIA":
-      return Country.CAMBODIA;
+    case 'CAMBODIA':
+      return Country.CAMBODIA
     case 72:
-    case "CHAD":
-      return Country.CHAD;
+    case 'CHAD':
+      return Country.CHAD
     case 73:
-    case "SOMALIA":
-      return Country.SOMALIA;
+    case 'SOMALIA':
+      return Country.SOMALIA
     case 74:
-    case "ZIMBABWE":
-      return Country.ZIMBABWE;
+    case 'ZIMBABWE':
+      return Country.ZIMBABWE
     case 75:
-    case "GUINEA":
-      return Country.GUINEA;
+    case 'GUINEA':
+      return Country.GUINEA
     case 76:
-    case "RWANDA":
-      return Country.RWANDA;
+    case 'RWANDA':
+      return Country.RWANDA
     case 77:
-    case "BENIN":
-      return Country.BENIN;
+    case 'BENIN':
+      return Country.BENIN
     case 78:
-    case "BURUNDI":
-      return Country.BURUNDI;
+    case 'BURUNDI':
+      return Country.BURUNDI
     case 79:
-    case "TUNISIA":
-      return Country.TUNISIA;
+    case 'TUNISIA':
+      return Country.TUNISIA
     case 80:
-    case "BOLIVIA":
-      return Country.BOLIVIA;
+    case 'BOLIVIA':
+      return Country.BOLIVIA
     case 81:
-    case "BELGIUM":
-      return Country.BELGIUM;
+    case 'BELGIUM':
+      return Country.BELGIUM
     case 82:
-    case "HAITI":
-      return Country.HAITI;
+    case 'HAITI':
+      return Country.HAITI
     case 83:
-    case "CUBA":
-      return Country.CUBA;
+    case 'CUBA':
+      return Country.CUBA
     case 84:
-    case "SOUTH_SUDAN":
-      return Country.SOUTH_SUDAN;
+    case 'SOUTH_SUDAN':
+      return Country.SOUTH_SUDAN
     case 85:
-    case "DOMINICAN_REPUBLIC":
-      return Country.DOMINICAN_REPUBLIC;
+    case 'DOMINICAN_REPUBLIC':
+      return Country.DOMINICAN_REPUBLIC
     case 86:
-    case "CZECH_REPUBLIC":
-      return Country.CZECH_REPUBLIC;
+    case 'CZECH_REPUBLIC':
+      return Country.CZECH_REPUBLIC
     case 87:
-    case "GREECE":
-      return Country.GREECE;
+    case 'GREECE':
+      return Country.GREECE
     case 88:
-    case "JORDAN":
-      return Country.JORDAN;
+    case 'JORDAN':
+      return Country.JORDAN
     case 89:
-    case "PORTUGAL":
-      return Country.PORTUGAL;
+    case 'PORTUGAL':
+      return Country.PORTUGAL
     case 90:
-    case "AZERBAIJAN":
-      return Country.AZERBAIJAN;
+    case 'AZERBAIJAN':
+      return Country.AZERBAIJAN
     case 91:
-    case "SWEDEN":
-      return Country.SWEDEN;
+    case 'SWEDEN':
+      return Country.SWEDEN
     case 92:
-    case "HONDURAS":
-      return Country.HONDURAS;
+    case 'HONDURAS':
+      return Country.HONDURAS
     case 93:
-    case "UNITED_ARAB_EMIRATES":
-      return Country.UNITED_ARAB_EMIRATES;
+    case 'UNITED_ARAB_EMIRATES':
+      return Country.UNITED_ARAB_EMIRATES
     case 94:
-    case "HUNGARY":
-      return Country.HUNGARY;
+    case 'HUNGARY':
+      return Country.HUNGARY
     case 95:
-    case "TAJIKISTAN":
-      return Country.TAJIKISTAN;
+    case 'TAJIKISTAN':
+      return Country.TAJIKISTAN
     case 96:
-    case "BELARUS":
-      return Country.BELARUS;
+    case 'BELARUS':
+      return Country.BELARUS
     case 97:
-    case "AUSTRIA":
-      return Country.AUSTRIA;
+    case 'AUSTRIA':
+      return Country.AUSTRIA
     case 98:
-    case "PAPUA_NEW_GUINEA":
-      return Country.PAPUA_NEW_GUINEA;
+    case 'PAPUA_NEW_GUINEA':
+      return Country.PAPUA_NEW_GUINEA
     case 99:
-    case "SERBIA":
-      return Country.SERBIA;
+    case 'SERBIA':
+      return Country.SERBIA
     case 100:
-    case "ISRAEL":
-      return Country.ISRAEL;
+    case 'ISRAEL':
+      return Country.ISRAEL
     case 101:
-    case "SWITZERLAND":
-      return Country.SWITZERLAND;
+    case 'SWITZERLAND':
+      return Country.SWITZERLAND
     case 102:
-    case "TOGO":
-      return Country.TOGO;
+    case 'TOGO':
+      return Country.TOGO
     case 103:
-    case "SIERRA_LEONE":
-      return Country.SIERRA_LEONE;
+    case 'SIERRA_LEONE':
+      return Country.SIERRA_LEONE
     case 104:
-    case "HONG_KONG":
-      return Country.HONG_KONG;
+    case 'HONG_KONG':
+      return Country.HONG_KONG
     case 105:
-    case "LAOS":
-      return Country.LAOS;
+    case 'LAOS':
+      return Country.LAOS
     case 106:
-    case "PARAGUAY":
-      return Country.PARAGUAY;
+    case 'PARAGUAY':
+      return Country.PARAGUAY
     case 107:
-    case "BULGARIA":
-      return Country.BULGARIA;
+    case 'BULGARIA':
+      return Country.BULGARIA
     case 108:
-    case "LIBYA":
-      return Country.LIBYA;
+    case 'LIBYA':
+      return Country.LIBYA
     case 109:
-    case "LEBANON":
-      return Country.LEBANON;
+    case 'LEBANON':
+      return Country.LEBANON
     case 110:
-    case "NICARAGUA":
-      return Country.NICARAGUA;
+    case 'NICARAGUA':
+      return Country.NICARAGUA
     case 111:
-    case "KYRGYZSTAN":
-      return Country.KYRGYZSTAN;
+    case 'KYRGYZSTAN':
+      return Country.KYRGYZSTAN
     case 112:
-    case "EL_SALVADOR":
-      return Country.EL_SALVADOR;
+    case 'EL_SALVADOR':
+      return Country.EL_SALVADOR
     case 113:
-    case "TURKMENISTAN":
-      return Country.TURKMENISTAN;
+    case 'TURKMENISTAN':
+      return Country.TURKMENISTAN
     case 114:
-    case "SINGAPORE":
-      return Country.SINGAPORE;
+    case 'SINGAPORE':
+      return Country.SINGAPORE
     case 115:
-    case "DENMARK":
-      return Country.DENMARK;
+    case 'DENMARK':
+      return Country.DENMARK
     case 116:
-    case "FINLAND":
-      return Country.FINLAND;
+    case 'FINLAND':
+      return Country.FINLAND
     case 117:
-    case "CONGO":
-      return Country.CONGO;
+    case 'CONGO':
+      return Country.CONGO
     case 118:
-    case "SLOVAKIA":
-      return Country.SLOVAKIA;
+    case 'SLOVAKIA':
+      return Country.SLOVAKIA
     case 119:
-    case "NORWAY":
-      return Country.NORWAY;
+    case 'NORWAY':
+      return Country.NORWAY
     case 120:
-    case "OMAN":
-      return Country.OMAN;
+    case 'OMAN':
+      return Country.OMAN
     case 121:
-    case "STATE_OF_PALESTINE":
-      return Country.STATE_OF_PALESTINE;
+    case 'STATE_OF_PALESTINE':
+      return Country.STATE_OF_PALESTINE
     case 122:
-    case "COSTA_RICA":
-      return Country.COSTA_RICA;
+    case 'COSTA_RICA':
+      return Country.COSTA_RICA
     case 123:
-    case "LIBERIA":
-      return Country.LIBERIA;
+    case 'LIBERIA':
+      return Country.LIBERIA
     case 124:
-    case "IRELAND":
-      return Country.IRELAND;
+    case 'IRELAND':
+      return Country.IRELAND
     case 125:
-    case "CENTRAL_AFRICAN_REPUBLIC":
-      return Country.CENTRAL_AFRICAN_REPUBLIC;
+    case 'CENTRAL_AFRICAN_REPUBLIC':
+      return Country.CENTRAL_AFRICAN_REPUBLIC
     case 126:
-    case "NEW_ZEALAND":
-      return Country.NEW_ZEALAND;
+    case 'NEW_ZEALAND':
+      return Country.NEW_ZEALAND
     case 127:
-    case "PUERTO_RICO":
-      return Country.PUERTO_RICO;
+    case 'PUERTO_RICO':
+      return Country.PUERTO_RICO
     case 128:
-    case "MAURITANIA":
-      return Country.MAURITANIA;
+    case 'MAURITANIA':
+      return Country.MAURITANIA
     case 129:
-    case "PANAMA":
-      return Country.PANAMA;
+    case 'PANAMA':
+      return Country.PANAMA
     case 130:
-    case "KUWAIT":
-      return Country.KUWAIT;
+    case 'KUWAIT':
+      return Country.KUWAIT
     case 131:
-    case "CROATIA":
-      return Country.CROATIA;
+    case 'CROATIA':
+      return Country.CROATIA
     case 132:
-    case "MOLDOVA":
-      return Country.MOLDOVA;
+    case 'MOLDOVA':
+      return Country.MOLDOVA
     case 133:
-    case "GEORGIA":
-      return Country.GEORGIA;
+    case 'GEORGIA':
+      return Country.GEORGIA
     case 134:
-    case "ERITREA":
-      return Country.ERITREA;
+    case 'ERITREA':
+      return Country.ERITREA
     case 135:
-    case "URUGUAY":
-      return Country.URUGUAY;
+    case 'URUGUAY':
+      return Country.URUGUAY
     case 136:
-    case "BOSNIA_AND_HERZEGOVINA":
-      return Country.BOSNIA_AND_HERZEGOVINA;
+    case 'BOSNIA_AND_HERZEGOVINA':
+      return Country.BOSNIA_AND_HERZEGOVINA
     case 137:
-    case "MONGOLIA":
-      return Country.MONGOLIA;
+    case 'MONGOLIA':
+      return Country.MONGOLIA
     case 138:
-    case "ARMENIA":
-      return Country.ARMENIA;
+    case 'ARMENIA':
+      return Country.ARMENIA
     case 139:
-    case "JAMAICA":
-      return Country.JAMAICA;
+    case 'JAMAICA':
+      return Country.JAMAICA
     case 140:
-    case "QATAR":
-      return Country.QATAR;
+    case 'QATAR':
+      return Country.QATAR
     case 141:
-    case "ALBANIA":
-      return Country.ALBANIA;
+    case 'ALBANIA':
+      return Country.ALBANIA
     case 142:
-    case "LITHUANIA":
-      return Country.LITHUANIA;
+    case 'LITHUANIA':
+      return Country.LITHUANIA
     case 143:
-    case "NAMIBIA":
-      return Country.NAMIBIA;
+    case 'NAMIBIA':
+      return Country.NAMIBIA
     case 144:
-    case "GAMBIA":
-      return Country.GAMBIA;
+    case 'GAMBIA':
+      return Country.GAMBIA
     case 145:
-    case "BOTSWANA":
-      return Country.BOTSWANA;
+    case 'BOTSWANA':
+      return Country.BOTSWANA
     case 146:
-    case "GABON":
-      return Country.GABON;
+    case 'GABON':
+      return Country.GABON
     case 147:
-    case "LESOTHO":
-      return Country.LESOTHO;
+    case 'LESOTHO':
+      return Country.LESOTHO
     case 148:
-    case "NORTH_MACEDONIA":
-      return Country.NORTH_MACEDONIA;
+    case 'NORTH_MACEDONIA':
+      return Country.NORTH_MACEDONIA
     case 149:
-    case "SLOVENIA":
-      return Country.SLOVENIA;
+    case 'SLOVENIA':
+      return Country.SLOVENIA
     case 150:
-    case "GUINEA_BISSAU":
-      return Country.GUINEA_BISSAU;
+    case 'GUINEA_BISSAU':
+      return Country.GUINEA_BISSAU
     case 151:
-    case "LATVIA":
-      return Country.LATVIA;
+    case 'LATVIA':
+      return Country.LATVIA
     case 152:
-    case "BAHRAIN":
-      return Country.BAHRAIN;
+    case 'BAHRAIN':
+      return Country.BAHRAIN
     case 153:
-    case "EQUATORIAL_GUINEA":
-      return Country.EQUATORIAL_GUINEA;
+    case 'EQUATORIAL_GUINEA':
+      return Country.EQUATORIAL_GUINEA
     case 154:
-    case "TRINIDAD_AND_TOBAGO":
-      return Country.TRINIDAD_AND_TOBAGO;
+    case 'TRINIDAD_AND_TOBAGO':
+      return Country.TRINIDAD_AND_TOBAGO
     case 155:
-    case "ESTONIA":
-      return Country.ESTONIA;
+    case 'ESTONIA':
+      return Country.ESTONIA
     case 156:
-    case "TIMOR_LESTE":
-      return Country.TIMOR_LESTE;
+    case 'TIMOR_LESTE':
+      return Country.TIMOR_LESTE
     case 157:
-    case "MAURITIUS":
-      return Country.MAURITIUS;
+    case 'MAURITIUS':
+      return Country.MAURITIUS
     case 158:
-    case "CYPRUS":
-      return Country.CYPRUS;
+    case 'CYPRUS':
+      return Country.CYPRUS
     case 159:
-    case "ESWATINI":
-      return Country.ESWATINI;
+    case 'ESWATINI':
+      return Country.ESWATINI
     case 160:
-    case "DJIBOUTI":
-      return Country.DJIBOUTI;
+    case 'DJIBOUTI':
+      return Country.DJIBOUTI
     case 161:
-    case "FIJI":
-      return Country.FIJI;
+    case 'FIJI':
+      return Country.FIJI
     case 162:
-    case "REUNION":
-      return Country.REUNION;
+    case 'REUNION':
+      return Country.REUNION
     case 163:
-    case "COMOROS":
-      return Country.COMOROS;
+    case 'COMOROS':
+      return Country.COMOROS
     case 164:
-    case "GUYANA":
-      return Country.GUYANA;
+    case 'GUYANA':
+      return Country.GUYANA
     case 165:
-    case "BHUTAN":
-      return Country.BHUTAN;
+    case 'BHUTAN':
+      return Country.BHUTAN
     case 166:
-    case "SOLOMON_ISLANDS":
-      return Country.SOLOMON_ISLANDS;
+    case 'SOLOMON_ISLANDS':
+      return Country.SOLOMON_ISLANDS
     case 167:
-    case "MACAO":
-      return Country.MACAO;
+    case 'MACAO':
+      return Country.MACAO
     case 168:
-    case "MONTENEGRO":
-      return Country.MONTENEGRO;
+    case 'MONTENEGRO':
+      return Country.MONTENEGRO
     case 169:
-    case "LUXEMBOURG":
-      return Country.LUXEMBOURG;
+    case 'LUXEMBOURG':
+      return Country.LUXEMBOURG
     case 170:
-    case "WESTERN_SAHARA":
-      return Country.WESTERN_SAHARA;
+    case 'WESTERN_SAHARA':
+      return Country.WESTERN_SAHARA
     case 171:
-    case "SURINAME":
-      return Country.SURINAME;
+    case 'SURINAME':
+      return Country.SURINAME
     case 172:
-    case "CABO_VERDE":
-      return Country.CABO_VERDE;
+    case 'CABO_VERDE':
+      return Country.CABO_VERDE
     case 173:
-    case "MICRONESIA":
-      return Country.MICRONESIA;
+    case 'MICRONESIA':
+      return Country.MICRONESIA
     case 174:
-    case "MALDIVES":
-      return Country.MALDIVES;
+    case 'MALDIVES':
+      return Country.MALDIVES
     case 175:
-    case "MALTA":
-      return Country.MALTA;
+    case 'MALTA':
+      return Country.MALTA
     case 176:
-    case "BRUNEI":
-      return Country.BRUNEI;
+    case 'BRUNEI':
+      return Country.BRUNEI
     case 177:
-    case "GUADELOUPE":
-      return Country.GUADELOUPE;
+    case 'GUADELOUPE':
+      return Country.GUADELOUPE
     case 178:
-    case "BELIZE":
-      return Country.BELIZE;
+    case 'BELIZE':
+      return Country.BELIZE
     case 179:
-    case "BAHAMAS":
-      return Country.BAHAMAS;
+    case 'BAHAMAS':
+      return Country.BAHAMAS
     case 180:
-    case "MARTINIQUE":
-      return Country.MARTINIQUE;
+    case 'MARTINIQUE':
+      return Country.MARTINIQUE
     case 181:
-    case "ICELAND":
-      return Country.ICELAND;
+    case 'ICELAND':
+      return Country.ICELAND
     case 182:
-    case "VANUATU":
-      return Country.VANUATU;
+    case 'VANUATU':
+      return Country.VANUATU
     case 183:
-    case "FRENCH_GUIANA":
-      return Country.FRENCH_GUIANA;
+    case 'FRENCH_GUIANA':
+      return Country.FRENCH_GUIANA
     case 184:
-    case "BARBADOS":
-      return Country.BARBADOS;
+    case 'BARBADOS':
+      return Country.BARBADOS
     case 185:
-    case "NEW_CALEDONIA":
-      return Country.NEW_CALEDONIA;
+    case 'NEW_CALEDONIA':
+      return Country.NEW_CALEDONIA
     case 186:
-    case "FRENCH_POLYNESIA":
-      return Country.FRENCH_POLYNESIA;
+    case 'FRENCH_POLYNESIA':
+      return Country.FRENCH_POLYNESIA
     case 187:
-    case "MAYOTTE":
-      return Country.MAYOTTE;
+    case 'MAYOTTE':
+      return Country.MAYOTTE
     case 188:
-    case "SAO_TOME_PRINCIPE":
-      return Country.SAO_TOME_PRINCIPE;
+    case 'SAO_TOME_PRINCIPE':
+      return Country.SAO_TOME_PRINCIPE
     case 189:
-    case "SAMOA":
-      return Country.SAMOA;
+    case 'SAMOA':
+      return Country.SAMOA
     case 190:
-    case "SAINT_LUCIA":
-      return Country.SAINT_LUCIA;
+    case 'SAINT_LUCIA':
+      return Country.SAINT_LUCIA
     case 191:
-    case "CHANNEL_ISLANDS":
-      return Country.CHANNEL_ISLANDS;
+    case 'CHANNEL_ISLANDS':
+      return Country.CHANNEL_ISLANDS
     case 192:
-    case "GUAM":
-      return Country.GUAM;
+    case 'GUAM':
+      return Country.GUAM
     case 193:
-    case "CURACAO":
-      return Country.CURACAO;
+    case 'CURACAO':
+      return Country.CURACAO
     case 194:
-    case "KIRIBATI":
-      return Country.KIRIBATI;
+    case 'KIRIBATI':
+      return Country.KIRIBATI
     case 195:
-    case "GRENADA":
-      return Country.GRENADA;
+    case 'GRENADA':
+      return Country.GRENADA
     case 196:
-    case "ST_VINCENT_GRENADINES":
-      return Country.ST_VINCENT_GRENADINES;
+    case 'ST_VINCENT_GRENADINES':
+      return Country.ST_VINCENT_GRENADINES
     case 197:
-    case "ARUBA":
-      return Country.ARUBA;
+    case 'ARUBA':
+      return Country.ARUBA
     case 198:
-    case "TONGA":
-      return Country.TONGA;
+    case 'TONGA':
+      return Country.TONGA
     case 199:
-    case "US_VIRGIN_ISLANDS":
-      return Country.US_VIRGIN_ISLANDS;
+    case 'US_VIRGIN_ISLANDS':
+      return Country.US_VIRGIN_ISLANDS
     case 200:
-    case "SEYCHELLES":
-      return Country.SEYCHELLES;
+    case 'SEYCHELLES':
+      return Country.SEYCHELLES
     case 201:
-    case "ANTIGUA_AND_BARBUDA":
-      return Country.ANTIGUA_AND_BARBUDA;
+    case 'ANTIGUA_AND_BARBUDA':
+      return Country.ANTIGUA_AND_BARBUDA
     case 202:
-    case "ISLE_OF_MAN":
-      return Country.ISLE_OF_MAN;
+    case 'ISLE_OF_MAN':
+      return Country.ISLE_OF_MAN
     case 203:
-    case "ANDORRA":
-      return Country.ANDORRA;
+    case 'ANDORRA':
+      return Country.ANDORRA
     case 204:
-    case "DOMINICA":
-      return Country.DOMINICA;
+    case 'DOMINICA':
+      return Country.DOMINICA
     case 205:
-    case "CAYMAN_ISLANDS":
-      return Country.CAYMAN_ISLANDS;
+    case 'CAYMAN_ISLANDS':
+      return Country.CAYMAN_ISLANDS
     case 206:
-    case "BERMUDA":
-      return Country.BERMUDA;
+    case 'BERMUDA':
+      return Country.BERMUDA
     case 207:
-    case "MARSHALL_ISLANDS":
-      return Country.MARSHALL_ISLANDS;
+    case 'MARSHALL_ISLANDS':
+      return Country.MARSHALL_ISLANDS
     case 208:
-    case "NORTHERN_MARIANA_ISLANDS":
-      return Country.NORTHERN_MARIANA_ISLANDS;
+    case 'NORTHERN_MARIANA_ISLANDS':
+      return Country.NORTHERN_MARIANA_ISLANDS
     case 209:
-    case "GREENLAND":
-      return Country.GREENLAND;
+    case 'GREENLAND':
+      return Country.GREENLAND
     case 210:
-    case "AMERICAN_SAMOA":
-      return Country.AMERICAN_SAMOA;
+    case 'AMERICAN_SAMOA':
+      return Country.AMERICAN_SAMOA
     case 211:
-    case "SAINT_KITTS_NEVIS":
-      return Country.SAINT_KITTS_NEVIS;
+    case 'SAINT_KITTS_NEVIS':
+      return Country.SAINT_KITTS_NEVIS
     case 212:
-    case "FAEROE_ISLANDS":
-      return Country.FAEROE_ISLANDS;
+    case 'FAEROE_ISLANDS':
+      return Country.FAEROE_ISLANDS
     case 213:
-    case "SINT_MAARTEN":
-      return Country.SINT_MAARTEN;
+    case 'SINT_MAARTEN':
+      return Country.SINT_MAARTEN
     case 214:
-    case "MONACO":
-      return Country.MONACO;
+    case 'MONACO':
+      return Country.MONACO
     case 215:
-    case "TURKS_AND_CAICOS":
-      return Country.TURKS_AND_CAICOS;
+    case 'TURKS_AND_CAICOS':
+      return Country.TURKS_AND_CAICOS
     case 216:
-    case "SAINT_MARTIN":
-      return Country.SAINT_MARTIN;
+    case 'SAINT_MARTIN':
+      return Country.SAINT_MARTIN
     case 217:
-    case "LIECHTENSTEIN":
-      return Country.LIECHTENSTEIN;
+    case 'LIECHTENSTEIN':
+      return Country.LIECHTENSTEIN
     case 218:
-    case "SAN_MARINO":
-      return Country.SAN_MARINO;
+    case 'SAN_MARINO':
+      return Country.SAN_MARINO
     case 219:
-    case "GIBRALTAR":
-      return Country.GIBRALTAR;
+    case 'GIBRALTAR':
+      return Country.GIBRALTAR
     case 220:
-    case "BRITISH_VIRGIN_ISLANDS":
-      return Country.BRITISH_VIRGIN_ISLANDS;
+    case 'BRITISH_VIRGIN_ISLANDS':
+      return Country.BRITISH_VIRGIN_ISLANDS
     case 221:
-    case "CARIBBEAN_NETHERLANDS":
-      return Country.CARIBBEAN_NETHERLANDS;
+    case 'CARIBBEAN_NETHERLANDS':
+      return Country.CARIBBEAN_NETHERLANDS
     case 222:
-    case "PALAU":
-      return Country.PALAU;
+    case 'PALAU':
+      return Country.PALAU
     case 223:
-    case "COOK_ISLANDS":
-      return Country.COOK_ISLANDS;
+    case 'COOK_ISLANDS':
+      return Country.COOK_ISLANDS
     case 224:
-    case "ANGUILLA":
-      return Country.ANGUILLA;
+    case 'ANGUILLA':
+      return Country.ANGUILLA
     case 225:
-    case "TUVALU":
-      return Country.TUVALU;
+    case 'TUVALU':
+      return Country.TUVALU
     case 226:
-    case "WALLIS_FUTUNA":
-      return Country.WALLIS_FUTUNA;
+    case 'WALLIS_FUTUNA':
+      return Country.WALLIS_FUTUNA
     case 227:
-    case "NAURU":
-      return Country.NAURU;
+    case 'NAURU':
+      return Country.NAURU
     case 228:
-    case "SAINT_BARTHELEMY":
-      return Country.SAINT_BARTHELEMY;
+    case 'SAINT_BARTHELEMY':
+      return Country.SAINT_BARTHELEMY
     case 229:
-    case "SAINT_HELENA":
-      return Country.SAINT_HELENA;
+    case 'SAINT_HELENA':
+      return Country.SAINT_HELENA
     case 230:
-    case "SAINT_PIERRE_MIQUELON":
-      return Country.SAINT_PIERRE_MIQUELON;
+    case 'SAINT_PIERRE_MIQUELON':
+      return Country.SAINT_PIERRE_MIQUELON
     case 231:
-    case "MONTSERRAT":
-      return Country.MONTSERRAT;
+    case 'MONTSERRAT':
+      return Country.MONTSERRAT
     case 232:
-    case "FALKLAND_ISLANDS":
-      return Country.FALKLAND_ISLANDS;
+    case 'FALKLAND_ISLANDS':
+      return Country.FALKLAND_ISLANDS
     case 233:
-    case "NIUE":
-      return Country.NIUE;
+    case 'NIUE':
+      return Country.NIUE
     case 234:
-    case "TOKELAU":
-      return Country.TOKELAU;
+    case 'TOKELAU':
+      return Country.TOKELAU
     case 235:
-    case "HOLY_SEE":
-      return Country.HOLY_SEE;
+    case 'HOLY_SEE':
+      return Country.HOLY_SEE
     case -1:
-    case "UNRECOGNIZED":
+    case 'UNRECOGNIZED':
     default:
-      return Country.UNRECOGNIZED;
+      return Country.UNRECOGNIZED
   }
 }
 
 export function countryToJSON(object: Country): string {
   switch (object) {
     case Country.NO_COUNTRY:
-      return "NO_COUNTRY";
+      return 'NO_COUNTRY'
     case Country.UNITED_STATES:
-      return "UNITED_STATES";
+      return 'UNITED_STATES'
     case Country.CANADA:
-      return "CANADA";
+      return 'CANADA'
     case Country.MEXICO:
-      return "MEXICO";
+      return 'MEXICO'
     case Country.CHINA:
-      return "CHINA";
+      return 'CHINA'
     case Country.INDIA:
-      return "INDIA";
+      return 'INDIA'
     case Country.INDONESIA:
-      return "INDONESIA";
+      return 'INDONESIA'
     case Country.PAKISTAN:
-      return "PAKISTAN";
+      return 'PAKISTAN'
     case Country.BRAZIL:
-      return "BRAZIL";
+      return 'BRAZIL'
     case Country.NIGERIA:
-      return "NIGERIA";
+      return 'NIGERIA'
     case Country.BANGLADESH:
-      return "BANGLADESH";
+      return 'BANGLADESH'
     case Country.RUSSIA:
-      return "RUSSIA";
+      return 'RUSSIA'
     case Country.JAPAN:
-      return "JAPAN";
+      return 'JAPAN'
     case Country.ETHIOPIA:
-      return "ETHIOPIA";
+      return 'ETHIOPIA'
     case Country.PHILIPPINES:
-      return "PHILIPPINES";
+      return 'PHILIPPINES'
     case Country.EGYPT:
-      return "EGYPT";
+      return 'EGYPT'
     case Country.VIETNAM:
-      return "VIETNAM";
+      return 'VIETNAM'
     case Country.DR_CONGO:
-      return "DR_CONGO";
+      return 'DR_CONGO'
     case Country.TURKEY:
-      return "TURKEY";
+      return 'TURKEY'
     case Country.IRAN:
-      return "IRAN";
+      return 'IRAN'
     case Country.GERMANY:
-      return "GERMANY";
+      return 'GERMANY'
     case Country.THAILAND:
-      return "THAILAND";
+      return 'THAILAND'
     case Country.UNITED_KINGDOM:
-      return "UNITED_KINGDOM";
+      return 'UNITED_KINGDOM'
     case Country.FRANCE:
-      return "FRANCE";
+      return 'FRANCE'
     case Country.ITALY:
-      return "ITALY";
+      return 'ITALY'
     case Country.TANZANIA:
-      return "TANZANIA";
+      return 'TANZANIA'
     case Country.SOUTH_AFRICA:
-      return "SOUTH_AFRICA";
+      return 'SOUTH_AFRICA'
     case Country.MYANMAR:
-      return "MYANMAR";
+      return 'MYANMAR'
     case Country.KENYA:
-      return "KENYA";
+      return 'KENYA'
     case Country.SOUTH_KOREA:
-      return "SOUTH_KOREA";
+      return 'SOUTH_KOREA'
     case Country.COLOMBIA:
-      return "COLOMBIA";
+      return 'COLOMBIA'
     case Country.SPAIN:
-      return "SPAIN";
+      return 'SPAIN'
     case Country.UGANDA:
-      return "UGANDA";
+      return 'UGANDA'
     case Country.ARGENTINA:
-      return "ARGENTINA";
+      return 'ARGENTINA'
     case Country.ALGERIA:
-      return "ALGERIA";
+      return 'ALGERIA'
     case Country.SUDAN:
-      return "SUDAN";
+      return 'SUDAN'
     case Country.UKRAINE:
-      return "UKRAINE";
+      return 'UKRAINE'
     case Country.IRAQ:
-      return "IRAQ";
+      return 'IRAQ'
     case Country.AFGHANISTAN:
-      return "AFGHANISTAN";
+      return 'AFGHANISTAN'
     case Country.POLAND:
-      return "POLAND";
+      return 'POLAND'
     case Country.MOROCCO:
-      return "MOROCCO";
+      return 'MOROCCO'
     case Country.SAUDI_ARABIA:
-      return "SAUDI_ARABIA";
+      return 'SAUDI_ARABIA'
     case Country.UZBEKISTAN:
-      return "UZBEKISTAN";
+      return 'UZBEKISTAN'
     case Country.PERU:
-      return "PERU";
+      return 'PERU'
     case Country.ANGOLA:
-      return "ANGOLA";
+      return 'ANGOLA'
     case Country.MALAYSIA:
-      return "MALAYSIA";
+      return 'MALAYSIA'
     case Country.MOZAMBIQUE:
-      return "MOZAMBIQUE";
+      return 'MOZAMBIQUE'
     case Country.GHANA:
-      return "GHANA";
+      return 'GHANA'
     case Country.YEMEN:
-      return "YEMEN";
+      return 'YEMEN'
     case Country.NEPAL:
-      return "NEPAL";
+      return 'NEPAL'
     case Country.VENEZUELA:
-      return "VENEZUELA";
+      return 'VENEZUELA'
     case Country.MADAGASCAR:
-      return "MADAGASCAR";
+      return 'MADAGASCAR'
     case Country.CAMEROON:
-      return "CAMEROON";
+      return 'CAMEROON'
     case Country.COTE_DIVOIRE:
-      return "COTE_DIVOIRE";
+      return 'COTE_DIVOIRE'
     case Country.NORTH_KOREA:
-      return "NORTH_KOREA";
+      return 'NORTH_KOREA'
     case Country.AUSTRALIA:
-      return "AUSTRALIA";
+      return 'AUSTRALIA'
     case Country.NIGER:
-      return "NIGER";
+      return 'NIGER'
     case Country.TAIWAN:
-      return "TAIWAN";
+      return 'TAIWAN'
     case Country.SRI_LANKA:
-      return "SRI_LANKA";
+      return 'SRI_LANKA'
     case Country.BURKINA_FASO:
-      return "BURKINA_FASO";
+      return 'BURKINA_FASO'
     case Country.MALI:
-      return "MALI";
+      return 'MALI'
     case Country.ROMANIA:
-      return "ROMANIA";
+      return 'ROMANIA'
     case Country.MALAWI:
-      return "MALAWI";
+      return 'MALAWI'
     case Country.CHILE:
-      return "CHILE";
+      return 'CHILE'
     case Country.KAZAKHSTAN:
-      return "KAZAKHSTAN";
+      return 'KAZAKHSTAN'
     case Country.ZAMBIA:
-      return "ZAMBIA";
+      return 'ZAMBIA'
     case Country.GUATEMALA:
-      return "GUATEMALA";
+      return 'GUATEMALA'
     case Country.ECUADOR:
-      return "ECUADOR";
+      return 'ECUADOR'
     case Country.SYRIA:
-      return "SYRIA";
+      return 'SYRIA'
     case Country.NETHERLANDS:
-      return "NETHERLANDS";
+      return 'NETHERLANDS'
     case Country.SENEGAL:
-      return "SENEGAL";
+      return 'SENEGAL'
     case Country.CAMBODIA:
-      return "CAMBODIA";
+      return 'CAMBODIA'
     case Country.CHAD:
-      return "CHAD";
+      return 'CHAD'
     case Country.SOMALIA:
-      return "SOMALIA";
+      return 'SOMALIA'
     case Country.ZIMBABWE:
-      return "ZIMBABWE";
+      return 'ZIMBABWE'
     case Country.GUINEA:
-      return "GUINEA";
+      return 'GUINEA'
     case Country.RWANDA:
-      return "RWANDA";
+      return 'RWANDA'
     case Country.BENIN:
-      return "BENIN";
+      return 'BENIN'
     case Country.BURUNDI:
-      return "BURUNDI";
+      return 'BURUNDI'
     case Country.TUNISIA:
-      return "TUNISIA";
+      return 'TUNISIA'
     case Country.BOLIVIA:
-      return "BOLIVIA";
+      return 'BOLIVIA'
     case Country.BELGIUM:
-      return "BELGIUM";
+      return 'BELGIUM'
     case Country.HAITI:
-      return "HAITI";
+      return 'HAITI'
     case Country.CUBA:
-      return "CUBA";
+      return 'CUBA'
     case Country.SOUTH_SUDAN:
-      return "SOUTH_SUDAN";
+      return 'SOUTH_SUDAN'
     case Country.DOMINICAN_REPUBLIC:
-      return "DOMINICAN_REPUBLIC";
+      return 'DOMINICAN_REPUBLIC'
     case Country.CZECH_REPUBLIC:
-      return "CZECH_REPUBLIC";
+      return 'CZECH_REPUBLIC'
     case Country.GREECE:
-      return "GREECE";
+      return 'GREECE'
     case Country.JORDAN:
-      return "JORDAN";
+      return 'JORDAN'
     case Country.PORTUGAL:
-      return "PORTUGAL";
+      return 'PORTUGAL'
     case Country.AZERBAIJAN:
-      return "AZERBAIJAN";
+      return 'AZERBAIJAN'
     case Country.SWEDEN:
-      return "SWEDEN";
+      return 'SWEDEN'
     case Country.HONDURAS:
-      return "HONDURAS";
+      return 'HONDURAS'
     case Country.UNITED_ARAB_EMIRATES:
-      return "UNITED_ARAB_EMIRATES";
+      return 'UNITED_ARAB_EMIRATES'
     case Country.HUNGARY:
-      return "HUNGARY";
+      return 'HUNGARY'
     case Country.TAJIKISTAN:
-      return "TAJIKISTAN";
+      return 'TAJIKISTAN'
     case Country.BELARUS:
-      return "BELARUS";
+      return 'BELARUS'
     case Country.AUSTRIA:
-      return "AUSTRIA";
+      return 'AUSTRIA'
     case Country.PAPUA_NEW_GUINEA:
-      return "PAPUA_NEW_GUINEA";
+      return 'PAPUA_NEW_GUINEA'
     case Country.SERBIA:
-      return "SERBIA";
+      return 'SERBIA'
     case Country.ISRAEL:
-      return "ISRAEL";
+      return 'ISRAEL'
     case Country.SWITZERLAND:
-      return "SWITZERLAND";
+      return 'SWITZERLAND'
     case Country.TOGO:
-      return "TOGO";
+      return 'TOGO'
     case Country.SIERRA_LEONE:
-      return "SIERRA_LEONE";
+      return 'SIERRA_LEONE'
     case Country.HONG_KONG:
-      return "HONG_KONG";
+      return 'HONG_KONG'
     case Country.LAOS:
-      return "LAOS";
+      return 'LAOS'
     case Country.PARAGUAY:
-      return "PARAGUAY";
+      return 'PARAGUAY'
     case Country.BULGARIA:
-      return "BULGARIA";
+      return 'BULGARIA'
     case Country.LIBYA:
-      return "LIBYA";
+      return 'LIBYA'
     case Country.LEBANON:
-      return "LEBANON";
+      return 'LEBANON'
     case Country.NICARAGUA:
-      return "NICARAGUA";
+      return 'NICARAGUA'
     case Country.KYRGYZSTAN:
-      return "KYRGYZSTAN";
+      return 'KYRGYZSTAN'
     case Country.EL_SALVADOR:
-      return "EL_SALVADOR";
+      return 'EL_SALVADOR'
     case Country.TURKMENISTAN:
-      return "TURKMENISTAN";
+      return 'TURKMENISTAN'
     case Country.SINGAPORE:
-      return "SINGAPORE";
+      return 'SINGAPORE'
     case Country.DENMARK:
-      return "DENMARK";
+      return 'DENMARK'
     case Country.FINLAND:
-      return "FINLAND";
+      return 'FINLAND'
     case Country.CONGO:
-      return "CONGO";
+      return 'CONGO'
     case Country.SLOVAKIA:
-      return "SLOVAKIA";
+      return 'SLOVAKIA'
     case Country.NORWAY:
-      return "NORWAY";
+      return 'NORWAY'
     case Country.OMAN:
-      return "OMAN";
+      return 'OMAN'
     case Country.STATE_OF_PALESTINE:
-      return "STATE_OF_PALESTINE";
+      return 'STATE_OF_PALESTINE'
     case Country.COSTA_RICA:
-      return "COSTA_RICA";
+      return 'COSTA_RICA'
     case Country.LIBERIA:
-      return "LIBERIA";
+      return 'LIBERIA'
     case Country.IRELAND:
-      return "IRELAND";
+      return 'IRELAND'
     case Country.CENTRAL_AFRICAN_REPUBLIC:
-      return "CENTRAL_AFRICAN_REPUBLIC";
+      return 'CENTRAL_AFRICAN_REPUBLIC'
     case Country.NEW_ZEALAND:
-      return "NEW_ZEALAND";
+      return 'NEW_ZEALAND'
     case Country.PUERTO_RICO:
-      return "PUERTO_RICO";
+      return 'PUERTO_RICO'
     case Country.MAURITANIA:
-      return "MAURITANIA";
+      return 'MAURITANIA'
     case Country.PANAMA:
-      return "PANAMA";
+      return 'PANAMA'
     case Country.KUWAIT:
-      return "KUWAIT";
+      return 'KUWAIT'
     case Country.CROATIA:
-      return "CROATIA";
+      return 'CROATIA'
     case Country.MOLDOVA:
-      return "MOLDOVA";
+      return 'MOLDOVA'
     case Country.GEORGIA:
-      return "GEORGIA";
+      return 'GEORGIA'
     case Country.ERITREA:
-      return "ERITREA";
+      return 'ERITREA'
     case Country.URUGUAY:
-      return "URUGUAY";
+      return 'URUGUAY'
     case Country.BOSNIA_AND_HERZEGOVINA:
-      return "BOSNIA_AND_HERZEGOVINA";
+      return 'BOSNIA_AND_HERZEGOVINA'
     case Country.MONGOLIA:
-      return "MONGOLIA";
+      return 'MONGOLIA'
     case Country.ARMENIA:
-      return "ARMENIA";
+      return 'ARMENIA'
     case Country.JAMAICA:
-      return "JAMAICA";
+      return 'JAMAICA'
     case Country.QATAR:
-      return "QATAR";
+      return 'QATAR'
     case Country.ALBANIA:
-      return "ALBANIA";
+      return 'ALBANIA'
     case Country.LITHUANIA:
-      return "LITHUANIA";
+      return 'LITHUANIA'
     case Country.NAMIBIA:
-      return "NAMIBIA";
+      return 'NAMIBIA'
     case Country.GAMBIA:
-      return "GAMBIA";
+      return 'GAMBIA'
     case Country.BOTSWANA:
-      return "BOTSWANA";
+      return 'BOTSWANA'
     case Country.GABON:
-      return "GABON";
+      return 'GABON'
     case Country.LESOTHO:
-      return "LESOTHO";
+      return 'LESOTHO'
     case Country.NORTH_MACEDONIA:
-      return "NORTH_MACEDONIA";
+      return 'NORTH_MACEDONIA'
     case Country.SLOVENIA:
-      return "SLOVENIA";
+      return 'SLOVENIA'
     case Country.GUINEA_BISSAU:
-      return "GUINEA_BISSAU";
+      return 'GUINEA_BISSAU'
     case Country.LATVIA:
-      return "LATVIA";
+      return 'LATVIA'
     case Country.BAHRAIN:
-      return "BAHRAIN";
+      return 'BAHRAIN'
     case Country.EQUATORIAL_GUINEA:
-      return "EQUATORIAL_GUINEA";
+      return 'EQUATORIAL_GUINEA'
     case Country.TRINIDAD_AND_TOBAGO:
-      return "TRINIDAD_AND_TOBAGO";
+      return 'TRINIDAD_AND_TOBAGO'
     case Country.ESTONIA:
-      return "ESTONIA";
+      return 'ESTONIA'
     case Country.TIMOR_LESTE:
-      return "TIMOR_LESTE";
+      return 'TIMOR_LESTE'
     case Country.MAURITIUS:
-      return "MAURITIUS";
+      return 'MAURITIUS'
     case Country.CYPRUS:
-      return "CYPRUS";
+      return 'CYPRUS'
     case Country.ESWATINI:
-      return "ESWATINI";
+      return 'ESWATINI'
     case Country.DJIBOUTI:
-      return "DJIBOUTI";
+      return 'DJIBOUTI'
     case Country.FIJI:
-      return "FIJI";
+      return 'FIJI'
     case Country.REUNION:
-      return "REUNION";
+      return 'REUNION'
     case Country.COMOROS:
-      return "COMOROS";
+      return 'COMOROS'
     case Country.GUYANA:
-      return "GUYANA";
+      return 'GUYANA'
     case Country.BHUTAN:
-      return "BHUTAN";
+      return 'BHUTAN'
     case Country.SOLOMON_ISLANDS:
-      return "SOLOMON_ISLANDS";
+      return 'SOLOMON_ISLANDS'
     case Country.MACAO:
-      return "MACAO";
+      return 'MACAO'
     case Country.MONTENEGRO:
-      return "MONTENEGRO";
+      return 'MONTENEGRO'
     case Country.LUXEMBOURG:
-      return "LUXEMBOURG";
+      return 'LUXEMBOURG'
     case Country.WESTERN_SAHARA:
-      return "WESTERN_SAHARA";
+      return 'WESTERN_SAHARA'
     case Country.SURINAME:
-      return "SURINAME";
+      return 'SURINAME'
     case Country.CABO_VERDE:
-      return "CABO_VERDE";
+      return 'CABO_VERDE'
     case Country.MICRONESIA:
-      return "MICRONESIA";
+      return 'MICRONESIA'
     case Country.MALDIVES:
-      return "MALDIVES";
+      return 'MALDIVES'
     case Country.MALTA:
-      return "MALTA";
+      return 'MALTA'
     case Country.BRUNEI:
-      return "BRUNEI";
+      return 'BRUNEI'
     case Country.GUADELOUPE:
-      return "GUADELOUPE";
+      return 'GUADELOUPE'
     case Country.BELIZE:
-      return "BELIZE";
+      return 'BELIZE'
     case Country.BAHAMAS:
-      return "BAHAMAS";
+      return 'BAHAMAS'
     case Country.MARTINIQUE:
-      return "MARTINIQUE";
+      return 'MARTINIQUE'
     case Country.ICELAND:
-      return "ICELAND";
+      return 'ICELAND'
     case Country.VANUATU:
-      return "VANUATU";
+      return 'VANUATU'
     case Country.FRENCH_GUIANA:
-      return "FRENCH_GUIANA";
+      return 'FRENCH_GUIANA'
     case Country.BARBADOS:
-      return "BARBADOS";
+      return 'BARBADOS'
     case Country.NEW_CALEDONIA:
-      return "NEW_CALEDONIA";
+      return 'NEW_CALEDONIA'
     case Country.FRENCH_POLYNESIA:
-      return "FRENCH_POLYNESIA";
+      return 'FRENCH_POLYNESIA'
     case Country.MAYOTTE:
-      return "MAYOTTE";
+      return 'MAYOTTE'
     case Country.SAO_TOME_PRINCIPE:
-      return "SAO_TOME_PRINCIPE";
+      return 'SAO_TOME_PRINCIPE'
     case Country.SAMOA:
-      return "SAMOA";
+      return 'SAMOA'
     case Country.SAINT_LUCIA:
-      return "SAINT_LUCIA";
+      return 'SAINT_LUCIA'
     case Country.CHANNEL_ISLANDS:
-      return "CHANNEL_ISLANDS";
+      return 'CHANNEL_ISLANDS'
     case Country.GUAM:
-      return "GUAM";
+      return 'GUAM'
     case Country.CURACAO:
-      return "CURACAO";
+      return 'CURACAO'
     case Country.KIRIBATI:
-      return "KIRIBATI";
+      return 'KIRIBATI'
     case Country.GRENADA:
-      return "GRENADA";
+      return 'GRENADA'
     case Country.ST_VINCENT_GRENADINES:
-      return "ST_VINCENT_GRENADINES";
+      return 'ST_VINCENT_GRENADINES'
     case Country.ARUBA:
-      return "ARUBA";
+      return 'ARUBA'
     case Country.TONGA:
-      return "TONGA";
+      return 'TONGA'
     case Country.US_VIRGIN_ISLANDS:
-      return "US_VIRGIN_ISLANDS";
+      return 'US_VIRGIN_ISLANDS'
     case Country.SEYCHELLES:
-      return "SEYCHELLES";
+      return 'SEYCHELLES'
     case Country.ANTIGUA_AND_BARBUDA:
-      return "ANTIGUA_AND_BARBUDA";
+      return 'ANTIGUA_AND_BARBUDA'
     case Country.ISLE_OF_MAN:
-      return "ISLE_OF_MAN";
+      return 'ISLE_OF_MAN'
     case Country.ANDORRA:
-      return "ANDORRA";
+      return 'ANDORRA'
     case Country.DOMINICA:
-      return "DOMINICA";
+      return 'DOMINICA'
     case Country.CAYMAN_ISLANDS:
-      return "CAYMAN_ISLANDS";
+      return 'CAYMAN_ISLANDS'
     case Country.BERMUDA:
-      return "BERMUDA";
+      return 'BERMUDA'
     case Country.MARSHALL_ISLANDS:
-      return "MARSHALL_ISLANDS";
+      return 'MARSHALL_ISLANDS'
     case Country.NORTHERN_MARIANA_ISLANDS:
-      return "NORTHERN_MARIANA_ISLANDS";
+      return 'NORTHERN_MARIANA_ISLANDS'
     case Country.GREENLAND:
-      return "GREENLAND";
+      return 'GREENLAND'
     case Country.AMERICAN_SAMOA:
-      return "AMERICAN_SAMOA";
+      return 'AMERICAN_SAMOA'
     case Country.SAINT_KITTS_NEVIS:
-      return "SAINT_KITTS_NEVIS";
+      return 'SAINT_KITTS_NEVIS'
     case Country.FAEROE_ISLANDS:
-      return "FAEROE_ISLANDS";
+      return 'FAEROE_ISLANDS'
     case Country.SINT_MAARTEN:
-      return "SINT_MAARTEN";
+      return 'SINT_MAARTEN'
     case Country.MONACO:
-      return "MONACO";
+      return 'MONACO'
     case Country.TURKS_AND_CAICOS:
-      return "TURKS_AND_CAICOS";
+      return 'TURKS_AND_CAICOS'
     case Country.SAINT_MARTIN:
-      return "SAINT_MARTIN";
+      return 'SAINT_MARTIN'
     case Country.LIECHTENSTEIN:
-      return "LIECHTENSTEIN";
+      return 'LIECHTENSTEIN'
     case Country.SAN_MARINO:
-      return "SAN_MARINO";
+      return 'SAN_MARINO'
     case Country.GIBRALTAR:
-      return "GIBRALTAR";
+      return 'GIBRALTAR'
     case Country.BRITISH_VIRGIN_ISLANDS:
-      return "BRITISH_VIRGIN_ISLANDS";
+      return 'BRITISH_VIRGIN_ISLANDS'
     case Country.CARIBBEAN_NETHERLANDS:
-      return "CARIBBEAN_NETHERLANDS";
+      return 'CARIBBEAN_NETHERLANDS'
     case Country.PALAU:
-      return "PALAU";
+      return 'PALAU'
     case Country.COOK_ISLANDS:
-      return "COOK_ISLANDS";
+      return 'COOK_ISLANDS'
     case Country.ANGUILLA:
-      return "ANGUILLA";
+      return 'ANGUILLA'
     case Country.TUVALU:
-      return "TUVALU";
+      return 'TUVALU'
     case Country.WALLIS_FUTUNA:
-      return "WALLIS_FUTUNA";
+      return 'WALLIS_FUTUNA'
     case Country.NAURU:
-      return "NAURU";
+      return 'NAURU'
     case Country.SAINT_BARTHELEMY:
-      return "SAINT_BARTHELEMY";
+      return 'SAINT_BARTHELEMY'
     case Country.SAINT_HELENA:
-      return "SAINT_HELENA";
+      return 'SAINT_HELENA'
     case Country.SAINT_PIERRE_MIQUELON:
-      return "SAINT_PIERRE_MIQUELON";
+      return 'SAINT_PIERRE_MIQUELON'
     case Country.MONTSERRAT:
-      return "MONTSERRAT";
+      return 'MONTSERRAT'
     case Country.FALKLAND_ISLANDS:
-      return "FALKLAND_ISLANDS";
+      return 'FALKLAND_ISLANDS'
     case Country.NIUE:
-      return "NIUE";
+      return 'NIUE'
     case Country.TOKELAU:
-      return "TOKELAU";
+      return 'TOKELAU'
     case Country.HOLY_SEE:
-      return "HOLY_SEE";
+      return 'HOLY_SEE'
     default:
-      return "UNKNOWN";
+      return 'UNKNOWN'
   }
 }
 
 if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
+  _m0.util.Long = Long as any
+  _m0.configure()
 }

@@ -3,22 +3,22 @@ import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
 
 export interface Add {
-  spliceId: number
+  qrInviteId: number
   attributeId: number
 }
 
 export interface Remove {
-  spliceShareId: number
+  qrInviteAttributeId: number
 }
 
 function createBaseAdd(): Add {
-  return { spliceId: 0, attributeId: 0 }
+  return { qrInviteId: 0, attributeId: 0 }
 }
 
 export const Add = {
   encode(message: Add, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spliceId !== 0) {
-      writer.uint32(8).uint32(message.spliceId)
+    if (message.qrInviteId !== 0) {
+      writer.uint32(8).uint32(message.qrInviteId)
     }
     if (message.attributeId !== 0) {
       writer.uint32(16).uint32(message.attributeId)
@@ -34,7 +34,7 @@ export const Add = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.spliceId = reader.uint32()
+          message.qrInviteId = reader.uint32()
           break
         case 2:
           message.attributeId = reader.uint32()
@@ -49,15 +49,15 @@ export const Add = {
 
   fromJSON(object: any): Add {
     return {
-      spliceId: isSet(object.spliceId) ? Number(object.spliceId) : 0,
+      qrInviteId: isSet(object.qrInviteId) ? Number(object.qrInviteId) : 0,
       attributeId: isSet(object.attributeId) ? Number(object.attributeId) : 0
     }
   },
 
   toJSON(message: Add): unknown {
     const obj: any = {}
-    message.spliceId !== undefined &&
-      (obj.spliceId = Math.round(message.spliceId))
+    message.qrInviteId !== undefined &&
+      (obj.qrInviteId = Math.round(message.qrInviteId))
     message.attributeId !== undefined &&
       (obj.attributeId = Math.round(message.attributeId))
     return obj
@@ -65,14 +65,14 @@ export const Add = {
 
   fromPartial<I extends Exact<DeepPartial<Add>, I>>(object: I): Add {
     const message = createBaseAdd()
-    message.spliceId = object.spliceId ?? 0
+    message.qrInviteId = object.qrInviteId ?? 0
     message.attributeId = object.attributeId ?? 0
     return message
   }
 }
 
 function createBaseRemove(): Remove {
-  return { spliceShareId: 0 }
+  return { qrInviteAttributeId: 0 }
 }
 
 export const Remove = {
@@ -80,8 +80,8 @@ export const Remove = {
     message: Remove,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.spliceShareId !== 0) {
-      writer.uint32(8).uint32(message.spliceShareId)
+    if (message.qrInviteAttributeId !== 0) {
+      writer.uint32(8).uint32(message.qrInviteAttributeId)
     }
     return writer
   },
@@ -94,7 +94,7 @@ export const Remove = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.spliceShareId = reader.uint32()
+          message.qrInviteAttributeId = reader.uint32()
           break
         default:
           reader.skipType(tag & 7)
@@ -106,22 +106,22 @@ export const Remove = {
 
   fromJSON(object: any): Remove {
     return {
-      spliceShareId: isSet(object.spliceShareId)
-        ? Number(object.spliceShareId)
+      qrInviteAttributeId: isSet(object.qrInviteAttributeId)
+        ? Number(object.qrInviteAttributeId)
         : 0
     }
   },
 
   toJSON(message: Remove): unknown {
     const obj: any = {}
-    message.spliceShareId !== undefined &&
-      (obj.spliceShareId = Math.round(message.spliceShareId))
+    message.qrInviteAttributeId !== undefined &&
+      (obj.qrInviteAttributeId = Math.round(message.qrInviteAttributeId))
     return obj
   },
 
   fromPartial<I extends Exact<DeepPartial<Remove>, I>>(object: I): Remove {
     const message = createBaseRemove()
-    message.spliceShareId = object.spliceShareId ?? 0
+    message.qrInviteAttributeId = object.qrInviteAttributeId ?? 0
     return message
   }
 }

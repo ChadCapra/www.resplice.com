@@ -8,10 +8,10 @@ import {
 } from '../invites/invite_type'
 import { Phone } from '../attributes/attribute_value'
 
-export interface PendingContact {
+export interface SpliceInvite {
   id: number
+  /** optional per UI and/or invite type */
   name: string
-  avatarUrl: string
   inviteType: InviteType
   handle: string
   phone: Phone | undefined
@@ -20,16 +20,15 @@ export interface PendingContact {
   expiry: number
 }
 
-export interface PendingContactState {
-  pendingContacts: PendingContact[]
+export interface SpliceInviteState {
+  spliceInvites: SpliceInvite[]
   expiredIds: number[]
 }
 
-function createBasePendingContact(): PendingContact {
+function createBaseSpliceInvite(): SpliceInvite {
   return {
     id: 0,
     name: '',
-    avatarUrl: '',
     inviteType: 0,
     handle: '',
     phone: undefined,
@@ -39,9 +38,9 @@ function createBasePendingContact(): PendingContact {
   }
 }
 
-export const PendingContact = {
+export const SpliceInvite = {
   encode(
-    message: PendingContact,
+    message: SpliceInvite,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.id !== 0) {
@@ -50,34 +49,31 @@ export const PendingContact = {
     if (message.name !== '') {
       writer.uint32(18).string(message.name)
     }
-    if (message.avatarUrl !== '') {
-      writer.uint32(26).string(message.avatarUrl)
-    }
     if (message.inviteType !== 0) {
-      writer.uint32(32).int32(message.inviteType)
+      writer.uint32(24).int32(message.inviteType)
     }
     if (message.handle !== '') {
-      writer.uint32(42).string(message.handle)
+      writer.uint32(34).string(message.handle)
     }
     if (message.phone !== undefined) {
-      Phone.encode(message.phone, writer.uint32(50).fork()).ldelim()
+      Phone.encode(message.phone, writer.uint32(42).fork()).ldelim()
     }
     if (message.email !== '') {
-      writer.uint32(58).string(message.email)
+      writer.uint32(50).string(message.email)
     }
     if (message.commonSplice !== '') {
-      writer.uint32(66).string(message.commonSplice)
+      writer.uint32(58).string(message.commonSplice)
     }
     if (message.expiry !== 0) {
-      writer.uint32(72).uint32(message.expiry)
+      writer.uint32(64).uint32(message.expiry)
     }
     return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): PendingContact {
+  decode(input: _m0.Reader | Uint8Array, length?: number): SpliceInvite {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBasePendingContact()
+    const message = createBaseSpliceInvite()
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -88,24 +84,21 @@ export const PendingContact = {
           message.name = reader.string()
           break
         case 3:
-          message.avatarUrl = reader.string()
-          break
-        case 4:
           message.inviteType = reader.int32() as any
           break
-        case 5:
+        case 4:
           message.handle = reader.string()
           break
-        case 6:
+        case 5:
           message.phone = Phone.decode(reader, reader.uint32())
           break
-        case 7:
+        case 6:
           message.email = reader.string()
           break
-        case 8:
+        case 7:
           message.commonSplice = reader.string()
           break
-        case 9:
+        case 8:
           message.expiry = reader.uint32()
           break
         default:
@@ -116,11 +109,10 @@ export const PendingContact = {
     return message
   },
 
-  fromJSON(object: any): PendingContact {
+  fromJSON(object: any): SpliceInvite {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       name: isSet(object.name) ? String(object.name) : '',
-      avatarUrl: isSet(object.avatarUrl) ? String(object.avatarUrl) : '',
       inviteType: isSet(object.inviteType)
         ? inviteTypeFromJSON(object.inviteType)
         : 0,
@@ -134,11 +126,10 @@ export const PendingContact = {
     }
   },
 
-  toJSON(message: PendingContact): unknown {
+  toJSON(message: SpliceInvite): unknown {
     const obj: any = {}
     message.id !== undefined && (obj.id = Math.round(message.id))
     message.name !== undefined && (obj.name = message.name)
-    message.avatarUrl !== undefined && (obj.avatarUrl = message.avatarUrl)
     message.inviteType !== undefined &&
       (obj.inviteType = inviteTypeToJSON(message.inviteType))
     message.handle !== undefined && (obj.handle = message.handle)
@@ -151,13 +142,12 @@ export const PendingContact = {
     return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<PendingContact>, I>>(
+  fromPartial<I extends Exact<DeepPartial<SpliceInvite>, I>>(
     object: I
-  ): PendingContact {
-    const message = createBasePendingContact()
+  ): SpliceInvite {
+    const message = createBaseSpliceInvite()
     message.id = object.id ?? 0
     message.name = object.name ?? ''
-    message.avatarUrl = object.avatarUrl ?? ''
     message.inviteType = object.inviteType ?? 0
     message.handle = object.handle ?? ''
     message.phone =
@@ -171,17 +161,17 @@ export const PendingContact = {
   }
 }
 
-function createBasePendingContactState(): PendingContactState {
-  return { pendingContacts: [], expiredIds: [] }
+function createBaseSpliceInviteState(): SpliceInviteState {
+  return { spliceInvites: [], expiredIds: [] }
 }
 
-export const PendingContactState = {
+export const SpliceInviteState = {
   encode(
-    message: PendingContactState,
+    message: SpliceInviteState,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    for (const v of message.pendingContacts) {
-      PendingContact.encode(v!, writer.uint32(10).fork()).ldelim()
+    for (const v of message.spliceInvites) {
+      SpliceInvite.encode(v!, writer.uint32(10).fork()).ldelim()
     }
     writer.uint32(18).fork()
     for (const v of message.expiredIds) {
@@ -191,16 +181,16 @@ export const PendingContactState = {
     return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): PendingContactState {
+  decode(input: _m0.Reader | Uint8Array, length?: number): SpliceInviteState {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBasePendingContactState()
+    const message = createBaseSpliceInviteState()
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.pendingContacts.push(
-            PendingContact.decode(reader, reader.uint32())
+          message.spliceInvites.push(
+            SpliceInvite.decode(reader, reader.uint32())
           )
           break
         case 2:
@@ -221,10 +211,10 @@ export const PendingContactState = {
     return message
   },
 
-  fromJSON(object: any): PendingContactState {
+  fromJSON(object: any): SpliceInviteState {
     return {
-      pendingContacts: Array.isArray(object?.pendingContacts)
-        ? object.pendingContacts.map((e: any) => PendingContact.fromJSON(e))
+      spliceInvites: Array.isArray(object?.spliceInvites)
+        ? object.spliceInvites.map((e: any) => SpliceInvite.fromJSON(e))
         : [],
       expiredIds: Array.isArray(object?.expiredIds)
         ? object.expiredIds.map((e: any) => Number(e))
@@ -232,14 +222,14 @@ export const PendingContactState = {
     }
   },
 
-  toJSON(message: PendingContactState): unknown {
+  toJSON(message: SpliceInviteState): unknown {
     const obj: any = {}
-    if (message.pendingContacts) {
-      obj.pendingContacts = message.pendingContacts.map((e) =>
-        e ? PendingContact.toJSON(e) : undefined
+    if (message.spliceInvites) {
+      obj.spliceInvites = message.spliceInvites.map((e) =>
+        e ? SpliceInvite.toJSON(e) : undefined
       )
     } else {
-      obj.pendingContacts = []
+      obj.spliceInvites = []
     }
     if (message.expiredIds) {
       obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
@@ -249,12 +239,12 @@ export const PendingContactState = {
     return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<PendingContactState>, I>>(
+  fromPartial<I extends Exact<DeepPartial<SpliceInviteState>, I>>(
     object: I
-  ): PendingContactState {
-    const message = createBasePendingContactState()
-    message.pendingContacts =
-      object.pendingContacts?.map((e) => PendingContact.fromPartial(e)) || []
+  ): SpliceInviteState {
+    const message = createBaseSpliceInviteState()
+    message.spliceInvites =
+      object.spliceInvites?.map((e) => SpliceInvite.fromPartial(e)) || []
     message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }

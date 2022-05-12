@@ -2,42 +2,42 @@
 import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
 
-export interface EditName {
-  name: string
+export interface Create {
+  spliceId: number
 }
 
-export interface EditHandle {
-  handle: string
+export interface Delete {
+  spliceQrInviteId: number
 }
 
-export interface EditAvatar {
-  avatar: Uint8Array
+export interface Open {
+  spliceQrInviteId: Uint8Array
 }
 
-function createBaseEditName(): EditName {
-  return { name: '' }
+function createBaseCreate(): Create {
+  return { spliceId: 0 }
 }
 
-export const EditName = {
+export const Create = {
   encode(
-    message: EditName,
+    message: Create,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.name !== '') {
-      writer.uint32(10).string(message.name)
+    if (message.spliceId !== 0) {
+      writer.uint32(8).uint32(message.spliceId)
     }
     return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): EditName {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Create {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseEditName()
+    const message = createBaseCreate()
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.name = reader.string()
+          message.spliceId = reader.uint32()
           break
         default:
           reader.skipType(tag & 7)
@@ -47,49 +47,50 @@ export const EditName = {
     return message
   },
 
-  fromJSON(object: any): EditName {
+  fromJSON(object: any): Create {
     return {
-      name: isSet(object.name) ? String(object.name) : ''
+      spliceId: isSet(object.spliceId) ? Number(object.spliceId) : 0
     }
   },
 
-  toJSON(message: EditName): unknown {
+  toJSON(message: Create): unknown {
     const obj: any = {}
-    message.name !== undefined && (obj.name = message.name)
+    message.spliceId !== undefined &&
+      (obj.spliceId = Math.round(message.spliceId))
     return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<EditName>, I>>(object: I): EditName {
-    const message = createBaseEditName()
-    message.name = object.name ?? ''
+  fromPartial<I extends Exact<DeepPartial<Create>, I>>(object: I): Create {
+    const message = createBaseCreate()
+    message.spliceId = object.spliceId ?? 0
     return message
   }
 }
 
-function createBaseEditHandle(): EditHandle {
-  return { handle: '' }
+function createBaseDelete(): Delete {
+  return { spliceQrInviteId: 0 }
 }
 
-export const EditHandle = {
+export const Delete = {
   encode(
-    message: EditHandle,
+    message: Delete,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.handle !== '') {
-      writer.uint32(10).string(message.handle)
+    if (message.spliceQrInviteId !== 0) {
+      writer.uint32(8).uint32(message.spliceQrInviteId)
     }
     return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): EditHandle {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Delete {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseEditHandle()
+    const message = createBaseDelete()
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.handle = reader.string()
+          message.spliceQrInviteId = reader.uint32()
           break
         default:
           reader.skipType(tag & 7)
@@ -99,51 +100,49 @@ export const EditHandle = {
     return message
   },
 
-  fromJSON(object: any): EditHandle {
+  fromJSON(object: any): Delete {
     return {
-      handle: isSet(object.handle) ? String(object.handle) : ''
+      spliceQrInviteId: isSet(object.spliceQrInviteId)
+        ? Number(object.spliceQrInviteId)
+        : 0
     }
   },
 
-  toJSON(message: EditHandle): unknown {
+  toJSON(message: Delete): unknown {
     const obj: any = {}
-    message.handle !== undefined && (obj.handle = message.handle)
+    message.spliceQrInviteId !== undefined &&
+      (obj.spliceQrInviteId = Math.round(message.spliceQrInviteId))
     return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<EditHandle>, I>>(
-    object: I
-  ): EditHandle {
-    const message = createBaseEditHandle()
-    message.handle = object.handle ?? ''
+  fromPartial<I extends Exact<DeepPartial<Delete>, I>>(object: I): Delete {
+    const message = createBaseDelete()
+    message.spliceQrInviteId = object.spliceQrInviteId ?? 0
     return message
   }
 }
 
-function createBaseEditAvatar(): EditAvatar {
-  return { avatar: new Uint8Array() }
+function createBaseOpen(): Open {
+  return { spliceQrInviteId: new Uint8Array() }
 }
 
-export const EditAvatar = {
-  encode(
-    message: EditAvatar,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    if (message.avatar.length !== 0) {
-      writer.uint32(10).bytes(message.avatar)
+export const Open = {
+  encode(message: Open, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.spliceQrInviteId.length !== 0) {
+      writer.uint32(10).bytes(message.spliceQrInviteId)
     }
     return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): EditAvatar {
+  decode(input: _m0.Reader | Uint8Array, length?: number): Open {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseEditAvatar()
+    const message = createBaseOpen()
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.avatar = reader.bytes()
+          message.spliceQrInviteId = reader.bytes()
           break
         default:
           reader.skipType(tag & 7)
@@ -153,28 +152,28 @@ export const EditAvatar = {
     return message
   },
 
-  fromJSON(object: any): EditAvatar {
+  fromJSON(object: any): Open {
     return {
-      avatar: isSet(object.avatar)
-        ? bytesFromBase64(object.avatar)
+      spliceQrInviteId: isSet(object.spliceQrInviteId)
+        ? bytesFromBase64(object.spliceQrInviteId)
         : new Uint8Array()
     }
   },
 
-  toJSON(message: EditAvatar): unknown {
+  toJSON(message: Open): unknown {
     const obj: any = {}
-    message.avatar !== undefined &&
-      (obj.avatar = base64FromBytes(
-        message.avatar !== undefined ? message.avatar : new Uint8Array()
+    message.spliceQrInviteId !== undefined &&
+      (obj.spliceQrInviteId = base64FromBytes(
+        message.spliceQrInviteId !== undefined
+          ? message.spliceQrInviteId
+          : new Uint8Array()
       ))
     return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<EditAvatar>, I>>(
-    object: I
-  ): EditAvatar {
-    const message = createBaseEditAvatar()
-    message.avatar = object.avatar ?? new Uint8Array()
+  fromPartial<I extends Exact<DeepPartial<Open>, I>>(object: I): Open {
+    const message = createBaseOpen()
+    message.spliceQrInviteId = object.spliceQrInviteId ?? new Uint8Array()
     return message
   }
 }

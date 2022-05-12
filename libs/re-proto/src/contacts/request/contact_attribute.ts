@@ -1,43 +1,51 @@
 /* eslint-disable */
 import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
+import {
+  AttributeType,
+  attributeTypeFromJSON,
+  attributeTypeToJSON
+} from '../../attributes/attribute_type'
 
-export interface Add {
-  spliceId: number
-  attributeId: number
+export interface RequestNew {
+  contactId: number
+  type: AttributeType
 }
 
 export interface Remove {
-  spliceShareId: number
+  contactAttributeId: number
 }
 
-function createBaseAdd(): Add {
-  return { spliceId: 0, attributeId: 0 }
+function createBaseRequestNew(): RequestNew {
+  return { contactId: 0, type: 0 }
 }
 
-export const Add = {
-  encode(message: Add, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.spliceId !== 0) {
-      writer.uint32(8).uint32(message.spliceId)
+export const RequestNew = {
+  encode(
+    message: RequestNew,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.contactId !== 0) {
+      writer.uint32(8).uint32(message.contactId)
     }
-    if (message.attributeId !== 0) {
-      writer.uint32(16).uint32(message.attributeId)
+    if (message.type !== 0) {
+      writer.uint32(16).int32(message.type)
     }
     return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): Add {
+  decode(input: _m0.Reader | Uint8Array, length?: number): RequestNew {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseAdd()
+    const message = createBaseRequestNew()
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.spliceId = reader.uint32()
+          message.contactId = reader.uint32()
           break
         case 2:
-          message.attributeId = reader.uint32()
+          message.type = reader.int32() as any
           break
         default:
           reader.skipType(tag & 7)
@@ -47,32 +55,33 @@ export const Add = {
     return message
   },
 
-  fromJSON(object: any): Add {
+  fromJSON(object: any): RequestNew {
     return {
-      spliceId: isSet(object.spliceId) ? Number(object.spliceId) : 0,
-      attributeId: isSet(object.attributeId) ? Number(object.attributeId) : 0
+      contactId: isSet(object.contactId) ? Number(object.contactId) : 0,
+      type: isSet(object.type) ? attributeTypeFromJSON(object.type) : 0
     }
   },
 
-  toJSON(message: Add): unknown {
+  toJSON(message: RequestNew): unknown {
     const obj: any = {}
-    message.spliceId !== undefined &&
-      (obj.spliceId = Math.round(message.spliceId))
-    message.attributeId !== undefined &&
-      (obj.attributeId = Math.round(message.attributeId))
+    message.contactId !== undefined &&
+      (obj.contactId = Math.round(message.contactId))
+    message.type !== undefined && (obj.type = attributeTypeToJSON(message.type))
     return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<Add>, I>>(object: I): Add {
-    const message = createBaseAdd()
-    message.spliceId = object.spliceId ?? 0
-    message.attributeId = object.attributeId ?? 0
+  fromPartial<I extends Exact<DeepPartial<RequestNew>, I>>(
+    object: I
+  ): RequestNew {
+    const message = createBaseRequestNew()
+    message.contactId = object.contactId ?? 0
+    message.type = object.type ?? 0
     return message
   }
 }
 
 function createBaseRemove(): Remove {
-  return { spliceShareId: 0 }
+  return { contactAttributeId: 0 }
 }
 
 export const Remove = {
@@ -80,8 +89,8 @@ export const Remove = {
     message: Remove,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.spliceShareId !== 0) {
-      writer.uint32(8).uint32(message.spliceShareId)
+    if (message.contactAttributeId !== 0) {
+      writer.uint32(8).uint32(message.contactAttributeId)
     }
     return writer
   },
@@ -94,7 +103,7 @@ export const Remove = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.spliceShareId = reader.uint32()
+          message.contactAttributeId = reader.uint32()
           break
         default:
           reader.skipType(tag & 7)
@@ -106,22 +115,22 @@ export const Remove = {
 
   fromJSON(object: any): Remove {
     return {
-      spliceShareId: isSet(object.spliceShareId)
-        ? Number(object.spliceShareId)
+      contactAttributeId: isSet(object.contactAttributeId)
+        ? Number(object.contactAttributeId)
         : 0
     }
   },
 
   toJSON(message: Remove): unknown {
     const obj: any = {}
-    message.spliceShareId !== undefined &&
-      (obj.spliceShareId = Math.round(message.spliceShareId))
+    message.contactAttributeId !== undefined &&
+      (obj.contactAttributeId = Math.round(message.contactAttributeId))
     return obj
   },
 
   fromPartial<I extends Exact<DeepPartial<Remove>, I>>(object: I): Remove {
     const message = createBaseRemove()
-    message.spliceShareId = object.spliceShareId ?? 0
+    message.contactAttributeId = object.contactAttributeId ?? 0
     return message
   }
 }

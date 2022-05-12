@@ -6,8 +6,9 @@ import * as attributesattributets from './attributes/attribute'
 import * as attributesattribute_groupts from './attributes/attribute_group'
 import * as attributesattribute_typets from './attributes/attribute_type'
 import * as attributesattribute_valuets from './attributes/attribute_value'
-import * as attributesrequestattribute_groupsts from './attributes/request/attribute_groups'
-import * as attributesrequestattributests from './attributes/request/attributes'
+import * as attributesrequestattributets from './attributes/request/attribute'
+import * as attributesrequestattribute_groupts from './attributes/request/attribute_group'
+import * as authrequestaccountts from './auth/request/account'
 import * as authrequestsessionts from './auth/request/session'
 import * as authrequestsocketts from './auth/request/socket'
 import * as authsessionts from './auth/session'
@@ -17,36 +18,35 @@ import * as contactscontact_attributets from './contacts/contact_attribute'
 import * as contactscontact_sharets from './contacts/contact_share'
 import * as contactspending_contactts from './contacts/pending_contact'
 import * as contactspending_contact_attributets from './contacts/pending_contact_attribute'
-import * as contactsrequestcontact_attributests from './contacts/request/contact_attributes'
-import * as contactsrequestcontact_sharests from './contacts/request/contact_shares'
-import * as contactsrequestcontactsts from './contacts/request/contacts'
-import * as contactsrequestpending_contactsts from './contacts/request/pending_contacts'
+import * as contactsrequestcontactts from './contacts/request/contact'
+import * as contactsrequestcontact_attributets from './contacts/request/contact_attribute'
+import * as contactsrequestcontact_sharets from './contacts/request/contact_share'
+import * as contactsrequestpending_contactts from './contacts/request/pending_contact'
 import * as invitesinvitets from './invites/invite'
 import * as invitesinvite_attributets from './invites/invite_attribute'
 import * as invitesinvite_typets from './invites/invite_type'
 import * as invitesqr_invitets from './invites/qr_invite'
 import * as invitesqr_invite_attributests from './invites/qr_invite_attributes'
-import * as invitesrequestinvite_attributests from './invites/request/invite_attributes'
-import * as invitesrequestinvitests from './invites/request/invites'
-import * as invitesrequestqr_invite_attributests from './invites/request/qr_invite_attributes'
-import * as invitesrequestqr_invitests from './invites/request/qr_invites'
+import * as invitesrequestinvitets from './invites/request/invite'
+import * as invitesrequestinvite_attributets from './invites/request/invite_attribute'
+import * as invitesrequestqr_invitets from './invites/request/qr_invite'
+import * as invitesrequestqr_invite_attributets from './invites/request/qr_invite_attribute'
+import * as invitesrequestsplice_invitets from './invites/request/splice_invite'
+import * as invitesrequestsplice_qr_invitets from './invites/request/splice_qr_invite'
+import * as invitessplice_invitets from './invites/splice_invite'
+import * as invitessplice_qr_invitets from './invites/splice_qr_invite'
 import * as messagingmessage_typests from './messaging/message_types'
 import * as server_errorts from './server_error'
 import * as server_messagets from './server_message'
-import * as splice_invitesqr_splice_invitets from './splice_invites/qr_splice_invite'
-import * as splice_invitesrequestqr_splice_invitets from './splice_invites/request/qr_splice_invite'
-import * as splice_invitesrequestsplice_invitests from './splice_invites/request/splice_invites'
-import * as splice_invitessplice_invitets from './splice_invites/splice_invite'
 import * as splicespending_splicets from './splices/pending_splice'
-import * as splicesrequestpending_splicests from './splices/request/pending_splices'
+import * as splicesrequestpending_splicets from './splices/request/pending_splice'
+import * as splicesrequestsplicets from './splices/request/splice'
 import * as splicesrequestsplice_memberts from './splices/request/splice_member'
 import * as splicesrequestsplice_sharets from './splices/request/splice_share'
-import * as splicesrequestsplicests from './splices/request/splices'
 import * as splicessplicets from './splices/splice'
 import * as splicessplice_memberts from './splices/splice_member'
 import * as splicessplice_sharets from './splices/splice_share'
 import * as userprofilets from './user/profile'
-import * as userrequestaccountts from './user/request/account'
 import * as userrequestprofilets from './user/request/profile'
 export const attributes = {
   attribute: attributesattributets,
@@ -54,12 +54,13 @@ export const attributes = {
   attribute_type: attributesattribute_typets,
   attribute_value: attributesattribute_valuets,
   request: {
-    attribute_groups: attributesrequestattribute_groupsts,
-    attributes: attributesrequestattributests,
+    attribute: attributesrequestattributets,
+    attribute_group: attributesrequestattribute_groupts,
   },
 }
 export const auth = {
   request: {
+    account: authrequestaccountts,
     session: authrequestsessionts,
     socket: authrequestsocketts,
   },
@@ -73,10 +74,10 @@ export const contacts = {
   pending_contact: contactspending_contactts,
   pending_contact_attribute: contactspending_contact_attributets,
   request: {
-    contact_attributes: contactsrequestcontact_attributests,
-    contact_shares: contactsrequestcontact_sharests,
-    contacts: contactsrequestcontactsts,
-    pending_contacts: contactsrequestpending_contactsts,
+    contact: contactsrequestcontactts,
+    contact_attribute: contactsrequestcontact_attributets,
+    contact_share: contactsrequestcontact_sharets,
+    pending_contact: contactsrequestpending_contactts,
   },
 }
 export const invites = {
@@ -86,32 +87,28 @@ export const invites = {
   qr_invite: invitesqr_invitets,
   qr_invite_attributes: invitesqr_invite_attributests,
   request: {
-    invite_attributes: invitesrequestinvite_attributests,
-    invites: invitesrequestinvitests,
-    qr_invite_attributes: invitesrequestqr_invite_attributests,
-    qr_invites: invitesrequestqr_invitests,
+    invite: invitesrequestinvitets,
+    invite_attribute: invitesrequestinvite_attributets,
+    qr_invite: invitesrequestqr_invitets,
+    qr_invite_attribute: invitesrequestqr_invite_attributets,
+    splice_invite: invitesrequestsplice_invitets,
+    splice_qr_invite: invitesrequestsplice_qr_invitets,
   },
+  splice_invite: invitessplice_invitets,
+  splice_qr_invite: invitessplice_qr_invitets,
 }
 export const messaging = {
   message_types: messagingmessage_typests,
 }
 export {server_errorts as server_error}
 export {server_messagets as server_message}
-export const splice_invites = {
-  qr_splice_invite: splice_invitesqr_splice_invitets,
-  request: {
-    qr_splice_invite: splice_invitesrequestqr_splice_invitets,
-    splice_invites: splice_invitesrequestsplice_invitests,
-  },
-  splice_invite: splice_invitessplice_invitets,
-}
 export const splices = {
   pending_splice: splicespending_splicets,
   request: {
-    pending_splices: splicesrequestpending_splicests,
+    pending_splice: splicesrequestpending_splicets,
+    splice: splicesrequestsplicets,
     splice_member: splicesrequestsplice_memberts,
     splice_share: splicesrequestsplice_sharets,
-    splices: splicesrequestsplicests,
   },
   splice: splicessplicets,
   splice_member: splicessplice_memberts,
@@ -120,7 +117,6 @@ export const splices = {
 export const user = {
   profile: userprofilets,
   request: {
-    account: userrequestaccountts,
     profile: userrequestprofilets,
   },
 }

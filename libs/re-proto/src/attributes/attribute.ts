@@ -1,40 +1,40 @@
 /* eslint-disable */
-import Long from "long";
-import * as _m0 from "protobufjs/minimal";
+import Long from 'long'
+import * as _m0 from 'protobufjs/minimal'
 import {
   AttributeType,
   attributeTypeFromJSON,
-  attributeTypeToJSON,
-} from "../attributes/attribute_type";
-import { AttributeValue } from "../attributes/attribute_value";
+  attributeTypeToJSON
+} from '../attributes/attribute_type'
+import { AttributeValue } from '../attributes/attribute_value'
 
 export interface Attribute {
-  id: number;
-  name: string;
-  type: AttributeType;
-  value: AttributeValue | undefined;
-  groupId: number;
-  sortOrder: number;
-  verifiedAt: number;
-  verifyExpiry: number;
+  id: number
+  name: string
+  type: AttributeType
+  value: AttributeValue | undefined
+  groupId: number
+  sortOrder: number
+  verifiedAt: number
+  verifyExpiry: number
 }
 
 export interface AttributeState {
-  attributes: Attribute[];
-  expiredIds: number[];
+  attributes: Attribute[]
+  expiredIds: number[]
 }
 
 function createBaseAttribute(): Attribute {
   return {
     id: 0,
-    name: "",
+    name: '',
     type: 0,
     value: undefined,
     groupId: 0,
     sortOrder: 0,
     verifiedAt: 0,
-    verifyExpiry: 0,
-  };
+    verifyExpiry: 0
+  }
 }
 
 export const Attribute = {
@@ -43,75 +43,75 @@ export const Attribute = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.id !== 0) {
-      writer.uint32(8).uint32(message.id);
+      writer.uint32(8).uint32(message.id)
     }
-    if (message.name !== "") {
-      writer.uint32(18).string(message.name);
+    if (message.name !== '') {
+      writer.uint32(18).string(message.name)
     }
     if (message.type !== 0) {
-      writer.uint32(24).int32(message.type);
+      writer.uint32(24).int32(message.type)
     }
     if (message.value !== undefined) {
-      AttributeValue.encode(message.value, writer.uint32(34).fork()).ldelim();
+      AttributeValue.encode(message.value, writer.uint32(34).fork()).ldelim()
     }
     if (message.groupId !== 0) {
-      writer.uint32(48).uint32(message.groupId);
+      writer.uint32(48).uint32(message.groupId)
     }
     if (message.sortOrder !== 0) {
-      writer.uint32(56).uint32(message.sortOrder);
+      writer.uint32(56).uint32(message.sortOrder)
     }
     if (message.verifiedAt !== 0) {
-      writer.uint32(64).uint32(message.verifiedAt);
+      writer.uint32(64).uint32(message.verifiedAt)
     }
     if (message.verifyExpiry !== 0) {
-      writer.uint32(72).uint32(message.verifyExpiry);
+      writer.uint32(72).uint32(message.verifyExpiry)
     }
-    return writer;
+    return writer
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): Attribute {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAttribute();
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseAttribute()
     while (reader.pos < end) {
-      const tag = reader.uint32();
+      const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.uint32();
-          break;
+          message.id = reader.uint32()
+          break
         case 2:
-          message.name = reader.string();
-          break;
+          message.name = reader.string()
+          break
         case 3:
-          message.type = reader.int32() as any;
-          break;
+          message.type = reader.int32() as any
+          break
         case 4:
-          message.value = AttributeValue.decode(reader, reader.uint32());
-          break;
+          message.value = AttributeValue.decode(reader, reader.uint32())
+          break
         case 6:
-          message.groupId = reader.uint32();
-          break;
+          message.groupId = reader.uint32()
+          break
         case 7:
-          message.sortOrder = reader.uint32();
-          break;
+          message.sortOrder = reader.uint32()
+          break
         case 8:
-          message.verifiedAt = reader.uint32();
-          break;
+          message.verifiedAt = reader.uint32()
+          break
         case 9:
-          message.verifyExpiry = reader.uint32();
-          break;
+          message.verifyExpiry = reader.uint32()
+          break
         default:
-          reader.skipType(tag & 7);
-          break;
+          reader.skipType(tag & 7)
+          break
       }
     }
-    return message;
+    return message
   },
 
   fromJSON(object: any): Attribute {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      name: isSet(object.name) ? String(object.name) : "",
+      name: isSet(object.name) ? String(object.name) : '',
       type: isSet(object.type) ? attributeTypeFromJSON(object.type) : 0,
       value: isSet(object.value)
         ? AttributeValue.fromJSON(object.value)
@@ -119,54 +119,50 @@ export const Attribute = {
       groupId: isSet(object.groupId) ? Number(object.groupId) : 0,
       sortOrder: isSet(object.sortOrder) ? Number(object.sortOrder) : 0,
       verifiedAt: isSet(object.verifiedAt) ? Number(object.verifiedAt) : 0,
-      verifyExpiry: isSet(object.verifyExpiry)
-        ? Number(object.verifyExpiry)
-        : 0,
-    };
+      verifyExpiry: isSet(object.verifyExpiry) ? Number(object.verifyExpiry) : 0
+    }
   },
 
   toJSON(message: Attribute): unknown {
-    const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
-    message.name !== undefined && (obj.name = message.name);
-    message.type !== undefined &&
-      (obj.type = attributeTypeToJSON(message.type));
+    const obj: any = {}
+    message.id !== undefined && (obj.id = Math.round(message.id))
+    message.name !== undefined && (obj.name = message.name)
+    message.type !== undefined && (obj.type = attributeTypeToJSON(message.type))
     message.value !== undefined &&
       (obj.value = message.value
         ? AttributeValue.toJSON(message.value)
-        : undefined);
-    message.groupId !== undefined &&
-      (obj.groupId = Math.round(message.groupId));
+        : undefined)
+    message.groupId !== undefined && (obj.groupId = Math.round(message.groupId))
     message.sortOrder !== undefined &&
-      (obj.sortOrder = Math.round(message.sortOrder));
+      (obj.sortOrder = Math.round(message.sortOrder))
     message.verifiedAt !== undefined &&
-      (obj.verifiedAt = Math.round(message.verifiedAt));
+      (obj.verifiedAt = Math.round(message.verifiedAt))
     message.verifyExpiry !== undefined &&
-      (obj.verifyExpiry = Math.round(message.verifyExpiry));
-    return obj;
+      (obj.verifyExpiry = Math.round(message.verifyExpiry))
+    return obj
   },
 
   fromPartial<I extends Exact<DeepPartial<Attribute>, I>>(
     object: I
   ): Attribute {
-    const message = createBaseAttribute();
-    message.id = object.id ?? 0;
-    message.name = object.name ?? "";
-    message.type = object.type ?? 0;
+    const message = createBaseAttribute()
+    message.id = object.id ?? 0
+    message.name = object.name ?? ''
+    message.type = object.type ?? 0
     message.value =
       object.value !== undefined && object.value !== null
         ? AttributeValue.fromPartial(object.value)
-        : undefined;
-    message.groupId = object.groupId ?? 0;
-    message.sortOrder = object.sortOrder ?? 0;
-    message.verifiedAt = object.verifiedAt ?? 0;
-    message.verifyExpiry = object.verifyExpiry ?? 0;
-    return message;
-  },
-};
+        : undefined
+    message.groupId = object.groupId ?? 0
+    message.sortOrder = object.sortOrder ?? 0
+    message.verifiedAt = object.verifiedAt ?? 0
+    message.verifyExpiry = object.verifyExpiry ?? 0
+    return message
+  }
+}
 
 function createBaseAttributeState(): AttributeState {
-  return { attributes: [], expiredIds: [] };
+  return { attributes: [], expiredIds: [] }
 }
 
 export const AttributeState = {
@@ -175,42 +171,42 @@ export const AttributeState = {
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     for (const v of message.attributes) {
-      Attribute.encode(v!, writer.uint32(10).fork()).ldelim();
+      Attribute.encode(v!, writer.uint32(10).fork()).ldelim()
     }
-    writer.uint32(18).fork();
+    writer.uint32(18).fork()
     for (const v of message.expiredIds) {
-      writer.uint32(v);
+      writer.uint32(v)
     }
-    writer.ldelim();
-    return writer;
+    writer.ldelim()
+    return writer
   },
 
   decode(input: _m0.Reader | Uint8Array, length?: number): AttributeState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseAttributeState();
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseAttributeState()
     while (reader.pos < end) {
-      const tag = reader.uint32();
+      const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.attributes.push(Attribute.decode(reader, reader.uint32()));
-          break;
+          message.attributes.push(Attribute.decode(reader, reader.uint32()))
+          break
         case 2:
           if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos;
+            const end2 = reader.uint32() + reader.pos
             while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32());
+              message.expiredIds.push(reader.uint32())
             }
           } else {
-            message.expiredIds.push(reader.uint32());
+            message.expiredIds.push(reader.uint32())
           }
-          break;
+          break
         default:
-          reader.skipType(tag & 7);
-          break;
+          reader.skipType(tag & 7)
+          break
       }
     }
-    return message;
+    return message
   },
 
   fromJSON(object: any): AttributeState {
@@ -220,37 +216,37 @@ export const AttributeState = {
         : [],
       expiredIds: Array.isArray(object?.expiredIds)
         ? object.expiredIds.map((e: any) => Number(e))
-        : [],
-    };
+        : []
+    }
   },
 
   toJSON(message: AttributeState): unknown {
-    const obj: any = {};
+    const obj: any = {}
     if (message.attributes) {
       obj.attributes = message.attributes.map((e) =>
         e ? Attribute.toJSON(e) : undefined
-      );
+      )
     } else {
-      obj.attributes = [];
+      obj.attributes = []
     }
     if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e));
+      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
     } else {
-      obj.expiredIds = [];
+      obj.expiredIds = []
     }
-    return obj;
+    return obj
   },
 
   fromPartial<I extends Exact<DeepPartial<AttributeState>, I>>(
     object: I
   ): AttributeState {
-    const message = createBaseAttributeState();
+    const message = createBaseAttributeState()
     message.attributes =
-      object.attributes?.map((e) => Attribute.fromPartial(e)) || [];
-    message.expiredIds = object.expiredIds?.map((e) => e) || [];
-    return message;
-  },
-};
+      object.attributes?.map((e) => Attribute.fromPartial(e)) || []
+    message.expiredIds = object.expiredIds?.map((e) => e) || []
+    return message
+  }
+}
 
 type Builtin =
   | Date
@@ -259,7 +255,7 @@ type Builtin =
   | string
   | number
   | boolean
-  | undefined;
+  | undefined
 
 type DeepPartial<T> = T extends Builtin
   ? T
@@ -268,26 +264,26 @@ type DeepPartial<T> = T extends Builtin
   : T extends ReadonlyArray<infer U>
   ? ReadonlyArray<DeepPartial<U>>
   : T extends { $case: string }
-  ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & {
-      $case: T["$case"];
+  ? { [K in keyof Omit<T, '$case'>]?: DeepPartial<T[K]> } & {
+      $case: T['$case']
     }
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
+  : Partial<T>
 
-type KeysOfUnion<T> = T extends T ? keyof T : never;
+type KeysOfUnion<T> = T extends T ? keyof T : never
 type Exact<P, I extends P> = P extends Builtin
   ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
         Exclude<keyof I, KeysOfUnion<P>>,
         never
-      >;
+      >
 
 if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
+  _m0.util.Long = Long as any
+  _m0.configure()
 }
 
 function isSet(value: any): boolean {
-  return value !== null && value !== undefined;
+  return value !== null && value !== undefined
 }

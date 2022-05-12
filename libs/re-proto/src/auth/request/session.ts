@@ -1,332 +1,324 @@
 /* eslint-disable */
-import Long from "long";
-import * as _m0 from "protobufjs/minimal";
-import { Phone } from "../../attributes/attribute_value";
+import Long from 'long'
+import * as _m0 from 'protobufjs/minimal'
+import { Phone } from '../../attributes/attribute_value'
 
-/**
- * payload must be encrypted with server's public key on first request
- * Returns: Session (Access token & session ID in cookie)
- */
-export interface CreateSession {
-  email: string;
-  phone: Phone | undefined;
-  rememberMe: boolean;
+export interface Create {
+  email: string
+  phone: Phone | undefined
+  rememberMe: boolean
   /** iv_base is last 8 bytes */
-  aesKeyIvBase: Uint8Array;
+  aesKeyIvBase: Uint8Array
 }
 
 /** Returns: Encrypted Session */
-export interface VerifySessionEmail {
-  verificationToken: number;
+export interface VerifyEmail {
+  verificationToken: number
 }
 
-export interface VerifySessionPhone {
-  verificationToken: number;
+export interface VerifyPhone {
+  verificationToken: number
 }
 
 /** If currentSession, returns session w/ expiry set to 0 */
-export interface DeleteSession {
-  sessionId: number;
+export interface Delete {
+  sessionId: number
 }
 
-function createBaseCreateSession(): CreateSession {
+function createBaseCreate(): Create {
   return {
-    email: "",
+    email: '',
     phone: undefined,
     rememberMe: false,
-    aesKeyIvBase: new Uint8Array(),
-  };
+    aesKeyIvBase: new Uint8Array()
+  }
 }
 
-export const CreateSession = {
+export const Create = {
   encode(
-    message: CreateSession,
+    message: Create,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.email !== "") {
-      writer.uint32(10).string(message.email);
+    if (message.email !== '') {
+      writer.uint32(10).string(message.email)
     }
     if (message.phone !== undefined) {
-      Phone.encode(message.phone, writer.uint32(18).fork()).ldelim();
+      Phone.encode(message.phone, writer.uint32(18).fork()).ldelim()
     }
     if (message.rememberMe === true) {
-      writer.uint32(24).bool(message.rememberMe);
+      writer.uint32(24).bool(message.rememberMe)
     }
     if (message.aesKeyIvBase.length !== 0) {
-      writer.uint32(34).bytes(message.aesKeyIvBase);
+      writer.uint32(34).bytes(message.aesKeyIvBase)
     }
-    return writer;
+    return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CreateSession {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCreateSession();
+  decode(input: _m0.Reader | Uint8Array, length?: number): Create {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseCreate()
     while (reader.pos < end) {
-      const tag = reader.uint32();
+      const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.email = reader.string();
-          break;
+          message.email = reader.string()
+          break
         case 2:
-          message.phone = Phone.decode(reader, reader.uint32());
-          break;
+          message.phone = Phone.decode(reader, reader.uint32())
+          break
         case 3:
-          message.rememberMe = reader.bool();
-          break;
+          message.rememberMe = reader.bool()
+          break
         case 4:
-          message.aesKeyIvBase = reader.bytes();
-          break;
+          message.aesKeyIvBase = reader.bytes()
+          break
         default:
-          reader.skipType(tag & 7);
-          break;
+          reader.skipType(tag & 7)
+          break
       }
     }
-    return message;
+    return message
   },
 
-  fromJSON(object: any): CreateSession {
+  fromJSON(object: any): Create {
     return {
-      email: isSet(object.email) ? String(object.email) : "",
+      email: isSet(object.email) ? String(object.email) : '',
       phone: isSet(object.phone) ? Phone.fromJSON(object.phone) : undefined,
       rememberMe: isSet(object.rememberMe) ? Boolean(object.rememberMe) : false,
       aesKeyIvBase: isSet(object.aesKeyIvBase)
         ? bytesFromBase64(object.aesKeyIvBase)
-        : new Uint8Array(),
-    };
+        : new Uint8Array()
+    }
   },
 
-  toJSON(message: CreateSession): unknown {
-    const obj: any = {};
-    message.email !== undefined && (obj.email = message.email);
+  toJSON(message: Create): unknown {
+    const obj: any = {}
+    message.email !== undefined && (obj.email = message.email)
     message.phone !== undefined &&
-      (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined);
-    message.rememberMe !== undefined && (obj.rememberMe = message.rememberMe);
+      (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined)
+    message.rememberMe !== undefined && (obj.rememberMe = message.rememberMe)
     message.aesKeyIvBase !== undefined &&
       (obj.aesKeyIvBase = base64FromBytes(
         message.aesKeyIvBase !== undefined
           ? message.aesKeyIvBase
           : new Uint8Array()
-      ));
-    return obj;
+      ))
+    return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<CreateSession>, I>>(
-    object: I
-  ): CreateSession {
-    const message = createBaseCreateSession();
-    message.email = object.email ?? "";
+  fromPartial<I extends Exact<DeepPartial<Create>, I>>(object: I): Create {
+    const message = createBaseCreate()
+    message.email = object.email ?? ''
     message.phone =
       object.phone !== undefined && object.phone !== null
         ? Phone.fromPartial(object.phone)
-        : undefined;
-    message.rememberMe = object.rememberMe ?? false;
-    message.aesKeyIvBase = object.aesKeyIvBase ?? new Uint8Array();
-    return message;
-  },
-};
-
-function createBaseVerifySessionEmail(): VerifySessionEmail {
-  return { verificationToken: 0 };
+        : undefined
+    message.rememberMe = object.rememberMe ?? false
+    message.aesKeyIvBase = object.aesKeyIvBase ?? new Uint8Array()
+    return message
+  }
 }
 
-export const VerifySessionEmail = {
+function createBaseVerifyEmail(): VerifyEmail {
+  return { verificationToken: 0 }
+}
+
+export const VerifyEmail = {
   encode(
-    message: VerifySessionEmail,
+    message: VerifyEmail,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.verificationToken !== 0) {
-      writer.uint32(8).uint32(message.verificationToken);
+      writer.uint32(8).uint32(message.verificationToken)
     }
-    return writer;
+    return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): VerifySessionEmail {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseVerifySessionEmail();
+  decode(input: _m0.Reader | Uint8Array, length?: number): VerifyEmail {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseVerifyEmail()
     while (reader.pos < end) {
-      const tag = reader.uint32();
+      const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.verificationToken = reader.uint32();
-          break;
+          message.verificationToken = reader.uint32()
+          break
         default:
-          reader.skipType(tag & 7);
-          break;
+          reader.skipType(tag & 7)
+          break
       }
     }
-    return message;
+    return message
   },
 
-  fromJSON(object: any): VerifySessionEmail {
+  fromJSON(object: any): VerifyEmail {
     return {
       verificationToken: isSet(object.verificationToken)
         ? Number(object.verificationToken)
-        : 0,
-    };
+        : 0
+    }
   },
 
-  toJSON(message: VerifySessionEmail): unknown {
-    const obj: any = {};
+  toJSON(message: VerifyEmail): unknown {
+    const obj: any = {}
     message.verificationToken !== undefined &&
-      (obj.verificationToken = Math.round(message.verificationToken));
-    return obj;
+      (obj.verificationToken = Math.round(message.verificationToken))
+    return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<VerifySessionEmail>, I>>(
+  fromPartial<I extends Exact<DeepPartial<VerifyEmail>, I>>(
     object: I
-  ): VerifySessionEmail {
-    const message = createBaseVerifySessionEmail();
-    message.verificationToken = object.verificationToken ?? 0;
-    return message;
-  },
-};
-
-function createBaseVerifySessionPhone(): VerifySessionPhone {
-  return { verificationToken: 0 };
+  ): VerifyEmail {
+    const message = createBaseVerifyEmail()
+    message.verificationToken = object.verificationToken ?? 0
+    return message
+  }
 }
 
-export const VerifySessionPhone = {
+function createBaseVerifyPhone(): VerifyPhone {
+  return { verificationToken: 0 }
+}
+
+export const VerifyPhone = {
   encode(
-    message: VerifySessionPhone,
+    message: VerifyPhone,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.verificationToken !== 0) {
-      writer.uint32(8).uint32(message.verificationToken);
+      writer.uint32(8).uint32(message.verificationToken)
     }
-    return writer;
+    return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): VerifySessionPhone {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseVerifySessionPhone();
+  decode(input: _m0.Reader | Uint8Array, length?: number): VerifyPhone {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseVerifyPhone()
     while (reader.pos < end) {
-      const tag = reader.uint32();
+      const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.verificationToken = reader.uint32();
-          break;
+          message.verificationToken = reader.uint32()
+          break
         default:
-          reader.skipType(tag & 7);
-          break;
+          reader.skipType(tag & 7)
+          break
       }
     }
-    return message;
+    return message
   },
 
-  fromJSON(object: any): VerifySessionPhone {
+  fromJSON(object: any): VerifyPhone {
     return {
       verificationToken: isSet(object.verificationToken)
         ? Number(object.verificationToken)
-        : 0,
-    };
+        : 0
+    }
   },
 
-  toJSON(message: VerifySessionPhone): unknown {
-    const obj: any = {};
+  toJSON(message: VerifyPhone): unknown {
+    const obj: any = {}
     message.verificationToken !== undefined &&
-      (obj.verificationToken = Math.round(message.verificationToken));
-    return obj;
+      (obj.verificationToken = Math.round(message.verificationToken))
+    return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<VerifySessionPhone>, I>>(
+  fromPartial<I extends Exact<DeepPartial<VerifyPhone>, I>>(
     object: I
-  ): VerifySessionPhone {
-    const message = createBaseVerifySessionPhone();
-    message.verificationToken = object.verificationToken ?? 0;
-    return message;
-  },
-};
-
-function createBaseDeleteSession(): DeleteSession {
-  return { sessionId: 0 };
+  ): VerifyPhone {
+    const message = createBaseVerifyPhone()
+    message.verificationToken = object.verificationToken ?? 0
+    return message
+  }
 }
 
-export const DeleteSession = {
+function createBaseDelete(): Delete {
+  return { sessionId: 0 }
+}
+
+export const Delete = {
   encode(
-    message: DeleteSession,
+    message: Delete,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.sessionId !== 0) {
-      writer.uint32(8).uint32(message.sessionId);
+      writer.uint32(8).uint32(message.sessionId)
     }
-    return writer;
+    return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): DeleteSession {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseDeleteSession();
+  decode(input: _m0.Reader | Uint8Array, length?: number): Delete {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseDelete()
     while (reader.pos < end) {
-      const tag = reader.uint32();
+      const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.sessionId = reader.uint32();
-          break;
+          message.sessionId = reader.uint32()
+          break
         default:
-          reader.skipType(tag & 7);
-          break;
+          reader.skipType(tag & 7)
+          break
       }
     }
-    return message;
+    return message
   },
 
-  fromJSON(object: any): DeleteSession {
+  fromJSON(object: any): Delete {
     return {
-      sessionId: isSet(object.sessionId) ? Number(object.sessionId) : 0,
-    };
+      sessionId: isSet(object.sessionId) ? Number(object.sessionId) : 0
+    }
   },
 
-  toJSON(message: DeleteSession): unknown {
-    const obj: any = {};
+  toJSON(message: Delete): unknown {
+    const obj: any = {}
     message.sessionId !== undefined &&
-      (obj.sessionId = Math.round(message.sessionId));
-    return obj;
+      (obj.sessionId = Math.round(message.sessionId))
+    return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<DeleteSession>, I>>(
-    object: I
-  ): DeleteSession {
-    const message = createBaseDeleteSession();
-    message.sessionId = object.sessionId ?? 0;
-    return message;
-  },
-};
+  fromPartial<I extends Exact<DeepPartial<Delete>, I>>(object: I): Delete {
+    const message = createBaseDelete()
+    message.sessionId = object.sessionId ?? 0
+    return message
+  }
+}
 
-declare var self: any | undefined;
-declare var window: any | undefined;
-declare var global: any | undefined;
+declare var self: any | undefined
+declare var window: any | undefined
+declare var global: any | undefined
 var globalThis: any = (() => {
-  if (typeof globalThis !== "undefined") return globalThis;
-  if (typeof self !== "undefined") return self;
-  if (typeof window !== "undefined") return window;
-  if (typeof global !== "undefined") return global;
-  throw "Unable to locate global object";
-})();
+  if (typeof globalThis !== 'undefined') return globalThis
+  if (typeof self !== 'undefined') return self
+  if (typeof window !== 'undefined') return window
+  if (typeof global !== 'undefined') return global
+  throw 'Unable to locate global object'
+})()
 
 const atob: (b64: string) => string =
   globalThis.atob ||
-  ((b64) => globalThis.Buffer.from(b64, "base64").toString("binary"));
+  ((b64) => globalThis.Buffer.from(b64, 'base64').toString('binary'))
 function bytesFromBase64(b64: string): Uint8Array {
-  const bin = atob(b64);
-  const arr = new Uint8Array(bin.length);
+  const bin = atob(b64)
+  const arr = new Uint8Array(bin.length)
   for (let i = 0; i < bin.length; ++i) {
-    arr[i] = bin.charCodeAt(i);
+    arr[i] = bin.charCodeAt(i)
   }
-  return arr;
+  return arr
 }
 
 const btoa: (bin: string) => string =
   globalThis.btoa ||
-  ((bin) => globalThis.Buffer.from(bin, "binary").toString("base64"));
+  ((bin) => globalThis.Buffer.from(bin, 'binary').toString('base64'))
 function base64FromBytes(arr: Uint8Array): string {
-  const bin: string[] = [];
+  const bin: string[] = []
   arr.forEach((byte) => {
-    bin.push(String.fromCharCode(byte));
-  });
-  return btoa(bin.join(""));
+    bin.push(String.fromCharCode(byte))
+  })
+  return btoa(bin.join(''))
 }
 
 type Builtin =
@@ -336,7 +328,7 @@ type Builtin =
   | string
   | number
   | boolean
-  | undefined;
+  | undefined
 
 type DeepPartial<T> = T extends Builtin
   ? T
@@ -345,26 +337,26 @@ type DeepPartial<T> = T extends Builtin
   : T extends ReadonlyArray<infer U>
   ? ReadonlyArray<DeepPartial<U>>
   : T extends { $case: string }
-  ? { [K in keyof Omit<T, "$case">]?: DeepPartial<T[K]> } & {
-      $case: T["$case"];
+  ? { [K in keyof Omit<T, '$case'>]?: DeepPartial<T[K]> } & {
+      $case: T['$case']
     }
   : T extends {}
   ? { [K in keyof T]?: DeepPartial<T[K]> }
-  : Partial<T>;
+  : Partial<T>
 
-type KeysOfUnion<T> = T extends T ? keyof T : never;
+type KeysOfUnion<T> = T extends T ? keyof T : never
 type Exact<P, I extends P> = P extends Builtin
   ? P
   : P & { [K in keyof P]: Exact<P[K], I[K]> } & Record<
         Exclude<keyof I, KeysOfUnion<P>>,
         never
-      >;
+      >
 
 if (_m0.util.Long !== Long) {
-  _m0.util.Long = Long as any;
-  _m0.configure();
+  _m0.util.Long = Long as any
+  _m0.configure()
 }
 
 function isSet(value: any): boolean {
-  return value !== null && value !== undefined;
+  return value !== null && value !== undefined
 }
