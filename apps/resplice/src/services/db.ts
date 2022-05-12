@@ -61,12 +61,12 @@ function read<T = Record<Store, any>>(store: Store | Store[]) {
     if (Array.isArray(store)) {
       store.forEach((s) => {
         transaction.objectStore(s).getAll().onsuccess = (e) => {
-          results[s] = (e.target as any).result
+          results[s] = (e.target as IDBRequest).result
         }
       })
     } else {
       transaction.objectStore(store).getAll().onsuccess = (e) => {
-        results[store] = (e.target as any).result
+        results[store] = (e.target as IDBRequest).result
       }
     }
 
@@ -86,7 +86,38 @@ function getById<T = any>(store: Store, id: number): Promise<T> {
 
     const transaction = db.transaction(store, 'readonly')
     transaction.objectStore(store).get(id).onsuccess = (e) => {
-      resolve((e.target as any).result)
+      resolve((e.target as IDBRequest).result)
+    }
+  })
+}
+
+function insert<T = any>(store: Store, data: T): Promise<number[]>
+function insert<T = any>(store: Store, data: T[]): Promise<number[]>
+function insert<T = any>(store: Store, data: T | T[]) {
+  return new Promise((resolve, reject) => {
+    if (!db || db.version !== DB_VERSION) {
+      reject('Please open the database before using it.')
+      return
+    }
+
+    const transaction = db.transaction(store, 'readwrite')
+    const results: number[] = []
+
+    if (Array.isArray(data)) {
+      data.forEach((d) => {
+        transaction.objectStore(store).add(d).onsuccess = (e) => {
+          results.push((e.target as IDBRequest).result)
+        }
+      })
+    } else {
+      transaction.objectStore(store).add(data).onsuccess = (e) => {
+        results.push((e.target as IDBRequest).result)
+      }
+    }
+
+    transaction.oncomplete = () => {
+      // transaction.commit()
+      resolve(results)
     }
   })
 }
@@ -106,12 +137,12 @@ function upsert<T = any>(store: Store, data: T | T[]) {
     if (Array.isArray(data)) {
       data.forEach((d) => {
         transaction.objectStore(store).put(d).onsuccess = (e) => {
-          results.push((e.target as any).result)
+          results.push((e.target as IDBRequest).result)
         }
       })
     } else {
       transaction.objectStore(store).put(data).onsuccess = (e) => {
-        results.push((e.target as any).result)
+        results.push((e.target as IDBRequest).result)
       }
     }
 
@@ -170,11 +201,16 @@ function clear(): Promise<void> {
   })
 }
 
-export default {
+const DBWrapper = {
   open,
   read,
   getById,
+  insert,
   upsert,
   remove,
   clear
 }
+
+export type DB = typeof DBWrapper
+
+export default DBWrapper

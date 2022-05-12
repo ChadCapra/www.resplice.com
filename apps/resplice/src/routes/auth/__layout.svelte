@@ -1,46 +1,24 @@
 <script lang="ts">
-  import { onMount, setContext } from 'svelte'
+  import { setContext } from 'svelte'
   import { browser } from '$app/env'
   import { goto } from '$app/navigation'
-  import authStore from '$lib/auth/store'
+  import db from '$services/db'
   import apiFactory from '$services/api/http'
   import authClientFactory, {
     contextKey as authContextKey
   } from '$lib/auth/authClient'
+  import authStore from '$lib/auth/store'
   import type { Session } from '$types/session'
-  import AppLoading from '$lib/common/skeleton/AppLoading.svelte'
   import useConfig from '$lib/hooks/useConfig'
 
   const config = useConfig()
 
   const api = apiFactory(config.httpEndpoint)
   const useMocks = !config.httpEndpoint
-  const client = authClientFactory(api, useMocks)
+  const client = authClientFactory(api, db, useMocks)
 
-  let sessionPromise: Promise<boolean> = Promise.resolve(false)
-
-  const authContext = { client: null }
+  const authContext = { client }
   setContext(authContextKey, authContext)
-
-  onMount(() => {
-    authContext.client = client
-    sessionPromise = new Promise(async (resolve) => {
-      try {
-        const session = await client.getActiveSession()
-        const loginValues = {
-          email: session.email,
-          phone: {
-            value: session.phone,
-            countryCode: 'US'
-          }
-        }
-        authStore.set({ session, loginValues })
-      } catch (err) {
-        authStore.set({ session: null })
-      }
-      resolve(true)
-    })
-  })
 
   function routeGuard(session: Session | null) {
     // Would be nice if I could pattern match here
@@ -71,10 +49,4 @@
   }
 </script>
 
-{#await sessionPromise}
-  <AppLoading />
-{:then isLoaded}
-  {#if isLoaded}
-    <slot />
-  {/if}
-{/await}
+<slot />

@@ -98,11 +98,13 @@
 </script>
 
 <svelte:head>
-  <script
-    src={`https://www.google.com/recaptcha/api.js?render=${config.recaptchaToken}`}
-    async
-    defer>
-  </script>
+  {#if config.env === 'production'}
+    <script
+      src={`https://www.google.com/recaptcha/api.js?render=${config.recaptchaToken}`}
+      async
+      defer>
+    </script>
+  {/if}
 </svelte:head>
 
 <form

@@ -1,9 +1,9 @@
 import {
-  ReCrypto,
   encrypt,
   decrypt,
   calculateServerIV,
-  calculateClientIV
+  calculateClientIV,
+  type ReCrypto
 } from '$services/crypto'
 import {
   encode,
@@ -34,11 +34,11 @@ export async function deserializeServerMessage(
 
 export async function serializeClientMessage(
   message: ClientMessage,
+  counter: number,
   crypto: ReCrypto
 ) {
   const messageBytes = encode(message)
 
-  const counter = crypto.counter
   const iv = calculateClientIV(crypto.baseIV, counter)
 
   const encryptedPayload = await encrypt(crypto.key, iv, messageBytes)

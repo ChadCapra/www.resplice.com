@@ -155,34 +155,19 @@ function buildJwk(rawKey: ArrayBuffer) {
   }
 }
 
-export class ReCrypto {
+export type ReCrypto = {
   key: CryptoKey
   rawKey: Uint8Array
   baseIV: Uint8Array
-  #counter: number
+}
+export async function buildReCrypto(): Promise<ReCrypto> {
+  const key = await generateAesKey()
+  const rawKey = await exportKey(key)
+  const baseIV = generateBaseIV()
 
-  constructor(
-    key: CryptoKey,
-    rawKey: Uint8Array,
-    baseIV: Uint8Array,
-    counter?: number
-  ) {
-    this.key = key
-    this.rawKey = rawKey
-    this.baseIV = baseIV
-    this.#counter = counter || 0
-  }
-
-  static async generateAesKey(): Promise<ReCrypto> {
-    // TODO: Cache this in IndexedDB (not localStorage) to support
-    // page refreshing during auth
-    const key = await generateAesKey()
-    const rawKey = await exportKey(key)
-    const baseIV = generateBaseIV()
-    return new ReCrypto(key, rawKey, baseIV)
-  }
-
-  get counter() {
-    return this.#counter++
+  return {
+    key,
+    rawKey,
+    baseIV
   }
 }

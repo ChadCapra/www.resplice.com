@@ -13,9 +13,9 @@
   let isLoading = true
   let error: Error | null = null
 
-  const activeSession = sessionStores.activeSession
+  const activeSessionStore = sessionStores.activeSession
 
-  const configContext = { config: null }
+  const configContext = { config: getConfig() }
   setContext(contextKey, configContext)
 
   async function loadApplication() {
@@ -23,11 +23,12 @@
       if (!isRespliceSupported())
         throw new Error('Your browser is not yet supported.')
 
-      configContext.config = getConfig()
       await initializeIntl()
       await db.open()
       // 0 will always be the active session
-      await db.getById<Session>('session', 0)
+      const activeSession = await db.getById<Session>('session', 0)
+      authStore.set({ session: activeSession })
+      activeSessionStore.set(activeSession)
 
       isLoading = false
     } catch (err) {

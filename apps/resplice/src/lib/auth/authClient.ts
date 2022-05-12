@@ -7,10 +7,11 @@ import type {
 import type { CreateAccount } from '@resplice/proto/dist/user/request/account'
 import { encode, encodeClientMessageWrapper } from '$services/proto'
 import {
-  ReCrypto,
+  buildReCrypto,
   importPublicKey,
   publicKeyEncrypt,
-  combineBufferArrays
+  combineBufferArrays,
+  type ReCrypto
 } from '$services/crypto'
 import {
   deserializeServerMessage,
@@ -19,6 +20,7 @@ import {
 import mockAuthClientFactory from '$services/mocks/authClient'
 
 import type { Api } from '$services/api/http'
+import type { DB } from '$services/db'
 import type { Session } from '$types/session'
 import type { PhoneValue, EmailValue } from '$types/attribute'
 
@@ -48,7 +50,7 @@ export interface AuthClient {
   createAccount: (params: CreateAccountRequest) => Promise<Session>
 }
 
-function authClientFactory(api: Api, returnMock = false): AuthClient {
+function authClientFactory(api: Api, db: DB, returnMock = false): AuthClient {
   if (returnMock) return mockAuthClientFactory()
 
   let recrypto: ReCrypto | null = null
@@ -62,7 +64,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       }),
     createSession: async (params) => {
       const publicKey = await fetchServerPublicKey(api)
-      recrypto = await ReCrypto.generateAesKey()
+      recrypto = await buildReCrypto()
 
       const createSessionMessage: CreateSession = {
         email: params.email.email,
@@ -70,6 +72,8 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         rememberMe: params.rememberMe,
         aesKeyIvBase: combineBufferArrays(recrypto.baseIV, recrypto.rawKey)
       }
+
+      const [counter] = await db.insert('events', createSessionMessage)
 
       const createSessionBytes = encode({
         type: ClientMessageType.SESSION_CREATE,
@@ -82,7 +86,7 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       )
 
       const clientMessage: reproto.client_request.ClientRequest = {
-        requestId: recrypto.counter,
+        requestId: counter,
         requestType: ClientMessageType.SESSION_CREATE,
         encryptedPayload: encryptedMessage
       }
@@ -101,11 +105,13 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       const msg: VerifySessionEmail = {
         verificationToken: params.verificationToken
       }
+      const [counter] = await db.insert('events', msg)
       const clientMessageBytes = await serializeClientMessage(
         {
           type: ClientMessageType.SESSION_VERIFY_EMAIL,
           data: msg
         },
+        counter,
         recrypto
       )
 
@@ -122,11 +128,13 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
       const msg: VerifySessionPhone = {
         verificationToken: params.verificationToken
       }
+      const [counter] = await db.insert('events', msg)
       const clientMessageBytes = await serializeClientMessage(
         {
           type: ClientMessageType.SESSION_VERIFY_PHONE,
           data: msg
         },
+        counter,
         recrypto
       )
 
@@ -145,11 +153,13 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         handle: params.handle,
         avatar: new Uint8Array(await params.avatar.arrayBuffer())
       }
+      const [counter] = await db.insert('events', msg)
       const clientMessageBytes = await serializeClientMessage(
         {
           type: ClientMessageType.ACCOUNT_CREATE,
           data: msg
         },
+        counter,
         recrypto
       )
 
