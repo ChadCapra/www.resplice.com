@@ -30,6 +30,7 @@ export default defineConfig({
     }
   },
   test: {
+    environment: 'happy-dom',
     includeSource: ['src/**/*.ts']
   },
   plugins: [dts()]

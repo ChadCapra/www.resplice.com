@@ -24,10 +24,10 @@ class SearchService {
   }
   constructor() {
     this.#engine = {
-      attributes: new SearchIndex('performance'),
-      contacts: new SearchIndex('performance'),
-      contactAttributes: new SearchIndex('performance'),
-      invites: new SearchIndex('performance')
+      attributes: new SearchIndex('match'),
+      contacts: new SearchIndex('match'),
+      contactAttributes: new SearchIndex('match'),
+      invites: new SearchIndex('match')
     }
   }
 

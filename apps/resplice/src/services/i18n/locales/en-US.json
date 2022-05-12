@@ -1,0 +1,37 @@
+{
+  "attributes": {},
+  "auth": {
+    "login": "Login",
+    "welcomeMessage": "Welcome to the world's most up-to-date address book.",
+    "enterPhone": "Enter Phone",
+    "enterEmail": "Enter Email",
+    "rememberMe": "Remember Me",
+    "verify": "Verify",
+    "upload": "Optionally upload your avatar and enter your full name to create your account!",
+    "haveAccount": "I already have an account"
+  },
+  "chat": {
+    "message": "Message"
+  },
+  "common": {
+    "continue": "Continue"
+  },
+  "contacts": {
+    "contacts": "Contacts"
+  },
+  "errors": {
+    "invalidPhone": "Invalid Phone",
+    "invalidEmail": "Invalid Email",
+    "bot": "We detected some bot behavior, you must be a robot?",
+    "fullName": "Full name is required"
+  },
+  "invites": {
+    "invite": "Invite"
+  },
+  "profile": {
+    "upload": "Upload"
+  },
+  "splices": {
+    "splices": "Splices"
+  }
+}

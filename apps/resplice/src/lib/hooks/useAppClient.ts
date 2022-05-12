@@ -1,5 +1,5 @@
 import { getContext } from 'svelte'
-import type { AppClient } from '$services/api/appClient'
+import type AppClient from '$services/api/appClient'
 import { contextKey } from '$services/api/appClient'
 
 type AppClientContext = { client: AppClient | null }

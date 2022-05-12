@@ -1,6 +1,6 @@
 import attributes from './attributes'
 import chats from './chats'
-import conn from './conn'
+import events from './events'
 import contacts from './contacts'
 import invites from './invites'
 import profile from './profile'
@@ -11,7 +11,7 @@ import toasts from './toasts'
 const stores = {
   attributes,
   chats,
-  conn,
+  events,
   contacts,
   invites,
   profile,

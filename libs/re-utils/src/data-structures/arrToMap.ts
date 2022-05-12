@@ -14,6 +14,7 @@ export function arrToMap<V extends Record<string, any>>(
 
 if (import.meta.vitest) {
   const { test, expect } = import.meta.vitest
+
   test('transforms record array to map', () => {
     const arr = [
       { id: '1', name: 'Bastilla' },
@@ -26,6 +27,7 @@ if (import.meta.vitest) {
       name: 'Bastilla'
     })
   })
+
   test('handles empty array', () => {
     expect(arrToMap([], 'id')).toMatchObject({})
   })

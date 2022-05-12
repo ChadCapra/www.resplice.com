@@ -1,8 +1,8 @@
 <script lang="ts">
-  import connStore from '$stores/conn'
+  import eventStore from '$stores/events'
 </script>
 
 <div class="w-full h-full">
-  <p>Connection Status: {$connStore.status}</p>
+  <p>Connection Status: {$eventStore.connStatus}</p>
   <p>Testing stuff</p>
 </div>

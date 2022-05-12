@@ -1,4 +1,4 @@
-import startCommuter from '$services/commuters/connCommuter'
+import startConnCommuter from '$services/commuters/connCommuter'
 import cacheFactory from '$services/cache'
 import AppClient from '$services/api/appClient'
 
@@ -25,7 +25,7 @@ async function load(
   }
 
   const cache = await cacheFactory(indexedDB)
-  const connCommuter = startCommuter(useMocks)
+  const connCommuter = startConnCommuter(useMocks)
   const client = new AppClient(wsEndpoint, connCommuter, cache, stores)
 
   return {

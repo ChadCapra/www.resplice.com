@@ -8,7 +8,7 @@
     contextKey as authContextKey
   } from '$lib/auth/authClient'
   import type { Session } from '$types/session'
-  import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
+  import AppLoading from '$lib/common/skeleton/AppLoading.svelte'
   import useConfig from '$lib/hooks/useConfig'
 
   const config = useConfig()
@@ -72,7 +72,7 @@
 </script>
 
 {#await sessionPromise}
-  <AppLoad />
+  <AppLoading />
 {:then isLoaded}
   {#if isLoaded}
     <slot />

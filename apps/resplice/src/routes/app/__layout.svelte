@@ -16,7 +16,7 @@
   import { contextKey as clientContextKey } from '$services/api/appClient'
   import loadApp from './_load'
 
-  import AppLoad from '$lib/common/skeleton/AppLoad.svelte'
+  import AppLoading from '$lib/common/skeleton/AppLoading.svelte'
   import AppError from '$lib/common/skeleton/AppError.svelte'
   import useConfig from '$lib/hooks/useConfig'
   import PageTransition from '$lib/common/skeleton/PageTransition.svelte'
@@ -53,7 +53,7 @@
 </script>
 
 {#await appLoadPromise}
-  <AppLoad />
+  <AppLoading />
 {:then isLoaded}
   {#if isLoaded}
     <PageTransition>

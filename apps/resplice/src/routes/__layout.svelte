@@ -1,26 +1,42 @@
-<script context="module">
-  // TODO: Setup i18n
-  // import { waitLocale } from 'svelte-i18n'
-
-  // /**
-  //  * @type {import('@sveltejs/kit').Load}
-  //  */
-  // export async function load() {
-  //   return await waitLocale()
-  // }
-</script>
-
 <script lang="ts">
-  import '../global.css'
   import { onMount, setContext } from 'svelte'
+  import { isRespliceSupported } from '@resplice/utils'
   import getConfig, { contextKey } from '$services/config'
+  import initializeIntl from '$services/i18n'
+  import db from '$services/db'
+  import authStore from '$lib/auth/store'
+  import sessionStores from '$stores/session'
+  import AppLoading from '$lib/common/skeleton/AppLoading.svelte'
+  import '../global.css'
+  import type { Session } from '$types/session'
+
+  let isLoading = true
+  let error: Error | null = null
+
+  const activeSession = sessionStores.activeSession
 
   const configContext = { config: null }
   setContext(contextKey, configContext)
 
-  onMount(() => {
-    configContext.config = getConfig()
-  })
+  async function loadApplication() {
+    try {
+      if (!isRespliceSupported())
+        throw new Error('Your browser is not yet supported.')
+
+      configContext.config = getConfig()
+      await initializeIntl()
+      await db.open()
+      // 0 will always be the active session
+      await db.getById<Session>('session', 0)
+
+      isLoading = false
+    } catch (err) {
+      error = new Error(err)
+      isLoading = false
+    }
+  }
+
+  onMount(loadApplication)
 </script>
 
 <svelte:head>
@@ -38,4 +54,12 @@
   </script>
 </svelte:head>
 
-<slot />
+{#if isLoading}
+  <AppLoading />
+{:else if error}
+  <!-- TODO: Make better error screen -->
+  <p>{'App could not load :('}</p>
+  <p>{error.message}</p>
+{:else}
+  <slot />
+{/if}

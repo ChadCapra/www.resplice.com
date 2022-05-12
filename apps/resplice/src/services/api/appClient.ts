@@ -1,4 +1,4 @@
-import { ConnStatus } from '$stores/conn'
+import { ConnStatus } from '$stores/events'
 import { ConnCommandType } from '$services/commuters/connCommuter'
 import attributesClientFactory from '$services/api/attributes'
 import contactsClientFactory from '$services/api/contacts'
@@ -31,43 +31,43 @@ class AppClient {
     stores: Stores
   ) {
     // Set state in app as connecting
-    stores.conn.set({
-      status: ConnStatus.CONNECTING,
+    stores.events.set({
+      connStatus: ConnStatus.CONNECTING,
       error: null,
-      messages: []
+      events: []
     })
 
     // Subscribe to conn worker events
     connCommuter.messages$.subscribe((m) => {
       switch (m.type) {
         case ConnMessageType.OPENED:
-          stores.conn.update(() => ({
-            status: ConnStatus.CONNECTED,
+          stores.events.update(() => ({
+            connStatus: ConnStatus.CONNECTED,
             error: null,
-            messages: [m]
+            events: [m]
           }))
           break
         // TODO: Move to toasts store
         case ConnMessageType.ERRORED:
-          stores.conn.update((state) => ({
-            status: state.status,
+          stores.events.update((state) => ({
+            connStatus: state.connStatus,
             error: m.error,
-            messages: [...state.messages, m]
+            events: [...state.events, m]
           }))
           break
         case ConnMessageType.CLOSED:
-          stores.conn.update((state) => ({
-            status: ConnStatus.DISCONNECTED,
+          stores.events.update((state) => ({
+            connStatus: ConnStatus.DISCONNECTED,
             error: null,
             // Might reset messages in this case
-            messages: [...state.messages, m]
+            events: [...state.events, m]
           }))
           break
         default:
-          stores.conn.update((state) => ({
-            status: state.status,
+          stores.events.update((state) => ({
+            connStatus: state.connStatus,
             error: null,
-            messages: [...state.messages, m]
+            events: [...state.events, m]
           }))
       }
     })

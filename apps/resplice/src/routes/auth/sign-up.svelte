@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { _ as t } from 'svelte-i18n'
   import RespliceWide from '$lib/icons/RespliceWide.svelte'
   import SignupForm from '$lib/auth/SignupForm.svelte'
 </script>
 
 <svelte:head>
-  <title>Verify</title>
+  <title>{$t('auth.Verify')}</title>
 </svelte:head>
 
 <main
@@ -13,8 +14,7 @@
   <header class="flex-none w-full mb-8">
     <RespliceWide width="100%" />
     <p class="text-lg font-semibold mt-4">
-      Optionally upload your avatar and enter your full name to create your
-      account!
+      {$t('auth.upload')}
     </p>
   </header>
 

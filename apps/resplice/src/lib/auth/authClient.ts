@@ -42,7 +42,6 @@ type VerifyRequest = {
 
 export interface AuthClient {
   submitRecaptchaToken: (token: string) => Promise<boolean>
-  getActiveSession: () => Promise<Session | null>
   createSession: (params: CreateSessionRequest) => Promise<Session>
   verifyEmail: (params: VerifyRequest) => Promise<Session>
   verifyPhone: (params: VerifyRequest) => Promise<Session>
@@ -61,18 +60,6 @@ function authClientFactory(api: Api, returnMock = false): AuthClient {
         data: token,
         useBinary: false
       }),
-    // TODO: This can probably go away
-    getActiveSession: async () => {
-      try {
-        checkAesKey(recrypto)
-        const resBuffer: ArrayBuffer = await api.get({
-          endpoint: '/session/active'
-        })
-        return deserializeServerMessage(new Uint8Array(resBuffer), recrypto)
-      } catch {
-        return null
-      }
-    },
     createSession: async (params) => {
       const publicKey = await fetchServerPublicKey(api)
       recrypto = await ReCrypto.generateAesKey()
