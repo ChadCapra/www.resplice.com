@@ -2,8 +2,13 @@
   import { onMount } from 'svelte'
   import * as reproto from '@resplice/proto'
   import { btob64 } from '@resplice/utils'
-  import { calculateClientIV, encrypt, ReCrypto } from '$services/crypto'
-  import { encode, encodeClientMessageWrapper } from '$services/proto'
+  import {
+    buildReCrypto,
+    calculateClientIV,
+    encrypt,
+    type ReCrypto
+  } from '$services/crypto'
+  import { encodePayload, encodeClientMessageWrapper } from '$services/proto'
   import Code from '$lib/common/Code.svelte'
   import Button from '$lib/common/Button.svelte'
 
@@ -12,6 +17,8 @@
   let clientMessage: reproto.client_request.ClientRequest
   let iv: Uint8Array | null = null
 
+  let counter = 0
+
   // const ServerMessageType = reproto.server_message.ServerMessageType
   const ClientMessageType = reproto.client_request.ClientRequestType
 
@@ -19,30 +26,43 @@
     clientMessage && encodeClientMessageWrapper(clientMessage)
 
   onMount(async () => {
-    recrypto = await ReCrypto.generateAesKey()
+    recrypto = await buildReCrypto()
   })
 
+  function getCounter() {
+    return counter++
+  }
+
+  // const testMessage = {
+  //   type: ClientMessageType.ACCOUNT_CREATE,
+  //   data: {
+  //     name: 'Chad Capra',
+  //     avatar: new Uint8Array(),
+  //     handle: 'hockey4life'
+  //   }
+  // }
+  const testMessage = {
+    type: ClientMessageType.PROFILE_EDIT_NAME,
+    data: {
+      name: ''
+    }
+  }
+
   async function handleClick() {
-    const encodedMessage = encode({
-      type: ClientMessageType.ACCOUNT_CREATE,
-      data: {
-        name: 'Chad Capra',
-        avatar: new Uint8Array(),
-        handle: 'hockey4life'
-      }
-    })
-    const counter = recrypto.counter
+    const encodedMessage = encodePayload(testMessage)
+    const counter = getCounter()
     iv = calculateClientIV(recrypto.baseIV, counter)
     const encryptedMessage = await encrypt(recrypto.key, iv, encodedMessage)
 
-    console.log('Encoded Message:', encodedMessage)
-    console.log('Encrypted Message:', encryptedMessage)
-
     clientMessage = {
       requestType: ClientMessageType.ACCOUNT_CREATE,
-      requestId: 0,
+      counter,
       encryptedPayload: encryptedMessage
     }
+
+    console.log('Encoded Message:', encodedMessage)
+    console.log('Encrypted Message:', encryptedMessage)
+    console.log('Client Message', clientMessage)
   }
 </script>
 
@@ -51,9 +71,7 @@
     <h3 class="font-semibold text-lg">Base64 Encoded AES Key</h3>
     <Code>{btob64(recrypto.rawKey)}</Code>
 
-    <Button class="mt-8" on:click={handleClick}
-      >Test Create Account Message</Button
-    >
+    <Button class="mt-8" on:click={handleClick}>Create Test Message</Button>
 
     {#if !!clientMessage}
       <h3 class="font-semibold text-lg mt-8">Client Message Result</h3>
@@ -67,8 +85,8 @@
           </td>
         </tr>
         <tr>
-          <th class="font-semibold">Request ID</th>
-          <td>{clientMessage.requestId}</td>
+          <th class="font-semibold">Counter</th>
+          <td>{clientMessage.counter}</td>
         </tr>
         <tr>
           <th class="font-semibold">IV</th>
