@@ -1,4 +1,4 @@
-import type { Session, OtherSession } from '$types/session'
+import type { Session, SessionItem } from '$types/session'
 
 export const session: Session = {
   id: 12345,
@@ -27,7 +27,12 @@ export const authenticatedSession: Session = {
   authenticatedAt: 1634861779
 }
 
-export const otherSessions: OtherSession[] = [
+export const sessions: SessionItem[] = [
+  {
+    id: 1,
+    device: 'Apple iOS',
+    lastLocation: 'Mos Eisley'
+  },
   {
     id: 2,
     device: 'Apple iOS',

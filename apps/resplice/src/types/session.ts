@@ -9,8 +9,7 @@ export type Session = {
   expiry: number
 }
 
-// TODO: Come up with better name
-export type OtherSession = {
+export type SessionItem = {
   id: number
   device: string
   lastLocation: string

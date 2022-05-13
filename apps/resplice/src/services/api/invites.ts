@@ -80,7 +80,7 @@ function invitesClientFactory(
   return {
     inviteViaHandle: async (name, handle, attributeIds) => {
       const message = {
-        type: ClientMessageType.CONTACT_INVITE_VIA_HANDLE,
+        type: ClientMessageType.INVITE_VIA_EMAIL,
         data: { name, handle, attributeIds }
       }
       const [counter] = await cache.insert('events', message)
@@ -91,7 +91,7 @@ function invitesClientFactory(
     },
     inviteViaPhone: async (name, phone, attributeIds) => {
       const message = {
-        type: ClientMessageType.CONTACT_INVITE_VIA_PHONE,
+        type: ClientMessageType.INVITE_VIA_PHONE,
         data: { name, phone, attributeIds }
       }
       const [counter] = await cache.insert('events', message)
@@ -102,7 +102,7 @@ function invitesClientFactory(
     },
     inviteViaEmail: async (name, email, attributeIds) => {
       const message = {
-        type: ClientMessageType.CONTACT_INVITE_VIA_EMAIL,
+        type: ClientMessageType.INVITE_VIA_EMAIL,
         data: { name, email, attributeIds }
       }
       const [counter] = await cache.insert('events', message)
@@ -113,7 +113,7 @@ function invitesClientFactory(
     },
     delete: async (id) => {
       const message = {
-        type: ClientMessageType.CONTACT_INVITE_DELETE,
+        type: ClientMessageType.INVITE_DELETE,
         data: { id }
       }
       const [counter] = await cache.insert('events', message)
@@ -124,7 +124,7 @@ function invitesClientFactory(
     },
     createQr: async () => {
       const message = {
-        type: ClientMessageType.QR_CONTACT_INVITE_CREATE,
+        type: ClientMessageType.QR_INVITE_CREATE,
         data: {}
       }
       const [counter] = await cache.insert('events', message)
@@ -135,7 +135,7 @@ function invitesClientFactory(
     },
     deleteQr: async (id) => {
       const message = {
-        type: ClientMessageType.QR_CONTACT_INVITE_DELETE,
+        type: ClientMessageType.QR_INVITE_DELETE,
         data: { id }
       }
       const [counter] = await cache.insert('events', message)
@@ -146,7 +146,7 @@ function invitesClientFactory(
     },
     addShare: async (id, attributeId) => {
       const message = {
-        type: ClientMessageType.CONTACT_INVITE_ADD_ATTRIBUTE,
+        type: ClientMessageType.INVITE_ATTRIBUTE_ADD,
         data: { id, attributeId }
       }
       const [counter] = await cache.insert('events', message)
@@ -157,7 +157,7 @@ function invitesClientFactory(
     },
     removeShare: async (id, attributeId) => {
       const message = {
-        type: ClientMessageType.CONTACT_INVITE_REMOVE_ATTRIBUTE,
+        type: ClientMessageType.INVITE_ATTRIBUTE_REMOVE,
         data: { id, attributeId }
       }
       const [counter] = await cache.insert('events', message)

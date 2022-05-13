@@ -1,5 +1,5 @@
 <script lang="ts">
-  import authStore from '$lib/auth/store'
+  import authStore from '$stores/auth'
   import RespliceWide from '$lib/icons/RespliceWide.svelte'
   import VerifyForm from '$lib/auth/VerifyForm.svelte'
 

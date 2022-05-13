@@ -4,16 +4,18 @@
   import AppClient, {
     contextKey as clientContextKey
   } from '$services/api/appClient'
-  import db from '$services/db'
+  import cache from '$services/db'
   import stores from '$stores/index'
   import useConfig from '$lib/hooks/useConfig'
   import PageTransition from '$lib/common/skeleton/PageTransition.svelte'
   import ToastProvider from '$lib/common/ToastProvider.svelte'
 
+  console.log('App layout rendering')
+
   const config = useConfig()
-  const useMocks = !config.wsEndpoint
-  const connCommuter = startConnCommuter(useMocks)
-  let client = new AppClient(config.wsEndpoint, connCommuter, db, stores)
+  const useMock = !config.wsEndpoint
+  const connCommuter = startConnCommuter(useMock)
+  let client = new AppClient(config.wsEndpoint, connCommuter, cache, stores)
 
   const clientContext = { client }
   setContext(clientContextKey, clientContext)

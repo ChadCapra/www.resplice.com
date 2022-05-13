@@ -23,20 +23,20 @@ export function encodeClientMessageWrapper(
 // TODO: Finish mapper
 const clientMessageMapper = {
   [ClientMessageType.SESSION_CREATE]:
-    reproto.auth.request.session.CreateSession.encode,
+    reproto.auth.request.session.Create.encode,
   [ClientMessageType.SESSION_VERIFY_EMAIL]:
-    reproto.auth.request.session.VerifySessionEmail.encode,
+    reproto.auth.request.session.VerifyEmail.encode,
   [ClientMessageType.SESSION_VERIFY_PHONE]:
-    reproto.auth.request.session.VerifySessionPhone.encode,
+    reproto.auth.request.session.VerifyPhone.encode,
   [ClientMessageType.ACCOUNT_CREATE]:
-    reproto.user.request.account.CreateAccount.encode,
+    reproto.auth.request.account.Create.encode,
   [ClientMessageType.SOCKET_AUTHORIZE]:
-    reproto.auth.request.socket.AuthorizeSocket.encode
+    reproto.auth.request.socket.Authorize.encode
 }
 
 // TODO: Discuss behavior of proto here, should we through or use default values
 // when encoding with `.fromJSON(data)`
-export function encode(m: ClientMessage): Uint8Array {
+export function encodePayload(m: ClientMessage): Uint8Array {
   const encoder = clientMessageMapper[m.type]
   if (!encoder) throw Error(`Client Message ${m.type} is not supported`)
 
@@ -70,7 +70,7 @@ const serverMessageMapper = {
 
 // Maybe we use a mapper here instead if we just call decode everytime
 // TODO: Define union return type explicitly
-export function decode(m: ServerMessage) {
+export function decodePayload(m: ServerMessage) {
   const decoder = serverMessageMapper[m.type]
   if (!decoder) throw Error(`Server Message ${m.type} is not supported`)
 

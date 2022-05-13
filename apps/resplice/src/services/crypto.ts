@@ -34,7 +34,7 @@ export async function encrypt(
     key,
     data
   )
-  // TODO: Pull out last 16 bytes of tag and pass through both cipher and tag.
+
   const cipherText = new Uint8Array(encryptedBuffer)
 
   return cipherText

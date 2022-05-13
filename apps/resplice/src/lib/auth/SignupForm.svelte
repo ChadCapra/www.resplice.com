@@ -4,7 +4,7 @@
   import TextField from '$lib/common/form/TextField.svelte'
   import PeopleIcon from '$lib/icons/PeopleIcon.svelte'
   import Button from '$lib/common/Button.svelte'
-  import authStore from '$lib/auth/store'
+  import authStore from '$stores/auth'
   import Link from '$lib/common/Link.svelte'
 
   const client = useAuthClient()

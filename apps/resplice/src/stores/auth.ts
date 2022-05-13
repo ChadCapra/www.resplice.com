@@ -11,7 +11,7 @@ type LoginValues = {
 }
 type Auth = {
   loginValues?: LoginValues
-  session: Session | null
+  session: Session
   crypto: ReCrypto
 }
 

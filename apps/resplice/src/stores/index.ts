@@ -1,3 +1,4 @@
+import auth from './auth'
 import attributes from './attributes'
 import chats from './chats'
 import events from './events'
@@ -9,6 +10,7 @@ import session from './session'
 import toasts from './toasts'
 
 const stores = {
+  auth,
   attributes,
   chats,
   events,

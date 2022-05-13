@@ -85,10 +85,10 @@ export function onlyRecievedMessages() {
 
 export type ConnCommuter = Commuter<ConnMessage, ConnCommand>
 
-function startCommuter(useMocks = false) {
+function startCommuter(useMock = false) {
   let connWorker: Worker
 
-  if (useMocks) {
+  if (useMock) {
     connWorker = new Worker(
       new URL('../../services/mocks/conn', import.meta.url),
       { type: 'module' }

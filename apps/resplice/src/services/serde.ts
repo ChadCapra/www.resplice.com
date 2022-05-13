@@ -6,8 +6,8 @@ import {
   type ReCrypto
 } from '$services/crypto'
 import {
-  encode,
-  decode,
+  encodePayload,
+  decodePayload,
   decodeServerMessageWrapper,
   encodeClientMessageWrapper
 } from '$services/proto'
@@ -26,7 +26,7 @@ export async function deserializeServerMessage(
     serverWrapper.encryptedPayload
   )
 
-  return decode({
+  return decodePayload({
     type: serverWrapper.messageType,
     data: serverMessageBytes
   })
@@ -36,15 +36,15 @@ export async function serializeClientMessage(
   message: ClientMessage,
   crypto: ReCrypto
 ) {
-  const messageBytes = encode(message)
+  const payloadBytes = encodePayload(message)
 
   const iv = calculateClientIV(crypto.baseIV, message.counter)
 
-  const encryptedPayload = await encrypt(crypto.key, iv, messageBytes)
+  const encryptedPayload = await encrypt(crypto.key, iv, payloadBytes)
 
   return encodeClientMessageWrapper({
     requestType: message.type,
-    requestId: message.counter,
+    counter: message.counter,
     encryptedPayload
   })
 }

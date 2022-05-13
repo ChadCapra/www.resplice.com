@@ -1,4 +1,4 @@
-export function returnPromise<T>({
+export function mockPromise<T>({
   data,
   timeout = 300,
   rejectPromise = false
@@ -19,8 +19,8 @@ export function returnPromise<T>({
   })
 }
 
-export function getMockPublicKey() {
-  return crypto.subtle.generateKey(
+export async function getMockPublicKey(): Promise<ArrayBuffer> {
+  const keyPair = await crypto.subtle.generateKey(
     {
       name: 'RSA-OAEP',
       modulusLength: 2048,
@@ -30,4 +30,5 @@ export function getMockPublicKey() {
     true,
     ['encrypt']
   )
+  return crypto.subtle.exportKey('raw', keyPair.publicKey)
 }

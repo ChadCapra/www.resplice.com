@@ -47,7 +47,7 @@ function attributesClientFactory(
   return {
     addAttribute: async (attribute) => {
       const message = {
-        type: ClientMessageType.USER_ATTRIBUTE_CREATE,
+        type: ClientMessageType.ATTRIBUTE_CREATE,
         data: { attribute }
       }
       const [counter] = await cache.insert('events', message)
@@ -58,7 +58,7 @@ function attributesClientFactory(
     },
     editAttributeName: async (params) => {
       const message = {
-        type: ClientMessageType.USER_ATTRIBUTE_EDIT_NAME,
+        type: ClientMessageType.ATTRIBUTE_EDIT_NAME,
         data: params
       }
       const [counter] = await cache.insert('events', message)
@@ -69,7 +69,7 @@ function attributesClientFactory(
     },
     editAttributeValue: async (params) => {
       const message = {
-        type: ClientMessageType.USER_ATTRIBUTE_EDIT_VALUE,
+        type: ClientMessageType.ATTRIBUTE_EDIT_VALUE,
         counter: 0,
         data: params
       }
@@ -81,7 +81,7 @@ function attributesClientFactory(
     },
     editAttributeSort: async (params) => {
       const message = {
-        type: ClientMessageType.USER_ATTRIBUTE_SORT,
+        type: ClientMessageType.ATTRIBUTE_SORT,
         data: params
       }
       const [counter] = await cache.insert('events', message)
@@ -92,7 +92,7 @@ function attributesClientFactory(
     },
     sendAttributeVerification: async (attributeID) => {
       const message = {
-        type: ClientMessageType.USER_ATTRIBUTE_SEND_VERIFICATION,
+        type: ClientMessageType.ATTRIBUTE_SEND_VERIFICATION,
         data: { attributeID }
       }
       const [counter] = await cache.insert('events', message)
@@ -103,7 +103,7 @@ function attributesClientFactory(
     },
     verifyAttribute: async (attributeID, code) => {
       const message = {
-        type: ClientMessageType.USER_ATTRIBUTE_VERIFY,
+        type: ClientMessageType.ATTRIBUTE_VERIFY,
         data: { attributeID, code }
       }
       const [counter] = await cache.insert('events', message)
@@ -114,7 +114,7 @@ function attributesClientFactory(
     },
     deleteAttribute: async (attributeID) => {
       const message = {
-        type: ClientMessageType.USER_ATTRIBUTE_DELETE,
+        type: ClientMessageType.ATTRIBUTE_DELETE,
         data: { attributeID }
       }
       const [counter] = await cache.insert('events', message)

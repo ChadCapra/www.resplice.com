@@ -15,8 +15,8 @@ export interface Api {
   delete: (params: ApiParamsData) => Promise<any>
 }
 
-function apiFactory(server_endpoint: string): Api {
-  const BASE_URL = server_endpoint
+function apiFactory(serverEndpoint: string): Api {
+  const BASE_URL = serverEndpoint
   return {
     get: ({ endpoint, headers, useBinary = true }) =>
       commonFetch({

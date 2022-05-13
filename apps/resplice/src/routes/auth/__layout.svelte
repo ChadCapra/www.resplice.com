@@ -7,25 +7,28 @@
   import authClientFactory, {
     contextKey as authContextKey
   } from '$lib/auth/authClient'
-  import authStore from '$lib/auth/store'
-  import type { Session } from '$types/session'
+  import authStore from '$stores/auth'
   import useConfig from '$lib/hooks/useConfig'
+
+  console.log('auth layout rendering')
 
   const config = useConfig()
 
   const api = apiFactory(config.httpEndpoint)
-  const useMocks = !config.httpEndpoint
-  const client = authClientFactory(api, db, useMocks)
+  const useMock = !config.httpEndpoint
+  const client = authClientFactory(api, db, useMock)
 
   const authContext = { client }
   setContext(authContextKey, authContext)
 
-  function routeGuard(session: Session | null) {
+  function routeGuard(auth: typeof $authStore) {
     // Would be nice if I could pattern match here
-    if (!session) {
+    if (!auth) {
       goto('/auth/start')
       return
     }
+
+    const session = auth.session
 
     if (session.emailVerifiedAt && session.phoneVerifiedAt) {
       if (session.authenticatedAt) {
@@ -43,9 +46,7 @@
   }
 
   $: {
-    // I don't love this, I might move route guard logic into the pages they protect.
-    // TODO: Explore moving the routeGuard logic into the Load function
-    if (browser) routeGuard($authStore?.session)
+    if (browser) routeGuard($authStore)
   }
 </script>
 

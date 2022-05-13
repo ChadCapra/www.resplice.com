@@ -4,8 +4,7 @@
   import getConfig, { contextKey } from '$services/config'
   import initializeIntl from '$services/i18n'
   import db from '$services/db'
-  import authStore from '$lib/auth/store'
-  import sessionStores from '$stores/session'
+  import authStore from '$stores/auth'
   import AppLoading from '$lib/common/skeleton/AppLoading.svelte'
   import '../global.css'
 
@@ -16,10 +15,10 @@
   let isLoading = true
   let error: Error | null = null
 
-  const activeSessionStore = sessionStores.activeSession
-
   const configContext = { config: getConfig() }
   setContext(contextKey, configContext)
+
+  console.log('main layout rendering')
 
   async function loadApplication() {
     try {
@@ -33,18 +32,10 @@
         session: Session
         crypto: ReCrypto
       }>('session', 0)
-      if (activeSession) {
-        authStore.set(activeSession)
-        activeSessionStore.set(activeSession)
-      }
 
-      if (
-        !activeSession ||
-        !activeSession.crypto ||
-        !activeSession.session?.authenticatedAt
-      ) {
-        goto('/auth')
-      }
+      authStore.set(activeSession)
+
+      if (!activeSession) goto('/auth')
 
       isLoading = false
     } catch (err) {

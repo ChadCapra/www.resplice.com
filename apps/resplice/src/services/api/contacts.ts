@@ -141,7 +141,7 @@ function contactsClientFactory(
     },
     addShare: async (id, attributeId) => {
       const message = {
-        type: ClientMessageType.CONTACT_ADD_SHARE,
+        type: ClientMessageType.CONTACT_SHARE_ADD,
         data: { id, attributeId }
       }
       const [counter] = await cache.insert('events', message)
@@ -152,7 +152,7 @@ function contactsClientFactory(
     },
     removeShare: async (id, attributeId) => {
       const message = {
-        type: ClientMessageType.CONTACT_REMOVE_SHARE,
+        type: ClientMessageType.CONTACT_SHARE_REMOVE,
         data: { id, attributeId }
       }
       const [counter] = await cache.insert('events', message)

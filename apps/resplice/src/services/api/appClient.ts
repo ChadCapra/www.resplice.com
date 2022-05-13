@@ -68,6 +68,7 @@ class AppClient {
           }))
           break
         default:
+          // TODO: Remove expired stuff across stores using new server time
           stores.events.update((state) => ({
             connStatus: state.connStatus,
             error: null,
@@ -88,7 +89,7 @@ class AppClient {
 
     let crypto: ReCrypto
     // Subscribes, sets crypto, then unsubscribes
-    stores.session.activeSession.subscribe((val) => (crypto = val.crypto))()
+    stores.auth.subscribe((val) => (crypto = val.crypto))()
 
     // Get latest dates for cache stores and build handshake message
     const handshake = {
@@ -96,15 +97,15 @@ class AppClient {
       counter: 0,
       data: {
         // TODO: Pull these from cache
-        authenticated_at: 1,
-        user_attributes_since: 2,
-        user_attribute_groups_since: 3,
-        contacts_since: 4,
-        contact_attributes_since: 5,
-        contact_shares_since: 6,
-        splices_since: 7,
-        splice_members_since: 8,
-        splice_shares_since: 9
+        authenticated_at: 0,
+        user_attributes_since: 0,
+        user_attribute_groups_since: 0,
+        contacts_since: 0,
+        contact_attributes_since: 0,
+        contact_shares_since: 0,
+        splices_since: 0,
+        splice_members_since: 0,
+        splice_shares_since: 0
       }
     }
 

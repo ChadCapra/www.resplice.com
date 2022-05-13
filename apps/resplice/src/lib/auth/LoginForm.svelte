@@ -2,7 +2,7 @@
   import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
   import { validateEmail, getNavigatorCountry } from '@resplice/utils'
   import { phoneNumberToValue } from '$lib/attributes/utils'
-  import authStore from '$lib/auth/store'
+  import authStore from '$stores/auth'
   import useAuthClient from '$lib/auth/useAuthClient'
   import useConfig from '$lib/hooks/useConfig'
   import Button from '$lib/common/Button.svelte'
@@ -78,7 +78,7 @@
   async function createSession() {
     try {
       const phoneNumber = parsePhoneNumber(phone.value, phone.countryCode)
-      const session = await client.createSession({
+      const auth = await client.createSession({
         phone: phoneNumberToValue(phoneNumber),
         email: { email },
         rememberMe
@@ -88,7 +88,8 @@
           phone,
           email
         },
-        session
+        session: auth.session,
+        crypto: auth.crypto
       })
     } catch (err) {
       networkErr = err

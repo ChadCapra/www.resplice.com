@@ -1,26 +1,35 @@
-import type { AuthClient } from '$lib/auth/authClient'
-import { returnPromise } from '$services/mocks/utils'
+import { mockPromise } from '$services/mocks/utils'
 import {
   session,
   sessionVerifiedEmail,
   sessionVerifiedBoth,
   authenticatedSession
 } from '$services/mocks/state/sessions'
+import { buildReCrypto } from '$services/crypto'
 
-function mockAuthClientFactory(..._args: any): AuthClient {
-  return {
-    submitRecaptchaToken: (_token) => returnPromise({ data: false }),
-    getActiveSession: () =>
-      returnPromise({
-        data: session,
-        rejectPromise: true
-      }),
-    createSession: async (_params) =>
-      returnPromise({ data: session, timeout: 1000 }),
-    verifyEmail: (_params) => returnPromise({ data: sessionVerifiedEmail }),
-    verifyPhone: (_params) => returnPromise({ data: sessionVerifiedBoth }),
-    createAccount: (_params) => returnPromise({ data: authenticatedSession })
+class MockAuthClient {
+  submitRecaptchaToken(_token) {
+    return mockPromise({ data: false })
+  }
+
+  async createSession(_params) {
+    return mockPromise({
+      data: { session, crypto: await buildReCrypto() },
+      timeout: 1000
+    })
+  }
+
+  verifyEmail(_params) {
+    return mockPromise({ data: sessionVerifiedEmail })
+  }
+
+  verifyPhone(_params) {
+    return mockPromise({ data: sessionVerifiedBoth })
+  }
+
+  createAccount(_params) {
+    return mockPromise({ data: authenticatedSession })
   }
 }
 
-export default mockAuthClientFactory
+export default MockAuthClient

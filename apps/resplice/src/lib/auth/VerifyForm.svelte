@@ -1,6 +1,6 @@
 <script lang="ts">
   import { parsePhoneNumber } from 'libphonenumber-js'
-  import authStore from '$lib/auth/store'
+  import authStore from '$stores/auth'
   import useAuthClient from '$lib/auth/useAuthClient'
   import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
