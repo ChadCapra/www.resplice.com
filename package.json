@@ -1,23 +1,36 @@
 {
-  "name": "@resplice/ui-monorepo",
+  "name": "@resplice/web",
   "version": "1.0.0",
-  "description": "Monorepo for all ReSplice UI products",
-  "scripts": {
-    "build-libs": "npm run --prefix packages/common/components build && npm run --prefix packages/common/utils build",
-    "resplice": "npm run --prefix packages/resplice dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "Monorepo for all Resplice web products",
+  "author": "marcus@resplice.com",
+  "license": "UNLICENSED",
+  "private": true,
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MarcusVirg/resplice-ui.git"
+    "url": "git+https://github.com/ChadCapra/www.resplice.com.git"
   },
-  "author": "marcus@resplice.com",
-  "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MarcusVirg/resplice-ui/issues"
+    "url": "https://github.com/ChadCapra/www.resplice.com/issues"
   },
-  "homepage": "https://github.com/MarcusVirg/resplice-ui#readme",
+  "homepage": "https://github.com/ChadCapra/www.resplice.com#readme",
+  "scripts": {
+    "build:libs": "npm run build --workspace=libs/re-components --workspace=libs/re-utils --workspace=libs/re-proto",
+    "build:apps": "npm run build --workspace=apps/resplice --workspace=apps/reauth",
+    "reauth": "npm run dev --workspace=apps/reauth",
+    "resplice": "npm run dev --workspace=apps/resplice",
+    "reauth:preview": "npm run start --workspace=apps/reauth",
+    "resplice:preview": "npm run start --workspace=apps/resplce",
+    "protoc": "protoc -I=../proto $(find ../proto -name \"*.proto\") --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./libs/re-proto/src --ts_proto_opt=oneof=unions --ts_proto_opt=esModuleInterop=true --ts_proto_opt=exportCommonSymbols=false --ts_proto_opt=outputServices=false"
+  },
   "workspaces": [
-    "packages/common/*"
-  ]
+    "libs/*",
+    "apps/*"
+  ],
+  "lint-staged": {
+    "*.ts": [
+      "eslint --cache",
+      "prettier --check",
+      "vitest related"
+    ]
+  }
 }
