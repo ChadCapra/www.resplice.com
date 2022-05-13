@@ -9,16 +9,7 @@ export enum AttributeType {
   SOCIAL = 'SOCIAL',
   TEXT = 'TEXT'
 }
-export type AttributeValue =
-  | AddressValue
-  | CoordinateValue
-  | CredentialValue
-  | DateValue
-  | EmailValue
-  | LinkValue
-  | PhoneValue
-  | SocialValue
-  | TextValue
+
 interface BaseAttribute {
   id: number
   type: AttributeType
@@ -111,6 +102,17 @@ export type TextValue = {
   text: string
 }
 
+export type AttributeValue =
+  | AddressValue
+  | CoordinateValue
+  | CredentialValue
+  | DateValue
+  | EmailValue
+  | LinkValue
+  | PhoneValue
+  | SocialValue
+  | TextValue
+
 export type Attribute =
   | Address
   | Coordinate
@@ -136,6 +138,7 @@ export enum AttributeAction {
 export type AttributeTypeConfig = {
   type: AttributeType
   name: string
+  verifiable: boolean
   actions: AttributeAction[]
   handleAction: (action: AttributeAction, value: AttributeValue) => void
   valueToString: (value: AttributeValue) => string

@@ -47,6 +47,7 @@ function handleAction(action: AttributeAction, value: CoordinateValue) {
 const coordinateType: AttributeTypeConfig = {
   type: AttributeType.COORDINATE,
   name: 'Coordinate',
+  verifiable: false,
   actions: [
     AttributeAction.Locate,
     AttributeAction.Navigate,

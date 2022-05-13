@@ -23,7 +23,7 @@ export interface AttributesClient {
     params: Pick<Attribute, 'id' | 'sortOrder'>
   ) => Promise<void>
   sendAttributeVerification: (attributeID: Attribute['id']) => Promise<void>
-  verifyAttribute: (attributeID: Attribute['id'], code: string) => Promise<void>
+  verifyAttribute: (attributeID: Attribute['id'], code: number) => Promise<void>
   deleteAttribute: (attributeID: Attribute['id']) => Promise<void>
 }
 

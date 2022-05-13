@@ -37,6 +37,7 @@ function handleAction(action: AttributeAction, value: SocialValue) {
 const socialType: AttributeTypeConfig = {
   type: AttributeType.SOCIAL,
   name: 'Social',
+  verifiable: false,
   actions: [AttributeAction.Link, AttributeAction.Copy],
   handleAction,
   valueToString

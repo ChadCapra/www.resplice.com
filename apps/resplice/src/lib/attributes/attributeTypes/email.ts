@@ -37,6 +37,7 @@ function handleAction(action: AttributeAction, value: EmailValue) {
 const emailType: AttributeTypeConfig = {
   type: AttributeType.EMAIL,
   name: 'Email',
+  verifiable: true,
   actions: [AttributeAction.Email, AttributeAction.Copy],
   handleAction,
   valueToString

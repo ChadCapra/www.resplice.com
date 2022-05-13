@@ -1,6 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import AttributeTypeItem from '$lib/attributes/AttributeTypeItem.svelte'
+  import TypeItem from '$lib/attributes/TypeItem.svelte'
   import Button from '$lib/common/Button.svelte'
   import attributeTypes from '$lib/attributes/attributeTypes'
 
@@ -14,7 +14,7 @@
     <h2 class="text-xl font-semibold mb-4">Select an Attribute Type</h2>
     <div class="flex flex-col space-y-4">
       {#each typeConfigs as [type, config]}
-        <AttributeTypeItem
+        <TypeItem
           attributeTypeConfig={config}
           on:click={() => goto(`create/${type.toLowerCase()}`)}
         />

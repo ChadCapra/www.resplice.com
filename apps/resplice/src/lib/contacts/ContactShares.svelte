@@ -1,7 +1,7 @@
 <script lang="ts">
   import contactStores from '$stores/contacts'
   import attributeStore from '$stores/attributes'
-  import AttributeItem from '$lib/attributes/AttributeItem.svelte'
+  import AttributeItem from '$lib/attributes/Item.svelte'
   import SkeletonList from '$lib/common/skeleton/SkeletonList.svelte'
   import AddIcon from '$lib/icons/AddIcon.svelte'
   import Toggle from '$lib/common/form/Toggle.svelte'

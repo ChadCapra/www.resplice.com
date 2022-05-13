@@ -40,6 +40,7 @@ function handleAction(action: AttributeAction, value: DateValue) {
 const dateType: AttributeTypeConfig = {
   type: AttributeType.DATE,
   name: 'Date',
+  verifiable: false,
   actions: [AttributeAction.Calendar, AttributeAction.Copy],
   handleAction,
   valueToString

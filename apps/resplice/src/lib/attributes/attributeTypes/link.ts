@@ -37,6 +37,7 @@ function handleAction(action: AttributeAction, value: LinkValue) {
 const linkType: AttributeTypeConfig = {
   type: AttributeType.LINK,
   name: 'Link',
+  verifiable: false,
   actions: [AttributeAction.Link, AttributeAction.Copy],
   handleAction,
   valueToString

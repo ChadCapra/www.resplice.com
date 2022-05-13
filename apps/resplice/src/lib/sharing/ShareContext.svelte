@@ -1,6 +1,6 @@
 <script lang="ts">
-  import AttributeItem from '$lib/attributes/AttributeItem.svelte'
   import { sortUserAttributes } from '$lib/attributes/utils'
+  import AttributeItem from '$lib/attributes/Item.svelte'
   import Button from '$lib/common/Button.svelte'
   import Toggle from '$lib/common/form/Toggle.svelte'
   import Modal from '$lib/common/Modal.svelte'

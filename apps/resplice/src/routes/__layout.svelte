@@ -11,8 +11,7 @@
   import type { Session } from '$types/session'
   import type { ReCrypto } from '$services/crypto'
 
-  let isLoading = true
-  let error: Error | null = null
+  let isLoading = Promise.resolve(false)
 
   const configContext = { config: getConfig() }
   setContext(contextKey, configContext)
@@ -20,30 +19,25 @@
   console.log('main layout rendering')
 
   async function loadApplication() {
-    try {
-      if (!isRespliceSupported())
-        throw new Error('Your browser is not yet supported.')
+    if (!isRespliceSupported())
+      throw new Error('Your browser is not yet supported.')
 
-      await initializeIntl()
-      await db.open()
-      // 0 will always be the active session
-      const auth = await db.getById<{
-        session: Session
-        crypto: ReCrypto
-      }>('auth', 0)
+    await initializeIntl()
+    await db.open()
+    // 0 will always be the active session
+    const auth = await db.getById<{
+      session: Session
+      crypto: ReCrypto
+    }>('auth', 0)
 
-      if (auth) {
-        authStore.set(auth)
-      }
-
-      isLoading = false
-    } catch (err) {
-      error = new Error(err)
-      isLoading = false
+    if (auth) {
+      authStore.set(auth)
     }
+
+    return true
   }
 
-  onMount(loadApplication)
+  onMount(() => (isLoading = loadApplication()))
 </script>
 
 <svelte:head>
@@ -61,12 +55,14 @@
   </script>
 </svelte:head>
 
-{#if isLoading}
+{#await isLoading}
   <AppLoading />
-{:else if error}
+{:then loaded}
+  {#if loaded}
+    <slot />
+  {/if}
+{:catch error}
   <!-- TODO: Make better error screen -->
   <p>{'App could not load :('}</p>
   <p>{error.message}</p>
-{:else}
-  <slot />
-{/if}
+{/await}

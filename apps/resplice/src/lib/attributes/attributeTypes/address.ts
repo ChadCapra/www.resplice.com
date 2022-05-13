@@ -49,6 +49,7 @@ function handleAction(action: AttributeAction, value: AddressValue) {
 const addressType: AttributeTypeConfig = {
   type: AttributeType.ADDRESS,
   name: 'Address',
+  verifiable: false,
   actions: [
     AttributeAction.Navigate,
     AttributeAction.Locate,

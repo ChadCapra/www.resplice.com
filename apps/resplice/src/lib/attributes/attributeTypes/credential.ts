@@ -36,6 +36,7 @@ function handleAction(action: AttributeAction, value: CredentialValue) {
 const credentialType: AttributeTypeConfig = {
   type: AttributeType.CREDENTIAL,
   name: 'Credential',
+  verifiable: false,
   actions: [AttributeAction.Copy],
   handleAction,
   valueToString

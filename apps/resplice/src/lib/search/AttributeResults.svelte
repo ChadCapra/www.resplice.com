@@ -1,12 +1,12 @@
 <script lang="ts">
-  import AttributeItem from '$lib/attributes/AttributeItem.svelte'
+  import Item from '$lib/attributes/Item.svelte'
   import attributeStore from '$stores/attributes'
 
   export let results: number[] = []
 </script>
 
 {#each results as id}
-  <AttributeItem
+  <Item
     itemType="user"
     attribute={$attributeStore.get(id)}
     disableActions={true}

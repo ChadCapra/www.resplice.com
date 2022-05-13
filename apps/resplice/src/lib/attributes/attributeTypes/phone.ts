@@ -38,6 +38,7 @@ function handleAction(action: AttributeAction, value: PhoneValue) {
 const phoneType: AttributeTypeConfig = {
   type: AttributeType.PHONE,
   name: 'Phone',
+  verifiable: true,
   actions: [AttributeAction.Call, AttributeAction.Sms, AttributeAction.Copy],
   handleAction,
   valueToString

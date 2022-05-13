@@ -16,7 +16,7 @@ export const attributes = new Map<number, Attribute>([
       groupId: null,
       sortOrder: 1,
       verifiedAt: 1634861779,
-      verifyExpiry: null
+      verifyExpiry: 1634861779
     }
   ],
   [
@@ -30,7 +30,7 @@ export const attributes = new Map<number, Attribute>([
       },
       groupId: null,
       sortOrder: 2,
-      verifiedAt: 1634861779,
+      verifiedAt: null,
       verifyExpiry: null
     }
   ],

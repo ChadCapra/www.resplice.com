@@ -2,7 +2,7 @@
   import { parsePhoneNumber } from 'libphonenumber-js'
   import authStore from '$stores/auth'
   import useAuthClient from '$lib/auth/useAuthClient'
-  import AttributeItem from '$lib/attributes/AttributeItem.svelte'
+  import AttributeItem from '$lib/attributes/Item.svelte'
   import TextField from '$lib/common/form/TextField.svelte'
   import LockClosedIcon from '$lib/icons/LockClosedIcon.svelte'
   import ShieldCheckmarkIcon from '$lib/icons/ShieldCheckmarkIcon.svelte'

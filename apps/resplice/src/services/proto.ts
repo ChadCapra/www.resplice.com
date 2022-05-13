@@ -30,8 +30,14 @@ const clientMessageMapper = {
     reproto.auth.request.session.VerifyPhone.encode,
   [ClientMessageType.ACCOUNT_CREATE]:
     reproto.auth.request.account.Create.encode,
+  [ClientMessageType.SESSION_DELETE]:
+    reproto.auth.request.session.Delete.encode,
+  [ClientMessageType.ACCOUNT_DELETE]:
+    reproto.auth.request.account.Delete.encode,
   [ClientMessageType.SOCKET_AUTHORIZE]:
-    reproto.auth.request.socket.Authorize.encode
+    reproto.auth.request.socket.Authorize.encode,
+  [ClientMessageType.PROFILE_EDIT_NAME]:
+    reproto.user.request.profile.EditName.encode
 }
 
 // TODO: Discuss behavior of proto here, should we through or use default values

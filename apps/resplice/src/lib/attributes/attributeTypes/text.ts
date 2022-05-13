@@ -36,6 +36,7 @@ function handleAction(action: AttributeAction, value: TextValue) {
 const textType: AttributeTypeConfig = {
   type: AttributeType.TEXT,
   name: 'Text',
+  verifiable: false,
   actions: [AttributeAction.Copy],
   handleAction,
   valueToString

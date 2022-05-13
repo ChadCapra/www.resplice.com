@@ -1,9 +1,9 @@
 <script lang="ts">
   import VirtualList from '@sveltejs/svelte-virtual-list/VirtualList.svelte'
   import { goto } from '$app/navigation'
+  import contactStores from '$stores/contacts'
   import ContactItem from '$lib/contacts/ContactItem.svelte'
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
-  import contactStores from '$stores/contacts'
 
   const contactsStore = contactStores.contacts
 

@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { Attribute } from '$types/attribute'
-  import AttributeAction from '$lib/attributes/AttributeAction.svelte'
+  import AttributeAction from '$lib/attributes/Action.svelte'
   import AttributeContext from '$lib/attributes/AttributeContext.svelte'
-  import AttributeValue from '$lib/attributes/AttributeValue.svelte'
+  import AttributeValue from '$lib/attributes/Value.svelte'
   import Modal from '$lib/common/Modal.svelte'
   import attributeTypes from '$lib/attributes/attributeTypes'
 
-  export let itemType: 'contact' | 'user' | 'disabled'
   export let attribute: Attribute
+  export let itemType: 'contact' | 'user' | 'disabled'
   export let showSecondAction = true
   export let disableActions = false
   let showContextModal = false
@@ -58,6 +58,6 @@
 
 {#if showContextModal}
   <Modal on:close={() => (showContextModal = false)}>
-    <AttributeContext {attribute} {attributeType} />
+    <AttributeContext {attribute} {attributeType} {itemType} />
   </Modal>
 {/if}

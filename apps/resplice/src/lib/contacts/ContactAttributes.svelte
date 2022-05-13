@@ -1,6 +1,6 @@
 <script lang="ts">
   import contactsStore from '$stores/contacts'
-  import AttributeItem from '$lib/attributes/AttributeItem.svelte'
+  import AttributeItem from '$lib/attributes/Item.svelte'
   import SkeletonList from '$lib/common/skeleton/SkeletonList.svelte'
 
   export let contactId: number

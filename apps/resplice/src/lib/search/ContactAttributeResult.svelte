@@ -1,6 +1,6 @@
 <script lang="ts">
   import Avatar from '$lib/common/Avatar.svelte'
-  import AttributeValue from '$lib/attributes/AttributeValue.svelte'
+  import AttributeValue from '$lib/attributes/Value.svelte'
   import type { Contact, Attribute } from '$types/contact'
 
   export let attribute: Attribute

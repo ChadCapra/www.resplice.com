@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Attribute, AttributeTypeConfig } from '$types/attribute'
   import { AttributeType } from '$types/attribute'
-  import AttributeItem from '$lib/attributes/AttributeItem.svelte'
+  import Item from '$lib/attributes/Item.svelte'
   import AddressForm from './AddressForm.svelte'
   import CoordinateForm from './CoordinateForm.svelte'
   import CredentialForm from './CredentialForm.svelte'
@@ -42,7 +42,7 @@
 <div class="w-full h-full flex-1 overflow-auto p-4 flex flex-col">
   <div class="w-full shadow-lg rounded-lg p-4 mb-12 flex-none">
     <h2 class="text-xl font-semibold mb-4">{attributeTypeConfig.name}</h2>
-    <AttributeItem itemType="disabled" attribute={newAttribute} />
+    <Item itemType="disabled" attribute={newAttribute} />
   </div>
   {#if newAttribute.type === AttributeType.ADDRESS}
     <AddressForm
