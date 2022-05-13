@@ -35,8 +35,6 @@
 
       authStore.set(activeSession)
 
-      if (!activeSession) goto('/auth')
-
       isLoading = false
     } catch (err) {
       error = new Error(err)

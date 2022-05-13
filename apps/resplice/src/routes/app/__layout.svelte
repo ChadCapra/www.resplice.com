@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { setContext } from 'svelte'
+  import { setContext, onMount } from 'svelte'
+  import { goto } from '$app/navigation'
   import startConnCommuter from '$services/commuters/connCommuter'
   import AppClient, {
     contextKey as clientContextKey
@@ -13,12 +14,21 @@
   console.log('App layout rendering')
 
   const config = useConfig()
-  const useMock = !config.wsEndpoint
-  const connCommuter = startConnCommuter(useMock)
-  let client = new AppClient(config.wsEndpoint, connCommuter, cache, stores)
-
-  const clientContext = { client }
+  const authStore = stores.auth
+  const clientContext = { client: null }
   setContext(clientContextKey, clientContext)
+
+  onMount(() => {
+    if (!$authStore) {
+      goto('/auth')
+      return
+    }
+
+    const useMock = !config.wsEndpoint
+    const connCommuter = startConnCommuter(useMock)
+    const client = new AppClient(config.wsEndpoint, connCommuter, cache, stores)
+    clientContext.client = client
+  })
 </script>
 
 <PageTransition>
