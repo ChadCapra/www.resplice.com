@@ -57,8 +57,8 @@
 
 {#await isLoading}
   <AppLoading />
-{:then loaded}
-  {#if loaded}
+{:then isLoaded}
+  {#if isLoaded}
     <slot />
   {/if}
 {:catch error}

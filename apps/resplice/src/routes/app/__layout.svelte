@@ -39,8 +39,8 @@
 
 {#await isLoading}
   <AppLoading />
-{:then loaded}
-  {#if loaded}
+{:then isLoaded}
+  {#if isLoaded}
     <PageTransition>
       <ToastProvider>
         <slot />
