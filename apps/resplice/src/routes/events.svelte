@@ -31,7 +31,9 @@
   <AppLoading />
 {:then isLoaded}
   {#if isLoaded}
-    <main class="w-full h-full flex flex-col space-y-4 p-8 bg-gray-100">
+    <main
+      class="w-full h-full flex flex-col space-y-4 p-8 bg-gray-100 overflow-auto"
+    >
       {#each events as event}
         <div class="shadow rounded p-4 bg-white">
           <h2 class="text-lg font-semibold mb-4">

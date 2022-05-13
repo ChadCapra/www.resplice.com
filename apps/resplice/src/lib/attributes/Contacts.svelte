@@ -34,12 +34,16 @@
     Editing shares from an attribute is coming soon!
   </p>
 
-  <VirtualList items={attributeContacts} itemHeight={64} let:item>
-    <ContactItem
-      contact={item}
-      on:click={() => {
-        goto(`/app/contact/${item.id}/shares`)
-      }}
-    />
-  </VirtualList>
+  {#if attributeContacts.length}
+    <VirtualList items={attributeContacts} itemHeight={64} let:item>
+      <ContactItem
+        contact={item}
+        on:click={() => {
+          goto(`/app/contact/${item.id}/shares`)
+        }}
+      />
+    </VirtualList>
+  {:else}
+    <p>This lonely attribute is not being shared with anyone.</p>
+  {/if}
 </div>

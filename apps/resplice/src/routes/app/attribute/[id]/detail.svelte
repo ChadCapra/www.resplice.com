@@ -43,6 +43,7 @@
     sendingVerification = true
     await client.attributes.sendAttributeVerification(attribute.id)
     sendingVerification = false
+    showVerification = true
   }
 </script>
 
@@ -121,5 +122,8 @@
 </div>
 
 {#if showVerification}
-  <Verify attributeId={attribute.id} />
+  <Verify
+    attributeId={attribute.id}
+    on:close={() => (showVerification = false)}
+  />
 {/if}

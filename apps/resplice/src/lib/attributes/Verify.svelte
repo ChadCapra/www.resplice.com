@@ -17,6 +17,7 @@
 
   async function verifyAttribute(code: number) {
     await client.attributes.verifyAttribute(attributeId, code)
+    dispatch('close')
   }
 
   $: {
@@ -28,7 +29,7 @@
 </script>
 
 <Modal on:close={() => dispatch('close')}>
-  <div class="w-full flex items-center">
+  <div class="w-full flex items-center p-8">
     <div class="w-full mr-4">
       <TextField
         name="code"
@@ -44,5 +45,5 @@
         <Spinner />
       {/await}
     </span>
-  </div></Modal
->
+  </div>
+</Modal>
