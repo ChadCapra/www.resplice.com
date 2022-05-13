@@ -2,8 +2,8 @@ const DB_VERSION = 1
 const DB_NAME = 'RESPLICE_CACHE'
 
 type Store =
+  | 'auth'
   | 'events'
-  | 'session'
   | 'attributes'
   | 'chats'
   | 'contacts'
@@ -20,8 +20,8 @@ function createDatabase(newDB: IDBDatabase) {
   }
 
   // Create new stores
+  newDB.createObjectStore('auth', { autoIncrement: true })
   newDB.createObjectStore('events', { autoIncrement: true })
-  newDB.createObjectStore('session', { autoIncrement: true })
 
   newDB.createObjectStore('attributes', { keyPath: 'id' })
   newDB.createObjectStore('chats', { keyPath: 'id' })
@@ -122,9 +122,10 @@ function insert<T = any>(store: Store, data: T | T[]) {
   })
 }
 
-function upsert<T = any>(store: Store, data: T): Promise<T>
-function upsert<T = any>(store: Store, data: T[]): Promise<T[]>
-function upsert<T = any>(store: Store, data: T | T[]) {
+function upsert<T = any>(store: Store, data: T): Promise<number[]>
+function upsert<T = any>(store: Store, data: T[]): Promise<number[]>
+function upsert<T = any>(store: Store, data: T, key: number): Promise<number[]>
+function upsert<T = any>(store: Store, data: T | T[], key?: number) {
   return new Promise((resolve, reject) => {
     if (!db || db.version !== DB_VERSION) {
       reject('Please open the database before using it.')
@@ -141,7 +142,7 @@ function upsert<T = any>(store: Store, data: T | T[]) {
         }
       })
     } else {
-      transaction.objectStore(store).put(data).onsuccess = (e) => {
+      transaction.objectStore(store).put(data, key).onsuccess = (e) => {
         results.push((e.target as IDBRequest).result)
       }
     }

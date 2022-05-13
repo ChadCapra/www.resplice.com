@@ -62,6 +62,11 @@ class AuthClient {
     if (!this.#crypto) throw new Error('Invalid AES Key')
   }
 
+  async #updateAuthCache(session: Session): Promise<void> {
+    const auth = { session, crypto: this.#crypto }
+    await this.#cache.upsert('auth', auth, 0)
+  }
+
   async submitRecaptchaToken(token: string): Promise<boolean> {
     return this.#api.post({
       endpoint: '/session/recaptcha-token',
@@ -111,6 +116,9 @@ class AuthClient {
       new Uint8Array(resBuffer),
       this.#crypto
     )
+
+    await this.#updateAuthCache(session)
+
     return { session, crypto: this.#crypto }
   }
 
@@ -136,7 +144,14 @@ class AuthClient {
       data: clientMessageBytes
     })
 
-    return deserializeServerMessage(new Uint8Array(resBuffer), this.#crypto)
+    const session = await deserializeServerMessage(
+      new Uint8Array(resBuffer),
+      this.#crypto
+    )
+
+    await this.#updateAuthCache(session)
+
+    return session
   }
 
   async verifyPhone(params: VerifyRequest): Promise<Session> {
@@ -161,7 +176,14 @@ class AuthClient {
       data: clientMessageBytes
     })
 
-    return deserializeServerMessage(new Uint8Array(resBuffer), this.#crypto)
+    const session = await deserializeServerMessage(
+      new Uint8Array(resBuffer),
+      this.#crypto
+    )
+
+    await this.#updateAuthCache(session)
+
+    return session
   }
 
   async createAccount(params: CreateAccountRequest): Promise<Session> {
@@ -188,7 +210,14 @@ class AuthClient {
       data: clientMessageBytes
     })
 
-    return deserializeServerMessage(new Uint8Array(resBuffer), this.#crypto)
+    const session = await deserializeServerMessage(
+      new Uint8Array(resBuffer),
+      this.#crypto
+    )
+
+    await this.#updateAuthCache(session)
+
+    return session
   }
 }
 

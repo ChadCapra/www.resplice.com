@@ -10,7 +10,6 @@
 
   import type { Session } from '$types/session'
   import type { ReCrypto } from '$services/crypto'
-  import { goto } from '$app/navigation'
 
   let isLoading = true
   let error: Error | null = null
@@ -28,12 +27,14 @@
       await initializeIntl()
       await db.open()
       // 0 will always be the active session
-      const activeSession = await db.getById<{
+      const auth = await db.getById<{
         session: Session
         crypto: ReCrypto
-      }>('session', 0)
+      }>('auth', 0)
 
-      authStore.set(activeSession)
+      if (auth) {
+        authStore.set(auth)
+      }
 
       isLoading = false
     } catch (err) {

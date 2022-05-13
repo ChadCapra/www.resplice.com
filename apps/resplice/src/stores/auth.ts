@@ -1,21 +1,8 @@
 import { writable } from 'svelte/store'
-import type { Session } from '$types/session'
-import type { ReCrypto } from '$services/crypto'
+import type { Auth } from '$types/auth'
+import { auth as mockAuth } from '$services/mocks/state/auth'
 
-type LoginValues = {
-  phone: {
-    countryCode: string
-    value: string
-  }
-  email: string
-}
-type Auth = {
-  loginValues?: LoginValues
-  session: Session
-  crypto: ReCrypto
-}
-
-const authStore = writable<Auth | null>(null)
+const authStore = writable<Auth | null>(mockAuth)
 
 export type AuthStore = typeof authStore
 
