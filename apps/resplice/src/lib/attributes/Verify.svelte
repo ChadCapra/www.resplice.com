@@ -16,7 +16,7 @@
   let codePromise: Promise<void>
 
   async function verifyAttribute(code: number) {
-    await client.attributes.verifyAttribute(attributeId, code)
+    await client.attributes.verify(attributeId, code)
     dispatch('close')
   }
 

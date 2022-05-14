@@ -17,7 +17,7 @@
       variant="primary"
       color="danger-light"
       on:click={() => {
-        client.attributes.deleteAttribute(attributeId)
+        client.attributes.delete(attributeId)
         close()
       }}
     >

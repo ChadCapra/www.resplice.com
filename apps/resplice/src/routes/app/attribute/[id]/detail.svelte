@@ -41,7 +41,7 @@
 
   async function sendAttributeVerification() {
     sendingVerification = true
-    await client.attributes.sendAttributeVerification(attribute.id)
+    await client.attributes.sendVerification(attribute.id)
     sendingVerification = false
     showVerification = true
   }

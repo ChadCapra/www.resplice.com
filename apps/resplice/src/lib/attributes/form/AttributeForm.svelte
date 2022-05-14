@@ -1,5 +1,6 @@
 <script lang="ts">
-  import type { Attribute, AttributeTypeConfig } from '$types/attribute'
+  import { goto } from '$app/navigation'
+  import useAppClient from '$lib/hooks/useAppClient'
   import { AttributeType } from '$types/attribute'
   import Item from '$lib/attributes/Item.svelte'
   import AddressForm from './AddressForm.svelte'
@@ -11,7 +12,7 @@
   import SocialForm from './SocialForm.svelte'
   import DateForm from './DateForm.svelte'
   import TextForm from './TextForm.svelte'
-  import useAppClient from '$lib/hooks/useAppClient'
+  import type { Attribute, AttributeTypeConfig } from '$types/attribute'
 
   const appClient = useAppClient()
 
@@ -26,12 +27,13 @@
     sortOrder: 0
   }
 
-  function saveAttribute() {
-    appClient.attributes.addAttribute({
+  async function saveAttribute() {
+    await appClient.attributes.add({
       type: newAttribute.type,
       name: newAttribute.name,
       value: newAttribute.value
     })
+    goto('/app/user')
   }
 
   function throwInvalidType() {

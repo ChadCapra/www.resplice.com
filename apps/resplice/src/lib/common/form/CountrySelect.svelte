@@ -29,15 +29,14 @@
       </div>
     {:else}
       <div class="ml-4 text-gray-700">
-        <FlagIcon countryCode={value} />
+        <FlagIcon countryCode={value} width={34} height={28} />
       </div>
     {/if}
     <label
       for={name}
-      class={cx('text-gray-700 font-semibold absolute left-6 transform', {
+      class={cx('text-gray-700 font-semibold absolute left-16 transform', {
         'top-1 scale-90': isTouched,
-        'top-4': !isTouched,
-        'left-16': !!Icon
+        'top-4': !isTouched
       })}
     >
       {label}
@@ -45,8 +44,7 @@
     <select
       type="text"
       id={name}
-      class="appearance-none absolute top-0 left-0 w-full h-14 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 font-semibold text-lg text-gray-900 ring-2 focus:ring-gray-800"
-      class:pl-16={!!Icon}
+      class="appearance-none absolute top-0 left-0 w-full h-14 bg-transparent outline-none border-none rounded-2xl px-6 pt-5 pl-16 font-semibold text-lg text-gray-900 ring-2 focus:ring-gray-800"
       class:ring-gray-200={disabled}
       class:ring-gray-600={!disabled && !error}
       class:ring-red-600={!disabled && !!error}

@@ -16,7 +16,7 @@
   export let smsEnabled = true
 
   let formErrs: any = {}
-  let phone = { countryCallingCode: 'US' as CountryCode, value: '' }
+  let phone = { countryCode: 'US' as CountryCode, value: '' }
 
   function onSave() {
     formErrs = {}
@@ -32,10 +32,7 @@
   $: {
     if (phone.value) {
       // Country code is not optional
-      const ph = parsePhoneNumber(
-        phone.value,
-        phone.countryCallingCode as CountryCode
-      )
+      const ph = parsePhoneNumber(phone.value, phone.countryCode as CountryCode)
       if (ph) {
         number = parseInt(ph.number, 10)
         extension = ph.ext ? parseInt(ph.ext, 10) : null
