@@ -3,10 +3,11 @@
   import * as reproto from '@resplice/proto'
   import db from '$services/db'
   import AppLoading from '$lib/common/skeleton/AppLoading.svelte'
-  import Code from '$lib/common/Code.svelte'
+  import CodeBlock from '$lib/common/CodeBlock.svelte'
 
   type Event = {
     type: number
+    counter: number
     data: any
   }
 
@@ -15,7 +16,7 @@
 
   async function loadEvents() {
     const results = await db.read('events')
-    events = results.events
+    events = results.events.map((e, i) => ({ counter: i + 1, ...e })).reverse()
     return true
   }
 
@@ -37,11 +38,11 @@
       {#each events as event}
         <div class="shadow rounded p-4 bg-white">
           <h2 class="text-lg font-semibold mb-4">
-            {eventTypeToText(event.type)}
+            {eventTypeToText(event.type)} ({event.counter})
           </h2>
-          <Code>
-            {JSON.stringify(event.data)}
-          </Code>
+          <CodeBlock>
+            {JSON.stringify(event.data, null, 2)}
+          </CodeBlock>
         </div>
       {/each}
     </main>
