@@ -136,10 +136,10 @@ export function combineBufferArrays(
   arr2: Uint8Array
 ): Uint8Array {
   const newBuf = new ArrayBuffer(arr1.byteLength + arr2.byteLength)
-  const newBufArr = new Uint8Array(newBuf)
-  newBufArr.set(arr1)
-  newBufArr.set(arr2, arr1.byteLength)
-  return newBufArr
+  const newBufView = new Uint8Array(newBuf)
+  newBufView.set(arr1)
+  newBufView.set(arr2, arr1.byteLength)
+  return newBufView
 }
 
 function buildJwk(rawKey: ArrayBuffer) {

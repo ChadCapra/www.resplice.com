@@ -14,6 +14,14 @@ type ServerMessage = {
   data: Uint8Array
 }
 
+export function encode(m: ClientMessage) {
+  const encodedPayload = encodePayload(m)
+  return encodeClientMessageWrapper({
+    requestType: m.type,
+    encodedPayload
+  })
+}
+
 export function encodeClientMessageWrapper(
   data: reproto.client_request.ClientRequest
 ) {
@@ -47,6 +55,14 @@ export function encodePayload(m: ClientMessage): Uint8Array {
   if (!encoder) throw Error(`Client Message ${m.type} is not supported`)
 
   return encoder(m.data).finish()
+}
+
+export function decode(bytes: Uint8Array) {
+  const serverMessage = decodeServerMessageWrapper(bytes)
+  return decodePayload({
+    type: serverMessage.messageType,
+    data: serverMessage.encodedPayload
+  })
 }
 
 export function decodeServerMessageWrapper(data: Uint8Array) {

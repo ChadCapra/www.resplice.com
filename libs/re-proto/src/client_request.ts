@@ -516,12 +516,11 @@ export function clientRequestTypeToJSON(object: ClientRequestType): string {
 /** Sent in plain binary, except encrypted payload is data encrypted via AES key */
 export interface ClientRequest {
   requestType: ClientRequestType
-  counter: number
-  encryptedPayload: Uint8Array
+  encodedPayload: Uint8Array
 }
 
 function createBaseClientRequest(): ClientRequest {
-  return { requestType: 0, counter: 0, encryptedPayload: new Uint8Array() }
+  return { requestType: 0, encodedPayload: new Uint8Array() }
 }
 
 export const ClientRequest = {
@@ -532,11 +531,8 @@ export const ClientRequest = {
     if (message.requestType !== 0) {
       writer.uint32(8).int32(message.requestType)
     }
-    if (message.counter !== 0) {
-      writer.uint32(16).uint32(message.counter)
-    }
-    if (message.encryptedPayload.length !== 0) {
-      writer.uint32(26).bytes(message.encryptedPayload)
+    if (message.encodedPayload.length !== 0) {
+      writer.uint32(18).bytes(message.encodedPayload)
     }
     return writer
   },
@@ -552,10 +548,7 @@ export const ClientRequest = {
           message.requestType = reader.int32() as any
           break
         case 2:
-          message.counter = reader.uint32()
-          break
-        case 3:
-          message.encryptedPayload = reader.bytes()
+          message.encodedPayload = reader.bytes()
           break
         default:
           reader.skipType(tag & 7)
@@ -570,9 +563,8 @@ export const ClientRequest = {
       requestType: isSet(object.requestType)
         ? clientRequestTypeFromJSON(object.requestType)
         : 0,
-      counter: isSet(object.counter) ? Number(object.counter) : 0,
-      encryptedPayload: isSet(object.encryptedPayload)
-        ? bytesFromBase64(object.encryptedPayload)
+      encodedPayload: isSet(object.encodedPayload)
+        ? bytesFromBase64(object.encodedPayload)
         : new Uint8Array()
     }
   },
@@ -581,11 +573,10 @@ export const ClientRequest = {
     const obj: any = {}
     message.requestType !== undefined &&
       (obj.requestType = clientRequestTypeToJSON(message.requestType))
-    message.counter !== undefined && (obj.counter = Math.round(message.counter))
-    message.encryptedPayload !== undefined &&
-      (obj.encryptedPayload = base64FromBytes(
-        message.encryptedPayload !== undefined
-          ? message.encryptedPayload
+    message.encodedPayload !== undefined &&
+      (obj.encodedPayload = base64FromBytes(
+        message.encodedPayload !== undefined
+          ? message.encodedPayload
           : new Uint8Array()
       ))
     return obj
@@ -596,8 +587,7 @@ export const ClientRequest = {
   ): ClientRequest {
     const message = createBaseClientRequest()
     message.requestType = object.requestType ?? 0
-    message.counter = object.counter ?? 0
-    message.encryptedPayload = object.encryptedPayload ?? new Uint8Array()
+    message.encodedPayload = object.encodedPayload ?? new Uint8Array()
     return message
   }
 }

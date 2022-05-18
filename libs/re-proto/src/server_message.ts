@@ -178,19 +178,13 @@ export function serverMessageTypeToJSON(object: ServerMessageType): string {
  */
 export interface ServerMessage {
   messageType: ServerMessageType
-  messageId: number
   /** used to clear expired entities on client side */
   serverTime: number
-  encryptedPayload: Uint8Array
+  encodedPayload: Uint8Array
 }
 
 function createBaseServerMessage(): ServerMessage {
-  return {
-    messageType: 0,
-    messageId: 0,
-    serverTime: 0,
-    encryptedPayload: new Uint8Array()
-  }
+  return { messageType: 0, serverTime: 0, encodedPayload: new Uint8Array() }
 }
 
 export const ServerMessage = {
@@ -201,14 +195,11 @@ export const ServerMessage = {
     if (message.messageType !== 0) {
       writer.uint32(8).int32(message.messageType)
     }
-    if (message.messageId !== 0) {
-      writer.uint32(16).uint32(message.messageId)
-    }
     if (message.serverTime !== 0) {
-      writer.uint32(24).uint32(message.serverTime)
+      writer.uint32(16).uint32(message.serverTime)
     }
-    if (message.encryptedPayload.length !== 0) {
-      writer.uint32(34).bytes(message.encryptedPayload)
+    if (message.encodedPayload.length !== 0) {
+      writer.uint32(26).bytes(message.encodedPayload)
     }
     return writer
   },
@@ -224,13 +215,10 @@ export const ServerMessage = {
           message.messageType = reader.int32() as any
           break
         case 2:
-          message.messageId = reader.uint32()
-          break
-        case 3:
           message.serverTime = reader.uint32()
           break
-        case 4:
-          message.encryptedPayload = reader.bytes()
+        case 3:
+          message.encodedPayload = reader.bytes()
           break
         default:
           reader.skipType(tag & 7)
@@ -245,10 +233,9 @@ export const ServerMessage = {
       messageType: isSet(object.messageType)
         ? serverMessageTypeFromJSON(object.messageType)
         : 0,
-      messageId: isSet(object.messageId) ? Number(object.messageId) : 0,
       serverTime: isSet(object.serverTime) ? Number(object.serverTime) : 0,
-      encryptedPayload: isSet(object.encryptedPayload)
-        ? bytesFromBase64(object.encryptedPayload)
+      encodedPayload: isSet(object.encodedPayload)
+        ? bytesFromBase64(object.encodedPayload)
         : new Uint8Array()
     }
   },
@@ -257,14 +244,12 @@ export const ServerMessage = {
     const obj: any = {}
     message.messageType !== undefined &&
       (obj.messageType = serverMessageTypeToJSON(message.messageType))
-    message.messageId !== undefined &&
-      (obj.messageId = Math.round(message.messageId))
     message.serverTime !== undefined &&
       (obj.serverTime = Math.round(message.serverTime))
-    message.encryptedPayload !== undefined &&
-      (obj.encryptedPayload = base64FromBytes(
-        message.encryptedPayload !== undefined
-          ? message.encryptedPayload
+    message.encodedPayload !== undefined &&
+      (obj.encodedPayload = base64FromBytes(
+        message.encodedPayload !== undefined
+          ? message.encodedPayload
           : new Uint8Array()
       ))
     return obj
@@ -275,9 +260,8 @@ export const ServerMessage = {
   ): ServerMessage {
     const message = createBaseServerMessage()
     message.messageType = object.messageType ?? 0
-    message.messageId = object.messageId ?? 0
     message.serverTime = object.serverTime ?? 0
-    message.encryptedPayload = object.encryptedPayload ?? new Uint8Array()
+    message.encodedPayload = object.encodedPayload ?? new Uint8Array()
     return message
   }
 }

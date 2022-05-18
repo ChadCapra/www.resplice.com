@@ -1,50 +1,39 @@
+import { bytesToInt32, int32ToBytes } from '@resplice/utils'
 import {
   encrypt,
   decrypt,
   calculateServerIV,
   calculateClientIV,
+  combineBufferArrays,
   type ReCrypto
 } from '$services/crypto'
-import {
-  encodePayload,
-  decodePayload,
-  decodeServerMessageWrapper,
-  encodeClientMessageWrapper
-} from '$services/proto'
+import { decode, encode } from '$services/proto'
 import type { ClientMessage } from '$services/commuters/connCommuter'
 
 export async function deserializeServerMessage(
   bytes: Uint8Array,
   crypto: ReCrypto
-) {
-  const serverWrapper = decodeServerMessageWrapper(bytes)
-  const iv = calculateServerIV(crypto.baseIV, serverWrapper.messageId)
+): Promise<any> {
+  const counter = bytesToInt32(new Uint8Array([0, 0, ...bytes.slice(0, 2)]))
+  const message = bytes.slice(2)
+  const iv = calculateServerIV(crypto.baseIV, counter)
 
-  const serverMessageBytes = await decrypt(
-    crypto.key,
-    iv,
-    serverWrapper.encryptedPayload
-  )
+  const messageBytes = await decrypt(crypto.key, iv, message)
 
-  return decodePayload({
-    type: serverWrapper.messageType,
-    data: serverMessageBytes
-  })
+  return decode(messageBytes)
 }
 
 export async function serializeClientMessage(
   message: ClientMessage,
   crypto: ReCrypto
-) {
-  const payloadBytes = encodePayload(message)
+): Promise<Uint8Array> {
+  const payloadBytes = encode(message)
 
   const iv = calculateClientIV(crypto.baseIV, message.counter)
 
   const encryptedPayload = await encrypt(crypto.key, iv, payloadBytes)
 
-  return encodeClientMessageWrapper({
-    requestType: message.type,
-    counter: message.counter,
-    encryptedPayload
-  })
+  const counterBytes = int32ToBytes(message.counter).slice(-2)
+
+  return combineBufferArrays(counterBytes, encryptedPayload)
 }

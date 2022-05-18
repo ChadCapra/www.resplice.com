@@ -39,7 +39,7 @@ function profileClientFactory(
   return {
     editName: async (name) => {
       const message = {
-        type: ClientMessageType.USER_PROFILE_EDIT_NAME,
+        type: ClientMessageType.PROFILE_EDIT_NAME,
         data: { name }
       }
       const [counter] = await cache.insert('events', message)
@@ -50,7 +50,7 @@ function profileClientFactory(
     },
     editHandle: async (handle) => {
       const message = {
-        type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
+        type: ClientMessageType.PROFILE_EDIT_HANDLE,
         data: { handle }
       }
       const [counter] = await cache.insert('events', message)
@@ -61,7 +61,7 @@ function profileClientFactory(
     },
     editAvatar: async (avatar) => {
       const message = {
-        type: ClientMessageType.USER_PROFILE_EDIT_HANDLE,
+        type: ClientMessageType.PROFILE_EDIT_AVATAR,
         data: { avatar }
       }
       const [counter] = await cache.insert('events', message)

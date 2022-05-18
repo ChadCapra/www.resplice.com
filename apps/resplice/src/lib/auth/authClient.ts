@@ -1,11 +1,5 @@
 import * as reproto from '@resplice/proto'
-import type {
-  Create as CreateSession,
-  VerifyEmail,
-  VerifyPhone
-} from '@resplice/proto/dist/auth/request/session'
-import type { Create as CreateAccount } from '@resplice/proto/dist/auth/request/account'
-import { encodePayload, encodeClientMessageWrapper } from '$services/proto'
+import { encodePayload } from '$services/proto'
 import {
   buildReCrypto,
   importPublicKey,
@@ -19,6 +13,12 @@ import {
 } from '$services/serde'
 import MockAuthClient from '$services/mocks/authClient'
 
+import type {
+  Create as CreateSession,
+  VerifyEmail,
+  VerifyPhone
+} from '@resplice/proto/dist/auth/request/session'
+import type { Create as CreateAccount } from '@resplice/proto/dist/auth/request/account'
 import type { Api } from '$services/api/http'
 import type { DB } from '$services/db'
 import type { Session } from '$types/session'
@@ -94,25 +94,19 @@ class AuthClient {
       } as CreateSession
     }
 
-    const [counter] = await this.#cache.insert('events', message)
-
     const msgBytes = encodePayload(message)
 
     const encryptedMessage = await publicKeyEncrypt(publicKey, msgBytes)
 
-    const clientMessage: reproto.client_request.ClientRequest = {
-      requestType: ClientMessageType.SESSION_CREATE,
-      counter,
-      encryptedPayload: encryptedMessage
-    }
-    const clientMessageBytes = encodeClientMessageWrapper(clientMessage)
-
     const resBuffer: ArrayBuffer = await this.#api.post({
-      endpoint: '/auth',
-      data: clientMessageBytes
+      endpoint: '/init',
+      data: encryptedMessage
     })
 
-    const session = await deserializeServerMessage(
+    // Add to events only after successful create session to prevent counter from increasing on failures
+    await this.#cache.insert('events', message)
+
+    const session: Session = await deserializeServerMessage(
       new Uint8Array(resBuffer),
       this.#crypto
     )
@@ -140,7 +134,7 @@ class AuthClient {
     )
 
     const resBuffer: ArrayBuffer = await this.#api.post({
-      endpoint: '/auth',
+      endpoint: '/do',
       data: clientMessageBytes
     })
 
@@ -172,7 +166,7 @@ class AuthClient {
     )
 
     const resBuffer: ArrayBuffer = await this.#api.post({
-      endpoint: '/auth',
+      endpoint: '/do',
       data: clientMessageBytes
     })
 
@@ -206,7 +200,7 @@ class AuthClient {
     )
 
     const resBuffer: ArrayBuffer = await this.#api.post({
-      endpoint: '/auth',
+      endpoint: '/do',
       data: clientMessageBytes
     })
 
