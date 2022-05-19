@@ -16,7 +16,9 @@
 
   async function loadEvents() {
     const results = await db.read('events')
-    events = results.events.map((e, i) => ({ counter: i + 1, ...e })).reverse()
+    events = results.events
+      .map((e: any, i: number) => ({ counter: i + 1, ...e }))
+      .reverse()
     return true
   }
 
@@ -45,6 +47,9 @@
           </CodeBlock>
         </div>
       {/each}
+      {#if !events.length}
+        <p>No events to display</p>
+      {/if}
     </main>
   {/if}
 {/await}
