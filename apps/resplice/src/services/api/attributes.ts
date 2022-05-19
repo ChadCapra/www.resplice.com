@@ -66,7 +66,6 @@ function attributesClientFactory(
     editValue: async (params) => {
       const message = {
         type: ClientMessageType.ATTRIBUTE_EDIT_VALUE,
-        counter: 0,
         data: params
       }
       const [counter] = await cache.insert('events', message)
