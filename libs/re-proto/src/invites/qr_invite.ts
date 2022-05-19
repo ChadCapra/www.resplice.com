@@ -4,12 +4,12 @@ import * as _m0 from 'protobufjs/minimal'
 
 export interface QrInvite {
   id: number
-  uuid: Uint8Array
+  accessCode: number
   expiry: number
 }
 
 function createBaseQrInvite(): QrInvite {
-  return { id: 0, uuid: new Uint8Array(), expiry: 0 }
+  return { id: 0, accessCode: 0, expiry: 0 }
 }
 
 export const QrInvite = {
@@ -20,8 +20,8 @@ export const QrInvite = {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id)
     }
-    if (message.uuid.length !== 0) {
-      writer.uint32(18).bytes(message.uuid)
+    if (message.accessCode !== 0) {
+      writer.uint32(16).uint64(message.accessCode)
     }
     if (message.expiry !== 0) {
       writer.uint32(24).uint32(message.expiry)
@@ -40,7 +40,7 @@ export const QrInvite = {
           message.id = reader.uint32()
           break
         case 2:
-          message.uuid = reader.bytes()
+          message.accessCode = longToNumber(reader.uint64() as Long)
           break
         case 3:
           message.expiry = reader.uint32()
@@ -56,9 +56,7 @@ export const QrInvite = {
   fromJSON(object: any): QrInvite {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      uuid: isSet(object.uuid)
-        ? bytesFromBase64(object.uuid)
-        : new Uint8Array(),
+      accessCode: isSet(object.accessCode) ? Number(object.accessCode) : 0,
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0
     }
   },
@@ -66,10 +64,8 @@ export const QrInvite = {
   toJSON(message: QrInvite): unknown {
     const obj: any = {}
     message.id !== undefined && (obj.id = Math.round(message.id))
-    message.uuid !== undefined &&
-      (obj.uuid = base64FromBytes(
-        message.uuid !== undefined ? message.uuid : new Uint8Array()
-      ))
+    message.accessCode !== undefined &&
+      (obj.accessCode = Math.round(message.accessCode))
     message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
     return obj
   },
@@ -77,7 +73,7 @@ export const QrInvite = {
   fromPartial<I extends Exact<DeepPartial<QrInvite>, I>>(object: I): QrInvite {
     const message = createBaseQrInvite()
     message.id = object.id ?? 0
-    message.uuid = object.uuid ?? new Uint8Array()
+    message.accessCode = object.accessCode ?? 0
     message.expiry = object.expiry ?? 0
     return message
   }
@@ -93,29 +89,6 @@ var globalThis: any = (() => {
   if (typeof global !== 'undefined') return global
   throw 'Unable to locate global object'
 })()
-
-const atob: (b64: string) => string =
-  globalThis.atob ||
-  ((b64) => globalThis.Buffer.from(b64, 'base64').toString('binary'))
-function bytesFromBase64(b64: string): Uint8Array {
-  const bin = atob(b64)
-  const arr = new Uint8Array(bin.length)
-  for (let i = 0; i < bin.length; ++i) {
-    arr[i] = bin.charCodeAt(i)
-  }
-  return arr
-}
-
-const btoa: (bin: string) => string =
-  globalThis.btoa ||
-  ((bin) => globalThis.Buffer.from(bin, 'binary').toString('base64'))
-function base64FromBytes(arr: Uint8Array): string {
-  const bin: string[] = []
-  arr.forEach((byte) => {
-    bin.push(String.fromCharCode(byte))
-  })
-  return btoa(bin.join(''))
-}
 
 type Builtin =
   | Date
@@ -147,6 +120,13 @@ type Exact<P, I extends P> = P extends Builtin
         Exclude<keyof I, KeysOfUnion<P>>,
         never
       >
+
+function longToNumber(long: Long): number {
+  if (long.gt(Number.MAX_SAFE_INTEGER)) {
+    throw new globalThis.Error('Value is larger than Number.MAX_SAFE_INTEGER')
+  }
+  return long.toNumber()
+}
 
 if (_m0.util.Long !== Long) {
   _m0.util.Long = Long as any
