@@ -1,8 +1,7 @@
 export function validateEmail(email: string): boolean {
   /* eslint-disable no-control-regex, no-useless-escape */
   // prettier-ignore
-  return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(email)
-  // return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)
+  return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)
 }
 
 if (import.meta.vitest) {
@@ -10,6 +9,10 @@ if (import.meta.vitest) {
   test('validates email', () => {
     expect(validateEmail('marcus@resplice.com')).toBe(true)
     expect(validateEmail('marcus@re.com')).toBe(true)
+    expect(
+      validateEmail('"you can do anything in here\\@@##$[]"@resplice.com')
+    ).toBe(true)
+    expect(validateEmail('me@[192.168.0.1]')).toBe(true)
   })
   test('invalidates email', () => {
     expect(validateEmail('')).toBe(false)
