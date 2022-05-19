@@ -36,9 +36,10 @@
     {/if}
     <label
       for={name}
-      class={cx('font-semibold absolute left-6 transform', {
+      class={cx('font-semibold absolute transform', {
         'top-1 scale-90': isTouched,
         'top-4': !isTouched,
+        'left-6': !Icon,
         'left-16': !!Icon
       })}
     >
