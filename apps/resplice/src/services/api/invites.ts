@@ -3,9 +3,15 @@ import {
   ConnCommandType,
   onlyRecievedMessages
 } from '$services/commuters/connCommuter'
+import {
+  deserializeServerMessage,
+  serializeClientMessage
+} from '$services/serde'
 import processRecords from '$stores/utils'
 
+import type { ReCrypto } from '$services/crypto'
 import type { ConnCommuter } from '$services/commuters/connCommuter'
+import type { Api } from '$services/api/http'
 import type { DB } from '$services/db'
 import type { InviteStore } from '$stores/invites'
 import type { Invite, QrInvite } from '$types/invite'
@@ -37,7 +43,7 @@ export interface InvitesClient {
     attributeIds: Attribute['id'][]
   ) => Promise<void>
   delete: (id: Invite['id']) => Promise<void>
-  createQr: () => Promise<void>
+  createQr: () => Promise<QrInvite>
   deleteQr: (id: QrInvite['id']) => Promise<void>
   addShare: (
     id: Invite['id'],
@@ -49,11 +55,20 @@ export interface InvitesClient {
   ) => Promise<void>
 }
 
-function invitesClientFactory(
-  commuter: ConnCommuter,
-  cache: DB,
+type FactoryParams = {
+  crypto: ReCrypto
+  commuter: ConnCommuter
+  api: Api
+  cache: DB
   store: InviteStore
-): InvitesClient {
+}
+function invitesClientFactory({
+  crypto,
+  commuter,
+  api,
+  cache,
+  store
+}: FactoryParams): InvitesClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
     switch (m.type) {
       case ServerMessageType.CONTACT_INVITES:
@@ -128,10 +143,20 @@ function invitesClientFactory(
         data: {}
       }
       const [counter] = await cache.insert('events', message)
-      commuter.postMessage({
-        type: ConnCommandType.SEND,
-        message: { ...message, counter }
+      const clientMessageBytes = await serializeClientMessage(
+        { ...message, counter },
+        crypto
+      )
+      const resBuffer: ArrayBuffer = await api.post({
+        endpoint: '/do',
+        data: clientMessageBytes
       })
+      const qrInvite: QrInvite = await deserializeServerMessage(
+        new Uint8Array(resBuffer),
+        crypto
+      )
+
+      return qrInvite
     },
     deleteQr: async (id) => {
       const message = {

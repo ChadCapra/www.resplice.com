@@ -5,6 +5,7 @@
   import AppClient, {
     contextKey as clientContextKey
   } from '$services/api/appClient'
+  import apiFactory from '$services/api/http'
   import cache from '$services/db'
   import stores from '$stores/index'
   import useConfig from '$lib/hooks/useConfig'
@@ -29,7 +30,14 @@
 
     const useMock = !config.wsEndpoint
     const connCommuter = startConnCommuter(useMock)
-    const client = new AppClient(config.wsEndpoint, connCommuter, cache, stores)
+    const api = apiFactory(config.httpEndpoint)
+    const client = new AppClient(
+      config.wsEndpoint,
+      connCommuter,
+      api,
+      cache,
+      stores
+    )
     clientContext.client = client
     return true
   }

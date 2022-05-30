@@ -10,6 +10,7 @@ import {
   ConnMessageType,
   type ConnCommuter
 } from '$services/commuters/connCommuter'
+import type { Api } from '$services/api/http'
 import type { AttributesClient } from '$services/api/attributes'
 // import type { ChatClient } from '$services/api/chat'
 import type { ContactsClient } from '$services/api/contacts'
@@ -31,9 +32,14 @@ class AppClient {
   constructor(
     wsEndpoint: string,
     connCommuter: ConnCommuter,
+    api: Api,
     cache: DB,
     stores: Stores
   ) {
+    let crypto: ReCrypto
+    // Subscribes, sets crypto, then unsubscribes
+    stores.auth.subscribe((val) => (crypto = val.crypto))()
+
     // Set state in app as connecting
     stores.events.set({
       connStatus: ConnStatus.CONNECTING,
@@ -84,12 +90,14 @@ class AppClient {
       stores.attributes
     )
     this.contacts = contactsClientFactory(connCommuter, cache, stores.contacts)
-    this.invites = invitesClientFactory(connCommuter, cache, stores.invites)
+    this.invites = invitesClientFactory({
+      crypto,
+      commuter: connCommuter,
+      api,
+      cache,
+      store: stores.invites
+    })
     this.profile = profileClientFactory(connCommuter, cache, stores.profile)
-
-    let crypto: ReCrypto
-    // Subscribes, sets crypto, then unsubscribes
-    stores.auth.subscribe((val) => (crypto = val.crypto))()
 
     // Get latest dates for cache stores and build handshake message
     const handshake = {
