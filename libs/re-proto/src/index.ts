@@ -10,7 +10,6 @@ import * as attributesrequestattributets from './attributes/request/attribute'
 import * as attributesrequestattribute_groupts from './attributes/request/attribute_group'
 import * as authrequestaccountts from './auth/request/account'
 import * as authrequestsessionts from './auth/request/session'
-import * as authrequestsocketts from './auth/request/socket'
 import * as authsessionts from './auth/session'
 import * as client_requestts from './client_request'
 import * as contactscontactts from './contacts/contact'
@@ -26,7 +25,6 @@ import * as invitesinvitets from './invites/invite'
 import * as invitesinvite_attributets from './invites/invite_attribute'
 import * as invitesinvite_typets from './invites/invite_type'
 import * as invitesqr_invitets from './invites/qr_invite'
-import * as invitesqr_invite_attributests from './invites/qr_invite_attributes'
 import * as invitesrequestinvitets from './invites/request/invite'
 import * as invitesrequestinvite_attributets from './invites/request/invite_attribute'
 import * as invitesrequestqr_invitets from './invites/request/qr_invite'
@@ -62,7 +60,6 @@ export const auth = {
   request: {
     account: authrequestaccountts,
     session: authrequestsessionts,
-    socket: authrequestsocketts,
   },
   session: authsessionts,
 }
@@ -85,7 +82,6 @@ export const invites = {
   invite_attribute: invitesinvite_attributets,
   invite_type: invitesinvite_typets,
   qr_invite: invitesqr_invitets,
-  qr_invite_attributes: invitesqr_invite_attributests,
   request: {
     invite: invitesrequestinvitets,
     invite_attribute: invitesrequestinvite_attributets,
