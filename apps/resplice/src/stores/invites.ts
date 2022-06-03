@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store'
-import type { Invite, QrInvite, Attribute, Share } from '$types/invite'
+import type { Invite, Attribute, Share } from '$types/invite'
 
 import {
   invites as mockInvites,
@@ -9,8 +9,6 @@ import {
 
 type InviteRecord = Map<number, Invite>
 const invites = writable<InviteRecord | null>(mockInvites)
-
-const activeQrInvite = writable<QrInvite | null>(null)
 
 type InviteAttributeRecord = Map<number, Attribute>
 const inviteAttributes = writable<InviteAttributeRecord | null>(
@@ -33,7 +31,6 @@ const inviteShares = writable<InviteShareRecord | null>(mockInviteShares)
 
 const inviteStores = {
   invites,
-  activeQrInvite,
   inviteAttributes,
   inviteAttributesDict,
   inviteShares

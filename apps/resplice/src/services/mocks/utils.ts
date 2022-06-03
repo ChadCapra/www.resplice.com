@@ -13,7 +13,7 @@ export function mockPromise<T>({
         reject(new Error('Network Error'))
         return
       }
-      console.trace(data)
+      console.info(data)
       resolve(data)
     }, timeout)
   })

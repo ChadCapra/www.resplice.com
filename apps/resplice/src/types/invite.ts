@@ -47,9 +47,13 @@ export type Invite =
 
 export type QrInvite = {
   id: number
-  unlock_code: number
+  accessCode: number
   expiry: number
-  attributeIds: number[]
+  attributeIds: {
+    id: number
+    qrInviteId: number
+    attributeId: number
+  }[]
 }
 
 export type Attribute = BaseAttribute & {

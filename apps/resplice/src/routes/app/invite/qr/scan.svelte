@@ -1,15 +1,42 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
+  import QR, { type QRCode } from 'jsqr'
   import { goto } from '$app/navigation'
-  import QR from 'jsqr'
-  import type { QRCode } from 'jsqr'
+  import contactStores from '$stores/contacts'
+  import useAppClient from '$lib/hooks/useAppClient'
   import Camera from '$lib/common/Camera.svelte'
-  import Modal from '$lib/common/Modal.svelte'
-  import PublicContact from '$lib/invite/PublicContact.svelte'
   import CloseIcon from '$lib/icons/CloseIcon.svelte'
+  import Spinner from '$lib/common/skeleton/Spinner.svelte'
+
+  const client = useAppClient()
 
   let qrCode: QRCode
   let streamInterval: NodeJS.Timeout
+  let isLoading = false
+
+  async function handleQr(qrData: string | null) {
+    if (!qrData) return
+
+    isLoading = true
+    const url = new URL(qrData)
+    console.log(url)
+    const paths = url.pathname.split('/')
+    const idx = paths.findIndex((p) => p === 'qr') + 1
+    const [id, code] = atob(paths[idx]).split('|')
+    const qrInviteId = parseInt(id, 10)
+    const accessCode = parseInt(code, 10)
+
+    const pendingContact = await client.invites.openQr(qrInviteId, accessCode)
+    contactStores.pendingContacts.update((pendingContacts) => {
+      const newPendingContacts = new Map(pendingContacts)
+      newPendingContacts.set(pendingContact.id, pendingContact)
+      return newPendingContacts
+    })
+
+    goto(`/app/pending/contact/${pendingContact.id}`)
+  }
+
+  $: handleQr(qrCode?.data)
 
   async function onVideoStream(e: CustomEvent<HTMLVideoElement>) {
     const stream = e.detail
@@ -60,11 +87,11 @@
     </button>
   </div>
 
-  <div class="border-4 border-brand-primary w-3/4 h-1/2 z-10 rounded-2xl" />
-
-  {#if !!qrCode}
-    <Modal on:close={() => (qrCode = null)}>
-      <PublicContact />
-    </Modal>
-  {/if}
+  <div
+    class="border-4 border-brand-primary w-3/4 h-1/2 z-10 rounded-2xl flex justify-center items-center"
+  >
+    {#if isLoading}
+      <Spinner />
+    {/if}
+  </div>
 </main>

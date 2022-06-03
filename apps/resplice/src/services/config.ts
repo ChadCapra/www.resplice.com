@@ -2,6 +2,7 @@ type ENV = 'local' | 'development' | 'production'
 
 export type RespliceConfig = {
   env: ENV
+  appUrl: string
   httpEndpoint: string
   wsEndpoint: string
   telemetryEndpoint: string
@@ -12,6 +13,7 @@ export const contextKey = 'CONFIG'
 
 export const defaultConfig: RespliceConfig = {
   env: 'local',
+  appUrl: 'http://localhost:3000',
   httpEndpoint: '',
   wsEndpoint: '',
   telemetryEndpoint: '',

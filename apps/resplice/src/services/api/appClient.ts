@@ -29,6 +29,8 @@ class AppClient {
   invites: InvitesClient
   profile: ProfileClient
 
+  #crypto: ReCrypto
+
   constructor(
     wsEndpoint: string,
     connCommuter: ConnCommuter,
@@ -36,9 +38,8 @@ class AppClient {
     cache: DB,
     stores: Stores
   ) {
-    let crypto: ReCrypto
     // Subscribes, sets crypto, then unsubscribes
-    stores.auth.subscribe((val) => (crypto = val.crypto))()
+    stores.auth.subscribe((val) => (this.#crypto = val.crypto))()
 
     // Set state in app as connecting
     stores.events.set({
@@ -91,7 +92,7 @@ class AppClient {
     )
     this.contacts = contactsClientFactory(connCommuter, cache, stores.contacts)
     this.invites = invitesClientFactory({
-      crypto,
+      crypto: this.#crypto,
       commuter: connCommuter,
       api,
       cache,
@@ -121,7 +122,7 @@ class AppClient {
     connCommuter.postMessage({
       type: ConnCommandType.OPEN,
       wsEndpoint,
-      crypto,
+      crypto: this.#crypto,
       handshake
     })
   }

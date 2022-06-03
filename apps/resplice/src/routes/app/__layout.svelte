@@ -2,6 +2,7 @@
   import { setContext, onMount } from 'svelte'
   import { goto } from '$app/navigation'
   import startConnCommuter from '$services/commuters/connCommuter'
+  import MockAppClient from '$services/mocks/appClient'
   import AppClient, {
     contextKey as clientContextKey
   } from '$services/api/appClient'
@@ -29,16 +30,21 @@
     }
 
     const useMock = !config.wsEndpoint
-    const connCommuter = startConnCommuter(useMock)
-    const api = apiFactory(config.httpEndpoint)
-    const client = new AppClient(
-      config.wsEndpoint,
-      connCommuter,
-      api,
-      cache,
-      stores
-    )
-    clientContext.client = client
+    if (useMock) {
+      clientContext.client = new MockAppClient()
+    } else {
+      const connCommuter = startConnCommuter(useMock)
+      const api = apiFactory(config.httpEndpoint)
+      const client = new AppClient(
+        config.wsEndpoint,
+        connCommuter,
+        api,
+        cache,
+        stores
+      )
+      clientContext.client = client
+    }
+
     return true
   }
 

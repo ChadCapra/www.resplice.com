@@ -20,7 +20,7 @@ import type {
   PhoneValue,
   Attribute as UserAttribute
 } from '$types/attribute'
-import type { Contact } from '$types/contact'
+import type { Contact, PendingContact } from '$types/contact'
 import type { Attribute } from '$types/user'
 
 const ServerMessageType = reproto.server_message.ServerMessageType
@@ -45,6 +45,10 @@ export interface InvitesClient {
   delete: (id: Invite['id']) => Promise<void>
   createQr: () => Promise<QrInvite>
   deleteQr: (id: QrInvite['id']) => Promise<void>
+  openQr: (
+    id: QrInvite['id'],
+    accessCode: QrInvite['accessCode']
+  ) => Promise<PendingContact>
   addShare: (
     id: Invite['id'],
     attributeId: UserAttribute['id']
@@ -85,9 +89,6 @@ function invitesClientFactory({
             m.data.expiredIds
           )
         )
-        break
-      case ServerMessageType.QR_CONTACT_INVITES:
-        store.activeQrInvite.set(m.data)
         break
     }
   })
@@ -168,6 +169,27 @@ function invitesClientFactory({
         type: ConnCommandType.SEND,
         message: { ...message, counter }
       })
+    },
+    openQr: async (qrInviteId, accessCode) => {
+      const message = {
+        type: ClientMessageType.QR_INVITE_OPEN,
+        data: { qrInviteId, accessCode }
+      }
+      const [counter] = await cache.insert('events', message)
+      const clientMessageBytes = await serializeClientMessage(
+        { ...message, counter },
+        crypto
+      )
+      const resBuffer: ArrayBuffer = await api.post({
+        endpoint: '/do',
+        data: clientMessageBytes
+      })
+      const pendingContact: PendingContact = await deserializeServerMessage(
+        new Uint8Array(resBuffer),
+        crypto
+      )
+
+      return pendingContact
     },
     addShare: async (id, attributeId) => {
       const message = {
