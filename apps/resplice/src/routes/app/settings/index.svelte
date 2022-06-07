@@ -38,12 +38,12 @@
             on:toggle={() => (appNotifications = !appNotifications)}
           />
         </SettingsToggle>
-        <SettingsItem linkTo="/app/settings/invites"
-          >Active Invites</SettingsItem
-        >
-        <SettingsItem linkTo="/app/settings/archived"
-          >Archived Contacts</SettingsItem
-        >
+        <SettingsItem linkTo="/app/settings/invites">
+          Active Invites
+        </SettingsItem>
+        <SettingsItem linkTo="/app/settings/archived">
+          Archived Contacts
+        </SettingsItem>
       </div>
     </section>
     <section class="border-b-2 border-gray-200 pb-4">
