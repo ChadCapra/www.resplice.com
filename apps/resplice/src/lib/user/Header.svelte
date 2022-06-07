@@ -30,5 +30,5 @@
       </div>
     {/if}
   </div>
-  <IconButton Icon={SettingsIcon} on:click={() => goto('/app/user/settings')} />
+  <IconButton Icon={SettingsIcon} on:click={() => goto('/app/settings')} />
 </nav>
