@@ -1,44 +1,52 @@
 <script lang="ts">
-  import contactStores from '$stores/contacts'
+  import { goto } from '$app/navigation'
   import attributeStore from '$stores/attributes'
+  import contactStores from '$stores/contacts'
   import useAppClient from '$lib/hooks/useAppClient'
   import AttributeItem from '$lib/attributes/Item.svelte'
   import SkeletonList from '$lib/common/skeleton/SkeletonList.svelte'
   import AddIcon from '$lib/icons/AddIcon.svelte'
   import Toggle from '$lib/common/form/Toggle.svelte'
+  import Button from '$lib/common/Button.svelte'
   import { sortUserAttributes } from '$lib/attributes/utils'
-  import type { Share } from '$types/contact'
 
   const client = useAppClient()
 
   export let contactId: number
 
-  const sharesStore = contactStores.contactSharesDict
-  let shareMap: Record<number, boolean> = {}
-
   $: userAttributes = sortUserAttributes($attributeStore)
-  $: buildShareMap($sharesStore[contactId])
+  let shareMap: Record<number, boolean> = {}
+  let isLoading: boolean = false
 
-  function buildShareMap(shares: Share[]) {
-    const newShareMap: Record<number, boolean> = {}
-    shares.forEach((share) => {
-      newShareMap[share.attributeId] = true
-    })
-    shareMap = newShareMap
-  }
-
-  async function handleShareToggle(attributeId: number) {
+  function handleShareToggle(attributeId: number) {
     if (shareMap[attributeId]) {
       shareMap = { ...shareMap, [attributeId]: false }
-      await client.contacts.removeShare(contactId, attributeId)
     } else {
       shareMap = { ...shareMap, [attributeId]: true }
-      await client.contacts.addShare(contactId, attributeId)
     }
+  }
+
+  async function handleConnect() {
+    if (!Object.values(shareMap).length) {
+      // TODO: Use toast
+      alert('One share is required')
+      return
+    }
+
+    isLoading = true
+    const contact = await client.contacts.acceptPending(contactId)
+
+    contactStores.contacts.update((contacts) => {
+      const newContacts = new Map(contacts)
+      newContacts.set(contact.id, contact)
+      return newContacts
+    })
+
+    goto(`/app/contact/${contact.id}/attributes`)
   }
 </script>
 
-<div class="flex-1 flex flex-col space-y-4 w-full px-8 py-4">
+<div class="flex-1 flex flex-col space-y-4 w-full px-8 pb-4">
   {#if userAttributes}
     {#each userAttributes as attribute}
       <div class="flex">
@@ -59,6 +67,7 @@
       </div>
       <p class="ml-4">New Attribute</p>
     </button>
+    <Button {isLoading} on:click={handleConnect}>Connect</Button>
   {:else}
     <SkeletonList count={8} height="3em" width="100%" />
   {/if}

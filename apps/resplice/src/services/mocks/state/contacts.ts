@@ -224,7 +224,8 @@ export const pendingContacts = new Map<number, PendingContact>([
       id: 1,
       type: InviteType.EMAIL,
       name: 'Finn',
-      avatarUrl: null,
+      avatarUrl:
+        'https://res.cloudinary.com/capabit-solutions/image/upload/v1529421559/Resplice/gjt75zp3rbwmj0jsrcap.png',
       email: { email: 'finn@firstorder.com' },
       expiry: 1697933779
     }
@@ -245,3 +246,17 @@ export const pendingContactAttributes = new Map<
     }
   ]
 ])
+
+export const pendingContactNowContact: Contact = {
+  id: 4,
+  name: 'Finn',
+  handle: 'FN-2187',
+  avatarUrl:
+    'https://res.cloudinary.com/capabit-solutions/image/upload/v1529421559/Resplice/gjt75zp3rbwmj0jsrcap.png',
+  alias: null,
+  description: null,
+  isFavored: true,
+  isMuted: false,
+  isArchived: false,
+  connectedAt: 1638893210
+}

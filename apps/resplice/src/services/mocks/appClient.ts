@@ -5,6 +5,10 @@ import type { InvitesClient } from '$services/api/invites'
 import type { ProfileClient } from '$services/api/profile'
 import { mockPromise } from '$services/mocks/utils'
 import { activeQrInvite } from '$services/mocks/state/invites'
+import {
+  pendingContacts,
+  pendingContactNowContact
+} from '$services/mocks/state/contacts'
 
 class MockAppClient {
   attributes: AttributesClient
@@ -31,7 +35,8 @@ class MockAppClient {
       delete: (_: any) => mockPromise({ data: undefined }),
       addShare: (_: any) => mockPromise({ data: undefined }),
       removeShare: (_: any) => mockPromise({ data: undefined }),
-      acceptPending: (_: any) => mockPromise({ data: undefined }),
+      acceptPending: (_: any) =>
+        mockPromise({ data: pendingContactNowContact }),
       declinePending: (_: any) => mockPromise({ data: undefined })
     }
     this.invites = {
@@ -41,7 +46,7 @@ class MockAppClient {
       delete: (_: any) => mockPromise({ data: undefined }),
       createQr: () => mockPromise({ data: activeQrInvite }),
       deleteQr: (_: any) => mockPromise({ data: undefined }),
-      openQr: (_: any) => mockPromise({ data: undefined }),
+      openQr: (_: any) => mockPromise({ data: pendingContacts.get(1) }),
       addShare: (_: any) => mockPromise({ data: undefined }),
       removeShare: (_: any) => mockPromise({ data: undefined })
     }

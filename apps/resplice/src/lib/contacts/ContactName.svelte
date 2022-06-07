@@ -2,7 +2,7 @@
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
   import type { Contact } from '$types/contact'
 
-  export let contact: Contact | null
+  export let contact: Pick<Contact, 'alias' | 'name'> | null
 </script>
 
 {#if contact}

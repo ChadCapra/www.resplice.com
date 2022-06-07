@@ -90,7 +90,13 @@ class AppClient {
       cache,
       stores.attributes
     )
-    this.contacts = contactsClientFactory(connCommuter, cache, stores.contacts)
+    this.contacts = contactsClientFactory({
+      crypto: this.#crypto,
+      commuter: connCommuter,
+      api,
+      cache,
+      store: stores.contacts
+    })
     this.invites = invitesClientFactory({
       crypto: this.#crypto,
       commuter: connCommuter,

@@ -3,9 +3,15 @@ import {
   ConnCommandType,
   onlyRecievedMessages
 } from '$services/commuters/connCommuter'
+import {
+  deserializeServerMessage,
+  serializeClientMessage
+} from '$services/serde'
 import processRecords from '$stores/utils'
 
+import type { ReCrypto } from '$services/crypto'
 import type { ConnCommuter } from '$services/commuters/connCommuter'
+import type { Api } from '$services/api/http'
 import type { DB } from '$services/db'
 import type { ContactStore } from '$stores/contacts'
 import type { Contact, PendingContact } from '$types/contact'
@@ -34,15 +40,24 @@ export interface ContactsClient {
     id: Contact['id'],
     attributeId: UserAttribute['id']
   ) => Promise<void>
-  acceptPending: (id: PendingContact['id']) => Promise<void>
+  acceptPending: (id: PendingContact['id']) => Promise<Contact>
   declinePending: (id: PendingContact['id']) => Promise<void>
 }
 
-function contactsClientFactory(
-  commuter: ConnCommuter,
-  cache: DB,
+type FactoryParams = {
+  crypto: ReCrypto
+  commuter: ConnCommuter
+  api: Api
+  cache: DB
   store: ContactStore
-): ContactsClient {
+}
+function contactsClientFactory({
+  crypto,
+  commuter,
+  api,
+  cache,
+  store
+}: FactoryParams): ContactsClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
     switch (m.type) {
       case ServerMessageType.CONTACTS:
@@ -167,10 +182,20 @@ function contactsClientFactory(
         data: { id }
       }
       const [counter] = await cache.insert('events', message)
-      commuter.postMessage({
-        type: ConnCommandType.SEND,
-        message: { ...message, counter }
+      const clientMessageBytes = await serializeClientMessage(
+        { ...message, counter },
+        crypto
+      )
+      const resBuffer: ArrayBuffer = await api.post({
+        endpoint: '/do',
+        data: clientMessageBytes
       })
+      const contact: Contact = await deserializeServerMessage(
+        new Uint8Array(resBuffer),
+        crypto
+      )
+
+      return contact
     },
     declinePending: async (id) => {
       const message = {
