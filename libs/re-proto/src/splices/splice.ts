@@ -16,11 +16,6 @@ export interface Splice {
   joinedOn: number
 }
 
-export interface SpliceState {
-  splices: Splice[]
-  expiredIds: number[]
-}
-
 function createBaseSplice(): Splice {
   return {
     id: 0,
@@ -155,92 +150,6 @@ export const Splice = {
     message.isMuted = object.isMuted ?? false
     message.isArchived = object.isArchived ?? false
     message.joinedOn = object.joinedOn ?? 0
-    return message
-  }
-}
-
-function createBaseSpliceState(): SpliceState {
-  return { splices: [], expiredIds: [] }
-}
-
-export const SpliceState = {
-  encode(
-    message: SpliceState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.splices) {
-      Splice.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpliceState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseSpliceState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.splices.push(Splice.decode(reader, reader.uint32()))
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): SpliceState {
-    return {
-      splices: Array.isArray(object?.splices)
-        ? object.splices.map((e: any) => Splice.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: SpliceState): unknown {
-    const obj: any = {}
-    if (message.splices) {
-      obj.splices = message.splices.map((e) =>
-        e ? Splice.toJSON(e) : undefined
-      )
-    } else {
-      obj.splices = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<SpliceState>, I>>(
-    object: I
-  ): SpliceState {
-    const message = createBaseSpliceState()
-    message.splices = object.splices?.map((e) => Splice.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

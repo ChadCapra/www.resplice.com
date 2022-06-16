@@ -2,14 +2,12 @@
 import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
 
-/** Returns session w/ authenticated_at set */
 export interface Create {
   name: string
   handle: string
   avatar: Uint8Array
 }
 
-/** Returns session w/ expiry set to 0 */
 export interface Delete {
   handle: string
   removeAllExistingData: boolean

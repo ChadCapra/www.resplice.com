@@ -8,11 +8,6 @@ export interface InviteAttribute {
   attributeId: number
 }
 
-export interface InviteAttributeState {
-  inviteAttributes: InviteAttribute[]
-  expiredIds: number[]
-}
-
 function createBaseInviteAttribute(): InviteAttribute {
   return { id: 0, inviteId: 0, attributeId: 0 }
 }
@@ -83,98 +78,6 @@ export const InviteAttribute = {
     message.id = object.id ?? 0
     message.inviteId = object.inviteId ?? 0
     message.attributeId = object.attributeId ?? 0
-    return message
-  }
-}
-
-function createBaseInviteAttributeState(): InviteAttributeState {
-  return { inviteAttributes: [], expiredIds: [] }
-}
-
-export const InviteAttributeState = {
-  encode(
-    message: InviteAttributeState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.inviteAttributes) {
-      InviteAttribute.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): InviteAttributeState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseInviteAttributeState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.inviteAttributes.push(
-            InviteAttribute.decode(reader, reader.uint32())
-          )
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): InviteAttributeState {
-    return {
-      inviteAttributes: Array.isArray(object?.inviteAttributes)
-        ? object.inviteAttributes.map((e: any) => InviteAttribute.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: InviteAttributeState): unknown {
-    const obj: any = {}
-    if (message.inviteAttributes) {
-      obj.inviteAttributes = message.inviteAttributes.map((e) =>
-        e ? InviteAttribute.toJSON(e) : undefined
-      )
-    } else {
-      obj.inviteAttributes = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<InviteAttributeState>, I>>(
-    object: I
-  ): InviteAttributeState {
-    const message = createBaseInviteAttributeState()
-    message.inviteAttributes =
-      object.inviteAttributes?.map((e) => InviteAttribute.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

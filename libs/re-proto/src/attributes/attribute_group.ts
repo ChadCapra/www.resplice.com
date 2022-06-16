@@ -8,11 +8,6 @@ export interface AttributeGroup {
   sortOrder: number
 }
 
-export interface AttributeGroupState {
-  groups: AttributeGroup[]
-  expiredIds: number[]
-}
-
 function createBaseAttributeGroup(): AttributeGroup {
   return { id: 0, name: '', sortOrder: 0 }
 }
@@ -82,93 +77,6 @@ export const AttributeGroup = {
     message.id = object.id ?? 0
     message.name = object.name ?? ''
     message.sortOrder = object.sortOrder ?? 0
-    return message
-  }
-}
-
-function createBaseAttributeGroupState(): AttributeGroupState {
-  return { groups: [], expiredIds: [] }
-}
-
-export const AttributeGroupState = {
-  encode(
-    message: AttributeGroupState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.groups) {
-      AttributeGroup.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): AttributeGroupState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseAttributeGroupState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.groups.push(AttributeGroup.decode(reader, reader.uint32()))
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): AttributeGroupState {
-    return {
-      groups: Array.isArray(object?.groups)
-        ? object.groups.map((e: any) => AttributeGroup.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: AttributeGroupState): unknown {
-    const obj: any = {}
-    if (message.groups) {
-      obj.groups = message.groups.map((e) =>
-        e ? AttributeGroup.toJSON(e) : undefined
-      )
-    } else {
-      obj.groups = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<AttributeGroupState>, I>>(
-    object: I
-  ): AttributeGroupState {
-    const message = createBaseAttributeGroupState()
-    message.groups =
-      object.groups?.map((e) => AttributeGroup.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

@@ -9,11 +9,6 @@ export interface ContactShare {
   sharedOn: number
 }
 
-export interface ContactShareState {
-  contactShares: ContactShare[]
-  expiredIds: number[]
-}
-
 function createBaseContactShare(): ContactShare {
   return { id: 0, contactId: 0, attributeId: 0, sharedOn: 0 }
 }
@@ -94,95 +89,6 @@ export const ContactShare = {
     message.contactId = object.contactId ?? 0
     message.attributeId = object.attributeId ?? 0
     message.sharedOn = object.sharedOn ?? 0
-    return message
-  }
-}
-
-function createBaseContactShareState(): ContactShareState {
-  return { contactShares: [], expiredIds: [] }
-}
-
-export const ContactShareState = {
-  encode(
-    message: ContactShareState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.contactShares) {
-      ContactShare.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): ContactShareState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseContactShareState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.contactShares.push(
-            ContactShare.decode(reader, reader.uint32())
-          )
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): ContactShareState {
-    return {
-      contactShares: Array.isArray(object?.contactShares)
-        ? object.contactShares.map((e: any) => ContactShare.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: ContactShareState): unknown {
-    const obj: any = {}
-    if (message.contactShares) {
-      obj.contactShares = message.contactShares.map((e) =>
-        e ? ContactShare.toJSON(e) : undefined
-      )
-    } else {
-      obj.contactShares = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ContactShareState>, I>>(
-    object: I
-  ): ContactShareState {
-    const message = createBaseContactShareState()
-    message.contactShares =
-      object.contactShares?.map((e) => ContactShare.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

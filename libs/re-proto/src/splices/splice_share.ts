@@ -9,11 +9,6 @@ export interface SpliceShare {
   sharedOn: number
 }
 
-export interface SpliceShareState {
-  spliceShares: SpliceShare[]
-  expiredIds: number[]
-}
-
 function createBaseSpliceShare(): SpliceShare {
   return { id: 0, spliceId: 0, attributeId: 0, sharedOn: 0 }
 }
@@ -94,93 +89,6 @@ export const SpliceShare = {
     message.spliceId = object.spliceId ?? 0
     message.attributeId = object.attributeId ?? 0
     message.sharedOn = object.sharedOn ?? 0
-    return message
-  }
-}
-
-function createBaseSpliceShareState(): SpliceShareState {
-  return { spliceShares: [], expiredIds: [] }
-}
-
-export const SpliceShareState = {
-  encode(
-    message: SpliceShareState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.spliceShares) {
-      SpliceShare.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpliceShareState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseSpliceShareState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.spliceShares.push(SpliceShare.decode(reader, reader.uint32()))
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): SpliceShareState {
-    return {
-      spliceShares: Array.isArray(object?.spliceShares)
-        ? object.spliceShares.map((e: any) => SpliceShare.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: SpliceShareState): unknown {
-    const obj: any = {}
-    if (message.spliceShares) {
-      obj.spliceShares = message.spliceShares.map((e) =>
-        e ? SpliceShare.toJSON(e) : undefined
-      )
-    } else {
-      obj.spliceShares = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<SpliceShareState>, I>>(
-    object: I
-  ): SpliceShareState {
-    const message = createBaseSpliceShareState()
-    message.spliceShares =
-      object.spliceShares?.map((e) => SpliceShare.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

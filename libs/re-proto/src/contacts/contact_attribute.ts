@@ -17,11 +17,6 @@ export interface ContactAttribute {
   sharedOn: number
 }
 
-export interface ContactAttributeState {
-  contactAttributes: ContactAttribute[]
-  expiredIds: number[]
-}
-
 function createBaseContactAttribute(): ContactAttribute {
   return {
     id: 0,
@@ -134,99 +129,6 @@ export const ContactAttribute = {
         ? AttributeValue.fromPartial(object.value)
         : undefined
     message.sharedOn = object.sharedOn ?? 0
-    return message
-  }
-}
-
-function createBaseContactAttributeState(): ContactAttributeState {
-  return { contactAttributes: [], expiredIds: [] }
-}
-
-export const ContactAttributeState = {
-  encode(
-    message: ContactAttributeState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.contactAttributes) {
-      ContactAttribute.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): ContactAttributeState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseContactAttributeState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.contactAttributes.push(
-            ContactAttribute.decode(reader, reader.uint32())
-          )
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): ContactAttributeState {
-    return {
-      contactAttributes: Array.isArray(object?.contactAttributes)
-        ? object.contactAttributes.map((e: any) => ContactAttribute.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: ContactAttributeState): unknown {
-    const obj: any = {}
-    if (message.contactAttributes) {
-      obj.contactAttributes = message.contactAttributes.map((e) =>
-        e ? ContactAttribute.toJSON(e) : undefined
-      )
-    } else {
-      obj.contactAttributes = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<ContactAttributeState>, I>>(
-    object: I
-  ): ContactAttributeState {
-    const message = createBaseContactAttributeState()
-    message.contactAttributes =
-      object.contactAttributes?.map((e) => ContactAttribute.fromPartial(e)) ||
-      []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

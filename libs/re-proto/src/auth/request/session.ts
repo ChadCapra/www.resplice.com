@@ -7,8 +7,8 @@ export interface Create {
   email: string
   phone: Phone | undefined
   rememberMe: boolean
-  /** iv_base is last 8 bytes */
-  aesKeyIvBase: Uint8Array
+  aesKey: Uint8Array
+  ivBase: Uint8Array
 }
 
 /** Returns: Encrypted Session */
@@ -50,7 +50,8 @@ function createBaseCreate(): Create {
     email: '',
     phone: undefined,
     rememberMe: false,
-    aesKeyIvBase: new Uint8Array()
+    aesKey: new Uint8Array(),
+    ivBase: new Uint8Array()
   }
 }
 
@@ -68,8 +69,11 @@ export const Create = {
     if (message.rememberMe === true) {
       writer.uint32(24).bool(message.rememberMe)
     }
-    if (message.aesKeyIvBase.length !== 0) {
-      writer.uint32(34).bytes(message.aesKeyIvBase)
+    if (message.aesKey.length !== 0) {
+      writer.uint32(34).bytes(message.aesKey)
+    }
+    if (message.ivBase.length !== 0) {
+      writer.uint32(42).bytes(message.ivBase)
     }
     return writer
   },
@@ -91,7 +95,10 @@ export const Create = {
           message.rememberMe = reader.bool()
           break
         case 4:
-          message.aesKeyIvBase = reader.bytes()
+          message.aesKey = reader.bytes()
+          break
+        case 5:
+          message.ivBase = reader.bytes()
           break
         default:
           reader.skipType(tag & 7)
@@ -106,8 +113,11 @@ export const Create = {
       email: isSet(object.email) ? String(object.email) : '',
       phone: isSet(object.phone) ? Phone.fromJSON(object.phone) : undefined,
       rememberMe: isSet(object.rememberMe) ? Boolean(object.rememberMe) : false,
-      aesKeyIvBase: isSet(object.aesKeyIvBase)
-        ? bytesFromBase64(object.aesKeyIvBase)
+      aesKey: isSet(object.aesKey)
+        ? bytesFromBase64(object.aesKey)
+        : new Uint8Array(),
+      ivBase: isSet(object.ivBase)
+        ? bytesFromBase64(object.ivBase)
         : new Uint8Array()
     }
   },
@@ -118,11 +128,13 @@ export const Create = {
     message.phone !== undefined &&
       (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined)
     message.rememberMe !== undefined && (obj.rememberMe = message.rememberMe)
-    message.aesKeyIvBase !== undefined &&
-      (obj.aesKeyIvBase = base64FromBytes(
-        message.aesKeyIvBase !== undefined
-          ? message.aesKeyIvBase
-          : new Uint8Array()
+    message.aesKey !== undefined &&
+      (obj.aesKey = base64FromBytes(
+        message.aesKey !== undefined ? message.aesKey : new Uint8Array()
+      ))
+    message.ivBase !== undefined &&
+      (obj.ivBase = base64FromBytes(
+        message.ivBase !== undefined ? message.ivBase : new Uint8Array()
       ))
     return obj
   },
@@ -135,7 +147,8 @@ export const Create = {
         ? Phone.fromPartial(object.phone)
         : undefined
     message.rememberMe = object.rememberMe ?? false
-    message.aesKeyIvBase = object.aesKeyIvBase ?? new Uint8Array()
+    message.aesKey = object.aesKey ?? new Uint8Array()
+    message.ivBase = object.ivBase ?? new Uint8Array()
     return message
   }
 }

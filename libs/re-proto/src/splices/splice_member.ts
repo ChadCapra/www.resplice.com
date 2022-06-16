@@ -13,11 +13,6 @@ export interface SpliceMember {
   joinedOn: number
 }
 
-export interface SpliceMemberState {
-  spliceMembers: SpliceMember[]
-  expiredIds: number[]
-}
-
 function createBaseSpliceMember(): SpliceMember {
   return {
     id: 0,
@@ -135,95 +130,6 @@ export const SpliceMember = {
     message.avatar = object.avatar ?? ''
     message.isModerator = object.isModerator ?? false
     message.joinedOn = object.joinedOn ?? 0
-    return message
-  }
-}
-
-function createBaseSpliceMemberState(): SpliceMemberState {
-  return { spliceMembers: [], expiredIds: [] }
-}
-
-export const SpliceMemberState = {
-  encode(
-    message: SpliceMemberState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.spliceMembers) {
-      SpliceMember.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): SpliceMemberState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseSpliceMemberState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.spliceMembers.push(
-            SpliceMember.decode(reader, reader.uint32())
-          )
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): SpliceMemberState {
-    return {
-      spliceMembers: Array.isArray(object?.spliceMembers)
-        ? object.spliceMembers.map((e: any) => SpliceMember.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: SpliceMemberState): unknown {
-    const obj: any = {}
-    if (message.spliceMembers) {
-      obj.spliceMembers = message.spliceMembers.map((e) =>
-        e ? SpliceMember.toJSON(e) : undefined
-      )
-    } else {
-      obj.spliceMembers = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<SpliceMemberState>, I>>(
-    object: I
-  ): SpliceMemberState {
-    const message = createBaseSpliceMemberState()
-    message.spliceMembers =
-      object.spliceMembers?.map((e) => SpliceMember.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

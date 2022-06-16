@@ -19,11 +19,6 @@ export interface Attribute {
   verifyExpiry: number
 }
 
-export interface AttributeState {
-  attributes: Attribute[]
-  expiredIds: number[]
-}
-
 function createBaseAttribute(): Attribute {
   return {
     id: 0,
@@ -157,93 +152,6 @@ export const Attribute = {
     message.sortOrder = object.sortOrder ?? 0
     message.verifiedAt = object.verifiedAt ?? 0
     message.verifyExpiry = object.verifyExpiry ?? 0
-    return message
-  }
-}
-
-function createBaseAttributeState(): AttributeState {
-  return { attributes: [], expiredIds: [] }
-}
-
-export const AttributeState = {
-  encode(
-    message: AttributeState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.attributes) {
-      Attribute.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): AttributeState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseAttributeState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.attributes.push(Attribute.decode(reader, reader.uint32()))
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): AttributeState {
-    return {
-      attributes: Array.isArray(object?.attributes)
-        ? object.attributes.map((e: any) => Attribute.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: AttributeState): unknown {
-    const obj: any = {}
-    if (message.attributes) {
-      obj.attributes = message.attributes.map((e) =>
-        e ? Attribute.toJSON(e) : undefined
-      )
-    } else {
-      obj.attributes = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<AttributeState>, I>>(
-    object: I
-  ): AttributeState {
-    const message = createBaseAttributeState()
-    message.attributes =
-      object.attributes?.map((e) => Attribute.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

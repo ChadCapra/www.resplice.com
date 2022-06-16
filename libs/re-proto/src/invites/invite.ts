@@ -10,30 +10,23 @@ import { Phone } from '../attributes/attribute_value'
 
 export interface Invite {
   id: number
+  inviteType: InviteType
   /** optional per UI and/or invite type */
   name: string
-  inviteType: InviteType
   handle: string
   phone: Phone | undefined
   email: string
-  commonSplice: string
   expiry: number
-}
-
-export interface InviteState {
-  invites: Invite[]
-  expiredIds: number[]
 }
 
 function createBaseInvite(): Invite {
   return {
     id: 0,
-    name: '',
     inviteType: 0,
+    name: '',
     handle: '',
     phone: undefined,
     email: '',
-    commonSplice: '',
     expiry: 0
   }
 }
@@ -46,11 +39,11 @@ export const Invite = {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id)
     }
-    if (message.name !== '') {
-      writer.uint32(18).string(message.name)
-    }
     if (message.inviteType !== 0) {
-      writer.uint32(24).int32(message.inviteType)
+      writer.uint32(16).int32(message.inviteType)
+    }
+    if (message.name !== '') {
+      writer.uint32(26).string(message.name)
     }
     if (message.handle !== '') {
       writer.uint32(34).string(message.handle)
@@ -61,11 +54,8 @@ export const Invite = {
     if (message.email !== '') {
       writer.uint32(50).string(message.email)
     }
-    if (message.commonSplice !== '') {
-      writer.uint32(58).string(message.commonSplice)
-    }
     if (message.expiry !== 0) {
-      writer.uint32(64).uint32(message.expiry)
+      writer.uint32(56).uint32(message.expiry)
     }
     return writer
   },
@@ -81,10 +71,10 @@ export const Invite = {
           message.id = reader.uint32()
           break
         case 2:
-          message.name = reader.string()
+          message.inviteType = reader.int32() as any
           break
         case 3:
-          message.inviteType = reader.int32() as any
+          message.name = reader.string()
           break
         case 4:
           message.handle = reader.string()
@@ -96,9 +86,6 @@ export const Invite = {
           message.email = reader.string()
           break
         case 7:
-          message.commonSplice = reader.string()
-          break
-        case 8:
           message.expiry = reader.uint32()
           break
         default:
@@ -112,16 +99,13 @@ export const Invite = {
   fromJSON(object: any): Invite {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
-      name: isSet(object.name) ? String(object.name) : '',
       inviteType: isSet(object.inviteType)
         ? inviteTypeFromJSON(object.inviteType)
         : 0,
+      name: isSet(object.name) ? String(object.name) : '',
       handle: isSet(object.handle) ? String(object.handle) : '',
       phone: isSet(object.phone) ? Phone.fromJSON(object.phone) : undefined,
       email: isSet(object.email) ? String(object.email) : '',
-      commonSplice: isSet(object.commonSplice)
-        ? String(object.commonSplice)
-        : '',
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0
     }
   },
@@ -129,15 +113,13 @@ export const Invite = {
   toJSON(message: Invite): unknown {
     const obj: any = {}
     message.id !== undefined && (obj.id = Math.round(message.id))
-    message.name !== undefined && (obj.name = message.name)
     message.inviteType !== undefined &&
       (obj.inviteType = inviteTypeToJSON(message.inviteType))
+    message.name !== undefined && (obj.name = message.name)
     message.handle !== undefined && (obj.handle = message.handle)
     message.phone !== undefined &&
       (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined)
     message.email !== undefined && (obj.email = message.email)
-    message.commonSplice !== undefined &&
-      (obj.commonSplice = message.commonSplice)
     message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
     return obj
   },
@@ -145,102 +127,15 @@ export const Invite = {
   fromPartial<I extends Exact<DeepPartial<Invite>, I>>(object: I): Invite {
     const message = createBaseInvite()
     message.id = object.id ?? 0
-    message.name = object.name ?? ''
     message.inviteType = object.inviteType ?? 0
+    message.name = object.name ?? ''
     message.handle = object.handle ?? ''
     message.phone =
       object.phone !== undefined && object.phone !== null
         ? Phone.fromPartial(object.phone)
         : undefined
     message.email = object.email ?? ''
-    message.commonSplice = object.commonSplice ?? ''
     message.expiry = object.expiry ?? 0
-    return message
-  }
-}
-
-function createBaseInviteState(): InviteState {
-  return { invites: [], expiredIds: [] }
-}
-
-export const InviteState = {
-  encode(
-    message: InviteState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.invites) {
-      Invite.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): InviteState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseInviteState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.invites.push(Invite.decode(reader, reader.uint32()))
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): InviteState {
-    return {
-      invites: Array.isArray(object?.invites)
-        ? object.invites.map((e: any) => Invite.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: InviteState): unknown {
-    const obj: any = {}
-    if (message.invites) {
-      obj.invites = message.invites.map((e) =>
-        e ? Invite.toJSON(e) : undefined
-      )
-    } else {
-      obj.invites = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<InviteState>, I>>(
-    object: I
-  ): InviteState {
-    const message = createBaseInviteState()
-    message.invites = object.invites?.map((e) => Invite.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

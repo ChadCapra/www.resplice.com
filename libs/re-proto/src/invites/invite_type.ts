@@ -7,7 +7,7 @@ export enum InviteType {
   HANDLE = 1,
   PHONE = 2,
   EMAIL = 3,
-  COMMON_SPLICE = 4,
+  DIRECT = 4,
   QR_INVITE = 5,
   UNRECOGNIZED = -1
 }
@@ -27,8 +27,8 @@ export function inviteTypeFromJSON(object: any): InviteType {
     case 'EMAIL':
       return InviteType.EMAIL
     case 4:
-    case 'COMMON_SPLICE':
-      return InviteType.COMMON_SPLICE
+    case 'DIRECT':
+      return InviteType.DIRECT
     case 5:
     case 'QR_INVITE':
       return InviteType.QR_INVITE
@@ -49,8 +49,8 @@ export function inviteTypeToJSON(object: InviteType): string {
       return 'PHONE'
     case InviteType.EMAIL:
       return 'EMAIL'
-    case InviteType.COMMON_SPLICE:
-      return 'COMMON_SPLICE'
+    case InviteType.DIRECT:
+      return 'DIRECT'
     case InviteType.QR_INVITE:
       return 'QR_INVITE'
     default:

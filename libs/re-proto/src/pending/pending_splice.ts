@@ -20,11 +20,6 @@ export interface PendingSplice {
   expiry: number
 }
 
-export interface PendingSpliceState {
-  pendingSplices: PendingSplice[]
-  expiredIds: number[]
-}
-
 function createBasePendingSplice(): PendingSplice {
   return {
     id: 0,
@@ -167,95 +162,6 @@ export const PendingSplice = {
     message.email = object.email ?? ''
     message.commonSplice = object.commonSplice ?? ''
     message.expiry = object.expiry ?? 0
-    return message
-  }
-}
-
-function createBasePendingSpliceState(): PendingSpliceState {
-  return { pendingSplices: [], expiredIds: [] }
-}
-
-export const PendingSpliceState = {
-  encode(
-    message: PendingSpliceState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.pendingSplices) {
-      PendingSplice.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): PendingSpliceState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBasePendingSpliceState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.pendingSplices.push(
-            PendingSplice.decode(reader, reader.uint32())
-          )
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): PendingSpliceState {
-    return {
-      pendingSplices: Array.isArray(object?.pendingSplices)
-        ? object.pendingSplices.map((e: any) => PendingSplice.fromJSON(e))
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: PendingSpliceState): unknown {
-    const obj: any = {}
-    if (message.pendingSplices) {
-      obj.pendingSplices = message.pendingSplices.map((e) =>
-        e ? PendingSplice.toJSON(e) : undefined
-      )
-    } else {
-      obj.pendingSplices = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<PendingSpliceState>, I>>(
-    object: I
-  ): PendingSpliceState {
-    const message = createBasePendingSpliceState()
-    message.pendingSplices =
-      object.pendingSplices?.map((e) => PendingSplice.fromPartial(e)) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }

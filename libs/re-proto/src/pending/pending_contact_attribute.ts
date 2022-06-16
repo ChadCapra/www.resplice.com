@@ -14,11 +14,6 @@ export interface PendingContactAttribute {
   type: AttributeType
 }
 
-export interface PendingContactAttributeState {
-  pendingContactAttributes: PendingContactAttribute[]
-  expiredIds: number[]
-}
-
 function createBasePendingContactAttribute(): PendingContactAttribute {
   return { id: 0, pendingContactId: 0, name: '', type: 0 }
 }
@@ -102,102 +97,6 @@ export const PendingContactAttribute = {
     message.pendingContactId = object.pendingContactId ?? 0
     message.name = object.name ?? ''
     message.type = object.type ?? 0
-    return message
-  }
-}
-
-function createBasePendingContactAttributeState(): PendingContactAttributeState {
-  return { pendingContactAttributes: [], expiredIds: [] }
-}
-
-export const PendingContactAttributeState = {
-  encode(
-    message: PendingContactAttributeState,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.pendingContactAttributes) {
-      PendingContactAttribute.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    writer.uint32(18).fork()
-    for (const v of message.expiredIds) {
-      writer.uint32(v)
-    }
-    writer.ldelim()
-    return writer
-  },
-
-  decode(
-    input: _m0.Reader | Uint8Array,
-    length?: number
-  ): PendingContactAttributeState {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBasePendingContactAttributeState()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.pendingContactAttributes.push(
-            PendingContactAttribute.decode(reader, reader.uint32())
-          )
-          break
-        case 2:
-          if ((tag & 7) === 2) {
-            const end2 = reader.uint32() + reader.pos
-            while (reader.pos < end2) {
-              message.expiredIds.push(reader.uint32())
-            }
-          } else {
-            message.expiredIds.push(reader.uint32())
-          }
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): PendingContactAttributeState {
-    return {
-      pendingContactAttributes: Array.isArray(object?.pendingContactAttributes)
-        ? object.pendingContactAttributes.map((e: any) =>
-            PendingContactAttribute.fromJSON(e)
-          )
-        : [],
-      expiredIds: Array.isArray(object?.expiredIds)
-        ? object.expiredIds.map((e: any) => Number(e))
-        : []
-    }
-  },
-
-  toJSON(message: PendingContactAttributeState): unknown {
-    const obj: any = {}
-    if (message.pendingContactAttributes) {
-      obj.pendingContactAttributes = message.pendingContactAttributes.map((e) =>
-        e ? PendingContactAttribute.toJSON(e) : undefined
-      )
-    } else {
-      obj.pendingContactAttributes = []
-    }
-    if (message.expiredIds) {
-      obj.expiredIds = message.expiredIds.map((e) => Math.round(e))
-    } else {
-      obj.expiredIds = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<PendingContactAttributeState>, I>>(
-    object: I
-  ): PendingContactAttributeState {
-    const message = createBasePendingContactAttributeState()
-    message.pendingContactAttributes =
-      object.pendingContactAttributes?.map((e) =>
-        PendingContactAttribute.fromPartial(e)
-      ) || []
-    message.expiredIds = object.expiredIds?.map((e) => e) || []
     return message
   }
 }
