@@ -4,12 +4,13 @@ import * as _m0 from 'protobufjs/minimal'
 
 export interface QrSpliceInvite {
   id: number
+  spliceId: number
   unlockCode: number
   expiry: number
 }
 
 function createBaseQrSpliceInvite(): QrSpliceInvite {
-  return { id: 0, unlockCode: 0, expiry: 0 }
+  return { id: 0, spliceId: 0, unlockCode: 0, expiry: 0 }
 }
 
 export const QrSpliceInvite = {
@@ -20,11 +21,14 @@ export const QrSpliceInvite = {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id)
     }
+    if (message.spliceId !== 0) {
+      writer.uint32(16).uint32(message.spliceId)
+    }
     if (message.unlockCode !== 0) {
-      writer.uint32(16).uint32(message.unlockCode)
+      writer.uint32(24).uint32(message.unlockCode)
     }
     if (message.expiry !== 0) {
-      writer.uint32(24).uint32(message.expiry)
+      writer.uint32(32).uint32(message.expiry)
     }
     return writer
   },
@@ -40,9 +44,12 @@ export const QrSpliceInvite = {
           message.id = reader.uint32()
           break
         case 2:
-          message.unlockCode = reader.uint32()
+          message.spliceId = reader.uint32()
           break
         case 3:
+          message.unlockCode = reader.uint32()
+          break
+        case 4:
           message.expiry = reader.uint32()
           break
         default:
@@ -56,6 +63,7 @@ export const QrSpliceInvite = {
   fromJSON(object: any): QrSpliceInvite {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
+      spliceId: isSet(object.spliceId) ? Number(object.spliceId) : 0,
       unlockCode: isSet(object.unlockCode) ? Number(object.unlockCode) : 0,
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0
     }
@@ -64,6 +72,8 @@ export const QrSpliceInvite = {
   toJSON(message: QrSpliceInvite): unknown {
     const obj: any = {}
     message.id !== undefined && (obj.id = Math.round(message.id))
+    message.spliceId !== undefined &&
+      (obj.spliceId = Math.round(message.spliceId))
     message.unlockCode !== undefined &&
       (obj.unlockCode = Math.round(message.unlockCode))
     message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
@@ -75,6 +85,7 @@ export const QrSpliceInvite = {
   ): QrSpliceInvite {
     const message = createBaseQrSpliceInvite()
     message.id = object.id ?? 0
+    message.spliceId = object.spliceId ?? 0
     message.unlockCode = object.unlockCode ?? 0
     message.expiry = object.expiry ?? 0
     return message

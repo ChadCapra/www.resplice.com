@@ -4,6 +4,7 @@ import * as _m0 from 'protobufjs/minimal'
 import { PendingContact } from '../pending/pending_contact'
 import { PendingContactAttribute } from '../pending/pending_contact_attribute'
 import { PendingSplice } from '../pending/pending_splice'
+import { PendingSpliceMember } from '../pending/pending_splice_member'
 
 export interface State {
   pendingContacts: PendingContact[]
@@ -12,6 +13,8 @@ export interface State {
   expiredPendingContactAttributeIds: number[]
   pendingSplices: PendingSplice[]
   expiredPendingSpliceIds: number[]
+  pendingSpliceMembers: PendingSpliceMember[]
+  expiredPendingSpliceMemberIds: number[]
 }
 
 function createBaseState(): State {
@@ -21,7 +24,9 @@ function createBaseState(): State {
     pendingContactAttributes: [],
     expiredPendingContactAttributeIds: [],
     pendingSplices: [],
-    expiredPendingSpliceIds: []
+    expiredPendingSpliceIds: [],
+    pendingSpliceMembers: [],
+    expiredPendingSpliceMemberIds: []
   }
 }
 
@@ -48,6 +53,14 @@ export const State = {
     }
     writer.uint32(50).fork()
     for (const v of message.expiredPendingSpliceIds) {
+      writer.uint32(v)
+    }
+    writer.ldelim()
+    for (const v of message.pendingSpliceMembers) {
+      PendingSpliceMember.encode(v!, writer.uint32(58).fork()).ldelim()
+    }
+    writer.uint32(66).fork()
+    for (const v of message.expiredPendingSpliceMemberIds) {
       writer.uint32(v)
     }
     writer.ldelim()
@@ -106,6 +119,21 @@ export const State = {
             message.expiredPendingSpliceIds.push(reader.uint32())
           }
           break
+        case 7:
+          message.pendingSpliceMembers.push(
+            PendingSpliceMember.decode(reader, reader.uint32())
+          )
+          break
+        case 8:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos
+            while (reader.pos < end2) {
+              message.expiredPendingSpliceMemberIds.push(reader.uint32())
+            }
+          } else {
+            message.expiredPendingSpliceMemberIds.push(reader.uint32())
+          }
+          break
         default:
           reader.skipType(tag & 7)
           break
@@ -137,6 +165,16 @@ export const State = {
         : [],
       expiredPendingSpliceIds: Array.isArray(object?.expiredPendingSpliceIds)
         ? object.expiredPendingSpliceIds.map((e: any) => Number(e))
+        : [],
+      pendingSpliceMembers: Array.isArray(object?.pendingSpliceMembers)
+        ? object.pendingSpliceMembers.map((e: any) =>
+            PendingSpliceMember.fromJSON(e)
+          )
+        : [],
+      expiredPendingSpliceMemberIds: Array.isArray(
+        object?.expiredPendingSpliceMemberIds
+      )
+        ? object.expiredPendingSpliceMemberIds.map((e: any) => Number(e))
         : []
     }
   },
@@ -184,6 +222,19 @@ export const State = {
     } else {
       obj.expiredPendingSpliceIds = []
     }
+    if (message.pendingSpliceMembers) {
+      obj.pendingSpliceMembers = message.pendingSpliceMembers.map((e) =>
+        e ? PendingSpliceMember.toJSON(e) : undefined
+      )
+    } else {
+      obj.pendingSpliceMembers = []
+    }
+    if (message.expiredPendingSpliceMemberIds) {
+      obj.expiredPendingSpliceMemberIds =
+        message.expiredPendingSpliceMemberIds.map((e) => Math.round(e))
+    } else {
+      obj.expiredPendingSpliceMemberIds = []
+    }
     return obj
   },
 
@@ -203,6 +254,12 @@ export const State = {
       object.pendingSplices?.map((e) => PendingSplice.fromPartial(e)) || []
     message.expiredPendingSpliceIds =
       object.expiredPendingSpliceIds?.map((e) => e) || []
+    message.pendingSpliceMembers =
+      object.pendingSpliceMembers?.map((e) =>
+        PendingSpliceMember.fromPartial(e)
+      ) || []
+    message.expiredPendingSpliceMemberIds =
+      object.expiredPendingSpliceMemberIds?.map((e) => e) || []
     return message
   }
 }

@@ -1,30 +1,36 @@
-import type { Session, SessionItem } from '$types/session'
+import { SessionStatus, type Session, type SessionItem } from '$types/session'
 
 export const session: Session = {
   id: 12345,
-  rememberMe: true,
+  status: SessionStatus.PENDING_EMAIL_VERIFICATION,
   email: 'marcusvirg345@gmail.com',
-  phone: '2185910657',
-  emailVerifiedAt: null,
-  phoneVerifiedAt: null,
-  authenticatedAt: null,
+  phone: {
+    number: 12185910657,
+    smsEnabled: true
+  },
+  rememberMe: true,
   expiry: 1697933779
 }
 
 export const sessionVerifiedEmail: Session = {
   ...session,
-  emailVerifiedAt: 1634861779
+  status: SessionStatus.PENDING_PHONE_VERIFICATION
 }
 
 export const sessionVerifiedBoth: Session = {
   ...session,
-  emailVerifiedAt: 1634861779,
-  phoneVerifiedAt: 1634861779
+  status: SessionStatus.PENDING_USER_REGISRATION
 }
 
 export const authenticatedSession: Session = {
-  ...sessionVerifiedBoth,
-  authenticatedAt: 1634861779
+  ...session,
+  status: SessionStatus.AUTHENTICATED
+}
+
+export const expiredSession: Session = {
+  ...session,
+  status: SessionStatus.EXPIRED,
+  expiry: 0
 }
 
 export const sessions: SessionItem[] = [

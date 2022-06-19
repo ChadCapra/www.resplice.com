@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { parsePhoneNumber } from 'libphonenumber-js'
   import authStore from '$stores/auth'
   import useAuthClient from '$lib/auth/useAuthClient'
   import AttributeItem from '$lib/attributes/Item.svelte'
@@ -7,23 +6,19 @@
   import LockClosedIcon from '$lib/icons/LockClosedIcon.svelte'
   import ShieldCheckmarkIcon from '$lib/icons/ShieldCheckmarkIcon.svelte'
   import Spinner from '$lib/common/skeleton/Spinner.svelte'
+  import { SessionStatus } from '$types/session'
   import { AttributeType } from '$types/attribute'
-  import type { CountryCode } from 'libphonenumber-js'
   import type { Email, Phone } from '$types/attribute'
 
   const CODE_LENGTH = 6
 
   const client = useAuthClient()
 
-  const parsedPhone = parsePhoneNumber(
-    $authStore.loginValues.phone.value,
-    $authStore.loginValues.phone.countryCode as CountryCode
-  )
   const email: Email = {
     id: 0,
     type: AttributeType.EMAIL,
     name: 'Email',
-    value: { email: $authStore.loginValues.email },
+    value: { email: $authStore.session.email },
     sortOrder: 1
   }
 
@@ -31,34 +26,31 @@
     id: 1,
     type: AttributeType.PHONE,
     name: 'Phone',
-    value: {
-      number: parseInt((parsedPhone.number as string).slice(1), 10),
-      smsEnabled: true
-    },
+    value: $authStore.session.phone,
     sortOrder: 2
   }
 
   let emailCode = ''
-  let emailPromise: Promise<number>
-  $: emailVerified = !!$authStore.session.emailVerifiedAt
+  let emailPromise: Promise<boolean>
+  $: emailVerified = $authStore.session.status === SessionStatus.PENDING_PHONE_VERIFICATION
 
   let phoneCode = ''
-  let phonePromise: Promise<number>
+  let phonePromise: Promise<boolean>
 
-  async function submitEmailCode(verificationToken: number): Promise<number> {
+  async function submitEmailCode(verificationToken: number): Promise<boolean> {
     const session = await client.verifyEmail({ verificationToken })
-    if (!session.emailVerifiedAt) throw Error('Verification code did not work')
+    if (session.status !== SessionStatus.PENDING_PHONE_VERIFICATION) throw Error('Verification code did not work')
 
     authStore.update((auth) => ({ ...auth, session }))
-    return session.emailVerifiedAt
+    return true
   }
 
-  async function submitPhoneCode(verificationToken: number): Promise<number> {
+  async function submitPhoneCode(verificationToken: number): Promise<boolean> {
     const session = await client.verifyPhone({ verificationToken })
-    if (!session.phoneVerifiedAt) throw Error('Verification code did not work')
+    if (session.status !== SessionStatus.PENDING_USER_REGISRATION) throw Error('Verification code did not work')
 
     authStore.update((auth) => ({ ...auth, session }))
-    return session.phoneVerifiedAt
+    return true
   }
 
   $: {
@@ -96,8 +88,8 @@
       <span class="text-brand-primary w-7 h-full">
         {#await emailPromise}
           <Spinner />
-        {:then verified_at}
-          {#if verified_at}
+        {:then codeIsValid}
+          {#if codeIsValid}
             <ShieldCheckmarkIcon width={24} height={24} />
           {/if}
         {/await}
@@ -124,8 +116,8 @@
       <span class="text-brand-primary w-7 h-full">
         {#await phonePromise}
           <Spinner />
-        {:then session}
-          {#if session}
+        {:then codeIsValid}
+          {#if codeIsValid}
             <ShieldCheckmarkIcon width={24} height={24} />
           {/if}
         {/await}

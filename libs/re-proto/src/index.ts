@@ -39,6 +39,7 @@ import * as messagingmessage_typests from './messaging/message_types'
 import * as pendingpending_contactts from './pending/pending_contact'
 import * as pendingpending_contact_attributets from './pending/pending_contact_attribute'
 import * as pendingpending_splicets from './pending/pending_splice'
+import * as pendingpending_splice_memberts from './pending/pending_splice_member'
 import * as pendingrequestpending_contactts from './pending/request/pending_contact'
 import * as pendingrequestpending_splicets from './pending/request/pending_splice'
 import * as pendingstatets from './pending/state'
@@ -53,6 +54,7 @@ import * as splicessplice_sharets from './splices/splice_share'
 import * as splicesstatets from './splices/state'
 import * as userprofilets from './user/profile'
 import * as userrequestprofilets from './user/request/profile'
+import * as userstatets from './user/state'
 export const attributes = {
   attribute: attributesattributets,
   attribute_group: attributesattribute_groupts,
@@ -109,6 +111,7 @@ export const pending = {
   pending_contact: pendingpending_contactts,
   pending_contact_attribute: pendingpending_contact_attributets,
   pending_splice: pendingpending_splicets,
+  pending_splice_member: pendingpending_splice_memberts,
   request: {
     pending_contact: pendingrequestpending_contactts,
     pending_splice: pendingrequestpending_splicets,
@@ -133,4 +136,5 @@ export const user = {
   request: {
     profile: userrequestprofilets,
   },
+  state: userstatets,
 }

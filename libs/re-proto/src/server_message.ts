@@ -4,35 +4,15 @@ import * as _m0 from 'protobufjs/minimal'
 
 export enum ServerMessageType {
   ERROR = 0,
-  /** CURRENT_SESSION - User, Sessions and Attributes */
-  CURRENT_SESSION = 1,
-  USER_PROFILE = 2,
-  USER_ATTRIBUTES = 3,
-  USER_ATTRIBUTE_GROUPS = 4,
-  /** USER_SESSIONS - future */
-  USER_SESSIONS = 5,
-  /** CONTACTS - Contact Entities */
-  CONTACTS = 6,
-  CONTACT_ATTRIBUTES = 7,
-  CONTACT_SHARES = 8,
-  PENDING_CONTACTS = 9,
-  PENDING_CONTACT_ATTRIBUTES = 10,
-  /** CONTACT_INVITES - Contact Invites */
-  CONTACT_INVITES = 11,
-  CONTACT_INVITE_ATTRIBUTES = 12,
-  QR_CONTACT_INVITES = 13,
-  QR_CONTACT_INVITE_ATTRIBUTES = 14,
-  /** SPLICES - Splices */
-  SPLICES = 15,
-  SPLICE_MEMBERS = 16,
-  SPLICE_SHARES = 17,
-  PENDING_SPLICES = 18,
-  PENDING_SPLICE_MEMBERS = 19,
-  /** SPLICE_INVITES - Splice Invites */
-  SPLICE_INVITES = 20,
-  SPLICE_INVITE_ATTRIBUTES = 21,
-  QR_SPLICE_INVITES = 22,
-  QR_SPLICE_INVITE_ATTRIBUTES = 23,
+  SESSION_STATE = 1,
+  USER_STATE = 2,
+  ATTRIBUTE_STATE = 3,
+  CONTACT_STATE = 4,
+  SPLICE_STATE = 5,
+  INVITE_STATE = 6,
+  PENDING_STATE = 7,
+  QR_INVITE = 8,
+  QR_SPLICE_INVITE = 9,
   UNRECOGNIZED = -1
 }
 
@@ -42,74 +22,32 @@ export function serverMessageTypeFromJSON(object: any): ServerMessageType {
     case 'ERROR':
       return ServerMessageType.ERROR
     case 1:
-    case 'CURRENT_SESSION':
-      return ServerMessageType.CURRENT_SESSION
+    case 'SESSION_STATE':
+      return ServerMessageType.SESSION_STATE
     case 2:
-    case 'USER_PROFILE':
-      return ServerMessageType.USER_PROFILE
+    case 'USER_STATE':
+      return ServerMessageType.USER_STATE
     case 3:
-    case 'USER_ATTRIBUTES':
-      return ServerMessageType.USER_ATTRIBUTES
+    case 'ATTRIBUTE_STATE':
+      return ServerMessageType.ATTRIBUTE_STATE
     case 4:
-    case 'USER_ATTRIBUTE_GROUPS':
-      return ServerMessageType.USER_ATTRIBUTE_GROUPS
+    case 'CONTACT_STATE':
+      return ServerMessageType.CONTACT_STATE
     case 5:
-    case 'USER_SESSIONS':
-      return ServerMessageType.USER_SESSIONS
+    case 'SPLICE_STATE':
+      return ServerMessageType.SPLICE_STATE
     case 6:
-    case 'CONTACTS':
-      return ServerMessageType.CONTACTS
+    case 'INVITE_STATE':
+      return ServerMessageType.INVITE_STATE
     case 7:
-    case 'CONTACT_ATTRIBUTES':
-      return ServerMessageType.CONTACT_ATTRIBUTES
+    case 'PENDING_STATE':
+      return ServerMessageType.PENDING_STATE
     case 8:
-    case 'CONTACT_SHARES':
-      return ServerMessageType.CONTACT_SHARES
+    case 'QR_INVITE':
+      return ServerMessageType.QR_INVITE
     case 9:
-    case 'PENDING_CONTACTS':
-      return ServerMessageType.PENDING_CONTACTS
-    case 10:
-    case 'PENDING_CONTACT_ATTRIBUTES':
-      return ServerMessageType.PENDING_CONTACT_ATTRIBUTES
-    case 11:
-    case 'CONTACT_INVITES':
-      return ServerMessageType.CONTACT_INVITES
-    case 12:
-    case 'CONTACT_INVITE_ATTRIBUTES':
-      return ServerMessageType.CONTACT_INVITE_ATTRIBUTES
-    case 13:
-    case 'QR_CONTACT_INVITES':
-      return ServerMessageType.QR_CONTACT_INVITES
-    case 14:
-    case 'QR_CONTACT_INVITE_ATTRIBUTES':
-      return ServerMessageType.QR_CONTACT_INVITE_ATTRIBUTES
-    case 15:
-    case 'SPLICES':
-      return ServerMessageType.SPLICES
-    case 16:
-    case 'SPLICE_MEMBERS':
-      return ServerMessageType.SPLICE_MEMBERS
-    case 17:
-    case 'SPLICE_SHARES':
-      return ServerMessageType.SPLICE_SHARES
-    case 18:
-    case 'PENDING_SPLICES':
-      return ServerMessageType.PENDING_SPLICES
-    case 19:
-    case 'PENDING_SPLICE_MEMBERS':
-      return ServerMessageType.PENDING_SPLICE_MEMBERS
-    case 20:
-    case 'SPLICE_INVITES':
-      return ServerMessageType.SPLICE_INVITES
-    case 21:
-    case 'SPLICE_INVITE_ATTRIBUTES':
-      return ServerMessageType.SPLICE_INVITE_ATTRIBUTES
-    case 22:
-    case 'QR_SPLICE_INVITES':
-      return ServerMessageType.QR_SPLICE_INVITES
-    case 23:
-    case 'QR_SPLICE_INVITE_ATTRIBUTES':
-      return ServerMessageType.QR_SPLICE_INVITE_ATTRIBUTES
+    case 'QR_SPLICE_INVITE':
+      return ServerMessageType.QR_SPLICE_INVITE
     case -1:
     case 'UNRECOGNIZED':
     default:
@@ -121,52 +59,24 @@ export function serverMessageTypeToJSON(object: ServerMessageType): string {
   switch (object) {
     case ServerMessageType.ERROR:
       return 'ERROR'
-    case ServerMessageType.CURRENT_SESSION:
-      return 'CURRENT_SESSION'
-    case ServerMessageType.USER_PROFILE:
-      return 'USER_PROFILE'
-    case ServerMessageType.USER_ATTRIBUTES:
-      return 'USER_ATTRIBUTES'
-    case ServerMessageType.USER_ATTRIBUTE_GROUPS:
-      return 'USER_ATTRIBUTE_GROUPS'
-    case ServerMessageType.USER_SESSIONS:
-      return 'USER_SESSIONS'
-    case ServerMessageType.CONTACTS:
-      return 'CONTACTS'
-    case ServerMessageType.CONTACT_ATTRIBUTES:
-      return 'CONTACT_ATTRIBUTES'
-    case ServerMessageType.CONTACT_SHARES:
-      return 'CONTACT_SHARES'
-    case ServerMessageType.PENDING_CONTACTS:
-      return 'PENDING_CONTACTS'
-    case ServerMessageType.PENDING_CONTACT_ATTRIBUTES:
-      return 'PENDING_CONTACT_ATTRIBUTES'
-    case ServerMessageType.CONTACT_INVITES:
-      return 'CONTACT_INVITES'
-    case ServerMessageType.CONTACT_INVITE_ATTRIBUTES:
-      return 'CONTACT_INVITE_ATTRIBUTES'
-    case ServerMessageType.QR_CONTACT_INVITES:
-      return 'QR_CONTACT_INVITES'
-    case ServerMessageType.QR_CONTACT_INVITE_ATTRIBUTES:
-      return 'QR_CONTACT_INVITE_ATTRIBUTES'
-    case ServerMessageType.SPLICES:
-      return 'SPLICES'
-    case ServerMessageType.SPLICE_MEMBERS:
-      return 'SPLICE_MEMBERS'
-    case ServerMessageType.SPLICE_SHARES:
-      return 'SPLICE_SHARES'
-    case ServerMessageType.PENDING_SPLICES:
-      return 'PENDING_SPLICES'
-    case ServerMessageType.PENDING_SPLICE_MEMBERS:
-      return 'PENDING_SPLICE_MEMBERS'
-    case ServerMessageType.SPLICE_INVITES:
-      return 'SPLICE_INVITES'
-    case ServerMessageType.SPLICE_INVITE_ATTRIBUTES:
-      return 'SPLICE_INVITE_ATTRIBUTES'
-    case ServerMessageType.QR_SPLICE_INVITES:
-      return 'QR_SPLICE_INVITES'
-    case ServerMessageType.QR_SPLICE_INVITE_ATTRIBUTES:
-      return 'QR_SPLICE_INVITE_ATTRIBUTES'
+    case ServerMessageType.SESSION_STATE:
+      return 'SESSION_STATE'
+    case ServerMessageType.USER_STATE:
+      return 'USER_STATE'
+    case ServerMessageType.ATTRIBUTE_STATE:
+      return 'ATTRIBUTE_STATE'
+    case ServerMessageType.CONTACT_STATE:
+      return 'CONTACT_STATE'
+    case ServerMessageType.SPLICE_STATE:
+      return 'SPLICE_STATE'
+    case ServerMessageType.INVITE_STATE:
+      return 'INVITE_STATE'
+    case ServerMessageType.PENDING_STATE:
+      return 'PENDING_STATE'
+    case ServerMessageType.QR_INVITE:
+      return 'QR_INVITE'
+    case ServerMessageType.QR_SPLICE_INVITE:
+      return 'QR_SPLICE_INVITE'
     default:
       return 'UNKNOWN'
   }

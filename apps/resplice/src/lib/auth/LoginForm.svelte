@@ -84,10 +84,6 @@
         rememberMe
       })
       authStore.set({
-        loginValues: {
-          phone,
-          email
-        },
         session: auth.session,
         crypto: auth.crypto
       })

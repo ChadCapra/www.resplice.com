@@ -2,22 +2,15 @@
 import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
 import { Session } from '../auth/session'
-import { Profile } from '../user/profile'
 
 export interface State {
   currentSession: Session | undefined
-  currentUser: Profile | undefined
   otherSessions: Session[]
   expiredSessionIds: number[]
 }
 
 function createBaseState(): State {
-  return {
-    currentSession: undefined,
-    currentUser: undefined,
-    otherSessions: [],
-    expiredSessionIds: []
-  }
+  return { currentSession: undefined, otherSessions: [], expiredSessionIds: [] }
 }
 
 export const State = {
@@ -25,13 +18,10 @@ export const State = {
     if (message.currentSession !== undefined) {
       Session.encode(message.currentSession, writer.uint32(10).fork()).ldelim()
     }
-    if (message.currentUser !== undefined) {
-      Profile.encode(message.currentUser, writer.uint32(18).fork()).ldelim()
-    }
     for (const v of message.otherSessions) {
-      Session.encode(v!, writer.uint32(26).fork()).ldelim()
+      Session.encode(v!, writer.uint32(18).fork()).ldelim()
     }
-    writer.uint32(34).fork()
+    writer.uint32(26).fork()
     for (const v of message.expiredSessionIds) {
       writer.uint32(v)
     }
@@ -50,12 +40,9 @@ export const State = {
           message.currentSession = Session.decode(reader, reader.uint32())
           break
         case 2:
-          message.currentUser = Profile.decode(reader, reader.uint32())
-          break
-        case 3:
           message.otherSessions.push(Session.decode(reader, reader.uint32()))
           break
-        case 4:
+        case 3:
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos
             while (reader.pos < end2) {
@@ -78,9 +65,6 @@ export const State = {
       currentSession: isSet(object.currentSession)
         ? Session.fromJSON(object.currentSession)
         : undefined,
-      currentUser: isSet(object.currentUser)
-        ? Profile.fromJSON(object.currentUser)
-        : undefined,
       otherSessions: Array.isArray(object?.otherSessions)
         ? object.otherSessions.map((e: any) => Session.fromJSON(e))
         : [],
@@ -95,10 +79,6 @@ export const State = {
     message.currentSession !== undefined &&
       (obj.currentSession = message.currentSession
         ? Session.toJSON(message.currentSession)
-        : undefined)
-    message.currentUser !== undefined &&
-      (obj.currentUser = message.currentUser
-        ? Profile.toJSON(message.currentUser)
         : undefined)
     if (message.otherSessions) {
       obj.otherSessions = message.otherSessions.map((e) =>
@@ -122,10 +102,6 @@ export const State = {
     message.currentSession =
       object.currentSession !== undefined && object.currentSession !== null
         ? Session.fromPartial(object.currentSession)
-        : undefined
-    message.currentUser =
-      object.currentUser !== undefined && object.currentUser !== null
-        ? Profile.fromPartial(object.currentUser)
         : undefined
     message.otherSessions =
       object.otherSessions?.map((e) => Session.fromPartial(e)) || []

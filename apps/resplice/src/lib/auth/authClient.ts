@@ -4,7 +4,6 @@ import {
   buildReCrypto,
   importPublicKey,
   publicKeyEncrypt,
-  combineBufferArrays,
   type ReCrypto
 } from '$services/crypto'
 import {
@@ -42,7 +41,7 @@ type VerifyRequest = {
   verificationToken: number
 }
 
-class AuthClient {
+export class AuthClient {
   #api: Api
   #cache: DB
   #crypto: ReCrypto | null
@@ -87,10 +86,8 @@ class AuthClient {
         email: params.email.email,
         phone: { ...params.phone, extension: params.phone.extension || 0 },
         rememberMe: params.rememberMe,
-        aesKeyIvBase: combineBufferArrays(
-          this.#crypto.baseIV,
-          this.#crypto.rawKey
-        )
+        ivBase: this.#crypto.baseIV,
+        aesKey: this.#crypto.rawKey
       } as CreateSession
     }
 

@@ -16,7 +16,6 @@ export interface PendingContact {
   handle: string
   phone: Phone | undefined
   email: string
-  commonSplice: string
   expiry: number
 }
 
@@ -29,7 +28,6 @@ function createBasePendingContact(): PendingContact {
     handle: '',
     phone: undefined,
     email: '',
-    commonSplice: '',
     expiry: 0
   }
 }
@@ -60,11 +58,8 @@ export const PendingContact = {
     if (message.email !== '') {
       writer.uint32(58).string(message.email)
     }
-    if (message.commonSplice !== '') {
-      writer.uint32(66).string(message.commonSplice)
-    }
     if (message.expiry !== 0) {
-      writer.uint32(72).uint32(message.expiry)
+      writer.uint32(64).uint32(message.expiry)
     }
     return writer
   },
@@ -98,9 +93,6 @@ export const PendingContact = {
           message.email = reader.string()
           break
         case 8:
-          message.commonSplice = reader.string()
-          break
-        case 9:
           message.expiry = reader.uint32()
           break
         default:
@@ -122,9 +114,6 @@ export const PendingContact = {
       handle: isSet(object.handle) ? String(object.handle) : '',
       phone: isSet(object.phone) ? Phone.fromJSON(object.phone) : undefined,
       email: isSet(object.email) ? String(object.email) : '',
-      commonSplice: isSet(object.commonSplice)
-        ? String(object.commonSplice)
-        : '',
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0
     }
   },
@@ -140,8 +129,6 @@ export const PendingContact = {
     message.phone !== undefined &&
       (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined)
     message.email !== undefined && (obj.email = message.email)
-    message.commonSplice !== undefined &&
-      (obj.commonSplice = message.commonSplice)
     message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
     return obj
   },
@@ -160,7 +147,6 @@ export const PendingContact = {
         ? Phone.fromPartial(object.phone)
         : undefined
     message.email = object.email ?? ''
-    message.commonSplice = object.commonSplice ?? ''
     message.expiry = object.expiry ?? 0
     return message
   }
