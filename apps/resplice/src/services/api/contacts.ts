@@ -60,40 +60,39 @@ function contactsClientFactory({
 }: FactoryParams): ContactsClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
     switch (m.type) {
-      case ServerMessageType.CONTACTS:
-        store.contacts.update((state) =>
-          processRecords(state, 'id', m.data.contacts, m.data.expiredIds)
-        )
-        break
-      case ServerMessageType.CONTACT_ATTRIBUTES:
-        store.contactAttributes.update((state) =>
-          processRecords(
-            state,
-            'id',
-            m.data.contactAttributes,
-            m.data.expiredIds
+      case ServerMessageType.CONTACT_STATE:
+        if (m.data.contacts) {
+          store.contacts.update((state) =>
+            processRecords(
+              state,
+              'id',
+              m.data.contacts,
+              m.data.expiredContactIds
+            )
           )
-        )
-        break
-      case ServerMessageType.CONTACT_SHARES:
-        store.contactShares.update((state) =>
-          processRecords(state, 'id', m.data.contactShares, m.data.expiredIds)
-        )
-        break
-      case ServerMessageType.PENDING_CONTACTS:
-        store.pendingContacts.update((state) =>
-          processRecords(state, 'id', m.data.pendingContacts, m.data.expiredIds)
-        )
-        break
-      case ServerMessageType.PENDING_CONTACT_ATTRIBUTES:
-        store.pendingContactAttributes.update((state) =>
-          processRecords(
-            state,
-            'id',
-            m.data.pendingContactAttributes,
-            m.data.expiredIds
+        }
+
+        if (m.data.contactAttributes) {
+          store.contactAttributes.update((state) =>
+            processRecords(
+              state,
+              'id',
+              m.data.contactAttributes,
+              m.data.expiredContactAttributeIds
+            )
           )
-        )
+        }
+
+        if (m.data.contactShares) {
+          store.contactShares.update((state) =>
+            processRecords(
+              state,
+              'id',
+              m.data.contactShares,
+              m.data.expiredContactShareIds
+            )
+          )
+        }
         break
     }
   })

@@ -30,12 +30,18 @@ function attributesClientFactory(
 ): AttributesClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
     switch (m.type) {
-      case ServerMessageType.USER_ATTRIBUTES:
-        store.update((state) =>
-          processRecords(state, 'id', m.data.attributes, m.data.expiredIds)
-        )
+      case ServerMessageType.ATTRIBUTE_STATE:
+        if (m.data.attributes) {
+          store.update((state) =>
+            processRecords(
+              state,
+              'id',
+              m.data.attributes,
+              m.data.expiredAttributeIds
+            )
+          )
+        }
         break
-      case ServerMessageType.USER_ATTRIBUTE_GROUPS: // TODO
     }
   })
 

@@ -75,20 +75,23 @@ function invitesClientFactory({
 }: FactoryParams): InvitesClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
     switch (m.type) {
-      case ServerMessageType.CONTACT_INVITES:
-        store.invites.update((state) =>
-          processRecords(state, 'id', m.data.contactInvites, m.data.expiredIds)
-        )
-        break
-      case ServerMessageType.CONTACT_INVITE_ATTRIBUTES:
-        store.inviteAttributes.update((state) =>
-          processRecords(
-            state,
-            'id',
-            m.data.inviteAttributes,
-            m.data.expiredIds
+      case ServerMessageType.INVITE_STATE:
+        if (m.data.invites) {
+          store.invites.update((state) =>
+            processRecords(state, 'id', m.data.invites, m.data.expiredInviteIds)
           )
-        )
+        }
+
+        if (m.data.inviteAttributes) {
+          store.inviteAttributes.update((state) =>
+            processRecords(
+              state,
+              'id',
+              m.data.inviteAttributes,
+              m.data.expiredInviteAttributeIds
+            )
+          )
+        }
         break
     }
   })

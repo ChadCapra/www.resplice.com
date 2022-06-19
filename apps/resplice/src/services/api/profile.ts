@@ -29,10 +29,11 @@ function profileClientFactory(
 ): ProfileClient {
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
     switch (m.type) {
-      case ServerMessageType.USER_PROFILE:
-        store.update((state) => ({ ...state, ...m.data }))
+      case ServerMessageType.USER_STATE:
+        if (m.data.profile) {
+          store.update((state) => ({ ...state, ...m.data.profile }))
+        }
         break
-      case ServerMessageType.USER_SESSIONS: // TODO
     }
   })
 
