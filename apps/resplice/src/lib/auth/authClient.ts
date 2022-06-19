@@ -103,14 +103,12 @@ export class AuthClient {
     // Add to events only after successful create session to prevent counter from increasing on failures
     await this.#cache.insert('events', message)
 
-    const session: Session = await deserializeServerMessage(
-      new Uint8Array(resBuffer),
-      this.#crypto
-    )
+    const { currentSession }: { currentSession: Session } =
+      await deserializeServerMessage(new Uint8Array(resBuffer), this.#crypto)
 
-    await this.#updateAuthCache(session)
+    await this.#updateAuthCache(currentSession)
 
-    return { session, crypto: this.#crypto }
+    return { session: currentSession, crypto: this.#crypto }
   }
 
   async verifyEmail(params: VerifyRequest): Promise<Session> {
@@ -135,14 +133,12 @@ export class AuthClient {
       data: clientMessageBytes
     })
 
-    const session = await deserializeServerMessage(
-      new Uint8Array(resBuffer),
-      this.#crypto
-    )
+    const { currentSession }: { currentSession: Session } =
+      await deserializeServerMessage(new Uint8Array(resBuffer), this.#crypto)
 
-    await this.#updateAuthCache(session)
+    await this.#updateAuthCache(currentSession)
 
-    return session
+    return currentSession
   }
 
   async verifyPhone(params: VerifyRequest): Promise<Session> {
@@ -167,14 +163,12 @@ export class AuthClient {
       data: clientMessageBytes
     })
 
-    const session = await deserializeServerMessage(
-      new Uint8Array(resBuffer),
-      this.#crypto
-    )
+    const { currentSession }: { currentSession: Session } =
+      await deserializeServerMessage(new Uint8Array(resBuffer), this.#crypto)
 
-    await this.#updateAuthCache(session)
+    await this.#updateAuthCache(currentSession)
 
-    return session
+    return currentSession
   }
 
   async createAccount(params: CreateAccountRequest): Promise<Session> {
@@ -201,14 +195,12 @@ export class AuthClient {
       data: clientMessageBytes
     })
 
-    const session = await deserializeServerMessage(
-      new Uint8Array(resBuffer),
-      this.#crypto
-    )
+    const { currentSession }: { currentSession: Session } =
+      await deserializeServerMessage(new Uint8Array(resBuffer), this.#crypto)
 
-    await this.#updateAuthCache(session)
+    await this.#updateAuthCache(currentSession)
 
-    return session
+    return currentSession
   }
 }
 
