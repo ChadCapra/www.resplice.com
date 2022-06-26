@@ -1,10 +1,19 @@
-type Feature = 'Crypto' | 'geolocation' | 'indexedDB' | 'WebSocket' | 'Worker'
+type Feature =
+  | 'contacts'
+  | 'ContactsManager'
+  | 'Crypto'
+  | 'geolocation'
+  | 'indexedDB'
+  | 'WebSocket'
+  | 'Worker'
 type FeatureMap = Record<Feature, boolean>
 
 export function isSupported(feature: Feature): boolean
-export function isSupported(features: Feature[]): Partial<FeatureMap>
+export function isSupported(features: Feature[]): [boolean, Partial<FeatureMap>]
 export function isSupported(feature: Feature | Feature[]) {
   const features: FeatureMap = {
+    contacts: 'contacts' in navigator,
+    ContactsManager: 'ContactsManager' in window,
     Crypto: 'Crypto' in window,
     geolocation: 'geolocation' in navigator,
     indexedDB: 'indexedDB' in window,
@@ -16,15 +25,20 @@ export function isSupported(feature: Feature | Feature[]) {
     feature.forEach((f) => {
       feats[f] = features[f]
     })
-    return feats
+    return [!!Object.values(feats).some((f) => f), feats]
   }
 
   return features[feature]
 }
 
 export function isRespliceSupported(): boolean {
-  const features = isSupported(['Crypto', 'indexedDB', 'WebSocket', 'Worker'])
-  return !!Object.values(features).some((f) => f)
+  const [supported] = isSupported([
+    'Crypto',
+    'indexedDB',
+    'WebSocket',
+    'Worker'
+  ])
+  return supported
 }
 
 if (import.meta.vitest) {
@@ -47,11 +61,12 @@ if (import.meta.vitest) {
   })
 
   test('can detect support for many features', () => {
-    const features = isSupported(['indexedDB', 'WebSocket'])
+    const [supported, features] = isSupported(['indexedDB', 'WebSocket'])
 
     expect(features.Crypto).toBe(undefined)
     expect(features.indexedDB).toBe(true)
     expect(features.WebSocket).toBe(true)
+    expect(supported).toBe(true)
   })
 
   test('can detect if resplice is supported', () => {
