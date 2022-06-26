@@ -11,21 +11,23 @@ import { Phone } from '../attributes/attribute_value'
 export interface Session {
   id: number
   status: SessionStatus
-  email: string
-  phone: Phone | undefined
-  rememberMe: boolean
   expiry: number
 }
 
+export interface SessionDetail {
+  id: number
+  email: string
+  phone: Phone | undefined
+  authenticatedAt: number
+  expiry: number
+}
+
+export interface SessionDetails {
+  details: SessionDetail[]
+}
+
 function createBaseSession(): Session {
-  return {
-    id: 0,
-    status: 0,
-    email: '',
-    phone: undefined,
-    rememberMe: false,
-    expiry: 0
-  }
+  return { id: 0, status: 0, expiry: 0 }
 }
 
 export const Session = {
@@ -39,17 +41,8 @@ export const Session = {
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status)
     }
-    if (message.email !== '') {
-      writer.uint32(26).string(message.email)
-    }
-    if (message.phone !== undefined) {
-      Phone.encode(message.phone, writer.uint32(34).fork()).ldelim()
-    }
-    if (message.rememberMe === true) {
-      writer.uint32(40).bool(message.rememberMe)
-    }
     if (message.expiry !== 0) {
-      writer.uint32(48).uint32(message.expiry)
+      writer.uint32(24).uint32(message.expiry)
     }
     return writer
   },
@@ -68,15 +61,6 @@ export const Session = {
           message.status = reader.int32() as any
           break
         case 3:
-          message.email = reader.string()
-          break
-        case 4:
-          message.phone = Phone.decode(reader, reader.uint32())
-          break
-        case 5:
-          message.rememberMe = reader.bool()
-          break
-        case 6:
           message.expiry = reader.uint32()
           break
         default:
@@ -91,9 +75,6 @@ export const Session = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       status: isSet(object.status) ? sessionStatusFromJSON(object.status) : 0,
-      email: isSet(object.email) ? String(object.email) : '',
-      phone: isSet(object.phone) ? Phone.fromJSON(object.phone) : undefined,
-      rememberMe: isSet(object.rememberMe) ? Boolean(object.rememberMe) : false,
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0
     }
   },
@@ -103,10 +84,6 @@ export const Session = {
     message.id !== undefined && (obj.id = Math.round(message.id))
     message.status !== undefined &&
       (obj.status = sessionStatusToJSON(message.status))
-    message.email !== undefined && (obj.email = message.email)
-    message.phone !== undefined &&
-      (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined)
-    message.rememberMe !== undefined && (obj.rememberMe = message.rememberMe)
     message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
     return obj
   },
@@ -115,13 +92,167 @@ export const Session = {
     const message = createBaseSession()
     message.id = object.id ?? 0
     message.status = object.status ?? 0
+    message.expiry = object.expiry ?? 0
+    return message
+  }
+}
+
+function createBaseSessionDetail(): SessionDetail {
+  return { id: 0, email: '', phone: undefined, authenticatedAt: 0, expiry: 0 }
+}
+
+export const SessionDetail = {
+  encode(
+    message: SessionDetail,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).uint32(message.id)
+    }
+    if (message.email !== '') {
+      writer.uint32(18).string(message.email)
+    }
+    if (message.phone !== undefined) {
+      Phone.encode(message.phone, writer.uint32(26).fork()).ldelim()
+    }
+    if (message.authenticatedAt !== 0) {
+      writer.uint32(32).uint32(message.authenticatedAt)
+    }
+    if (message.expiry !== 0) {
+      writer.uint32(40).uint32(message.expiry)
+    }
+    return writer
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SessionDetail {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseSessionDetail()
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.uint32()
+          break
+        case 2:
+          message.email = reader.string()
+          break
+        case 3:
+          message.phone = Phone.decode(reader, reader.uint32())
+          break
+        case 4:
+          message.authenticatedAt = reader.uint32()
+          break
+        case 5:
+          message.expiry = reader.uint32()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): SessionDetail {
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      email: isSet(object.email) ? String(object.email) : '',
+      phone: isSet(object.phone) ? Phone.fromJSON(object.phone) : undefined,
+      authenticatedAt: isSet(object.authenticatedAt)
+        ? Number(object.authenticatedAt)
+        : 0,
+      expiry: isSet(object.expiry) ? Number(object.expiry) : 0
+    }
+  },
+
+  toJSON(message: SessionDetail): unknown {
+    const obj: any = {}
+    message.id !== undefined && (obj.id = Math.round(message.id))
+    message.email !== undefined && (obj.email = message.email)
+    message.phone !== undefined &&
+      (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined)
+    message.authenticatedAt !== undefined &&
+      (obj.authenticatedAt = Math.round(message.authenticatedAt))
+    message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
+    return obj
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SessionDetail>, I>>(
+    object: I
+  ): SessionDetail {
+    const message = createBaseSessionDetail()
+    message.id = object.id ?? 0
     message.email = object.email ?? ''
     message.phone =
       object.phone !== undefined && object.phone !== null
         ? Phone.fromPartial(object.phone)
         : undefined
-    message.rememberMe = object.rememberMe ?? false
+    message.authenticatedAt = object.authenticatedAt ?? 0
     message.expiry = object.expiry ?? 0
+    return message
+  }
+}
+
+function createBaseSessionDetails(): SessionDetails {
+  return { details: [] }
+}
+
+export const SessionDetails = {
+  encode(
+    message: SessionDetails,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.details) {
+      SessionDetail.encode(v!, writer.uint32(10).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SessionDetails {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseSessionDetails()
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.details.push(SessionDetail.decode(reader, reader.uint32()))
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): SessionDetails {
+    return {
+      details: Array.isArray(object?.details)
+        ? object.details.map((e: any) => SessionDetail.fromJSON(e))
+        : []
+    }
+  },
+
+  toJSON(message: SessionDetails): unknown {
+    const obj: any = {}
+    if (message.details) {
+      obj.details = message.details.map((e) =>
+        e ? SessionDetail.toJSON(e) : undefined
+      )
+    } else {
+      obj.details = []
+    }
+    return obj
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SessionDetails>, I>>(
+    object: I
+  ): SessionDetails {
+    const message = createBaseSessionDetails()
+    message.details =
+      object.details?.map((e) => SessionDetail.fromPartial(e)) || []
     return message
   }
 }

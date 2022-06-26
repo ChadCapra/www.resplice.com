@@ -3,51 +3,55 @@ import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
 
 export enum ServerMessageType {
-  ERROR = 0,
-  SESSION_STATE = 1,
-  USER_STATE = 2,
-  ATTRIBUTE_STATE = 3,
-  CONTACT_STATE = 4,
-  SPLICE_STATE = 5,
-  INVITE_STATE = 6,
-  PENDING_STATE = 7,
-  QR_INVITE = 8,
-  QR_SPLICE_INVITE = 9,
+  SESSION = 0,
+  USER_PROFILE = 1,
+  ATTRIBUTE_STATE = 2,
+  CONTACT_STATE = 3,
+  SPLICE_STATE = 4,
+  INVITE_STATE = 5,
+  PENDING_STATE = 6,
+  QR_INVITE = 7,
+  QR_SPLICE_INVITE = 8,
+  SESSION_DETAILS = 9,
+  ERROR = 127,
   UNRECOGNIZED = -1
 }
 
 export function serverMessageTypeFromJSON(object: any): ServerMessageType {
   switch (object) {
     case 0:
-    case 'ERROR':
-      return ServerMessageType.ERROR
+    case 'SESSION':
+      return ServerMessageType.SESSION
     case 1:
-    case 'SESSION_STATE':
-      return ServerMessageType.SESSION_STATE
+    case 'USER_PROFILE':
+      return ServerMessageType.USER_PROFILE
     case 2:
-    case 'USER_STATE':
-      return ServerMessageType.USER_STATE
-    case 3:
     case 'ATTRIBUTE_STATE':
       return ServerMessageType.ATTRIBUTE_STATE
-    case 4:
+    case 3:
     case 'CONTACT_STATE':
       return ServerMessageType.CONTACT_STATE
-    case 5:
+    case 4:
     case 'SPLICE_STATE':
       return ServerMessageType.SPLICE_STATE
-    case 6:
+    case 5:
     case 'INVITE_STATE':
       return ServerMessageType.INVITE_STATE
-    case 7:
+    case 6:
     case 'PENDING_STATE':
       return ServerMessageType.PENDING_STATE
-    case 8:
+    case 7:
     case 'QR_INVITE':
       return ServerMessageType.QR_INVITE
-    case 9:
+    case 8:
     case 'QR_SPLICE_INVITE':
       return ServerMessageType.QR_SPLICE_INVITE
+    case 9:
+    case 'SESSION_DETAILS':
+      return ServerMessageType.SESSION_DETAILS
+    case 127:
+    case 'ERROR':
+      return ServerMessageType.ERROR
     case -1:
     case 'UNRECOGNIZED':
     default:
@@ -57,12 +61,10 @@ export function serverMessageTypeFromJSON(object: any): ServerMessageType {
 
 export function serverMessageTypeToJSON(object: ServerMessageType): string {
   switch (object) {
-    case ServerMessageType.ERROR:
-      return 'ERROR'
-    case ServerMessageType.SESSION_STATE:
-      return 'SESSION_STATE'
-    case ServerMessageType.USER_STATE:
-      return 'USER_STATE'
+    case ServerMessageType.SESSION:
+      return 'SESSION'
+    case ServerMessageType.USER_PROFILE:
+      return 'USER_PROFILE'
     case ServerMessageType.ATTRIBUTE_STATE:
       return 'ATTRIBUTE_STATE'
     case ServerMessageType.CONTACT_STATE:
@@ -77,15 +79,15 @@ export function serverMessageTypeToJSON(object: ServerMessageType): string {
       return 'QR_INVITE'
     case ServerMessageType.QR_SPLICE_INVITE:
       return 'QR_SPLICE_INVITE'
+    case ServerMessageType.SESSION_DETAILS:
+      return 'SESSION_DETAILS'
+    case ServerMessageType.ERROR:
+      return 'ERROR'
     default:
       return 'UNKNOWN'
   }
 }
 
-/**
- * Sent in plain binary, except encrypted payload is data encrypted via AES key
- * encrypted_response is 0 bytes (not encrypted) if the ActionRequest was invalid
- */
 export interface ServerMessage {
   messageType: ServerMessageType
   /** used to clear expired entities on client side */

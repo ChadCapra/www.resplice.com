@@ -4,6 +4,8 @@ import * as _m0 from 'protobufjs/minimal'
 import { Splice } from '../splices/splice'
 import { SpliceMember } from '../splices/splice_member'
 import { SpliceShare } from '../splices/splice_share'
+import { PendingSplice } from '../splices/pending_splice'
+import { PendingSpliceMember } from '../splices/pending_splice_member'
 
 export interface SpliceState {
   splices: Splice[]
@@ -12,6 +14,10 @@ export interface SpliceState {
   expiredMemberIds: number[]
   spliceShares: SpliceShare[]
   expiredShareIds: number[]
+  pendingSplices: PendingSplice[]
+  expiredPendingSpliceIds: number[]
+  pendingSpliceMembers: PendingSpliceMember[]
+  expiredPendingSpliceMemberIds: number[]
 }
 
 function createBaseSpliceState(): SpliceState {
@@ -21,7 +27,11 @@ function createBaseSpliceState(): SpliceState {
     spliceMembers: [],
     expiredMemberIds: [],
     spliceShares: [],
-    expiredShareIds: []
+    expiredShareIds: [],
+    pendingSplices: [],
+    expiredPendingSpliceIds: [],
+    pendingSpliceMembers: [],
+    expiredPendingSpliceMemberIds: []
   }
 }
 
@@ -51,6 +61,22 @@ export const SpliceState = {
     }
     writer.uint32(50).fork()
     for (const v of message.expiredShareIds) {
+      writer.uint32(v)
+    }
+    writer.ldelim()
+    for (const v of message.pendingSplices) {
+      PendingSplice.encode(v!, writer.uint32(58).fork()).ldelim()
+    }
+    writer.uint32(66).fork()
+    for (const v of message.expiredPendingSpliceIds) {
+      writer.uint32(v)
+    }
+    writer.ldelim()
+    for (const v of message.pendingSpliceMembers) {
+      PendingSpliceMember.encode(v!, writer.uint32(74).fork()).ldelim()
+    }
+    writer.uint32(82).fork()
+    for (const v of message.expiredPendingSpliceMemberIds) {
       writer.uint32(v)
     }
     writer.ldelim()
@@ -105,6 +131,36 @@ export const SpliceState = {
             message.expiredShareIds.push(reader.uint32())
           }
           break
+        case 7:
+          message.pendingSplices.push(
+            PendingSplice.decode(reader, reader.uint32())
+          )
+          break
+        case 8:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos
+            while (reader.pos < end2) {
+              message.expiredPendingSpliceIds.push(reader.uint32())
+            }
+          } else {
+            message.expiredPendingSpliceIds.push(reader.uint32())
+          }
+          break
+        case 9:
+          message.pendingSpliceMembers.push(
+            PendingSpliceMember.decode(reader, reader.uint32())
+          )
+          break
+        case 10:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos
+            while (reader.pos < end2) {
+              message.expiredPendingSpliceMemberIds.push(reader.uint32())
+            }
+          } else {
+            message.expiredPendingSpliceMemberIds.push(reader.uint32())
+          }
+          break
         default:
           reader.skipType(tag & 7)
           break
@@ -132,6 +188,22 @@ export const SpliceState = {
         : [],
       expiredShareIds: Array.isArray(object?.expiredShareIds)
         ? object.expiredShareIds.map((e: any) => Number(e))
+        : [],
+      pendingSplices: Array.isArray(object?.pendingSplices)
+        ? object.pendingSplices.map((e: any) => PendingSplice.fromJSON(e))
+        : [],
+      expiredPendingSpliceIds: Array.isArray(object?.expiredPendingSpliceIds)
+        ? object.expiredPendingSpliceIds.map((e: any) => Number(e))
+        : [],
+      pendingSpliceMembers: Array.isArray(object?.pendingSpliceMembers)
+        ? object.pendingSpliceMembers.map((e: any) =>
+            PendingSpliceMember.fromJSON(e)
+          )
+        : [],
+      expiredPendingSpliceMemberIds: Array.isArray(
+        object?.expiredPendingSpliceMemberIds
+      )
+        ? object.expiredPendingSpliceMemberIds.map((e: any) => Number(e))
         : []
     }
   },
@@ -174,6 +246,33 @@ export const SpliceState = {
     } else {
       obj.expiredShareIds = []
     }
+    if (message.pendingSplices) {
+      obj.pendingSplices = message.pendingSplices.map((e) =>
+        e ? PendingSplice.toJSON(e) : undefined
+      )
+    } else {
+      obj.pendingSplices = []
+    }
+    if (message.expiredPendingSpliceIds) {
+      obj.expiredPendingSpliceIds = message.expiredPendingSpliceIds.map((e) =>
+        Math.round(e)
+      )
+    } else {
+      obj.expiredPendingSpliceIds = []
+    }
+    if (message.pendingSpliceMembers) {
+      obj.pendingSpliceMembers = message.pendingSpliceMembers.map((e) =>
+        e ? PendingSpliceMember.toJSON(e) : undefined
+      )
+    } else {
+      obj.pendingSpliceMembers = []
+    }
+    if (message.expiredPendingSpliceMemberIds) {
+      obj.expiredPendingSpliceMemberIds =
+        message.expiredPendingSpliceMemberIds.map((e) => Math.round(e))
+    } else {
+      obj.expiredPendingSpliceMemberIds = []
+    }
     return obj
   },
 
@@ -189,6 +288,16 @@ export const SpliceState = {
     message.spliceShares =
       object.spliceShares?.map((e) => SpliceShare.fromPartial(e)) || []
     message.expiredShareIds = object.expiredShareIds?.map((e) => e) || []
+    message.pendingSplices =
+      object.pendingSplices?.map((e) => PendingSplice.fromPartial(e)) || []
+    message.expiredPendingSpliceIds =
+      object.expiredPendingSpliceIds?.map((e) => e) || []
+    message.pendingSpliceMembers =
+      object.pendingSpliceMembers?.map((e) =>
+        PendingSpliceMember.fromPartial(e)
+      ) || []
+    message.expiredPendingSpliceMemberIds =
+      object.expiredPendingSpliceMemberIds?.map((e) => e) || []
     return message
   }
 }

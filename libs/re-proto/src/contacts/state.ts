@@ -4,6 +4,8 @@ import * as _m0 from 'protobufjs/minimal'
 import { Contact } from '../contacts/contact'
 import { ContactAttribute } from '../contacts/contact_attribute'
 import { ContactShare } from '../contacts/contact_share'
+import { PendingContact } from '../contacts/pending_contact'
+import { PendingContactAttribute } from '../contacts/pending_contact_attribute'
 
 export interface State {
   contacts: Contact[]
@@ -12,6 +14,10 @@ export interface State {
   expiredContactAttributeIds: number[]
   contactShares: ContactShare[]
   expiredContactShareIds: number[]
+  pendingContacts: PendingContact[]
+  expiredPendingContactIds: number[]
+  pendingContactAttributes: PendingContactAttribute[]
+  expiredPendingContactAttributeIds: number[]
 }
 
 function createBaseState(): State {
@@ -21,7 +27,11 @@ function createBaseState(): State {
     contactAttributes: [],
     expiredContactAttributeIds: [],
     contactShares: [],
-    expiredContactShareIds: []
+    expiredContactShareIds: [],
+    pendingContacts: [],
+    expiredPendingContactIds: [],
+    pendingContactAttributes: [],
+    expiredPendingContactAttributeIds: []
   }
 }
 
@@ -48,6 +58,22 @@ export const State = {
     }
     writer.uint32(50).fork()
     for (const v of message.expiredContactShareIds) {
+      writer.uint32(v)
+    }
+    writer.ldelim()
+    for (const v of message.pendingContacts) {
+      PendingContact.encode(v!, writer.uint32(58).fork()).ldelim()
+    }
+    writer.uint32(66).fork()
+    for (const v of message.expiredPendingContactIds) {
+      writer.uint32(v)
+    }
+    writer.ldelim()
+    for (const v of message.pendingContactAttributes) {
+      PendingContactAttribute.encode(v!, writer.uint32(74).fork()).ldelim()
+    }
+    writer.uint32(82).fork()
+    for (const v of message.expiredPendingContactAttributeIds) {
       writer.uint32(v)
     }
     writer.ldelim()
@@ -104,6 +130,36 @@ export const State = {
             message.expiredContactShareIds.push(reader.uint32())
           }
           break
+        case 7:
+          message.pendingContacts.push(
+            PendingContact.decode(reader, reader.uint32())
+          )
+          break
+        case 8:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos
+            while (reader.pos < end2) {
+              message.expiredPendingContactIds.push(reader.uint32())
+            }
+          } else {
+            message.expiredPendingContactIds.push(reader.uint32())
+          }
+          break
+        case 9:
+          message.pendingContactAttributes.push(
+            PendingContactAttribute.decode(reader, reader.uint32())
+          )
+          break
+        case 10:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos
+            while (reader.pos < end2) {
+              message.expiredPendingContactAttributeIds.push(reader.uint32())
+            }
+          } else {
+            message.expiredPendingContactAttributeIds.push(reader.uint32())
+          }
+          break
         default:
           reader.skipType(tag & 7)
           break
@@ -133,6 +189,22 @@ export const State = {
         : [],
       expiredContactShareIds: Array.isArray(object?.expiredContactShareIds)
         ? object.expiredContactShareIds.map((e: any) => Number(e))
+        : [],
+      pendingContacts: Array.isArray(object?.pendingContacts)
+        ? object.pendingContacts.map((e: any) => PendingContact.fromJSON(e))
+        : [],
+      expiredPendingContactIds: Array.isArray(object?.expiredPendingContactIds)
+        ? object.expiredPendingContactIds.map((e: any) => Number(e))
+        : [],
+      pendingContactAttributes: Array.isArray(object?.pendingContactAttributes)
+        ? object.pendingContactAttributes.map((e: any) =>
+            PendingContactAttribute.fromJSON(e)
+          )
+        : [],
+      expiredPendingContactAttributeIds: Array.isArray(
+        object?.expiredPendingContactAttributeIds
+      )
+        ? object.expiredPendingContactAttributeIds.map((e: any) => Number(e))
         : []
     }
   },
@@ -181,6 +253,33 @@ export const State = {
     } else {
       obj.expiredContactShareIds = []
     }
+    if (message.pendingContacts) {
+      obj.pendingContacts = message.pendingContacts.map((e) =>
+        e ? PendingContact.toJSON(e) : undefined
+      )
+    } else {
+      obj.pendingContacts = []
+    }
+    if (message.expiredPendingContactIds) {
+      obj.expiredPendingContactIds = message.expiredPendingContactIds.map((e) =>
+        Math.round(e)
+      )
+    } else {
+      obj.expiredPendingContactIds = []
+    }
+    if (message.pendingContactAttributes) {
+      obj.pendingContactAttributes = message.pendingContactAttributes.map((e) =>
+        e ? PendingContactAttribute.toJSON(e) : undefined
+      )
+    } else {
+      obj.pendingContactAttributes = []
+    }
+    if (message.expiredPendingContactAttributeIds) {
+      obj.expiredPendingContactAttributeIds =
+        message.expiredPendingContactAttributeIds.map((e) => Math.round(e))
+    } else {
+      obj.expiredPendingContactAttributeIds = []
+    }
     return obj
   },
 
@@ -197,6 +296,16 @@ export const State = {
       object.contactShares?.map((e) => ContactShare.fromPartial(e)) || []
     message.expiredContactShareIds =
       object.expiredContactShareIds?.map((e) => e) || []
+    message.pendingContacts =
+      object.pendingContacts?.map((e) => PendingContact.fromPartial(e)) || []
+    message.expiredPendingContactIds =
+      object.expiredPendingContactIds?.map((e) => e) || []
+    message.pendingContactAttributes =
+      object.pendingContactAttributes?.map((e) =>
+        PendingContactAttribute.fromPartial(e)
+      ) || []
+    message.expiredPendingContactAttributeIds =
+      object.expiredPendingContactAttributeIds?.map((e) => e) || []
     return message
   }
 }

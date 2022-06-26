@@ -3,21 +3,20 @@ import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
 
 export enum SessionStatus {
-  NOT_SET = 0,
+  EXPIRED = 0,
   PENDING_EMAIL_VERIFICATION = 1,
   PENDING_PHONE_VERIFICATION = 2,
   PENDING_USER_REGISRATION = 3,
   PENDING_ADDITIONAL_AUTHENTICATION = 4,
   AUTHENTICATED = 5,
-  EXPIRED = 6,
   UNRECOGNIZED = -1
 }
 
 export function sessionStatusFromJSON(object: any): SessionStatus {
   switch (object) {
     case 0:
-    case 'NOT_SET':
-      return SessionStatus.NOT_SET
+    case 'EXPIRED':
+      return SessionStatus.EXPIRED
     case 1:
     case 'PENDING_EMAIL_VERIFICATION':
       return SessionStatus.PENDING_EMAIL_VERIFICATION
@@ -33,9 +32,6 @@ export function sessionStatusFromJSON(object: any): SessionStatus {
     case 5:
     case 'AUTHENTICATED':
       return SessionStatus.AUTHENTICATED
-    case 6:
-    case 'EXPIRED':
-      return SessionStatus.EXPIRED
     case -1:
     case 'UNRECOGNIZED':
     default:
@@ -45,8 +41,8 @@ export function sessionStatusFromJSON(object: any): SessionStatus {
 
 export function sessionStatusToJSON(object: SessionStatus): string {
   switch (object) {
-    case SessionStatus.NOT_SET:
-      return 'NOT_SET'
+    case SessionStatus.EXPIRED:
+      return 'EXPIRED'
     case SessionStatus.PENDING_EMAIL_VERIFICATION:
       return 'PENDING_EMAIL_VERIFICATION'
     case SessionStatus.PENDING_PHONE_VERIFICATION:
@@ -57,8 +53,6 @@ export function sessionStatusToJSON(object: SessionStatus): string {
       return 'PENDING_ADDITIONAL_AUTHENTICATION'
     case SessionStatus.AUTHENTICATED:
       return 'AUTHENTICATED'
-    case SessionStatus.EXPIRED:
-      return 'EXPIRED'
     default:
       return 'UNKNOWN'
   }

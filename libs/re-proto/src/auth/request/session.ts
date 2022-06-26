@@ -11,7 +11,6 @@ export interface Create {
   ivBase: Uint8Array
 }
 
-/** Returns: Encrypted Session */
 export interface VerifyEmail {
   verificationToken: number
 }
@@ -20,29 +19,30 @@ export interface VerifyPhone {
   verificationToken: number
 }
 
-/** If currentSession, returns session w/ expiry set to 0 */
 export interface Delete {
   sessionId: number
+}
+
+export interface GetDetails {
+  sessionsSince: number
 }
 
 /**
  * wss://
  * Returns: All User Data
- * authenticated_at ensures at least one value, and simulates a PIN
  * The following always returned (in full) after socket is authorized:
- * profile & sessions
- * invites / pending contacts / pending attributes
+ * current_session (first), invites, pending contacts, pending attributes
  */
 export interface AuthorizeSocket {
-  authenticatedAt: number
-  userAttributesSince: number
-  userAttributeGroupsSince: number
-  contactsSince: number
-  contactAttributesSince: number
-  contactSharesSince: number
-  splicesSince: number
-  spliceMembersSince: number
-  spliceSharesSince: number
+  userProfileSince: number
+  attributeStateSince: number
+  contactStateSince: number
+  spliceStateSince: number
+  inviteStateSince: number
+  pendingStateSince: number
+  qrInviteSince: number
+  qrSpliceInviteSince: number
+  sessionDetailsSince: number
 }
 
 function createBaseCreate(): Create {
@@ -320,17 +320,74 @@ export const Delete = {
   }
 }
 
+function createBaseGetDetails(): GetDetails {
+  return { sessionsSince: 0 }
+}
+
+export const GetDetails = {
+  encode(
+    message: GetDetails,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.sessionsSince !== 0) {
+      writer.uint32(8).uint32(message.sessionsSince)
+    }
+    return writer
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): GetDetails {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseGetDetails()
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.sessionsSince = reader.uint32()
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): GetDetails {
+    return {
+      sessionsSince: isSet(object.sessionsSince)
+        ? Number(object.sessionsSince)
+        : 0
+    }
+  },
+
+  toJSON(message: GetDetails): unknown {
+    const obj: any = {}
+    message.sessionsSince !== undefined &&
+      (obj.sessionsSince = Math.round(message.sessionsSince))
+    return obj
+  },
+
+  fromPartial<I extends Exact<DeepPartial<GetDetails>, I>>(
+    object: I
+  ): GetDetails {
+    const message = createBaseGetDetails()
+    message.sessionsSince = object.sessionsSince ?? 0
+    return message
+  }
+}
+
 function createBaseAuthorizeSocket(): AuthorizeSocket {
   return {
-    authenticatedAt: 0,
-    userAttributesSince: 0,
-    userAttributeGroupsSince: 0,
-    contactsSince: 0,
-    contactAttributesSince: 0,
-    contactSharesSince: 0,
-    splicesSince: 0,
-    spliceMembersSince: 0,
-    spliceSharesSince: 0
+    userProfileSince: 0,
+    attributeStateSince: 0,
+    contactStateSince: 0,
+    spliceStateSince: 0,
+    inviteStateSince: 0,
+    pendingStateSince: 0,
+    qrInviteSince: 0,
+    qrSpliceInviteSince: 0,
+    sessionDetailsSince: 0
   }
 }
 
@@ -339,32 +396,32 @@ export const AuthorizeSocket = {
     message: AuthorizeSocket,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.authenticatedAt !== 0) {
-      writer.uint32(8).uint32(message.authenticatedAt)
+    if (message.userProfileSince !== 0) {
+      writer.uint32(8).uint32(message.userProfileSince)
     }
-    if (message.userAttributesSince !== 0) {
-      writer.uint32(16).uint32(message.userAttributesSince)
+    if (message.attributeStateSince !== 0) {
+      writer.uint32(16).uint32(message.attributeStateSince)
     }
-    if (message.userAttributeGroupsSince !== 0) {
-      writer.uint32(24).uint32(message.userAttributeGroupsSince)
+    if (message.contactStateSince !== 0) {
+      writer.uint32(24).uint32(message.contactStateSince)
     }
-    if (message.contactsSince !== 0) {
-      writer.uint32(32).uint32(message.contactsSince)
+    if (message.spliceStateSince !== 0) {
+      writer.uint32(32).uint32(message.spliceStateSince)
     }
-    if (message.contactAttributesSince !== 0) {
-      writer.uint32(40).uint32(message.contactAttributesSince)
+    if (message.inviteStateSince !== 0) {
+      writer.uint32(40).uint32(message.inviteStateSince)
     }
-    if (message.contactSharesSince !== 0) {
-      writer.uint32(48).uint32(message.contactSharesSince)
+    if (message.pendingStateSince !== 0) {
+      writer.uint32(48).uint32(message.pendingStateSince)
     }
-    if (message.splicesSince !== 0) {
-      writer.uint32(56).uint32(message.splicesSince)
+    if (message.qrInviteSince !== 0) {
+      writer.uint32(56).uint32(message.qrInviteSince)
     }
-    if (message.spliceMembersSince !== 0) {
-      writer.uint32(64).uint32(message.spliceMembersSince)
+    if (message.qrSpliceInviteSince !== 0) {
+      writer.uint32(64).uint32(message.qrSpliceInviteSince)
     }
-    if (message.spliceSharesSince !== 0) {
-      writer.uint32(72).uint32(message.spliceSharesSince)
+    if (message.sessionDetailsSince !== 0) {
+      writer.uint32(72).uint32(message.sessionDetailsSince)
     }
     return writer
   },
@@ -377,31 +434,31 @@ export const AuthorizeSocket = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.authenticatedAt = reader.uint32()
+          message.userProfileSince = reader.uint32()
           break
         case 2:
-          message.userAttributesSince = reader.uint32()
+          message.attributeStateSince = reader.uint32()
           break
         case 3:
-          message.userAttributeGroupsSince = reader.uint32()
+          message.contactStateSince = reader.uint32()
           break
         case 4:
-          message.contactsSince = reader.uint32()
+          message.spliceStateSince = reader.uint32()
           break
         case 5:
-          message.contactAttributesSince = reader.uint32()
+          message.inviteStateSince = reader.uint32()
           break
         case 6:
-          message.contactSharesSince = reader.uint32()
+          message.pendingStateSince = reader.uint32()
           break
         case 7:
-          message.splicesSince = reader.uint32()
+          message.qrInviteSince = reader.uint32()
           break
         case 8:
-          message.spliceMembersSince = reader.uint32()
+          message.qrSpliceInviteSince = reader.uint32()
           break
         case 9:
-          message.spliceSharesSince = reader.uint32()
+          message.sessionDetailsSince = reader.uint32()
           break
         default:
           reader.skipType(tag & 7)
@@ -413,58 +470,56 @@ export const AuthorizeSocket = {
 
   fromJSON(object: any): AuthorizeSocket {
     return {
-      authenticatedAt: isSet(object.authenticatedAt)
-        ? Number(object.authenticatedAt)
+      userProfileSince: isSet(object.userProfileSince)
+        ? Number(object.userProfileSince)
         : 0,
-      userAttributesSince: isSet(object.userAttributesSince)
-        ? Number(object.userAttributesSince)
+      attributeStateSince: isSet(object.attributeStateSince)
+        ? Number(object.attributeStateSince)
         : 0,
-      userAttributeGroupsSince: isSet(object.userAttributeGroupsSince)
-        ? Number(object.userAttributeGroupsSince)
+      contactStateSince: isSet(object.contactStateSince)
+        ? Number(object.contactStateSince)
         : 0,
-      contactsSince: isSet(object.contactsSince)
-        ? Number(object.contactsSince)
+      spliceStateSince: isSet(object.spliceStateSince)
+        ? Number(object.spliceStateSince)
         : 0,
-      contactAttributesSince: isSet(object.contactAttributesSince)
-        ? Number(object.contactAttributesSince)
+      inviteStateSince: isSet(object.inviteStateSince)
+        ? Number(object.inviteStateSince)
         : 0,
-      contactSharesSince: isSet(object.contactSharesSince)
-        ? Number(object.contactSharesSince)
+      pendingStateSince: isSet(object.pendingStateSince)
+        ? Number(object.pendingStateSince)
         : 0,
-      splicesSince: isSet(object.splicesSince)
-        ? Number(object.splicesSince)
+      qrInviteSince: isSet(object.qrInviteSince)
+        ? Number(object.qrInviteSince)
         : 0,
-      spliceMembersSince: isSet(object.spliceMembersSince)
-        ? Number(object.spliceMembersSince)
+      qrSpliceInviteSince: isSet(object.qrSpliceInviteSince)
+        ? Number(object.qrSpliceInviteSince)
         : 0,
-      spliceSharesSince: isSet(object.spliceSharesSince)
-        ? Number(object.spliceSharesSince)
+      sessionDetailsSince: isSet(object.sessionDetailsSince)
+        ? Number(object.sessionDetailsSince)
         : 0
     }
   },
 
   toJSON(message: AuthorizeSocket): unknown {
     const obj: any = {}
-    message.authenticatedAt !== undefined &&
-      (obj.authenticatedAt = Math.round(message.authenticatedAt))
-    message.userAttributesSince !== undefined &&
-      (obj.userAttributesSince = Math.round(message.userAttributesSince))
-    message.userAttributeGroupsSince !== undefined &&
-      (obj.userAttributeGroupsSince = Math.round(
-        message.userAttributeGroupsSince
-      ))
-    message.contactsSince !== undefined &&
-      (obj.contactsSince = Math.round(message.contactsSince))
-    message.contactAttributesSince !== undefined &&
-      (obj.contactAttributesSince = Math.round(message.contactAttributesSince))
-    message.contactSharesSince !== undefined &&
-      (obj.contactSharesSince = Math.round(message.contactSharesSince))
-    message.splicesSince !== undefined &&
-      (obj.splicesSince = Math.round(message.splicesSince))
-    message.spliceMembersSince !== undefined &&
-      (obj.spliceMembersSince = Math.round(message.spliceMembersSince))
-    message.spliceSharesSince !== undefined &&
-      (obj.spliceSharesSince = Math.round(message.spliceSharesSince))
+    message.userProfileSince !== undefined &&
+      (obj.userProfileSince = Math.round(message.userProfileSince))
+    message.attributeStateSince !== undefined &&
+      (obj.attributeStateSince = Math.round(message.attributeStateSince))
+    message.contactStateSince !== undefined &&
+      (obj.contactStateSince = Math.round(message.contactStateSince))
+    message.spliceStateSince !== undefined &&
+      (obj.spliceStateSince = Math.round(message.spliceStateSince))
+    message.inviteStateSince !== undefined &&
+      (obj.inviteStateSince = Math.round(message.inviteStateSince))
+    message.pendingStateSince !== undefined &&
+      (obj.pendingStateSince = Math.round(message.pendingStateSince))
+    message.qrInviteSince !== undefined &&
+      (obj.qrInviteSince = Math.round(message.qrInviteSince))
+    message.qrSpliceInviteSince !== undefined &&
+      (obj.qrSpliceInviteSince = Math.round(message.qrSpliceInviteSince))
+    message.sessionDetailsSince !== undefined &&
+      (obj.sessionDetailsSince = Math.round(message.sessionDetailsSince))
     return obj
   },
 
@@ -472,15 +527,15 @@ export const AuthorizeSocket = {
     object: I
   ): AuthorizeSocket {
     const message = createBaseAuthorizeSocket()
-    message.authenticatedAt = object.authenticatedAt ?? 0
-    message.userAttributesSince = object.userAttributesSince ?? 0
-    message.userAttributeGroupsSince = object.userAttributeGroupsSince ?? 0
-    message.contactsSince = object.contactsSince ?? 0
-    message.contactAttributesSince = object.contactAttributesSince ?? 0
-    message.contactSharesSince = object.contactSharesSince ?? 0
-    message.splicesSince = object.splicesSince ?? 0
-    message.spliceMembersSince = object.spliceMembersSince ?? 0
-    message.spliceSharesSince = object.spliceSharesSince ?? 0
+    message.userProfileSince = object.userProfileSince ?? 0
+    message.attributeStateSince = object.attributeStateSince ?? 0
+    message.contactStateSince = object.contactStateSince ?? 0
+    message.spliceStateSince = object.spliceStateSince ?? 0
+    message.inviteStateSince = object.inviteStateSince ?? 0
+    message.pendingStateSince = object.pendingStateSince ?? 0
+    message.qrInviteSince = object.qrInviteSince ?? 0
+    message.qrSpliceInviteSince = object.qrSpliceInviteSince ?? 0
+    message.sessionDetailsSince = object.sessionDetailsSince ?? 0
     return message
   }
 }
