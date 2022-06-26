@@ -35,7 +35,7 @@
   <Header
     {profile}
     showUser={showUserOnHeader}
-    on:back={() => goto('/app/contact/list')}
+    on:back={() => goto('/app/list/contacts')}
   />
   <main
     class="flex-1 overflow-auto relative w-full max-w-xl m-auto py-4 rounded-t-3xl bg-white"

@@ -97,9 +97,9 @@ const clientMessageMapper = {
   [ClientMessageType.QR_INVITE_ATTRIBUTE_REMOVE]:
     reproto.invites.request.qr_invite_attribute.Remove.encode,
   [ClientMessageType.PENDING_CONTACT_ACCEPT]:
-    reproto.pending.request.pending_contact.Accept.encode,
+    reproto.contacts.request.pending_contact.Accept.encode,
   [ClientMessageType.PENDING_CONTACT_DECLINE]:
-    reproto.pending.request.pending_contact.Decline.encode,
+    reproto.contacts.request.pending_contact.Decline.encode,
   [ClientMessageType.CONTACT_EDIT_ALIAS]:
     reproto.contacts.request.contact.EditAlias.encode,
   [ClientMessageType.CONTACT_EDIT_DESCRIPTION]:
@@ -197,16 +197,16 @@ export function decodeServerMessageWrapper(data: Uint8Array) {
 }
 
 const serverMessageMapper = {
-  [ServerMessageType.SESSION_STATE]: reproto.auth.state.State.decode,
-  [ServerMessageType.USER_STATE]: reproto.user.state.State.decode,
+  [ServerMessageType.SESSION]: reproto.auth.session.Session.decode,
+  [ServerMessageType.USER_PROFILE]: reproto.user.profile.Profile.decode,
   [ServerMessageType.ATTRIBUTE_STATE]: reproto.attributes.state.State.decode,
   [ServerMessageType.CONTACT_STATE]: reproto.contacts.state.State.decode,
   [ServerMessageType.SPLICE_STATE]: reproto.splices.state.SpliceState.decode,
   [ServerMessageType.INVITE_STATE]: reproto.invites.state.State.decode,
-  [ServerMessageType.PENDING_STATE]: reproto.pending.state.State.decode,
   [ServerMessageType.QR_INVITE]: reproto.invites.qr_invite.QrInvite.decode,
   [ServerMessageType.QR_SPLICE_INVITE]:
-    reproto.invites.splice_qr_invite.QrSpliceInvite.decode
+    reproto.invites.splice_qr_invite.QrSpliceInvite.decode,
+  [ServerMessageType.ERROR]: reproto.server_error.ServerError.decode
 }
 
 // Maybe we use a mapper here instead if we just call decode everytime

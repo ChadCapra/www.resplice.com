@@ -1,20 +1,19 @@
-import type { PhoneValue } from '$types/attribute'
+import type { EmailValue, PhoneValue } from '$types/attribute'
 
 export enum SessionStatus {
-  NOT_SET = 0,
+  EXPIRED = 0,
   PENDING_EMAIL_VERIFICATION = 1,
   PENDING_PHONE_VERIFICATION = 2,
   PENDING_USER_REGISRATION = 3,
   PENDING_ADDITIONAL_AUTHENTICATION = 4,
   AUTHENTICATED = 5,
-  EXPIRED = 6,
   UNRECOGNIZED = -1
 }
 
 export type Session = {
   id: number
   status: SessionStatus
-  email: string
+  email: EmailValue
   phone: PhoneValue
   rememberMe: boolean
   expiry: number

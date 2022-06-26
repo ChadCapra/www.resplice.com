@@ -7,7 +7,7 @@
 
   const contactsStore = contactStores.contacts
 
-  $: contactList = $contactsStore && [...$contactsStore.values()]
+  $: contactList = $contactsStore && Array.from($contactsStore.values())
 </script>
 
 <!-- TODO: Implement Alphabet slider -->
