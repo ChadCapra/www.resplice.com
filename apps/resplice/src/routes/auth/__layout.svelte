@@ -29,7 +29,7 @@
     }
 
     switch (auth.session.status) {
-      case SessionStatus.NOT_SET:
+      case SessionStatus.EXPIRED:
         goto('/auth/start')
         break
       case SessionStatus.PENDING_EMAIL_VERIFICATION:
