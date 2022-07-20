@@ -13,6 +13,7 @@
   import AppLoading from '$lib/common/skeleton/AppLoading.svelte'
   import PageTransition from '$lib/common/skeleton/PageTransition.svelte'
   import ToastProvider from '$lib/common/ToastProvider.svelte'
+  import { SessionStatus } from '$types/session';
 
   console.log('App layout rendering')
 
@@ -24,7 +25,7 @@
   setContext(clientContextKey, clientContext)
 
   async function startConnection() {
-    if (!$authStore) {
+    if (!$authStore || $authStore.session.status !== SessionStatus.AUTHENTICATED) {
       goto('/auth')
       return
     }

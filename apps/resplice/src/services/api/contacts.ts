@@ -61,42 +61,38 @@ function contactsClientFactory({
   commuter.messages$.pipe(onlyRecievedMessages()).subscribe((m) => {
     switch (m.type) {
       case ServerMessageType.CONTACT_STATE:
-        // TODO: Check
-        store.contacts.update((state) =>
-          processRecords(state, 'id', m.data.contacts, m.data.expiredContactIds)
-        )
-        store.contactAttributes.update((state) =>
-          processRecords(
-            state,
-            'id',
-            m.data.contactAttributes,
-            m.data.expiredContactAttributeIds
+        if (m.data.contacts) {
+          store.contacts.update((state) =>
+            processRecords(
+              state,
+              'id',
+              m.data.contacts,
+              m.data.expiredContactIds
+            )
           )
-        )
-        store.contactShares.update((state) =>
-          processRecords(
-            state,
-            'id',
-            m.data.contactShares,
-            m.data.expiredContactShareIds
+        }
+
+        if (m.data.contactAttributes) {
+          store.contactAttributes.update((state) =>
+            processRecords(
+              state,
+              'id',
+              m.data.contactAttributes,
+              m.data.expiredContactAttributeIds
+            )
           )
-        )
-        store.pendingContacts.update((state) =>
-          processRecords(
-            state,
-            'id',
-            m.data.pendingContacts,
-            m.data.expiredPendingContactIds
+        }
+
+        if (m.data.contactShares) {
+          store.contactShares.update((state) =>
+            processRecords(
+              state,
+              'id',
+              m.data.contactShares,
+              m.data.expiredContactShareIds
+            )
           )
-        )
-        store.pendingContactAttributes.update((state) =>
-          processRecords(
-            state,
-            'id',
-            m.data.pendingContactAttributes,
-            m.data.expiredPendingContactAttributeIds
-          )
-        )
+        }
         break
     }
   })

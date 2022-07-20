@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte'
   import { fade } from 'svelte/transition'
   import { goto } from '$app/navigation'
   import BackIcon from '$lib/icons/BackIcon.svelte'
@@ -8,13 +9,15 @@
   import Skeleton from '$lib/common/skeleton/Skeleton.svelte'
   import type { Profile } from '$types/user'
 
+  const dispatch = createEventDispatcher()
+
   export let profile: Profile | null
   export let showUser = false
 </script>
 
 <nav class="flex-none flex items-center justify-between p-4">
   <div class="flex items-center">
-    <IconButton Icon={BackIcon} on:click={() => goto('/app/list/contacts')} />
+    <IconButton Icon={BackIcon} on:click={() => dispatch('back')} />
     {#if showUser}
       <div
         class="flex items-center ml-4"

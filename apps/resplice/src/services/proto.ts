@@ -196,20 +196,17 @@ export function decodeServerMessageWrapper(data: Uint8Array) {
   return reproto.server_message.ServerMessage.decode(data)
 }
 
-// TODO: Finish mapper
 const serverMessageMapper = {
-  [ServerMessageType.CURRENT_SESSION]: reproto.auth.session.Session.decode,
+  [ServerMessageType.SESSION]: reproto.auth.session.Session.decode,
   [ServerMessageType.USER_PROFILE]: reproto.user.profile.Profile.decode,
-  [ServerMessageType.USER_ATTRIBUTES]: reproto.attributes.state.State.decode,
-  [ServerMessageType.USER_ATTRIBUTE_GROUPS]:
-    reproto.attributes.state.State.decode,
-  [ServerMessageType.USER_SESSIONS]: reproto.auth.state.State.decode,
-  [ServerMessageType.CONTACTS]: reproto.contacts.state.State.decode,
-  [ServerMessageType.CONTACT_ATTRIBUTES]: reproto.contacts.state.State.decode,
-  [ServerMessageType.CONTACT_SHARES]: reproto.contacts.state.State.decode,
-  [ServerMessageType.PENDING_CONTACTS]: reproto.pending.state.State.decode,
-  [ServerMessageType.PENDING_CONTACT_ATTRIBUTES]:
-    reproto.pending.state.State.decode
+  [ServerMessageType.ATTRIBUTE_STATE]: reproto.attributes.state.State.decode,
+  [ServerMessageType.CONTACT_STATE]: reproto.contacts.state.State.decode,
+  [ServerMessageType.SPLICE_STATE]: reproto.splices.state.SpliceState.decode,
+  [ServerMessageType.INVITE_STATE]: reproto.invites.state.State.decode,
+  [ServerMessageType.QR_INVITE]: reproto.invites.qr_invite.QrInvite.decode,
+  [ServerMessageType.QR_SPLICE_INVITE]:
+    reproto.invites.splice_qr_invite.QrSpliceInvite.decode,
+  [ServerMessageType.ERROR]: reproto.server_error.ServerError.decode
 }
 
 // Maybe we use a mapper here instead if we just call decode everytime

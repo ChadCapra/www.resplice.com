@@ -1,4 +1,4 @@
-import { writable, derived } from 'svelte/store'
+import { writable, derived, type Writable } from 'svelte/store'
 import type { Invite, Attribute, Share } from '$types/invite'
 
 import {
@@ -14,7 +14,10 @@ type InviteAttributeRecord = Map<number, Attribute>
 const inviteAttributes = writable<InviteAttributeRecord | null>(
   mockInviteAttributes
 )
-const inviteAttributesDict = derived(inviteAttributes, ($ia, set) => {
+const inviteAttributesDict = derived<
+  Writable<InviteAttributeRecord | null>,
+  Record<number, Attribute[]>
+>(inviteAttributes, ($ia, set) => {
   const dict = {}
   $ia.forEach((ia) => {
     if (dict[ia.inviteId]) {

@@ -1,6 +1,33 @@
-import type { Invite, Attribute, Share, QrInvite } from '$types/invite'
+import {
+  type Invite,
+  type Attribute,
+  type Share,
+  type QrInvite,
+  InviteType
+} from '$types/invite'
 
-export const invites = new Map<number, Invite>()
+export const invites = new Map<number, Invite>([
+  [
+    1,
+    {
+      id: 1,
+      type: InviteType.HANDLE,
+      name: 'Darth Revan',
+      handle: 'd-revan',
+      expiry: 0
+    }
+  ],
+  [
+    2,
+    {
+      id: 2,
+      type: InviteType.EMAIL,
+      name: 'Kanan',
+      email: { email: 'Kanan@undercity.com' },
+      expiry: 0
+    }
+  ]
+])
 
 export const inviteAttributes = new Map<number, Attribute>()
 

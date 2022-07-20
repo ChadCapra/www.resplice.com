@@ -4,7 +4,6 @@
   import VerifyForm from '$lib/auth/VerifyForm.svelte'
 
   $: session = $authStore?.session
-  $: loginValues = $authStore?.loginValues
 </script>
 
 <svelte:head>
@@ -21,7 +20,7 @@
     </p>
   </header>
 
-  {#if session && loginValues}
+  {#if session}
     <VerifyForm />
   {/if}
 </main>

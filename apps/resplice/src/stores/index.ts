@@ -6,7 +6,6 @@ import contacts from './contacts'
 import invites from './invites'
 import profile from './profile'
 import search from './search'
-import session from './session'
 import toasts from './toasts'
 
 const stores = {
@@ -18,7 +17,6 @@ const stores = {
   invites,
   profile,
   search,
-  session,
   toasts
 }
 

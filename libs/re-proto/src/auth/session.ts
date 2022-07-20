@@ -13,6 +13,18 @@ export interface Session {
   expiry: number
 }
 
+export interface SessionDetail {
+  id: number
+  email: string
+  phone: Phone | undefined
+  authenticatedAt: number
+  expiry: number
+}
+
+export interface SessionDetails {
+  details: SessionDetail[]
+}
+
 function createBaseSession(): Session {
   return { id: 0, status: 0, expiry: 0 }
 }
@@ -80,6 +92,69 @@ export const Session = {
     message.id = object.id ?? 0
     message.status = object.status ?? 0
     message.expiry = object.expiry ?? 0
+    return message
+  }
+}
+
+function createBaseSessionDetails(): SessionDetails {
+  return { details: [] }
+}
+
+export const SessionDetails = {
+  encode(
+    message: SessionDetails,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    for (const v of message.details) {
+      SessionDetail.encode(v!, writer.uint32(10).fork()).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): SessionDetails {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseSessionDetails()
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.details.push(SessionDetail.decode(reader, reader.uint32()))
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): SessionDetails {
+    return {
+      details: Array.isArray(object?.details)
+        ? object.details.map((e: any) => SessionDetail.fromJSON(e))
+        : []
+    }
+  },
+
+  toJSON(message: SessionDetails): unknown {
+    const obj: any = {}
+    if (message.details) {
+      obj.details = message.details.map((e) =>
+        e ? SessionDetail.toJSON(e) : undefined
+      )
+    } else {
+      obj.details = []
+    }
+    return obj
+  },
+
+  fromPartial<I extends Exact<DeepPartial<SessionDetails>, I>>(
+    object: I
+  ): SessionDetails {
+    const message = createBaseSessionDetails()
+    message.details =
+      object.details?.map((e) => SessionDetail.fromPartial(e)) || []
     return message
   }
 }

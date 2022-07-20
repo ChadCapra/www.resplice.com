@@ -9,6 +9,7 @@
   } from '$lib/auth/authClient'
   import authStore from '$stores/auth'
   import useConfig from '$lib/hooks/useConfig'
+  import { SessionStatus } from '$types/session'
 
   console.log('auth layout rendering')
 
@@ -22,26 +23,27 @@
   setContext(authContextKey, authContext)
 
   function routeGuard(auth: typeof $authStore) {
-    // Would be nice if I could pattern match here
     if (!auth) {
       goto('/auth/start')
       return
     }
 
-    const session = auth.session
-
-    if (session.emailVerifiedAt && session.phoneVerifiedAt) {
-      if (session.authenticatedAt) {
-        goto('/app/list/contacts')
-        return
-      } else {
+    switch (auth.session.status) {
+      case SessionStatus.EXPIRED:
+        goto('/auth/start')
+        break
+      case SessionStatus.PENDING_EMAIL_VERIFICATION:
+      case SessionStatus.PENDING_PHONE_VERIFICATION:
+        goto('/auth/verify')
+        break
+      case SessionStatus.PENDING_USER_REGISRATION:
         goto('/auth/sign-up')
-        return
-      }
-    }
-    if (session) {
-      goto('/auth/verify')
-      return
+        break
+      case SessionStatus.AUTHENTICATED:
+        goto('/app/list/contacts')
+        break
+      default:
+        throw new Error(`Session status ${auth.session.status} not handled`)
     }
   }
 
