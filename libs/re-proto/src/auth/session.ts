@@ -6,26 +6,15 @@ import {
   sessionStatusFromJSON,
   sessionStatusToJSON
 } from '../auth/session_status'
-import { Phone } from '../attributes/attribute_value'
 
 export interface Session {
   id: number
   status: SessionStatus
-  email: string
-  phone: Phone | undefined
-  rememberMe: boolean
   expiry: number
 }
 
 function createBaseSession(): Session {
-  return {
-    id: 0,
-    status: 0,
-    email: '',
-    phone: undefined,
-    rememberMe: false,
-    expiry: 0
-  }
+  return { id: 0, status: 0, expiry: 0 }
 }
 
 export const Session = {
@@ -39,17 +28,8 @@ export const Session = {
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status)
     }
-    if (message.email !== '') {
-      writer.uint32(26).string(message.email)
-    }
-    if (message.phone !== undefined) {
-      Phone.encode(message.phone, writer.uint32(34).fork()).ldelim()
-    }
-    if (message.rememberMe === true) {
-      writer.uint32(40).bool(message.rememberMe)
-    }
     if (message.expiry !== 0) {
-      writer.uint32(48).uint32(message.expiry)
+      writer.uint32(24).uint32(message.expiry)
     }
     return writer
   },
@@ -68,15 +48,6 @@ export const Session = {
           message.status = reader.int32() as any
           break
         case 3:
-          message.email = reader.string()
-          break
-        case 4:
-          message.phone = Phone.decode(reader, reader.uint32())
-          break
-        case 5:
-          message.rememberMe = reader.bool()
-          break
-        case 6:
           message.expiry = reader.uint32()
           break
         default:
@@ -91,9 +62,6 @@ export const Session = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       status: isSet(object.status) ? sessionStatusFromJSON(object.status) : 0,
-      email: isSet(object.email) ? String(object.email) : '',
-      phone: isSet(object.phone) ? Phone.fromJSON(object.phone) : undefined,
-      rememberMe: isSet(object.rememberMe) ? Boolean(object.rememberMe) : false,
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0
     }
   },
@@ -103,10 +71,6 @@ export const Session = {
     message.id !== undefined && (obj.id = Math.round(message.id))
     message.status !== undefined &&
       (obj.status = sessionStatusToJSON(message.status))
-    message.email !== undefined && (obj.email = message.email)
-    message.phone !== undefined &&
-      (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined)
-    message.rememberMe !== undefined && (obj.rememberMe = message.rememberMe)
     message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
     return obj
   },
@@ -115,12 +79,6 @@ export const Session = {
     const message = createBaseSession()
     message.id = object.id ?? 0
     message.status = object.status ?? 0
-    message.email = object.email ?? ''
-    message.phone =
-      object.phone !== undefined && object.phone !== null
-        ? Phone.fromPartial(object.phone)
-        : undefined
-    message.rememberMe = object.rememberMe ?? false
     message.expiry = object.expiry ?? 0
     return message
   }

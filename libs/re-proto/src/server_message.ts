@@ -1,46 +1,34 @@
 /* eslint-disable */
 import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
+import { Session } from './auth/session'
+import { Profile } from './user/profile'
+import { State } from './attributes/state'
+import { State as State1 } from './contacts/state'
+import { State as State2 } from './splices/state'
+import { State as State3 } from './invites/state'
+import { SessionDetails } from './auth/session_detail'
 
 export enum ServerMessageType {
-  ERROR = 0,
-  /** CURRENT_SESSION - User, Sessions and Attributes */
+  SERVER_STATE = 0,
   CURRENT_SESSION = 1,
   USER_PROFILE = 2,
-  USER_ATTRIBUTES = 3,
-  USER_ATTRIBUTE_GROUPS = 4,
-  /** USER_SESSIONS - future */
-  USER_SESSIONS = 5,
-  /** CONTACTS - Contact Entities */
-  CONTACTS = 6,
-  CONTACT_ATTRIBUTES = 7,
-  CONTACT_SHARES = 8,
-  PENDING_CONTACTS = 9,
-  PENDING_CONTACT_ATTRIBUTES = 10,
-  /** CONTACT_INVITES - Contact Invites */
-  CONTACT_INVITES = 11,
-  CONTACT_INVITE_ATTRIBUTES = 12,
-  QR_CONTACT_INVITES = 13,
-  QR_CONTACT_INVITE_ATTRIBUTES = 14,
-  /** SPLICES - Splices */
-  SPLICES = 15,
-  SPLICE_MEMBERS = 16,
-  SPLICE_SHARES = 17,
-  PENDING_SPLICES = 18,
-  PENDING_SPLICE_MEMBERS = 19,
-  /** SPLICE_INVITES - Splice Invites */
-  SPLICE_INVITES = 20,
-  SPLICE_INVITE_ATTRIBUTES = 21,
-  QR_SPLICE_INVITES = 22,
-  QR_SPLICE_INVITE_ATTRIBUTES = 23,
+  ATTRIBUTE_STATE = 3,
+  CONTACT_STATE = 4,
+  SPLICE_STATE = 5,
+  INVITE_STATE = 6,
+  SESSION_DETAILS = 7,
+  QR_INVITE = 8,
+  QR_SPLICE_INVITE = 9,
+  ERROR = 127,
   UNRECOGNIZED = -1
 }
 
 export function serverMessageTypeFromJSON(object: any): ServerMessageType {
   switch (object) {
     case 0:
-    case 'ERROR':
-      return ServerMessageType.ERROR
+    case 'SERVER_STATE':
+      return ServerMessageType.SERVER_STATE
     case 1:
     case 'CURRENT_SESSION':
       return ServerMessageType.CURRENT_SESSION
@@ -48,68 +36,29 @@ export function serverMessageTypeFromJSON(object: any): ServerMessageType {
     case 'USER_PROFILE':
       return ServerMessageType.USER_PROFILE
     case 3:
-    case 'USER_ATTRIBUTES':
-      return ServerMessageType.USER_ATTRIBUTES
+    case 'ATTRIBUTE_STATE':
+      return ServerMessageType.ATTRIBUTE_STATE
     case 4:
-    case 'USER_ATTRIBUTE_GROUPS':
-      return ServerMessageType.USER_ATTRIBUTE_GROUPS
+    case 'CONTACT_STATE':
+      return ServerMessageType.CONTACT_STATE
     case 5:
-    case 'USER_SESSIONS':
-      return ServerMessageType.USER_SESSIONS
+    case 'SPLICE_STATE':
+      return ServerMessageType.SPLICE_STATE
     case 6:
-    case 'CONTACTS':
-      return ServerMessageType.CONTACTS
+    case 'INVITE_STATE':
+      return ServerMessageType.INVITE_STATE
     case 7:
-    case 'CONTACT_ATTRIBUTES':
-      return ServerMessageType.CONTACT_ATTRIBUTES
+    case 'SESSION_DETAILS':
+      return ServerMessageType.SESSION_DETAILS
     case 8:
-    case 'CONTACT_SHARES':
-      return ServerMessageType.CONTACT_SHARES
+    case 'QR_INVITE':
+      return ServerMessageType.QR_INVITE
     case 9:
-    case 'PENDING_CONTACTS':
-      return ServerMessageType.PENDING_CONTACTS
-    case 10:
-    case 'PENDING_CONTACT_ATTRIBUTES':
-      return ServerMessageType.PENDING_CONTACT_ATTRIBUTES
-    case 11:
-    case 'CONTACT_INVITES':
-      return ServerMessageType.CONTACT_INVITES
-    case 12:
-    case 'CONTACT_INVITE_ATTRIBUTES':
-      return ServerMessageType.CONTACT_INVITE_ATTRIBUTES
-    case 13:
-    case 'QR_CONTACT_INVITES':
-      return ServerMessageType.QR_CONTACT_INVITES
-    case 14:
-    case 'QR_CONTACT_INVITE_ATTRIBUTES':
-      return ServerMessageType.QR_CONTACT_INVITE_ATTRIBUTES
-    case 15:
-    case 'SPLICES':
-      return ServerMessageType.SPLICES
-    case 16:
-    case 'SPLICE_MEMBERS':
-      return ServerMessageType.SPLICE_MEMBERS
-    case 17:
-    case 'SPLICE_SHARES':
-      return ServerMessageType.SPLICE_SHARES
-    case 18:
-    case 'PENDING_SPLICES':
-      return ServerMessageType.PENDING_SPLICES
-    case 19:
-    case 'PENDING_SPLICE_MEMBERS':
-      return ServerMessageType.PENDING_SPLICE_MEMBERS
-    case 20:
-    case 'SPLICE_INVITES':
-      return ServerMessageType.SPLICE_INVITES
-    case 21:
-    case 'SPLICE_INVITE_ATTRIBUTES':
-      return ServerMessageType.SPLICE_INVITE_ATTRIBUTES
-    case 22:
-    case 'QR_SPLICE_INVITES':
-      return ServerMessageType.QR_SPLICE_INVITES
-    case 23:
-    case 'QR_SPLICE_INVITE_ATTRIBUTES':
-      return ServerMessageType.QR_SPLICE_INVITE_ATTRIBUTES
+    case 'QR_SPLICE_INVITE':
+      return ServerMessageType.QR_SPLICE_INVITE
+    case 127:
+    case 'ERROR':
+      return ServerMessageType.ERROR
     case -1:
     case 'UNRECOGNIZED':
     default:
@@ -119,68 +68,48 @@ export function serverMessageTypeFromJSON(object: any): ServerMessageType {
 
 export function serverMessageTypeToJSON(object: ServerMessageType): string {
   switch (object) {
-    case ServerMessageType.ERROR:
-      return 'ERROR'
+    case ServerMessageType.SERVER_STATE:
+      return 'SERVER_STATE'
     case ServerMessageType.CURRENT_SESSION:
       return 'CURRENT_SESSION'
     case ServerMessageType.USER_PROFILE:
       return 'USER_PROFILE'
-    case ServerMessageType.USER_ATTRIBUTES:
-      return 'USER_ATTRIBUTES'
-    case ServerMessageType.USER_ATTRIBUTE_GROUPS:
-      return 'USER_ATTRIBUTE_GROUPS'
-    case ServerMessageType.USER_SESSIONS:
-      return 'USER_SESSIONS'
-    case ServerMessageType.CONTACTS:
-      return 'CONTACTS'
-    case ServerMessageType.CONTACT_ATTRIBUTES:
-      return 'CONTACT_ATTRIBUTES'
-    case ServerMessageType.CONTACT_SHARES:
-      return 'CONTACT_SHARES'
-    case ServerMessageType.PENDING_CONTACTS:
-      return 'PENDING_CONTACTS'
-    case ServerMessageType.PENDING_CONTACT_ATTRIBUTES:
-      return 'PENDING_CONTACT_ATTRIBUTES'
-    case ServerMessageType.CONTACT_INVITES:
-      return 'CONTACT_INVITES'
-    case ServerMessageType.CONTACT_INVITE_ATTRIBUTES:
-      return 'CONTACT_INVITE_ATTRIBUTES'
-    case ServerMessageType.QR_CONTACT_INVITES:
-      return 'QR_CONTACT_INVITES'
-    case ServerMessageType.QR_CONTACT_INVITE_ATTRIBUTES:
-      return 'QR_CONTACT_INVITE_ATTRIBUTES'
-    case ServerMessageType.SPLICES:
-      return 'SPLICES'
-    case ServerMessageType.SPLICE_MEMBERS:
-      return 'SPLICE_MEMBERS'
-    case ServerMessageType.SPLICE_SHARES:
-      return 'SPLICE_SHARES'
-    case ServerMessageType.PENDING_SPLICES:
-      return 'PENDING_SPLICES'
-    case ServerMessageType.PENDING_SPLICE_MEMBERS:
-      return 'PENDING_SPLICE_MEMBERS'
-    case ServerMessageType.SPLICE_INVITES:
-      return 'SPLICE_INVITES'
-    case ServerMessageType.SPLICE_INVITE_ATTRIBUTES:
-      return 'SPLICE_INVITE_ATTRIBUTES'
-    case ServerMessageType.QR_SPLICE_INVITES:
-      return 'QR_SPLICE_INVITES'
-    case ServerMessageType.QR_SPLICE_INVITE_ATTRIBUTES:
-      return 'QR_SPLICE_INVITE_ATTRIBUTES'
+    case ServerMessageType.ATTRIBUTE_STATE:
+      return 'ATTRIBUTE_STATE'
+    case ServerMessageType.CONTACT_STATE:
+      return 'CONTACT_STATE'
+    case ServerMessageType.SPLICE_STATE:
+      return 'SPLICE_STATE'
+    case ServerMessageType.INVITE_STATE:
+      return 'INVITE_STATE'
+    case ServerMessageType.SESSION_DETAILS:
+      return 'SESSION_DETAILS'
+    case ServerMessageType.QR_INVITE:
+      return 'QR_INVITE'
+    case ServerMessageType.QR_SPLICE_INVITE:
+      return 'QR_SPLICE_INVITE'
+    case ServerMessageType.ERROR:
+      return 'ERROR'
     default:
       return 'UNKNOWN'
   }
 }
 
-/**
- * Sent in plain binary, except encrypted payload is data encrypted via AES key
- * encrypted_response is 0 bytes (not encrypted) if the ActionRequest was invalid
- */
 export interface ServerMessage {
   messageType: ServerMessageType
   /** used to clear expired entities on client side */
   serverTime: number
   encodedPayload: Uint8Array
+}
+
+export interface ServerState {
+  currentSession: Session | undefined
+  userProfile: Profile | undefined
+  attributeState: State | undefined
+  contactState: State1 | undefined
+  spliceState: State2 | undefined
+  inviteState: State3 | undefined
+  sessionDetails: SessionDetails | undefined
 }
 
 function createBaseServerMessage(): ServerMessage {
@@ -262,6 +191,184 @@ export const ServerMessage = {
     message.messageType = object.messageType ?? 0
     message.serverTime = object.serverTime ?? 0
     message.encodedPayload = object.encodedPayload ?? new Uint8Array()
+    return message
+  }
+}
+
+function createBaseServerState(): ServerState {
+  return {
+    currentSession: undefined,
+    userProfile: undefined,
+    attributeState: undefined,
+    contactState: undefined,
+    spliceState: undefined,
+    inviteState: undefined,
+    sessionDetails: undefined
+  }
+}
+
+export const ServerState = {
+  encode(
+    message: ServerState,
+    writer: _m0.Writer = _m0.Writer.create()
+  ): _m0.Writer {
+    if (message.currentSession !== undefined) {
+      Session.encode(message.currentSession, writer.uint32(10).fork()).ldelim()
+    }
+    if (message.userProfile !== undefined) {
+      Profile.encode(message.userProfile, writer.uint32(18).fork()).ldelim()
+    }
+    if (message.attributeState !== undefined) {
+      State.encode(message.attributeState, writer.uint32(26).fork()).ldelim()
+    }
+    if (message.contactState !== undefined) {
+      State1.encode(message.contactState, writer.uint32(34).fork()).ldelim()
+    }
+    if (message.spliceState !== undefined) {
+      State2.encode(message.spliceState, writer.uint32(42).fork()).ldelim()
+    }
+    if (message.inviteState !== undefined) {
+      State3.encode(message.inviteState, writer.uint32(50).fork()).ldelim()
+    }
+    if (message.sessionDetails !== undefined) {
+      SessionDetails.encode(
+        message.sessionDetails,
+        writer.uint32(58).fork()
+      ).ldelim()
+    }
+    return writer
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ServerState {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
+    let end = length === undefined ? reader.len : reader.pos + length
+    const message = createBaseServerState()
+    while (reader.pos < end) {
+      const tag = reader.uint32()
+      switch (tag >>> 3) {
+        case 1:
+          message.currentSession = Session.decode(reader, reader.uint32())
+          break
+        case 2:
+          message.userProfile = Profile.decode(reader, reader.uint32())
+          break
+        case 3:
+          message.attributeState = State.decode(reader, reader.uint32())
+          break
+        case 4:
+          message.contactState = State1.decode(reader, reader.uint32())
+          break
+        case 5:
+          message.spliceState = State2.decode(reader, reader.uint32())
+          break
+        case 6:
+          message.inviteState = State3.decode(reader, reader.uint32())
+          break
+        case 7:
+          message.sessionDetails = SessionDetails.decode(
+            reader,
+            reader.uint32()
+          )
+          break
+        default:
+          reader.skipType(tag & 7)
+          break
+      }
+    }
+    return message
+  },
+
+  fromJSON(object: any): ServerState {
+    return {
+      currentSession: isSet(object.currentSession)
+        ? Session.fromJSON(object.currentSession)
+        : undefined,
+      userProfile: isSet(object.userProfile)
+        ? Profile.fromJSON(object.userProfile)
+        : undefined,
+      attributeState: isSet(object.attributeState)
+        ? State.fromJSON(object.attributeState)
+        : undefined,
+      contactState: isSet(object.contactState)
+        ? State1.fromJSON(object.contactState)
+        : undefined,
+      spliceState: isSet(object.spliceState)
+        ? State2.fromJSON(object.spliceState)
+        : undefined,
+      inviteState: isSet(object.inviteState)
+        ? State3.fromJSON(object.inviteState)
+        : undefined,
+      sessionDetails: isSet(object.sessionDetails)
+        ? SessionDetails.fromJSON(object.sessionDetails)
+        : undefined
+    }
+  },
+
+  toJSON(message: ServerState): unknown {
+    const obj: any = {}
+    message.currentSession !== undefined &&
+      (obj.currentSession = message.currentSession
+        ? Session.toJSON(message.currentSession)
+        : undefined)
+    message.userProfile !== undefined &&
+      (obj.userProfile = message.userProfile
+        ? Profile.toJSON(message.userProfile)
+        : undefined)
+    message.attributeState !== undefined &&
+      (obj.attributeState = message.attributeState
+        ? State.toJSON(message.attributeState)
+        : undefined)
+    message.contactState !== undefined &&
+      (obj.contactState = message.contactState
+        ? State1.toJSON(message.contactState)
+        : undefined)
+    message.spliceState !== undefined &&
+      (obj.spliceState = message.spliceState
+        ? State2.toJSON(message.spliceState)
+        : undefined)
+    message.inviteState !== undefined &&
+      (obj.inviteState = message.inviteState
+        ? State3.toJSON(message.inviteState)
+        : undefined)
+    message.sessionDetails !== undefined &&
+      (obj.sessionDetails = message.sessionDetails
+        ? SessionDetails.toJSON(message.sessionDetails)
+        : undefined)
+    return obj
+  },
+
+  fromPartial<I extends Exact<DeepPartial<ServerState>, I>>(
+    object: I
+  ): ServerState {
+    const message = createBaseServerState()
+    message.currentSession =
+      object.currentSession !== undefined && object.currentSession !== null
+        ? Session.fromPartial(object.currentSession)
+        : undefined
+    message.userProfile =
+      object.userProfile !== undefined && object.userProfile !== null
+        ? Profile.fromPartial(object.userProfile)
+        : undefined
+    message.attributeState =
+      object.attributeState !== undefined && object.attributeState !== null
+        ? State.fromPartial(object.attributeState)
+        : undefined
+    message.contactState =
+      object.contactState !== undefined && object.contactState !== null
+        ? State1.fromPartial(object.contactState)
+        : undefined
+    message.spliceState =
+      object.spliceState !== undefined && object.spliceState !== null
+        ? State2.fromPartial(object.spliceState)
+        : undefined
+    message.inviteState =
+      object.inviteState !== undefined && object.inviteState !== null
+        ? State3.fromPartial(object.inviteState)
+        : undefined
+    message.sessionDetails =
+      object.sessionDetails !== undefined && object.sessionDetails !== null
+        ? SessionDetails.fromPartial(object.sessionDetails)
+        : undefined
     return message
   }
 }

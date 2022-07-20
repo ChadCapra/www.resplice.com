@@ -3,43 +3,35 @@ import Long from 'long'
 import * as _m0 from 'protobufjs/minimal'
 
 export enum ServerErrorType {
-  INVALID_REQUEST = 0,
-  SERVER_ERROR = 1,
-  INVALID_SESSION = 2,
-  ACTION_UNKNOWN = 3,
-  ACTION_NOT_ALLOWED_ON_PROTOCOL = 4,
-  INVALID_INPUT = 5,
-  MISSING_ENTITY = 6,
-  ACTION_NOT_ALLOWED_ON_ENTITY = 7,
+  INVALID_SESSION = 0,
+  INVALID_REQUEST = 1,
+  INVALID_STATE = 2,
+  INVALID_USER_INPUT = 3,
+  ACCESS_DENIED = 4,
+  UNKNOWN_ERROR = 5,
   UNRECOGNIZED = -1
 }
 
 export function serverErrorTypeFromJSON(object: any): ServerErrorType {
   switch (object) {
     case 0:
-    case 'INVALID_REQUEST':
-      return ServerErrorType.INVALID_REQUEST
-    case 1:
-    case 'SERVER_ERROR':
-      return ServerErrorType.SERVER_ERROR
-    case 2:
     case 'INVALID_SESSION':
       return ServerErrorType.INVALID_SESSION
+    case 1:
+    case 'INVALID_REQUEST':
+      return ServerErrorType.INVALID_REQUEST
+    case 2:
+    case 'INVALID_STATE':
+      return ServerErrorType.INVALID_STATE
     case 3:
-    case 'ACTION_UNKNOWN':
-      return ServerErrorType.ACTION_UNKNOWN
+    case 'INVALID_USER_INPUT':
+      return ServerErrorType.INVALID_USER_INPUT
     case 4:
-    case 'ACTION_NOT_ALLOWED_ON_PROTOCOL':
-      return ServerErrorType.ACTION_NOT_ALLOWED_ON_PROTOCOL
+    case 'ACCESS_DENIED':
+      return ServerErrorType.ACCESS_DENIED
     case 5:
-    case 'INVALID_INPUT':
-      return ServerErrorType.INVALID_INPUT
-    case 6:
-    case 'MISSING_ENTITY':
-      return ServerErrorType.MISSING_ENTITY
-    case 7:
-    case 'ACTION_NOT_ALLOWED_ON_ENTITY':
-      return ServerErrorType.ACTION_NOT_ALLOWED_ON_ENTITY
+    case 'UNKNOWN_ERROR':
+      return ServerErrorType.UNKNOWN_ERROR
     case -1:
     case 'UNRECOGNIZED':
     default:
@@ -49,34 +41,30 @@ export function serverErrorTypeFromJSON(object: any): ServerErrorType {
 
 export function serverErrorTypeToJSON(object: ServerErrorType): string {
   switch (object) {
-    case ServerErrorType.INVALID_REQUEST:
-      return 'INVALID_REQUEST'
-    case ServerErrorType.SERVER_ERROR:
-      return 'SERVER_ERROR'
     case ServerErrorType.INVALID_SESSION:
       return 'INVALID_SESSION'
-    case ServerErrorType.ACTION_UNKNOWN:
-      return 'ACTION_UNKNOWN'
-    case ServerErrorType.ACTION_NOT_ALLOWED_ON_PROTOCOL:
-      return 'ACTION_NOT_ALLOWED_ON_PROTOCOL'
-    case ServerErrorType.INVALID_INPUT:
-      return 'INVALID_INPUT'
-    case ServerErrorType.MISSING_ENTITY:
-      return 'MISSING_ENTITY'
-    case ServerErrorType.ACTION_NOT_ALLOWED_ON_ENTITY:
-      return 'ACTION_NOT_ALLOWED_ON_ENTITY'
+    case ServerErrorType.INVALID_REQUEST:
+      return 'INVALID_REQUEST'
+    case ServerErrorType.INVALID_STATE:
+      return 'INVALID_STATE'
+    case ServerErrorType.INVALID_USER_INPUT:
+      return 'INVALID_USER_INPUT'
+    case ServerErrorType.ACCESS_DENIED:
+      return 'ACCESS_DENIED'
+    case ServerErrorType.UNKNOWN_ERROR:
+      return 'UNKNOWN_ERROR'
     default:
       return 'UNKNOWN'
   }
 }
 
 export interface ServerError {
-  errorType: ServerErrorType
-  errorDetails: string
+  type: ServerErrorType
+  details: string
 }
 
 function createBaseServerError(): ServerError {
-  return { errorType: 0, errorDetails: '' }
+  return { type: 0, details: '' }
 }
 
 export const ServerError = {
@@ -84,11 +72,11 @@ export const ServerError = {
     message: ServerError,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
-    if (message.errorType !== 0) {
-      writer.uint32(8).int32(message.errorType)
+    if (message.type !== 0) {
+      writer.uint32(8).int32(message.type)
     }
-    if (message.errorDetails !== '') {
-      writer.uint32(18).string(message.errorDetails)
+    if (message.details !== '') {
+      writer.uint32(18).string(message.details)
     }
     return writer
   },
@@ -101,10 +89,10 @@ export const ServerError = {
       const tag = reader.uint32()
       switch (tag >>> 3) {
         case 1:
-          message.errorType = reader.int32() as any
+          message.type = reader.int32() as any
           break
         case 2:
-          message.errorDetails = reader.string()
+          message.details = reader.string()
           break
         default:
           reader.skipType(tag & 7)
@@ -116,21 +104,16 @@ export const ServerError = {
 
   fromJSON(object: any): ServerError {
     return {
-      errorType: isSet(object.errorType)
-        ? serverErrorTypeFromJSON(object.errorType)
-        : 0,
-      errorDetails: isSet(object.errorDetails)
-        ? String(object.errorDetails)
-        : ''
+      type: isSet(object.type) ? serverErrorTypeFromJSON(object.type) : 0,
+      details: isSet(object.details) ? String(object.details) : ''
     }
   },
 
   toJSON(message: ServerError): unknown {
     const obj: any = {}
-    message.errorType !== undefined &&
-      (obj.errorType = serverErrorTypeToJSON(message.errorType))
-    message.errorDetails !== undefined &&
-      (obj.errorDetails = message.errorDetails)
+    message.type !== undefined &&
+      (obj.type = serverErrorTypeToJSON(message.type))
+    message.details !== undefined && (obj.details = message.details)
     return obj
   },
 
@@ -138,8 +121,8 @@ export const ServerError = {
     object: I
   ): ServerError {
     const message = createBaseServerError()
-    message.errorType = object.errorType ?? 0
-    message.errorDetails = object.errorDetails ?? ''
+    message.type = object.type ?? 0
+    message.details = object.details ?? ''
     return message
   }
 }

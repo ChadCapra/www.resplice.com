@@ -9,7 +9,7 @@ export enum InviteType {
   HANDLE = 'HANDLE',
   PHONE = 'PHONE',
   EMAIL = 'EMAIL',
-  SPLICE = 'SPLICE'
+  DIRECT = 'DIRECT'
 }
 
 interface BaseInvite {
@@ -21,7 +21,6 @@ interface BaseInvite {
 
 interface HandleInvite extends BaseInvite {
   type: InviteType.HANDLE
-  handle: string
 }
 
 interface PhoneInvite extends BaseInvite {
@@ -34,16 +33,11 @@ interface EmailInvite extends BaseInvite {
   email: EmailValue
 }
 
-interface CommonSpliceInvite extends BaseInvite {
-  type: InviteType.SPLICE
-  spliceName: string
+interface DirectInvite extends BaseInvite {
+  type: InviteType.DIRECT
 }
 
-export type Invite =
-  | HandleInvite
-  | PhoneInvite
-  | EmailInvite
-  | CommonSpliceInvite
+export type Invite = HandleInvite | PhoneInvite | EmailInvite | DirectInvite
 
 export type QrInvite = {
   id: number

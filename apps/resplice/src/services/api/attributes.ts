@@ -32,7 +32,12 @@ function attributesClientFactory(
     switch (m.type) {
       case ServerMessageType.USER_ATTRIBUTES:
         store.update((state) =>
-          processRecords(state, 'id', m.data.attributes, m.data.expiredIds)
+          processRecords(
+            state,
+            'id',
+            m.data.attributes,
+            m.data.expiredAttributeIds
+          )
         )
         break
       case ServerMessageType.USER_ATTRIBUTE_GROUPS: // TODO

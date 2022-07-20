@@ -77,7 +77,7 @@ function invitesClientFactory({
     switch (m.type) {
       case ServerMessageType.CONTACT_INVITES:
         store.invites.update((state) =>
-          processRecords(state, 'id', m.data.contactInvites, m.data.expiredIds)
+          processRecords(state, 'id', m.data.invites, m.data.expiredInviteIds)
         )
         break
       case ServerMessageType.CONTACT_INVITE_ATTRIBUTES:
@@ -86,7 +86,7 @@ function invitesClientFactory({
             state,
             'id',
             m.data.inviteAttributes,
-            m.data.expiredIds
+            m.data.expiredInviteAttributeIds
           )
         )
         break

@@ -8,35 +8,33 @@ import {
 } from '../invites/invite_type'
 import { Phone } from '../attributes/attribute_value'
 
-export interface PendingContact {
+export interface PendingSplice {
   id: number
   name: string
-  avatarUrl: string
+  description: string
   inviteType: InviteType
   handle: string
   phone: Phone | undefined
   email: string
-  commonSplice: string
   expiry: number
 }
 
-function createBasePendingContact(): PendingContact {
+function createBasePendingSplice(): PendingSplice {
   return {
     id: 0,
     name: '',
-    avatarUrl: '',
+    description: '',
     inviteType: 0,
     handle: '',
     phone: undefined,
     email: '',
-    commonSplice: '',
     expiry: 0
   }
 }
 
-export const PendingContact = {
+export const PendingSplice = {
   encode(
-    message: PendingContact,
+    message: PendingSplice,
     writer: _m0.Writer = _m0.Writer.create()
   ): _m0.Writer {
     if (message.id !== 0) {
@@ -45,8 +43,8 @@ export const PendingContact = {
     if (message.name !== '') {
       writer.uint32(18).string(message.name)
     }
-    if (message.avatarUrl !== '') {
-      writer.uint32(26).string(message.avatarUrl)
+    if (message.description !== '') {
+      writer.uint32(26).string(message.description)
     }
     if (message.inviteType !== 0) {
       writer.uint32(32).int32(message.inviteType)
@@ -60,19 +58,16 @@ export const PendingContact = {
     if (message.email !== '') {
       writer.uint32(58).string(message.email)
     }
-    if (message.commonSplice !== '') {
-      writer.uint32(66).string(message.commonSplice)
-    }
     if (message.expiry !== 0) {
-      writer.uint32(72).uint32(message.expiry)
+      writer.uint32(64).uint32(message.expiry)
     }
     return writer
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): PendingContact {
+  decode(input: _m0.Reader | Uint8Array, length?: number): PendingSplice {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
     let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBasePendingContact()
+    const message = createBasePendingSplice()
     while (reader.pos < end) {
       const tag = reader.uint32()
       switch (tag >>> 3) {
@@ -83,7 +78,7 @@ export const PendingContact = {
           message.name = reader.string()
           break
         case 3:
-          message.avatarUrl = reader.string()
+          message.description = reader.string()
           break
         case 4:
           message.inviteType = reader.int32() as any
@@ -98,9 +93,6 @@ export const PendingContact = {
           message.email = reader.string()
           break
         case 8:
-          message.commonSplice = reader.string()
-          break
-        case 9:
           message.expiry = reader.uint32()
           break
         default:
@@ -111,48 +103,43 @@ export const PendingContact = {
     return message
   },
 
-  fromJSON(object: any): PendingContact {
+  fromJSON(object: any): PendingSplice {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       name: isSet(object.name) ? String(object.name) : '',
-      avatarUrl: isSet(object.avatarUrl) ? String(object.avatarUrl) : '',
+      description: isSet(object.description) ? String(object.description) : '',
       inviteType: isSet(object.inviteType)
         ? inviteTypeFromJSON(object.inviteType)
         : 0,
       handle: isSet(object.handle) ? String(object.handle) : '',
       phone: isSet(object.phone) ? Phone.fromJSON(object.phone) : undefined,
       email: isSet(object.email) ? String(object.email) : '',
-      commonSplice: isSet(object.commonSplice)
-        ? String(object.commonSplice)
-        : '',
       expiry: isSet(object.expiry) ? Number(object.expiry) : 0
     }
   },
 
-  toJSON(message: PendingContact): unknown {
+  toJSON(message: PendingSplice): unknown {
     const obj: any = {}
     message.id !== undefined && (obj.id = Math.round(message.id))
     message.name !== undefined && (obj.name = message.name)
-    message.avatarUrl !== undefined && (obj.avatarUrl = message.avatarUrl)
+    message.description !== undefined && (obj.description = message.description)
     message.inviteType !== undefined &&
       (obj.inviteType = inviteTypeToJSON(message.inviteType))
     message.handle !== undefined && (obj.handle = message.handle)
     message.phone !== undefined &&
       (obj.phone = message.phone ? Phone.toJSON(message.phone) : undefined)
     message.email !== undefined && (obj.email = message.email)
-    message.commonSplice !== undefined &&
-      (obj.commonSplice = message.commonSplice)
     message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
     return obj
   },
 
-  fromPartial<I extends Exact<DeepPartial<PendingContact>, I>>(
+  fromPartial<I extends Exact<DeepPartial<PendingSplice>, I>>(
     object: I
-  ): PendingContact {
-    const message = createBasePendingContact()
+  ): PendingSplice {
+    const message = createBasePendingSplice()
     message.id = object.id ?? 0
     message.name = object.name ?? ''
-    message.avatarUrl = object.avatarUrl ?? ''
+    message.description = object.description ?? ''
     message.inviteType = object.inviteType ?? 0
     message.handle = object.handle ?? ''
     message.phone =
@@ -160,7 +147,6 @@ export const PendingContact = {
         ? Phone.fromPartial(object.phone)
         : undefined
     message.email = object.email ?? ''
-    message.commonSplice = object.commonSplice ?? ''
     message.expiry = object.expiry ?? 0
     return message
   }

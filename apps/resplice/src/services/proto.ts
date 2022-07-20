@@ -97,9 +97,9 @@ const clientMessageMapper = {
   [ClientMessageType.QR_INVITE_ATTRIBUTE_REMOVE]:
     reproto.invites.request.qr_invite_attribute.Remove.encode,
   [ClientMessageType.PENDING_CONTACT_ACCEPT]:
-    reproto.contacts.request.pending_contact.Accept.encode,
+    reproto.pending.request.pending_contact.Accept.encode,
   [ClientMessageType.PENDING_CONTACT_DECLINE]:
-    reproto.contacts.request.pending_contact.Decline.encode,
+    reproto.pending.request.pending_contact.Decline.encode,
   [ClientMessageType.CONTACT_EDIT_ALIAS]:
     reproto.contacts.request.contact.EditAlias.encode,
   [ClientMessageType.CONTACT_EDIT_DESCRIPTION]:
@@ -200,21 +200,16 @@ export function decodeServerMessageWrapper(data: Uint8Array) {
 const serverMessageMapper = {
   [ServerMessageType.CURRENT_SESSION]: reproto.auth.session.Session.decode,
   [ServerMessageType.USER_PROFILE]: reproto.user.profile.Profile.decode,
-  [ServerMessageType.USER_ATTRIBUTES]:
-    reproto.attributes.attribute.AttributeState.decode,
+  [ServerMessageType.USER_ATTRIBUTES]: reproto.attributes.state.State.decode,
   [ServerMessageType.USER_ATTRIBUTE_GROUPS]:
-    reproto.attributes.attribute_group.AttributeGroupState.decode,
-  [ServerMessageType.USER_SESSIONS]: reproto.auth.session.SessionState.decode,
-  [ServerMessageType.CONTACTS]: reproto.contacts.contact.ContactState.decode,
-  [ServerMessageType.CONTACT_ATTRIBUTES]:
-    reproto.contacts.contact_attribute.ContactAttributeState.decode,
-  [ServerMessageType.CONTACT_SHARES]:
-    reproto.contacts.contact_share.ContactShareState.decode,
-  [ServerMessageType.PENDING_CONTACTS]:
-    reproto.contacts.pending_contact.PendingContactState.decode,
+    reproto.attributes.state.State.decode,
+  [ServerMessageType.USER_SESSIONS]: reproto.auth.state.State.decode,
+  [ServerMessageType.CONTACTS]: reproto.contacts.state.State.decode,
+  [ServerMessageType.CONTACT_ATTRIBUTES]: reproto.contacts.state.State.decode,
+  [ServerMessageType.CONTACT_SHARES]: reproto.contacts.state.State.decode,
+  [ServerMessageType.PENDING_CONTACTS]: reproto.pending.state.State.decode,
   [ServerMessageType.PENDING_CONTACT_ATTRIBUTES]:
-    reproto.contacts.pending_contact_attribute.PendingContactAttributeState
-      .decode
+    reproto.pending.state.State.decode
 }
 
 // Maybe we use a mapper here instead if we just call decode everytime

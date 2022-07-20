@@ -109,6 +109,7 @@ export enum ClientRequestType {
   /** SPLICE_ADD_SHARE - Splice Shares */
   SPLICE_ADD_SHARE = 75,
   SPLICE_REMOVE_SHARE = 76,
+  SESSION_DETAILS_GET = 77,
   UNRECOGNIZED = -1
 }
 
@@ -345,6 +346,9 @@ export function clientRequestTypeFromJSON(object: any): ClientRequestType {
     case 76:
     case 'SPLICE_REMOVE_SHARE':
       return ClientRequestType.SPLICE_REMOVE_SHARE
+    case 77:
+    case 'SESSION_DETAILS_GET':
+      return ClientRequestType.SESSION_DETAILS_GET
     case -1:
     case 'UNRECOGNIZED':
     default:
@@ -508,6 +512,8 @@ export function clientRequestTypeToJSON(object: ClientRequestType): string {
       return 'SPLICE_ADD_SHARE'
     case ClientRequestType.SPLICE_REMOVE_SHARE:
       return 'SPLICE_REMOVE_SHARE'
+    case ClientRequestType.SESSION_DETAILS_GET:
+      return 'SESSION_DETAILS_GET'
     default:
       return 'UNKNOWN'
   }
