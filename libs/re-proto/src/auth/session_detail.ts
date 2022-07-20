@@ -13,6 +13,7 @@ export interface SessionDetail {
 
 export interface SessionDetails {
   details: SessionDetail[]
+  expiredSessionIds: number[]
 }
 
 function createBaseSessionDetail(): SessionDetail {
@@ -113,7 +114,7 @@ export const SessionDetail = {
 }
 
 function createBaseSessionDetails(): SessionDetails {
-  return { details: [] }
+  return { details: [], expiredSessionIds: [] }
 }
 
 export const SessionDetails = {
@@ -124,6 +125,11 @@ export const SessionDetails = {
     for (const v of message.details) {
       SessionDetail.encode(v!, writer.uint32(10).fork()).ldelim()
     }
+    writer.uint32(18).fork()
+    for (const v of message.expiredSessionIds) {
+      writer.uint32(v)
+    }
+    writer.ldelim()
     return writer
   },
 
@@ -137,6 +143,16 @@ export const SessionDetails = {
         case 1:
           message.details.push(SessionDetail.decode(reader, reader.uint32()))
           break
+        case 2:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos
+            while (reader.pos < end2) {
+              message.expiredSessionIds.push(reader.uint32())
+            }
+          } else {
+            message.expiredSessionIds.push(reader.uint32())
+          }
+          break
         default:
           reader.skipType(tag & 7)
           break
@@ -149,6 +165,9 @@ export const SessionDetails = {
     return {
       details: Array.isArray(object?.details)
         ? object.details.map((e: any) => SessionDetail.fromJSON(e))
+        : [],
+      expiredSessionIds: Array.isArray(object?.expiredSessionIds)
+        ? object.expiredSessionIds.map((e: any) => Number(e))
         : []
     }
   },
@@ -162,6 +181,13 @@ export const SessionDetails = {
     } else {
       obj.details = []
     }
+    if (message.expiredSessionIds) {
+      obj.expiredSessionIds = message.expiredSessionIds.map((e) =>
+        Math.round(e)
+      )
+    } else {
+      obj.expiredSessionIds = []
+    }
     return obj
   },
 
@@ -171,6 +197,7 @@ export const SessionDetails = {
     const message = createBaseSessionDetails()
     message.details =
       object.details?.map((e) => SessionDetail.fromPartial(e)) || []
+    message.expiredSessionIds = object.expiredSessionIds?.map((e) => e) || []
     return message
   }
 }

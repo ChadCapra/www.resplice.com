@@ -10,23 +10,12 @@ import {
 export interface Session {
   id: number
   status: SessionStatus
-  expiry: number
-}
-
-export interface SessionDetail {
-  id: number
-  email: string
-  phone: Phone | undefined
-  authenticatedAt: number
-  expiry: number
-}
-
-export interface SessionDetails {
-  details: SessionDetail[]
+  createdAt: number
+  rememberMe: boolean
 }
 
 function createBaseSession(): Session {
-  return { id: 0, status: 0, expiry: 0 }
+  return { id: 0, status: 0, createdAt: 0, rememberMe: false }
 }
 
 export const Session = {
@@ -40,8 +29,11 @@ export const Session = {
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status)
     }
-    if (message.expiry !== 0) {
-      writer.uint32(24).uint32(message.expiry)
+    if (message.createdAt !== 0) {
+      writer.uint32(24).uint32(message.createdAt)
+    }
+    if (message.rememberMe === true) {
+      writer.uint32(32).bool(message.rememberMe)
     }
     return writer
   },
@@ -60,7 +52,10 @@ export const Session = {
           message.status = reader.int32() as any
           break
         case 3:
-          message.expiry = reader.uint32()
+          message.createdAt = reader.uint32()
+          break
+        case 4:
+          message.rememberMe = reader.bool()
           break
         default:
           reader.skipType(tag & 7)
@@ -74,7 +69,8 @@ export const Session = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       status: isSet(object.status) ? sessionStatusFromJSON(object.status) : 0,
-      expiry: isSet(object.expiry) ? Number(object.expiry) : 0
+      createdAt: isSet(object.createdAt) ? Number(object.createdAt) : 0,
+      rememberMe: isSet(object.rememberMe) ? Boolean(object.rememberMe) : false
     }
   },
 
@@ -83,7 +79,9 @@ export const Session = {
     message.id !== undefined && (obj.id = Math.round(message.id))
     message.status !== undefined &&
       (obj.status = sessionStatusToJSON(message.status))
-    message.expiry !== undefined && (obj.expiry = Math.round(message.expiry))
+    message.createdAt !== undefined &&
+      (obj.createdAt = Math.round(message.createdAt))
+    message.rememberMe !== undefined && (obj.rememberMe = message.rememberMe)
     return obj
   },
 
@@ -91,70 +89,8 @@ export const Session = {
     const message = createBaseSession()
     message.id = object.id ?? 0
     message.status = object.status ?? 0
-    message.expiry = object.expiry ?? 0
-    return message
-  }
-}
-
-function createBaseSessionDetails(): SessionDetails {
-  return { details: [] }
-}
-
-export const SessionDetails = {
-  encode(
-    message: SessionDetails,
-    writer: _m0.Writer = _m0.Writer.create()
-  ): _m0.Writer {
-    for (const v of message.details) {
-      SessionDetail.encode(v!, writer.uint32(10).fork()).ldelim()
-    }
-    return writer
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): SessionDetails {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input)
-    let end = length === undefined ? reader.len : reader.pos + length
-    const message = createBaseSessionDetails()
-    while (reader.pos < end) {
-      const tag = reader.uint32()
-      switch (tag >>> 3) {
-        case 1:
-          message.details.push(SessionDetail.decode(reader, reader.uint32()))
-          break
-        default:
-          reader.skipType(tag & 7)
-          break
-      }
-    }
-    return message
-  },
-
-  fromJSON(object: any): SessionDetails {
-    return {
-      details: Array.isArray(object?.details)
-        ? object.details.map((e: any) => SessionDetail.fromJSON(e))
-        : []
-    }
-  },
-
-  toJSON(message: SessionDetails): unknown {
-    const obj: any = {}
-    if (message.details) {
-      obj.details = message.details.map((e) =>
-        e ? SessionDetail.toJSON(e) : undefined
-      )
-    } else {
-      obj.details = []
-    }
-    return obj
-  },
-
-  fromPartial<I extends Exact<DeepPartial<SessionDetails>, I>>(
-    object: I
-  ): SessionDetails {
-    const message = createBaseSessionDetails()
-    message.details =
-      object.details?.map((e) => SessionDetail.fromPartial(e)) || []
+    message.createdAt = object.createdAt ?? 0
+    message.rememberMe = object.rememberMe ?? false
     return message
   }
 }

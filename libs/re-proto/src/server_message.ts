@@ -30,11 +30,11 @@ export function serverMessageTypeFromJSON(object: any): ServerMessageType {
     case 'SERVER_STATE':
       return ServerMessageType.SERVER_STATE
     case 1:
+    case 'CURRENT_SESSION':
+      return ServerMessageType.CURRENT_SESSION
+    case 2:
     case 'USER_PROFILE':
       return ServerMessageType.USER_PROFILE
-    case 2:
-    case 'ATTRIBUTE_STATE':
-      return ServerMessageType.ATTRIBUTE_STATE
     case 3:
     case 'ATTRIBUTE_STATE':
       return ServerMessageType.ATTRIBUTE_STATE
