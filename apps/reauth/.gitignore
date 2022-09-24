@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
-/.svelte-kit
 /build
-/functions
+/.svelte-kit
+/package
 .env
-src/lib/reproto
+.env.*
+!.env.example
