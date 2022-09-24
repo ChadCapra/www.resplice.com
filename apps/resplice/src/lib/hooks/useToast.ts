@@ -2,6 +2,8 @@ import toastStore from '$stores/toasts'
 import type { ToastStore } from '$stores/toasts'
 import type { ToastParams } from '$types/common'
 
+export { ToastType } from '$types/common'
+
 type ToastHook = {
   getStore: () => ToastStore
   add: (params: ToastParams) => void
