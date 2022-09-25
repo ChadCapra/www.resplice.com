@@ -1,5 +1,6 @@
 export * from '$utils/converters/base64'
 export * from '$utils/converters/bytes'
+export * from '$utils/crypto'
 export * from '$utils/data-structures/arrToMap'
 export * from '$utils/data-structures/arrToRecord'
 export * from '$utils/dimensional/countries'
