@@ -1,8 +1,19 @@
 {
 	"name": "@resplice/components",
-	"version": "0.0.1",
+	"version": "0.1.0",
+	"description": "Protobuf lib for Resplice web applications",
+	"author": "marcus@resplice.com",
+	"license": "UNLICENSED",
 	"private": true,
 	"type": "module",
+	"files": [
+		"package"
+	],
+	"module": "./package/index.js",
+	"types": "./package/index.d.ts",
+	"exports": {
+		".": "./package/"
+	},
 	"scripts": {
 		"dev": "vite dev",
 		"build": "svelte-kit sync && svelte-package",

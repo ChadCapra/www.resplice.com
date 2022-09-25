@@ -16,7 +16,8 @@
 	"dependencies": {
 		"classnames": "^2.3.2",
 		"flag-icons": "^6.6.6",
-		"libphonenumber-js": "^1.10.13"
+		"libphonenumber-js": "^1.10.13",
+		"svelte-i18n": "^3.4.0"
 	},
 	"devDependencies": {
 		"@playwright/test": "^1.26.0",
