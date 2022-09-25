@@ -4,14 +4,10 @@
 	"semi": false,
 	"singleQuote": true,
 	"trailingComma": "none",
-	"printWidth": 125,
+	"printWidth": 100,
 	"svelteSortOrder": "scripts-markup-styles",
-	"plugins": [
-		"prettier-plugin-svelte"
-	],
-	"pluginSearchDirs": [
-		"."
-	],
+	"plugins": ["prettier-plugin-svelte"],
+	"pluginSearchDirs": ["."],
 	"overrides": [
 		{
 			"files": "*.svelte",

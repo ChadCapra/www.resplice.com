@@ -1,6 +1,6 @@
 <script lang="ts">
   import cx from 'classnames'
-  import Spinner from '$lib/skeleton/Spinner.svelte'
+  import Spinner from '$lib/common/skeleton/Spinner.svelte'
 
   export let type: 'button' | 'menu' | 'reset' | 'submit' = 'button'
   export let variant: 'primary' | 'secondary' | 'tertiary' = 'primary'
