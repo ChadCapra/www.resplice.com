@@ -1,11 +1,11 @@
 import adapter from '@sveltejs/adapter-static'
-import preprocess from 'svelte-preprocess'
+import { vitePreprocess } from '@sveltejs/kit/vite'
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-	// Consult https://github.com/sveltejs/svelte-preprocess
+	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
-	preprocess: preprocess(),
+	preprocess: vitePreprocess(),
 
 	kit: {
 		adapter: adapter({
@@ -15,10 +15,10 @@ const config = {
 			precompress: false
 		}),
 		alias: {
-			$services: './src/services',
-			$stores: './src/stores',
-			$types: './src/types',
-			$workers: './src/services/workers'
+			$modules: './src/modules',
+			$mocks: './tests/mocks',
+			$services: './src/shared/services',
+			$shared: './src/shared'
 		}
 	}
 }

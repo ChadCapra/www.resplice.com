@@ -5,21 +5,21 @@
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<script>
-      // TODO: Figure out how to replace at web server runtime
-      window.resplice_config = {
-        env: 'local',
-        appUrl: 'http://localhost:3000',
-        // httpEndpoint: 'http://localhost:4000',
-        httpEndpoint: '',
-        // wsEndpoint: 'ws://localhost:8080',
-        wsEndpoint: '',
-        telemetryEndpoint: 'localhost:4000',
-        recaptchaToken: '6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG'
-      }
-    </script>
+			// TODO: Figure out how to replace at web server runtime
+			window.RESPLICE_CONFIG = {
+				env: 'local',
+				appUrl: 'http://localhost:3000',
+				// respliceApiUrl: 'http://localhost:4000',
+				respliceApiUrl: '',
+				// respliceWsUrl: 'ws://localhost:8080',
+				respliceWsUrl: '',
+				telemetryUrl: 'http://localhost:9092',
+				recaptchaToken: '6Ld2U9YdAAAAABa8tuPRJDPJCWfJpl4UXvdmEMwG'
+			}
+		</script>
 		%sveltekit.head%
 	</head>
-	<body>
-		<div>%sveltekit.body%</div>
+	<body data-sveltekit-preload-data="hover">
+		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 </html>

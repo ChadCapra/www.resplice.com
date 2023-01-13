@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
-	import { validateEmail, getNavigatorCountry } from '@resplice/utils'
 	import { phoneNumberToValue } from '$lib/attributes/utils'
-	import authStore from '$stores/auth'
 	import useAuthClient from '$lib/auth/useAuthClient'
-	import useConfig from '$lib/hooks/useConfig'
 	import Button from '$lib/common/Button.svelte'
-	import TextField from '$lib/common/form/TextField.svelte'
 	import PhoneField from '$lib/common/form/PhoneField.svelte'
-	import MailIcon from '$lib/common/icons/MailIcon.svelte'
+	import TextField from '$lib/common/form/TextField.svelte'
 	import Toggle from '$lib/common/form/Toggle.svelte'
+	import MailIcon from '$lib/common/icons/MailIcon.svelte'
+	import useConfig from '$lib/hooks/useConfig'
+	import authStore from '$stores/auth'
+	import { getNavigatorCountry, validateEmail } from '@resplice/utils'
+	import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js'
 
 	import type { CountryCode } from 'libphonenumber-js'
 
@@ -96,7 +96,8 @@
 		<script
 			src={`https://www.google.com/recaptcha/api.js?render=${config.recaptchaToken}`}
 			async
-			defer>
+			defer
+		>
 		</script>
 	{/if}
 </svelte:head>
