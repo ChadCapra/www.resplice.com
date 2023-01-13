@@ -1,5 +1,6 @@
 {
   "name": "@resplice/web",
+  "type": "module",
   "version": "1.0.0",
   "description": "Monorepo for all Resplice web products",
   "author": "marcus@resplice.com",

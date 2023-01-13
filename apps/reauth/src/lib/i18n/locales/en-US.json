@@ -1,0 +1,11 @@
+{
+	"login": "Login",
+	"Register": "Register",
+	"welcomeMessage": "Welcome to the world's most up-to-date address book.",
+	"enterPhone": "Enter Phone",
+	"enterEmail": "Enter Email",
+	"rememberMe": "Remember Me",
+	"verify": "Verify",
+	"upload": "Optionally upload your avatar and enter your full name to create your account!",
+	"haveAccount": "I already have an account"
+}

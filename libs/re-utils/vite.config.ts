@@ -11,7 +11,7 @@ export default defineConfig({
       entry: 'src/index.ts',
       name: 're-utils',
       formats: ['es'],
-      fileName: (format) => `re-utils.${format}.js`
+      fileName: 're-utils.js'
     },
     rollupOptions: {
       external: Object.keys(pkg.peerDependencies)

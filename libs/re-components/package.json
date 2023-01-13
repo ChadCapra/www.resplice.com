@@ -1,11 +1,11 @@
 {
 	"name": "@resplice/components",
+	"type": "module",
 	"version": "0.1.0",
 	"description": "Component lib for Resplice web applications",
 	"author": "marcus@resplice.com",
 	"license": "UNLICENSED",
 	"private": true,
-	"type": "module",
 	"files": [
 		"package"
 	],
