@@ -35,9 +35,7 @@ export async function encrypt(
     data
   )
 
-  const cipherText = new Uint8Array(encryptedBuffer)
-
-  return cipherText
+  return new Uint8Array(encryptedBuffer)
 }
 
 export async function decrypt(
@@ -45,7 +43,7 @@ export async function decrypt(
   iv: Uint8Array,
   cipherText: Uint8Array
 ): Promise<Uint8Array> {
-  const d = await crypto.subtle.decrypt(
+  const decryptedBuffer = await crypto.subtle.decrypt(
     {
       name: 'AES-GCM',
       iv // The initialization vector you used to encrypt
@@ -54,7 +52,7 @@ export async function decrypt(
     key,
     cipherText
   )
-  return new Uint8Array(d)
+  return new Uint8Array(decryptedBuffer)
 }
 
 export function sign(key: CryptoKey, data: Uint8Array) {
@@ -86,8 +84,13 @@ export async function publicKeyEncrypt(
   key: CryptoKey,
   data: Uint8Array
 ): Promise<Uint8Array> {
-  const e = await crypto.subtle.encrypt({ name: 'RSA-OAEP' }, key, data)
-  return new Uint8Array(e)
+  const encryptedBuffer = await crypto.subtle.encrypt(
+    { name: 'RSA-OAEP' },
+    key,
+    data
+  )
+
+  return new Uint8Array(encryptedBuffer)
 }
 
 export function calculateClientIV(

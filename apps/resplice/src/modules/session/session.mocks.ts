@@ -1,8 +1,8 @@
-import { type Session, SessionStatus } from '$modules/session/session.types'
+import type { Session, SessionItem } from '$modules/session/session.types'
 
 export const currentSession: Session = {
 	id: 1,
-	status: SessionStatus.AUTHENTICATED,
+	userId: 1,
 	email: {
 		email: 'bastilla.shan@jedi.com'
 	},
@@ -15,4 +15,10 @@ export const currentSession: Session = {
 	expiry: 0
 }
 
-export const sessions: Session[] = []
+export const sessions: SessionItem[] = [
+	{
+		id: 2,
+		device: 'iPhone XR',
+		lastLocation: 'Minneapolis, MN'
+	}
+]
