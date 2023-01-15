@@ -17,8 +17,8 @@ const config = {
 		alias: {
 			$modules: './src/modules',
 			$mocks: './tests/mocks',
-			$services: './src/shared/services',
-			$shared: './src/shared'
+			$services: './src/common/services',
+			$common: './src/common'
 		}
 	}
 }

@@ -23,17 +23,31 @@ type VerifyRequest = {
 	verificationToken: number
 }
 
+// async function getMockPublicKey(): Promise<ArrayBuffer> {
+// 	const keyPair = await crypto.subtle.generateKey(
+// 		{
+// 			name: 'RSA-OAEP',
+// 			modulusLength: 2048,
+// 			publicExponent: new Uint8Array([1, 0, 1]),
+// 			hash: 'SHA-256'
+// 		},
+// 		true,
+// 		['encrypt']
+// 	)
+// 	return crypto.subtle.exportKey('raw', keyPair.publicKey)
+// }
+
 class MockAuthProtocol {
-	async createSession(_: CreateSessionRequest): Promise<Auth> {
+	createSession(_: CreateSessionRequest): Promise<Auth> {
 		return mockPromise({ data: pendingEmailAuth })
 	}
-	async verifyEmail(_: VerifyRequest): Promise<Auth> {
+	verifyEmail(_: VerifyRequest): Promise<Auth> {
 		return mockPromise({ data: pendingPhoneAuth })
 	}
-	async verifyPhone(_: VerifyRequest): Promise<Auth> {
+	verifyPhone(_: VerifyRequest): Promise<Auth> {
 		return mockPromise({ data: pendingUserRegistrationAuth })
 	}
-	async createAccount(_: CreateAccountRequest): Promise<Auth> {
+	createAccount(_: CreateAccountRequest): Promise<Auth> {
 		return mockPromise({ data: authenticatedAuth })
 	}
 }
