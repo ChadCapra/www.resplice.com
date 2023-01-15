@@ -1,25 +1,25 @@
 <script lang="ts">
-	import type { Attribute } from '$common/common.types'
-	import AttributeAction from '$lib/attributes/Action.svelte'
-	import AttributeContext from '$lib/attributes/AttributeContext.svelte'
-	import AttributeValue from '$lib/attributes/Value.svelte'
-	import Modal from '$lib/common/Modal.svelte'
-	import attributeTypes from '$lib/attributes/attributeTypes'
+	import { createEventDispatcher } from 'svelte'
+	import { attributeTypes } from '@resplice/utils'
+	import AttributeAction from '$lib/attribute/Action.svelte'
+	import AttributeValue from '$lib/attribute/Value.svelte'
+	import type { Attribute } from '@resplice/utils'
 
 	export let attribute: Attribute
 	export let itemType: 'contact' | 'user' | 'disabled'
 	export let showSecondAction = true
 	export let disableActions = false
-	let showContextModal = false
+
+	const dispatch = createEventDispatcher()
 
 	const attributeType = attributeTypes[attribute.type]
 
 	$: showValue = !!Object.values(attribute.value).length
 
-	function onAttributeClick() {
+	function onAttributeClick(e: MouseEvent | KeyboardEvent) {
 		if (itemType === 'disabled' || disableActions) return
 
-		showContextModal = true
+		dispatch('click', e)
 	}
 </script>
 
@@ -54,9 +54,3 @@
 		/>
 	{/if}
 </div>
-
-{#if showContextModal}
-	<Modal on:close={() => (showContextModal = false)}>
-		<AttributeContext {attribute} {attributeType} {itemType} />
-	</Modal>
-{/if}

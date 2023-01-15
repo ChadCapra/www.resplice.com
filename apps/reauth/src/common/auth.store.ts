@@ -1,7 +1,14 @@
 import { writable } from 'svelte/store'
-import type { Auth } from '$common/common.types'
+import { AuthStatus, type Auth } from '$common/common.types'
 
-const authStore = writable<Auth | null>(null)
+const initialAuth: Auth = {
+	status: AuthStatus.UNKNOWN,
+	email: '',
+	phone: '',
+	rememberMe: false
+}
+
+const authStore = writable<Auth>(initialAuth)
 
 export type AuthStore = typeof authStore
 

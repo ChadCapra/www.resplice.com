@@ -1,7 +1,7 @@
 import { userEmail, userPhone } from '$modules/user/user.mocks'
 import { type Auth, AuthStatus } from '$common/common.types'
 
-const baseAuth: Auth = {
+export const baseAuth: Auth = {
 	status: AuthStatus.UNKNOWN,
 	email: userEmail,
 	phone: userPhone,

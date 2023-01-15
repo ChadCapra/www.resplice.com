@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { _ as t } from 'svelte-i18n'
-	import RespliceWide from '$lib/icons/RespliceWide.svelte'
-	import SignupForm from '$lib/auth/SignupForm.svelte'
+	import RespliceWide from '@resplice/components/icons/RespliceWide.svelte'
+	import SignupForm from '$modules/user/components/SignupForm.svelte'
 </script>
 
 <svelte:head>

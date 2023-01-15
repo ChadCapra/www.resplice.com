@@ -1,14 +1,13 @@
 <script lang="ts">
 	import authStore from '$common/auth.store'
 	import useAuthProtocol from '$common/auth-protocol/useAuthProtocol'
-	import AttributeItem from '$lib/attributes/Item.svelte'
-	import TextField from '@resplice/components/package/form/TextField.svelte'
-	import LockClosedIcon from '@resplice/components/package/icons/LockClosedIcon.svelte'
-	import ShieldCheckmarkIcon from '@resplice/components/package/icons/ShieldCheckmarkIcon.svelte'
-	import Spinner from '@resplice/components/package/skeleton/Spinner.svelte'
-	import { SessionStatus } from '$types/session'
-	import { AttributeType } from '$types/attribute'
-	import type { Email, Phone } from '$types/attribute'
+	import AttributeItem from '@resplice/components/attribute/AttributeItem.svelte'
+	import TextField from '@resplice/components/form/TextField.svelte'
+	import LockClosedIcon from '@resplice/components/icons/LockClosedIcon.svelte'
+	import ShieldCheckmarkIcon from '@resplice/components/icons/ShieldCheckmarkIcon.svelte'
+	import Spinner from '@resplice/components/skeleton/Spinner.svelte'
+	import { AuthStatus } from '$common/common.types'
+	import { AttributeType, type Email, type Phone } from '@resplice/utils'
 
 	const CODE_LENGTH = 6
 
@@ -26,20 +25,21 @@
 		id: 1,
 		type: AttributeType.PHONE,
 		name: 'Phone',
-		value: $authStore.session.phone,
+		// TODO: parse phone number correctly, might be able to use some helper functions in @resplice/utils
+		value: { number: parseInt($authStore.phone), smsEnabled: true },
 		sortOrder: 2
 	}
 
 	let emailCode = ''
 	let emailPromise: Promise<boolean>
-	$: emailVerified = $authStore.session.status === SessionStatus.PENDING_PHONE_VERIFICATION
+	$: emailVerified = $authStore.status === AuthStatus.PENDING_PHONE_VERIFICATION
 
 	let phoneCode = ''
 	let phonePromise: Promise<boolean>
 
 	async function submitEmailCode(verificationToken: number): Promise<boolean> {
 		const session = await protocol.verifyEmail({ verificationToken })
-		if (session.status !== SessionStatus.PENDING_PHONE_VERIFICATION)
+		if (session.status !== AuthStatus.PENDING_PHONE_VERIFICATION)
 			throw Error('Verification code did not work')
 
 		authStore.update((auth) => ({ ...auth, session }))
@@ -48,7 +48,7 @@
 
 	async function submitPhoneCode(verificationToken: number): Promise<boolean> {
 		const session = await protocol.verifyPhone({ verificationToken })
-		if (session.status !== SessionStatus.PENDING_USER_REGISRATION)
+		if (session.status !== AuthStatus.PENDING_USER_REGISRATION)
 			throw Error('Verification code did not work')
 
 		authStore.update((auth) => ({ ...auth, session }))

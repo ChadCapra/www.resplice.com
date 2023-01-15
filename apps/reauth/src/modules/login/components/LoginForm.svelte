@@ -1,17 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
+	import { getNavigatorCountry, validateEmail } from '@resplice/utils'
+	import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js'
 	import appConfig from '$common/config'
 	import authStore from '$common/auth.store'
 	import { phoneNumberToValue } from '$common/attributes'
 	import useAuthClient from '$common/auth-protocol/useAuthProtocol'
-	import Button from '$common/components/Button.svelte'
-	import PhoneField from '$common/components/form/PhoneField.svelte'
-	import TextField from '$common/components/form/TextField.svelte'
-	import Toggle from '$common/components/form/Toggle.svelte'
-	import MailIcon from '$common/components/icons/MailIcon.svelte'
-	import { getNavigatorCountry, validateEmail } from '@resplice/utils'
-	import { isValidPhoneNumber, parsePhoneNumber } from 'libphonenumber-js'
-
+	import Button from '@resplice/components/Button.svelte'
+	import PhoneField from '@resplice/components/form/PhoneField.svelte'
+	import TextField from '@resplice/components/form/TextField.svelte'
+	import Toggle from '@resplice/components/form/Toggle.svelte'
+	import MailIcon from '@resplice/components/icons/MailIcon.svelte'
 	import type { CountryCode } from 'libphonenumber-js'
 
 	const client = useAuthClient()

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import authStore from '$common/auth.store'
-	import RespliceWide from '@resplice/components/package/icons/RespliceWide.svelte'
+	import RespliceWide from '@resplice/components/icons/RespliceWide.svelte'
 	import VerifyForm from '$modules/verify/components/VerifyForm.svelte'
 </script>
 

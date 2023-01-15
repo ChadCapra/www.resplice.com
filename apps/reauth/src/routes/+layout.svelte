@@ -6,9 +6,10 @@
 	import cache from '$common/db'
 	import authStore from '$common/auth.store'
 	import appConfig from '$common/config'
-	import AppLoading from '$common/components/skeleton/AppLoading.svelte'
-	import PageTransition from '$common/components/skeleton/PageTransition.svelte'
+	import AppLoading from '@resplice/components/skeleton/AppLoading.svelte'
+	import PageTransition from '@resplice/components/skeleton/PageTransition.svelte'
 	import '../app.css'
+	import '@resplice/components/lib.css'
 
 	console.log('Reauth layout rendering')
 
