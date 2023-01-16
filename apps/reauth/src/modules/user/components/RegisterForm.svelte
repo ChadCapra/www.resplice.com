@@ -32,9 +32,9 @@
 		try {
 			isLoading = true
 			const { status } = await protocol.createAccount({
-				name: fullName,
 				avatar,
-				handle: ''
+				name: fullName,
+				handle
 			})
 			authStore.update((oldAuth) => ({
 				...oldAuth,
@@ -50,6 +50,7 @@
 		formErrs = {}
 		const errs: Record<string, string> = {}
 		if (!fullName) errs.fullName = 'Full name is required'
+		if (!handle) errs.handle = 'Handle is required'
 		if (Object.keys(errs).length) {
 			formErrs = errs
 			return false

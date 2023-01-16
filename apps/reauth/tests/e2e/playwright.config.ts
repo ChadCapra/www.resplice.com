@@ -1,22 +1,26 @@
-import type { PlaywrightTestConfig } from '@playwright/test'
+import { type PlaywrightTestConfig, devices } from '@playwright/test'
 
 const config: PlaywrightTestConfig = {
 	testDir: '.',
-	use: {
-		browserName: 'chromium',
-		headless: true,
-		viewport: { width: 1280, height: 720 },
-		ignoreHTTPSErrors: true,
-		video: 'off',
-		colorScheme: 'dark'
-		// launchOptions: {
-		//   slowMo: 100
-		// }
-	},
-	webServer: {
-		command: 'npm run build && npm run preview',
-		port: 4173
-	}
+	projects: [
+		{
+			name: 'Pixel 5',
+			use: {
+				...devices['Pixel 5'],
+				ignoreHTTPSErrors: true,
+				video: 'off',
+				colorScheme: 'dark',
+				headless: false,
+				launchOptions: {
+					slowMo: 500
+				}
+			}
+		}
+	]
+	// webServer: {
+	// 	command: 'npm run build && npm run preview',
+	// 	port: 4173
+	// }
 }
 
 export default config
