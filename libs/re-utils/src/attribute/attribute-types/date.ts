@@ -1,4 +1,4 @@
-import { formatInTimeZone } from 'date-fns-tz'
+import { formatDatetime } from '$utils/parsers/datetime'
 import { copyText, openCalendar } from '$utils/attribute/attribute-actions'
 import {
   AttributeType,
@@ -10,7 +10,7 @@ import {
 function valueToString(value: DateValue) {
   const date = new Date(value.year, value.month - 1, value.day)
   const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-  return formatInTimeZone(date, tz, "MMMM dd',' yyyy")
+  return formatDatetime(date, tz, "MMMM dd',' yyyy")
 }
 
 function handleAction(action: AttributeAction, value: DateValue) {
