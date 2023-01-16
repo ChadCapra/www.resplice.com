@@ -5,7 +5,7 @@
 	import appConfig from '$common/config'
 	import authStore from '$common/auth.store'
 	import { phoneNumberToValue } from '$common/attributes'
-	import useAuthClient from '$common/auth-protocol/useAuthProtocol'
+	import useAuthProtocol from '$common/auth-protocol/useAuthProtocol'
 	import Button from '@resplice/components/Button.svelte'
 	import PhoneField from '@resplice/components/form/PhoneField.svelte'
 	import TextField from '@resplice/components/form/TextField.svelte'
@@ -13,7 +13,7 @@
 	import MailIcon from '@resplice/components/icons/MailIcon.svelte'
 	import type { CountryCode } from 'libphonenumber-js'
 
-	const client = useAuthClient()
+	const protocol = useAuthProtocol()
 
 	let phone = {
 		value: '',
@@ -64,7 +64,7 @@
 				const token = await grecaptcha.execute(appConfig.recaptchaToken, {
 					action: 'auth'
 				})
-				const isBot = await client.submitRecaptchaToken(token)
+				const isBot = await protocol.submitRecaptchaToken(token)
 				if (isBot) {
 					networkErr = new Error('We detected some bot behavior, you must be a robot?')
 					resolve(true)
@@ -78,12 +78,12 @@
 	async function createSession() {
 		try {
 			const phoneNumber = parsePhoneNumber(phone.value, phone.countryCode)
-			const auth = await client.createSession({
+			const { status } = await protocol.createSession({
 				phone: phoneNumberToValue(phoneNumber),
 				email: { email },
 				rememberMe
 			})
-			authStore.set(auth)
+			authStore.set({ status, email, phone, rememberMe })
 		} catch (err) {
 			networkErr = err as Error
 			isLoading = false

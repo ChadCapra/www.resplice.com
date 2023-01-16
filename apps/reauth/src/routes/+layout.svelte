@@ -1,54 +1,72 @@
 <script lang="ts">
 	import { setContext, onMount } from 'svelte'
-	import { goto } from '$app/navigation'
+	import { navigating, page } from '$app/stores'
 	import { contextKey } from '$common/auth-protocol'
-	import MockAuthClient from '$common/auth-protocol/authProtocol.mocks'
+	import MockAuthProtocol from '$common/auth-protocol/authProtocol.mocks'
 	import cache from '$common/db'
 	import authStore from '$common/auth.store'
 	import appConfig from '$common/config'
+	import navigate from '$common/navigate'
 	import AppLoading from '@resplice/components/skeleton/AppLoading.svelte'
 	import PageTransition from '@resplice/components/skeleton/PageTransition.svelte'
+	import { AuthStatus } from '$common/common.types'
 	import '../app.css'
 	import '@resplice/components/lib.css'
+	import { browser } from '$app/environment'
 
-	console.log('Reauth layout rendering')
+	let isLoading = Promise.resolve(false)
 
-	// let isLoading = Promise.resolve(false)
+	const protocolContext = { protocol: new MockAuthProtocol() }
+	setContext(contextKey, protocolContext)
 
-	setContext(contextKey, new MockAuthClient())
+	function routeGuard(status: AuthStatus) {
+		navigating
+		switch (status) {
+			case AuthStatus.UNKNOWN:
+			case AuthStatus.EXPIRED:
+			case AuthStatus.PENDING_ADDITIONAL_AUTHENTICATION:
+				navigate.auth()
+				break
+			case AuthStatus.PENDING_EMAIL_VERIFICATION:
+			case AuthStatus.PENDING_PHONE_VERIFICATION:
+				navigate.verify()
+				break
+			case AuthStatus.PENDING_USER_REGISRATION:
+				navigate.register()
+				break
+			case AuthStatus.AUTHENTICATED:
+				navigate.app()
+				break
+		}
+	}
 
-	// onMount(() => (isLoading = P))
+	async function loadApp(): Promise<boolean> {
+		routeGuard($authStore.status)
 
-	// function routeGuard(auth: typeof $authStore) {
-	//   if (!auth) {
-	//     goto('/auth/start')
-	//     return
-	//   }
+		return true
+	}
 
-	//   switch (auth.session.status) {
-	//     case SessionStatus.EXPIRED:
-	//       goto('/auth/start')
-	//       break
-	//     case SessionStatus.PENDING_EMAIL_VERIFICATION:
-	//     case SessionStatus.PENDING_PHONE_VERIFICATION:
-	//       goto('/auth/verify')
-	//       break
-	//     case SessionStatus.PENDING_USER_REGISRATION:
-	//       goto('/auth/sign-up')
-	//       break
-	//     case SessionStatus.AUTHENTICATED:
-	//       goto('/app/list/contacts')
-	//       break
-	//     default:
-	//       throw new Error(`Session status ${auth.session.status} not handled`)
-	//   }
-	// }
+	onMount(() => (isLoading = loadApp()))
 
-	// $: {
-	//   if (browser) routeGuard($authStore)
-	// }
+	$: {
+		if (browser) {
+			routeGuard($authStore.status)
+		}
+	}
 </script>
 
-<PageTransition>
-	<slot />
-</PageTransition>
+{#await isLoading}
+	<AppLoading />
+{:then isLoaded}
+	{#if isLoaded}
+		<PageTransition>
+			<slot />
+		</PageTransition>
+	{:else}
+		<AppLoading />
+	{/if}
+{:catch error}
+	<!-- TODO: Make better error screen -->
+	<p>{'App could not load :('}</p>
+	<p>{error.message}</p>
+{/await}

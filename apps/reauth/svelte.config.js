@@ -13,6 +13,9 @@ const config = {
 			fallback: 'index.html',
 			precompress: false
 		}),
+		paths: {
+			base: '/auth'
+		},
 		alias: {
 			$common: './src/common',
 			$modules: './src/modules'

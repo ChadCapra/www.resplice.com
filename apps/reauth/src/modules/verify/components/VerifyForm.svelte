@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { parsePhoneNumber } from 'libphonenumber-js'
 	import authStore from '$common/auth.store'
 	import useAuthProtocol from '$common/auth-protocol/useAuthProtocol'
 	import AttributeItem from '@resplice/components/attribute/AttributeItem.svelte'
@@ -7,6 +8,7 @@
 	import ShieldCheckmarkIcon from '@resplice/components/icons/ShieldCheckmarkIcon.svelte'
 	import Spinner from '@resplice/components/skeleton/Spinner.svelte'
 	import { AuthStatus } from '$common/common.types'
+	import { phoneNumberToValue } from '$common/attributes'
 	import { AttributeType, type Email, type Phone } from '@resplice/utils'
 
 	const CODE_LENGTH = 6
@@ -20,13 +22,13 @@
 		value: { email: $authStore.email },
 		sortOrder: 1
 	}
-
 	const phone: Phone = {
 		id: 1,
 		type: AttributeType.PHONE,
 		name: 'Phone',
-		// TODO: parse phone number correctly, might be able to use some helper functions in @resplice/utils
-		value: { number: parseInt($authStore.phone), smsEnabled: true },
+		value: phoneNumberToValue(
+			parsePhoneNumber($authStore.phone.value, $authStore.phone.countryCode)
+		),
 		sortOrder: 2
 	}
 
@@ -38,20 +40,20 @@
 	let phonePromise: Promise<boolean>
 
 	async function submitEmailCode(verificationToken: number): Promise<boolean> {
-		const session = await protocol.verifyEmail({ verificationToken })
-		if (session.status !== AuthStatus.PENDING_PHONE_VERIFICATION)
+		const auth = await protocol.verifyEmail({ verificationToken })
+		if (auth.status !== AuthStatus.PENDING_PHONE_VERIFICATION)
 			throw Error('Verification code did not work')
 
-		authStore.update((auth) => ({ ...auth, session }))
+		authStore.update((oldAuth) => ({ ...oldAuth, status: auth.status }))
 		return true
 	}
 
 	async function submitPhoneCode(verificationToken: number): Promise<boolean> {
-		const session = await protocol.verifyPhone({ verificationToken })
-		if (session.status !== AuthStatus.PENDING_USER_REGISRATION)
+		const auth = await protocol.verifyPhone({ verificationToken })
+		if (auth.status !== AuthStatus.PENDING_USER_REGISRATION)
 			throw Error('Verification code did not work')
 
-		authStore.update((auth) => ({ ...auth, session }))
+		authStore.update((oldAuth) => ({ ...oldAuth, status: auth.status }))
 		return true
 	}
 
@@ -77,7 +79,7 @@
 				<TextField
 					name="email-code"
 					label="Enter Code"
-					autoComplete="one-time-code"
+					autocomplete="one-time-code"
 					bind:value={emailCode}
 					disabled={emailCode.length >= CODE_LENGTH}
 					Icon={LockClosedIcon}
@@ -101,7 +103,7 @@
 				<TextField
 					name="phone-code"
 					label={emailVerified ? 'Enter Code' : 'Verify Email'}
-					autoComplete="one-time-code"
+					autocomplete="one-time-code"
 					bind:value={phoneCode}
 					disabled={!emailVerified || phoneCode.length >= CODE_LENGTH}
 					Icon={LockClosedIcon}

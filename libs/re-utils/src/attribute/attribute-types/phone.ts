@@ -11,7 +11,7 @@ import {
 } from '$utils/attribute/attribute.types'
 
 function valueToString(value: PhoneValue) {
-  return `+${value.number} ${value.extension ? `x${value.extension}` : ''}`
+  return `+${value.number}${value.extension ? `x${value.extension}` : ''}`
 }
 
 function handleAction(action: AttributeAction, value: PhoneValue) {

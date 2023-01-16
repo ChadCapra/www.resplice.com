@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths'
 	import useAuthProtocol from '$common/auth-protocol/useAuthProtocol'
 	import UserAvatar from '@resplice/components/UserAvatar.svelte'
 	import TextField from '@resplice/components/form/TextField.svelte'
@@ -11,8 +12,9 @@
 
 	const RAND_ID = Math.random().toString(36)
 
-	let fullName = ''
 	let avatar: Blob | null = null
+	let fullName = ''
+	let handle = ''
 	let formErrs: Record<string, string> = {}
 	let networkErr: Error
 	let isLoading = false
@@ -23,23 +25,23 @@
 
 		isLoading = true
 
-		createAccount()
+		return createAccount()
 	}
 
 	async function createAccount() {
 		try {
 			isLoading = true
-			const session = await protocol.createAccount({
+			const { status } = await protocol.createAccount({
 				name: fullName,
 				avatar,
 				handle: ''
 			})
-			authStore.update((auth) => ({
-				...auth,
-				session
+			authStore.update((oldAuth) => ({
+				...oldAuth,
+				status
 			}))
 		} catch (err) {
-			networkErr = err
+			networkErr = err as Error
 			isLoading = false
 		}
 	}
@@ -59,26 +61,31 @@
 <div class="flex-1 space-y-6 flex flex-col justify-between overflow-auto">
 	<div>
 		<UserAvatar
-			profile={{
-				uuid: RAND_ID,
-				avatar: avatar ? URL.createObjectURL(avatar) : null
-			}}
+			uuid={RAND_ID}
+			avatarUrl={avatar ? URL.createObjectURL(avatar) : null}
 			on:crop={(e) => (avatar = e.detail)}
 		/>
-		<form class="mt-8 px-2" on:submit|preventDefault={handleSubmit}>
+		<form class="mt-8 px-2 flex flex-col space-y-4" on:submit|preventDefault={handleSubmit}>
 			<TextField
 				name="full-name"
 				label="Full Name"
-				autoComplete="name"
+				autocomplete="name"
 				bind:value={fullName}
 				Icon={PeopleIcon}
 				error={formErrs.fullName}
+			/>
+			<TextField
+				name="handle"
+				label="Handle"
+				autocomplete="nickname"
+				bind:value={handle}
+				error={formErrs.handle}
 			/>
 		</form>
 	</div>
 
 	<div class="flex-none flex flex-col items-center p-2">
-		<Link class="mb-4" href="/auth/verify-existing">I already have an account</Link>
+		<Link class="mb-4" href={`${base}/verify-existing`}>I already have an account</Link>
 		<Button {isLoading} on:click={() => handleSubmit()}>Continue</Button>
 		{#if networkErr}
 			<p>{networkErr.message}</p>

@@ -4,7 +4,10 @@ import { AuthStatus, type Auth } from '$common/common.types'
 const initialAuth: Auth = {
 	status: AuthStatus.UNKNOWN,
 	email: '',
-	phone: '',
+	phone: {
+		value: '',
+		countryCode: 'US'
+	},
 	rememberMe: false
 }
 

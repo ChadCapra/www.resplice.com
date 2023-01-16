@@ -1,3 +1,5 @@
+import type { CountryCode } from 'libphonenumber-js'
+
 export enum AuthStatus {
 	EXPIRED = 0,
 	PENDING_EMAIL_VERIFICATION = 1,
@@ -7,10 +9,14 @@ export enum AuthStatus {
 	AUTHENTICATED = 5,
 	UNKNOWN = -1
 }
+export type AuthPhone = {
+	value: string
+	countryCode: CountryCode
+}
 export type Auth = {
 	status: AuthStatus
 	email: string
-	phone: string
+	phone: AuthPhone
 	rememberMe: boolean
 }
 

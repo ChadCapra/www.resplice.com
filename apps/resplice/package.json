@@ -17,6 +17,7 @@
 	"dependencies": {
 		"@dicebear/avatars": "^4.10.8",
 		"@dicebear/avatars-gridy-sprites": "^4.10.8",
+		"@resplice/components": "file:../../libs/re-components/package",
 		"@sveltejs/svelte-virtual-list": "^3.0.1",
 		"classnames": "^2.3.2",
 		"croppie": "^2.6.5",

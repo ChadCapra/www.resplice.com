@@ -2,7 +2,7 @@
 	import { createAvatar } from '@dicebear/avatars'
 	import * as style from '@dicebear/avatars-gridy-sprites'
 	export let uuid: string
-	export let src = ''
+	export let src: string | null
 	export let size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' = 'md'
 
 	const svgWidthMap = {

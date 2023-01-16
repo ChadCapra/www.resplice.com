@@ -8,7 +8,7 @@
 	const dispatch = createEventDispatcher()
 
 	export let uuid: string
-	export let avatarUrl: string
+	export let avatarUrl: string | null
 
 	let imageInput: HTMLInputElement
 	let rawImage: File | null = null

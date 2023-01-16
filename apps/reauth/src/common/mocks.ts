@@ -1,10 +1,15 @@
-import { userEmail, userPhone } from '$modules/user/user.mocks'
-import { type Auth, AuthStatus } from '$common/common.types'
+import { type Auth, AuthStatus, type AuthPhone } from '$common/common.types'
+
+export const authPhone: AuthPhone = {
+	value: '(555) 555-5555',
+	countryCode: 'US'
+}
+export const authEmail = 'bastilla.shan@jedi.com'
 
 export const baseAuth: Auth = {
 	status: AuthStatus.UNKNOWN,
-	email: userEmail,
-	phone: userPhone,
+	email: authEmail,
+	phone: authPhone,
 	rememberMe: false
 }
 

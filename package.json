@@ -15,8 +15,9 @@
   },
   "homepage": "https://github.com/ChadCapra/www.resplice.com#readme",
   "scripts": {
-    "build:libs": "npm run build --workspace=libs/re-components --workspace=libs/re-utils --workspace=libs/re-proto",
-    "build:apps": "npm run build --workspace=apps/resplice --workspace=apps/reauth",
+    "build:libs": "npm run build -w @resplice/components -w @resplice/utils -w @resplice/proto && npm run link:libs",
+    "build:apps": "npm run build -w @resplice/resplice -w @resplice/reauth",
+    "link:libs": "npm link @resplice/components -w @resplice/reauth -w @resplice/resplice",
     "reauth": "npm run dev --workspace=apps/reauth",
     "resplice": "npm run dev --workspace=apps/resplice",
     "reauth:preview": "npm run start --workspace=apps/reauth",
